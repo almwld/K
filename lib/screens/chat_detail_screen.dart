@@ -42,7 +42,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
   Future<void> _loadMessages() async {
     setState(() => _isLoading = true);
-    // رسائل تجريبية للعرض
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       _messages = [
@@ -91,6 +90,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         );
       }
     });
+  }
+
+  String _formatTime(DateTime time) {
+    final now = DateTime.now();
+    final diff = now.difference(time);
+    if (diff.inMinutes < 1) return 'الآن';
+    if (diff.inHours < 1) return '${diff.inMinutes} دقيقة';
+    if (diff.inDays < 1) return '${diff.inHours} ساعة';
+    return '${diff.inDays} يوم';
   }
 
   @override
@@ -252,14 +260,5 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         ],
       ),
     );
-  }
-
-  String _formatTime(DateTime time) {
-    final now = DateTime.now();
-    final diff = now.difference(time);
-    if (diff.inMinutes < 1) return 'الآن';
-    if (diff.inHours < 1) return '${diff.inMinutes} دقيقة';
-    if (diff.inDays < 1) return '${diff.inHours} ساعة';
-    return '${diff.inDays} يوم';
   }
 }

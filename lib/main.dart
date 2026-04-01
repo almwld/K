@@ -12,6 +12,7 @@ import 'theme/app_theme.dart';
 import 'models/user_model.dart';
 import 'models/order_model.dart';
 import 'models/auction_model.dart';
+import 'models/chat_model.dart';
 
 // Screens - Main
 import 'screens/splash_screen.dart';
@@ -25,8 +26,6 @@ import 'screens/auction_detail_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/chat_detail_screen.dart';
-import 'models/chat_model.dart';
-import 'models/message_model.dart';
 import 'screens/cart_screen.dart';
 import 'screens/checkout_screen.dart';
 import 'screens/track_order_screen.dart';
@@ -173,6 +172,13 @@ class MyApp extends StatelessWidget {
       );
     }
 
+    // مسار تفاصيل الدردشة
+    if (settings.name == '/chat_detail' && settings.arguments is ChatModel) {
+      return MaterialPageRoute(
+        builder: (_) => ChatDetailScreen(chat: settings.arguments as ChatModel),
+      );
+    }
+
     // المسارات الثابتة
     switch (settings.name) {
       case '/':
@@ -193,14 +199,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case '/chat':
         return MaterialPageRoute(builder: (_) => const ChatScreen());
-      case '/chat_detail':
-        final args = settings.arguments as ChatModel?;
-        if (args == null) return const Scaffold(body: Center(child: Text('بيانات المحادثة غير موجودة')));
-        return MaterialPageRoute(builder: (_) => ChatDetailScreen(chat: args));
-        final args = settings.arguments as ChatModel?;
-        if (args == null) return const Scaffold(body: Center(child: Text('بيانات المحادثة غير موجودة')));
-        return MaterialPageRoute(builder: (_) => ChatDetailScreen(chat: args));
-        return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
       case '/cart':
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case '/checkout':
@@ -221,8 +219,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const AllCategoriesScreen());
       case '/add_ad':
         return MaterialPageRoute(builder: (_) => const AddAdScreen());
-      
-      // صفحات الإعدادات
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/about':
@@ -239,8 +235,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SecuritySettingsScreen());
       case '/payment_methods':
         return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
-      
-      // صفحات الملف الشخصي
       case '/invite_friends':
         return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
       case '/my_ads':
@@ -255,8 +249,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const FollowingScreen());
       case '/reviews':
         return MaterialPageRoute(builder: (_) => const ReviewsScreen());
-      
-      // صفحات الأمان والخصوصية
       case '/change_password':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case '/biometric_auth':
@@ -269,20 +261,15 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const PrivacySettingsScreen());
       case '/privacy_block':
         return MaterialPageRoute(builder: (_) => const PrivacyBlockScreen());
-      
-      // صفحات الدعم
       case '/live_support':
         return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
       case '/support_tickets':
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
-      
       default:
         return MaterialPageRoute(builder: (_) => const Scaffold(
-          body: Center(
-            child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18)),
-          ),
+          body: Center(child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18))),
         ));
     }
   }
