@@ -20,9 +20,8 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
-  late AnimationController _animationController;
 
   final List<Widget> _screens = [
     const HomeScreen(),
@@ -33,20 +32,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     const ProfileScreen(),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  final List<Map<String, dynamic>> _navItems = [
+    {'icon': 'home', 'label': 'الرئيسية', 'index': 0},
+    {'icon': 'customer', 'label': 'المتجر', 'index': 1},
+    {'icon': 'location', 'label': 'الخريطة', 'index': 2},
+    {'icon': 'add', 'label': '', 'index': 3, 'isCenter': true},
+    {'icon': 'wallet', 'label': 'المحفظة', 'index': 4},
+    {'icon': 'chat', 'label': 'الدردشة', 'index': 5},
+    {'icon': 'profile', 'label': 'حسابي', 'index': 6},
+  ];
 
   void _onItemTapped(int index) {
     if (index == 3) {
@@ -58,56 +52,48 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _showQuickActionsSheet() {
-    _animationController.forward();
-    Future.delayed(const Duration(milliseconds: 200), () {
-      _animationController.reverse();
-    });
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       backgroundColor: AppTheme.getSurfaceColor(context),
-      builder: (context) => _buildQuickActionsSheet(context),
-    );
-  }
-
-  Widget _buildQuickActionsSheet(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 4,
-            margin: const EdgeInsets.only(bottom: 20),
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(2),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-          ),
-          const Text('إجراءات سريعة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 20),
-          _buildActionItem(context, Icons.add_circle_outline, 'إضافة إعلان', 'انشر إعلاناً جديداً', AppTheme.goldColor, () {
-            Navigator.pop(context);
-            Navigator.pushNamed(context, '/add_ad');
-          }),
-          _buildActionItem(context, Icons.shopping_bag_outlined, 'إضافة منتج', 'أضف منتجاً جديداً للبيع', Colors.green, () {
-            Navigator.pop(context);
-          }),
-          _buildActionItem(context, Icons.build_outlined, 'طلب خدمة', 'اطلب خدمة معينة', Colors.blue, () {
-            Navigator.pop(context);
-          }),
-          _buildActionItem(context, Icons.download_outlined, 'استلام حوالة', 'استلم حوالة مالية', Colors.purple, () {
-            Navigator.pop(context);
-            Navigator.pushNamed(context, '/receive_transfer');
-          }),
-          const SizedBox(height: 20),
-        ],
+            const Text('إجراءات سريعة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            _buildActionItem(Icons.add_circle_outline, 'إضافة إعلان', 'انشر إعلاناً جديداً', AppTheme.goldColor, () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/add_ad');
+            }),
+            _buildActionItem(Icons.shopping_bag_outlined, 'إضافة منتج', 'أضف منتجاً جديداً للبيع', Colors.green, () {
+              Navigator.pop(context);
+            }),
+            _buildActionItem(Icons.build_outlined, 'طلب خدمة', 'اطلب خدمة معينة', Colors.blue, () {
+              Navigator.pop(context);
+            }),
+            _buildActionItem(Icons.download_outlined, 'استلام حوالة', 'استلم حوالة مالية', Colors.purple, () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/receive_transfer');
+            }),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildActionItem(BuildContext context, IconData icon, String title, String subtitle, Color color, VoidCallback onTap) {
+  Widget _buildActionItem(IconData icon, String title, String subtitle, Color color, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -152,29 +138,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'FLEX',
-              style: TextStyle(
-                color: AppTheme.goldColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                fontFamily: 'Changa',
-              ),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              'YEMEN',
-              style: TextStyle(
-                color: AppTheme.goldLight,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Changa',
-              ),
-            ),
-          ],
+        title: const Text(
+          'FLEX YEMEN',
+          style: TextStyle(
+            fontFamily: 'Changa',
+            fontWeight: FontWeight.bold,
+            color: AppTheme.goldColor,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
@@ -183,17 +153,14 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: AppTheme.goldColor),
             onPressed: () => Navigator.pushNamed(context, '/settings'),
-            tooltip: 'الإعدادات',
           ),
           IconButton(
             icon: const Icon(Icons.notifications_outlined, color: AppTheme.goldColor),
             onPressed: () => Navigator.pushNamed(context, '/notifications'),
-            tooltip: 'الإشعارات',
           ),
           IconButton(
             icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.goldColor),
             onPressed: () => Navigator.pushNamed(context, '/cart'),
-            tooltip: 'السلة',
           ),
         ],
       ),
@@ -215,13 +182,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(Icons.home_outlined, 'الرئيسية', 0),
-                _buildNavItem(Icons.storefront_outlined, 'المتجر', 1),
-                _buildNavItem(Icons.map_outlined, 'الخريطة', 2),
+                _buildNavItem('home', 'الرئيسية', 0),
+                _buildNavItem('customer', 'المتجر', 1),
+                _buildNavItem('location', 'الخريطة', 2),
                 _buildCenterButton(),
-                _buildNavItem(Icons.account_balance_wallet_outlined, 'المحفظة', 4),
-                _buildNavItem(Icons.chat_bubble_outline, 'الدردشة', 5),
-                _buildNavItem(Icons.person_outline, 'حسابي', 6),
+                _buildNavItem('wallet', 'المحفظة', 4),
+                _buildNavItem('chat', 'الدردشة', 5),
+                _buildNavItem('profile', 'حسابي', 6),
               ],
             ),
           ),
@@ -230,32 +197,39 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(String iconName, String label, int index) {
     final bool isSelected = _currentIndex == (index > 3 ? index - 1 : index);
-    return GestureDetector(
-      onTap: () => _onItemTapped(index),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: isSelected ? AppTheme.goldColor : AppTheme.getSecondaryTextColor(context), size: 24),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 11,
-                color: isSelected ? AppTheme.goldColor : AppTheme.getSecondaryTextColor(context),
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    final String iconPath = 'assets/icons/svg/$iconName.svg';
+    
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _onItemTapped(index),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                iconPath,
+                width: 24,
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                  isSelected ? AppTheme.goldColor : Colors.grey,
+                  BlendMode.srcIn,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 11,
+                  color: isSelected ? AppTheme.goldColor : Colors.grey,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
