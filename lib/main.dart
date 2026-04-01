@@ -272,6 +272,11 @@ class MyApp extends StatelessWidget {
               '/': (context) => const SplashScreen(),
               '/login': (context) => const LoginScreen(),
               '/register': (context) => const RegisterScreen(),
+      '/identity_info': (context) {
+        final args = ModalRoute.of(context)?.settings.arguments as UserModel?;
+        if (args == null) return const SizedBox();
+        return IdentityInfoScreen(userData: args);
+      },
               '/main': (context) => const MainNavigation(),
               '/home': (context) => const HomeScreen(),
               '/search': (context) => const SearchScreen(),
