@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../widgets/custom_button.dart';
@@ -27,17 +26,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool _isSubmitting = false;
   
   final List<Map<String, dynamic>> _shippingCompanies = [
-    {'id': '1', 'name': 'سبيدكس اليمن (Speedex Yemen)', 'price': 1500, 'days': '2-3 أيام', 'cities': ['صنعاء', 'عدن', 'تعز']},
-    {'id': '2', 'name': 'يمن إكسبرس (Yemen Express)', 'price': 2000, 'days': '1-2 أيام', 'cities': ['صنعاء', 'عدن', 'تعز']},
-    {'id': '3', 'name': 'دليفري بلس (Delivery Plus)', 'price': 1200, 'days': '3-4 أيام', 'cities': ['صنعاء', 'الحديدة', 'إب']},
-    {'id': '4', 'name': 'شحن سريع اليمن (Fast Ship Yemen)', 'price': 2500, 'days': '1-2 أيام', 'cities': ['صنعاء', 'عدن', 'المكلا']},
-    {'id': '5', 'name': 'بريد اليمن (Yemen Post)', 'price': 800, 'days': '5-7 أيام', 'cities': ['جميع المحافظات']},
-  ];
-  
-  final List<Map<String, dynamic>> _paymentMethods = [
-    {'value': 'cash', 'name': 'دفع عند الاستلام', 'icon': Icons.money, 'desc': 'ادفع نقداً عند استلام الطلب'},
-    {'value': 'wallet', 'name': 'محفظة فلكس', 'icon': Icons.account_balance_wallet, 'desc': 'استخدم رصيد محفظتك'},
-    {'value': 'bank', 'name': 'تحويل بنكي', 'icon': Icons.account_balance, 'desc': 'تحويل إلى حساب البنك'},
+    {'id': '1', 'name': 'سبيدكس اليمن', 'price': 1500, 'days': '2-3 أيام'},
+    {'id': '2', 'name': 'يمن إكسبرس', 'price': 2000, 'days': '1-2 أيام'},
+    {'id': '3', 'name': 'دليفري بلس', 'price': 1200, 'days': '3-4 أيام'},
+    {'id': '4', 'name': 'شحن سريع اليمن', 'price': 2500, 'days': '1-2 أيام'},
+    {'id': '5', 'name': 'بريد اليمن', 'price': 800, 'days': '5-7 أيام'},
   ];
   
   double get _productPrice => widget.product?.price ?? 0;
@@ -64,6 +57,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         id: 'ORD${DateTime.now().millisecondsSinceEpoch}',
         productId: widget.product?.id ?? '',
         productTitle: widget.product?.title ?? '',
+        productImage: widget.product?.images.isNotEmpty == true ? widget.product!.images.first : '',
         productPrice: _productPrice,
         quantity: 1,
         shippingCost: _shippingCost,
@@ -80,7 +74,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => OrderSuccessScreen(order: order)),
+        MaterialPageRoute(
+          builder: (_) => OrderSuccessScreen(order: order),
+        ),
       );
     }
   }
@@ -111,7 +107,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isDark ? AppTheme.darkCard : AppTheme.lightCard,
+                      color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
@@ -132,7 +128,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             children: [
                               Text(widget.product?.title ?? 'المنتج', style: const TextStyle(fontWeight: FontWeight.bold)),
                               Text('${_productPrice.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor)),
-                              Text('الكمية: 1', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
                             ],
                           ),
                         ),
@@ -181,18 +176,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   
                   const SizedBox(height: 24),
                   
-                  // طريقة الدفع
-                  const Text('طريقة الدفع', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  ..._paymentMethods.map((method) => _buildPaymentMethod(method)),
-                  
-                  const SizedBox(height: 24),
-                  
                   // تفاصيل الأسعار
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isDark ? AppTheme.darkCard : Colors.grey[50],
+                      color: isDark ? const Color(0xFF1E1E1E) : Colors.grey[50],
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -250,38 +238,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: [
                   Text(company['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
                   Text('${company['days']} • ${company['price']} ر.ي', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
-                ],
-              ),
-            ),
-            if (isSelected) const Icon(Icons.check_circle, color: AppTheme.goldColor),
-          ],
-        ),
-      ),
-    );
-  }
-  
-  Widget _buildPaymentMethod(Map<String, dynamic> method) {
-    final isSelected = _selectedPaymentMethod == method['value'];
-    return GestureDetector(
-      onTap: () => setState(() => _selectedPaymentMethod = method['value']),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.3)),
-        ),
-        child: Row(
-          children: [
-            Icon(method['icon'] as IconData, color: isSelected ? AppTheme.goldColor : Colors.grey),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(method['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(method['desc'], style: TextStyle(fontSize: 12, color: Colors.grey)),
                 ],
               ),
             ),
