@@ -197,6 +197,9 @@ class MyApp extends StatelessWidget {
         final args = settings.arguments as ChatModel?;
         if (args == null) return const Scaffold(body: Center(child: Text('بيانات المحادثة غير موجودة')));
         return MaterialPageRoute(builder: (_) => ChatDetailScreen(chat: args));
+        final args = settings.arguments as ChatModel?;
+        if (args == null) return const Scaffold(body: Center(child: Text('بيانات المحادثة غير موجودة')));
+        return MaterialPageRoute(builder: (_) => ChatDetailScreen(chat: args));
         return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
       case '/cart':
         return MaterialPageRoute(builder: (_) => const CartScreen());
