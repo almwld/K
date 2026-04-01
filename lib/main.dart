@@ -41,6 +41,21 @@ import 'screens/category_products_screen.dart';
 import 'screens/add_ad_screen.dart';
 import 'screens/identity_info_screen.dart';
 
+// Screens - Settings & Help (باستخدام الأسماء الصحيحة)
+import 'screens/settings/about_screen.dart';
+import 'screens/settings/account_settings_screen.dart';
+import 'screens/help_support_screen.dart';
+import 'screens/settings/language_screen.dart';
+import 'screens/settings/notifications_settings_screen.dart';
+import 'screens/settings/security_settings_screen.dart';
+import 'screens/invite_friends_screen.dart';
+import 'screens/my_ads_screen.dart';
+import 'screens/favorites_screen.dart';
+import 'screens/my_orders_screen.dart';
+import 'screens/followers_screen.dart';
+import 'screens/following_screen.dart';
+import 'screens/reviews_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageService.init();
@@ -111,16 +126,6 @@ class MyApp extends StatelessWidget {
         'games': 'ألعاب',
         'health_beauty': 'صحة وجمال',
         'education': 'تعليم',
-        'pets': 'حيوانات',
-        'sports': 'رياضة',
-        'books': 'كتب',
-        'music': 'موسيقى',
-        'movies': 'أفلام',
-        'travel': 'سفر',
-        'jobs': 'وظائف',
-        'home_services': 'خدمات منزلية',
-        'equipment': 'معدات',
-        'gifts': 'هدايا',
       };
       final categoryName = categoryNames[category] ?? category;
       return MaterialPageRoute(
@@ -173,27 +178,10 @@ class MyApp extends StatelessWidget {
       case '/ad_detail':
         return MaterialPageRoute(builder: (_) => const AdDetailScreen());
       case '/profile':
-      case '/settings':
-        return MaterialPageRoute(builder: (_) => const SettingsScreen());
-      case '/help_support':
-        return MaterialPageRoute(builder: (_) => const HelpSupportScreen());
-      case '/invite_friends':
-        return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
-      case '/chat_detail':
-        return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
-      case '/my_ads':
-        return MaterialPageRoute(builder: (_) => const MyAdsScreen());
-      case '/favorites':
-        return MaterialPageRoute(builder: (_) => const FavoritesScreen());
-      case '/my_orders':
-        return MaterialPageRoute(builder: (_) => const MyOrdersScreen());
-      case '/followers':
-        return MaterialPageRoute(builder: (_) => const FollowersScreen());
-      case '/reviews':
-        return MaterialPageRoute(builder: (_) => const ReviewsScreen());
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case '/chat':
         return MaterialPageRoute(builder: (_) => const ChatScreen());
+      case '/chat_detail':
         return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
       case '/cart':
         return MaterialPageRoute(builder: (_) => const CartScreen());
@@ -209,18 +197,49 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const WalletScreen());
       case '/map':
         return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
-        return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());
       case '/all_categories':
         return MaterialPageRoute(builder: (_) => const AllCategoriesScreen());
       case '/add_ad':
         return MaterialPageRoute(builder: (_) => const AddAdScreen());
+      
+      // صفحات الإعدادات والمساعدة (باستخدام الأسماء الصحيحة)
+      case '/settings':
+        return MaterialPageRoute(builder: (_) => const SettingsScreen());
+      case '/about':
+        return MaterialPageRoute(builder: (_) => const AboutScreen());
+      case '/account_info':
+        return MaterialPageRoute(builder: (_) => const AccountSettingsScreen());
+      case '/help_support':
+        return MaterialPageRoute(builder: (_) => const HelpSupportScreen());
+      case '/language':
+        return MaterialPageRoute(builder: (_) => const LanguageScreen());
+      case '/notifications_settings':
+        return MaterialPageRoute(builder: (_) => const NotificationsSettingsScreen());
+      case '/security_settings':
+        return MaterialPageRoute(builder: (_) => const SecuritySettingsScreen());
+      case '/invite_friends':
+        return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
+      case '/my_ads':
+        return MaterialPageRoute(builder: (_) => const MyAdsScreen());
+      case '/favorites':
+        return MaterialPageRoute(builder: (_) => const FavoritesScreen());
+      case '/my_orders':
+        return MaterialPageRoute(builder: (_) => const MyOrdersScreen());
+      case '/followers':
+        return MaterialPageRoute(builder: (_) => const FollowersScreen());
+      case '/following':
+        return MaterialPageRoute(builder: (_) => const FollowingScreen());
+      case '/reviews':
+        return MaterialPageRoute(builder: (_) => const ReviewsScreen());
+      
       default:
-        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('الصفحة غير موجودة'))));
+        return MaterialPageRoute(builder: (_) => const Scaffold(
+          body: Center(
+            child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18)),
+          ),
+        ));
     }
   }
 }
-
-  // إضافة المسارات المفقودة للإعدادات والدردشة
-  // أضف هذه الأسطر في onGenerateRoute أو في routes
