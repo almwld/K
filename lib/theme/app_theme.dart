@@ -2,66 +2,65 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // اللون الذهبي الداكن الهادئ (Metallic Gold - Darker)
-  static const Color goldColor = Color(0xFFD4AF37);      // ذهبي معدني داكن (هادئ)
-  static const Color goldLight = Color(0xFFE5C158);      // ذهبي فاتح باهت
-  static const Color goldDark = Color(0xFFB8941F);       // ذهبي داكن أكثر
-  static const Color goldAccent = Color(0xFFC9A227);     // ذهبي متوسط
+  // الألوان الأساسية
+  static const Color goldColor = Color(0xFFD4AF37);
+  static const Color goldLight = Color(0xFFF3E5AB);
+  static const Color goldDark = Color(0xFFB8860B);
   
-  // ألوان أخرى
-  static const Color primaryColor = Color(0xFF1E88E5);
-  static const Color secondaryColor = Color(0xFF43A047);
-  static const Color accentColor = Color(0xFFFFB300);
-  
-  // الخلفيات
   static const Color darkBackground = Color(0xFF121212);
   static const Color lightBackground = Color(0xFFF5F5F5);
+  static const Color darkCard = Color(0xFF1E1E1E);
+  static const Color lightCard = Colors.white;
   static const Color darkSurface = Color(0xFF1E1E1E);
   static const Color lightSurface = Colors.white;
+  static const Color error = Color(0xFFE74C3C);
+  static const Color success = Color(0xFF2ECC71);
+  static const Color warning = Color(0xFFF39C12);
+  static const Color info = Color(0xFF3498DB);
   
-  // النصوص
-  static const Color darkText = Color(0xFF212121);
-  static const Color darkTextSecondary = Color(0xFF757575);
-  static const Color lightText = Color(0xFFFFFFFF);
-  static const Color lightTextSecondary = Color(0xFFB0B0B0);
+  static const Color darkText = Colors.white;
+  static const Color lightText = Colors.black87;
+  static const Color darkTextSecondary = Colors.white70;
+  static const Color lightTextSecondary = Colors.black54;
   
-  // الحالات
-  static const Color error = Color(0xFFE53935);
-  static const Color success = Color(0xFF43A047);
-  static const Color warning = Color(0xFFFFB300);
-  static const Color info = Color(0xFF1E88E5);
+  static const Color darkDivider = Colors.white24;
+  static const Color lightDivider = Colors.black12;
 
-  // دوال المساعدة
+  // التدرجات
+  static LinearGradient get goldGradient {
+    return const LinearGradient(
+      colors: [goldColor, goldLight],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+  }
+
+  // دوال مساعدة
   static Color getCardColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? darkSurface : lightSurface;
+    return Theme.of(context).brightness == Brightness.dark ? darkCard : lightCard;
   }
-
+  
   static Color getSurfaceColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? darkSurface : lightSurface;
+    return Theme.of(context).brightness == Brightness.dark ? darkSurface : lightSurface;
   }
-
+  
   static Color getTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? lightText : darkText;
+    return Theme.of(context).brightness == Brightness.dark ? darkText : lightText;
   }
-
+  
   static Color getSecondaryTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? lightTextSecondary : darkTextSecondary;
+    return Theme.of(context).brightness == Brightness.dark ? darkTextSecondary : lightTextSecondary;
   }
-
+  
   static Color getDividerColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? const Color(0xFF424242) : const Color(0xFFE0E0E0);
+    return Theme.of(context).brightness == Brightness.dark ? darkDivider : lightDivider;
   }
-
+  
   static Color getBackgroundColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? darkBackground : lightBackground;
+    return Theme.of(context).brightness == Brightness.dark ? darkBackground : lightBackground;
   }
 
+  // الثيمات
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
@@ -70,19 +69,19 @@ class AppTheme {
       scaffoldBackgroundColor: lightBackground,
       colorScheme: const ColorScheme.light(
         primary: goldColor,
-        secondary: goldDark,
+        secondary: goldLight,
         surface: lightSurface,
         background: lightBackground,
         error: error,
         onPrimary: Colors.black,
         onSecondary: Colors.white,
-        onSurface: darkText,
-        onBackground: darkText,
+        onSurface: lightText,
+        onBackground: lightText,
       ),
       textTheme: GoogleFonts.changaTextTheme(ThemeData.light().textTheme),
       appBarTheme: const AppBarTheme(
-        backgroundColor: goldColor,
-        foregroundColor: Colors.black,
+        backgroundColor: lightSurface,
+        foregroundColor: lightText,
         elevation: 0,
         centerTitle: true,
       ),
@@ -103,8 +102,8 @@ class AppTheme {
         error: error,
         onPrimary: Colors.black,
         onSecondary: Colors.black,
-        onSurface: lightText,
-        onBackground: lightText,
+        onSurface: darkText,
+        onBackground: darkText,
       ),
       textTheme: GoogleFonts.changaTextTheme(ThemeData.dark().textTheme),
       appBarTheme: const AppBarTheme(
@@ -116,9 +115,3 @@ class AppTheme {
     );
   }
 }
-
-  static LinearGradient get goldGradient => const LinearGradient(
-    colors: [goldColor, goldLight],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
