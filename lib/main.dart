@@ -55,6 +55,14 @@ import 'screens/my_orders_screen.dart';
 import 'screens/followers_screen.dart';
 import 'screens/following_screen.dart';
 import 'screens/reviews_screen.dart';
+import 'screens/change_password_screen.dart';
+import 'screens/biometric_screen.dart';
+import 'screens/connected_devices_screen.dart';
+import 'screens/login_history_screen.dart';
+import 'screens/privacy_settings_screen.dart';
+import 'screens/privacy_block_screen.dart';
+import 'screens/live_support_screen.dart';
+import 'screens/support_tickets_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -243,3 +251,23 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+
+      // مسارات إضافية للإعدادات
+      case '/change_password':
+        return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
+      case '/biometric_auth':
+        return MaterialPageRoute(builder: (_) => const BiometricScreen());
+      case '/connected_devices':
+        return MaterialPageRoute(builder: (_) => const ConnectedDevicesScreen());
+      case '/login_history':
+        return MaterialPageRoute(builder: (_) => const LoginHistoryScreen());
+      case '/privacy_settings':
+        return MaterialPageRoute(builder: (_) => const PrivacySettingsScreen());
+      case '/privacy_block':
+        return MaterialPageRoute(builder: (_) => const PrivacyBlockScreen());
+      case '/live_support':
+        return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
+      case '/support_tickets':
+        return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
+      case '/followers':
+        return MaterialPageRoute(builder: (_) => const FollowersScreen());
