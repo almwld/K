@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../theme/app_theme.dart';
 import '../models/product_model.dart';
 import '../models/auction_model.dart';
 import 'ad_detail_screen.dart';
+import 'auction_detail_screen.dart';
 import 'category_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,35 +19,39 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _carouselIndex = 0;
 
-  // سلايدرات العروض
+  // سلايدرات العروض - روابط صور حقيقية
   final List<Map<String, dynamic>> _carouselItems = [
     {
       'title': 'عرض العيد',
       'subtitle': 'خصومات تصل إلى 50%',
+      'image': 'https://images.unsplash.com/photo-1606293926075-21a6300f46d7?w=800',
       'gradient': [const Color(0xFFD4AF37), const Color(0xFFF3E5AB)],
       'tag': 'عرض خاص',
     },
     {
       'title': 'مزاد الجنابي',
       'subtitle': 'أكبر مزاد للأسلحة التراثية',
+      'image': 'https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?w=800',
       'gradient': [const Color(0xFFE74C3C), const Color(0xFFC0392B)],
       'tag': 'مزاد',
     },
     {
       'title': 'توصيل مجاني',
       'subtitle': 'لجميع طلبات اليوم',
+      'image': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800',
       'gradient': [const Color(0xFF2ECC71), const Color(0xFF27AE60)],
       'tag': 'عرض سريع',
     },
     {
       'title': 'عقارات مميزة',
       'subtitle': 'أفضل العروض العقارية',
+      'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800',
       'gradient': [const Color(0xFF3498DB), const Color(0xFF2980B9)],
       'tag': 'استثمار',
     },
   ];
 
-  // الأقسام الرئيسية (20 قسم)
+  // الأقسام الرئيسية
   final List<Map<String, dynamic>> _mainCategories = [
     {'name': 'عقارات', 'icon': Icons.home, 'color': 0xFF4CAF50, 'route': 'real_estate'},
     {'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFF2196F3, 'route': 'cars'},
@@ -70,64 +75,101 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'هدايا', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'route': 'gifts'},
   ];
 
-  // منتجات مميزة (20 منتج)
+  // منتجات مميزة - روابط صور حقيقية
   final List<ProductModel> _featuredProducts = [
     ProductModel(
       id: '1', title: 'آيفون 15 برو ماكس', description: 'هاتف آيفون 15 برو ماكس 256GB', price: 450000,
-      images: ['assets/images/products/iphone.jpg'], category: 'إلكترونيات', city: 'صنعاء',
+      images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400'], category: 'إلكترونيات', city: 'صنعاء',
       sellerId: '1', sellerName: 'متجر التقنية', rating: 4.9, reviewCount: 128, createdAt: DateTime.now(), isFeatured: true,
     ),
     ProductModel(
       id: '2', title: 'سامسونج S24 الترا', description: 'سامسونج جالاكسي S24 الترا 512GB', price: 380000,
-      images: ['assets/images/products/samsung.jpg'], category: 'إلكترونيات', city: 'صنعاء',
+      images: ['https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400'], category: 'إلكترونيات', city: 'صنعاء',
       sellerId: '1', sellerName: 'متجر التقنية', rating: 4.8, reviewCount: 95, createdAt: DateTime.now(), isFeatured: true,
     ),
     ProductModel(
       id: '3', title: 'ماك بوك برو M3', description: 'ماك بوك برو M3 14 بوصة', price: 1800000,
-      images: ['assets/images/products/macbook.jpg'], category: 'إلكترونيات', city: 'عدن',
+      images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'], category: 'إلكترونيات', city: 'عدن',
       sellerId: '1', sellerName: 'متجر التقنية', rating: 4.9, reviewCount: 67, createdAt: DateTime.now(), isFeatured: true,
     ),
     ProductModel(
       id: '4', title: 'تويوتا كامري 2024', description: 'تويوتا كامري 2024 فول اوبشن', price: 8500000,
-      images: ['assets/images/products/camry.jpg'], category: 'سيارات', city: 'صنعاء',
+      images: ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'], category: 'سيارات', city: 'صنعاء',
       sellerId: '2', sellerName: 'معرض السيارات', rating: 4.7, reviewCount: 45, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '5', title: 'هيونداي النترا 2024', description: 'هيونداي النترا 2024', price: 6500000,
+      images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400'], category: 'سيارات', city: 'عدن',
+      sellerId: '2', sellerName: 'معرض السيارات', rating: 4.6, reviewCount: 32, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '6', title: 'شقة فاخرة في حدة', description: 'شقة 3 غرف في حدة', price: 35000000,
+      images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400'], category: 'عقارات', city: 'صنعاء',
+      sellerId: '3', sellerName: 'عقارات فلكس', rating: 4.8, reviewCount: 56, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '7', title: 'فيلا فاخرة', description: 'فيلا 5 غرف مع حديقة', price: 150000000,
+      images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400'], category: 'عقارات', city: 'صنعاء',
+      sellerId: '3', sellerName: 'عقارات فلكس', rating: 4.9, reviewCount: 89, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '8', title: 'كنب زاوية فاخر', description: 'كنب زاوية جلد طبيعي', price: 650000,
+      images: ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400'], category: 'أثاث', city: 'صنعاء',
+      sellerId: '4', sellerName: 'متجر الأثاث', rating: 4.5, reviewCount: 34, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '9', title: 'غرفة نوم كاملة', description: 'غرفة نوم مودرن 5 قطع', price: 450000,
+      images: ['https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400'], category: 'أثاث', city: 'صنعاء',
+      sellerId: '4', sellerName: 'متجر الأثاث', rating: 4.6, reviewCount: 28, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '10', title: 'ثوب يمني تقليدي', description: 'ثوب يمني فاخر', price: 15000,
+      images: ['https://images.unsplash.com/photo-1584277261846-c6a1672c5c43?w=400'], category: 'أزياء', city: 'صنعاء',
+      sellerId: '5', sellerName: 'أزياء فلكس', rating: 4.8, reviewCount: 112, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '11', title: 'مندي دجاج عائلي', description: 'مندي دجاج عائلي 4 أشخاص', price: 8000,
+      images: ['https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'], category: 'مطاعم', city: 'صنعاء',
+      sellerId: '6', sellerName: 'مطعم الأصيل', rating: 4.9, reviewCount: 234, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '12', title: 'ساعة أبل ووتش', description: 'Apple Watch Series 9', price: 120000,
+      images: ['https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=400'], category: 'إلكترونيات', city: 'صنعاء',
+      sellerId: '1', sellerName: 'متجر التقنية', rating: 4.7, reviewCount: 45, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '13', title: 'آيباد برو', description: 'iPad Pro M2 11 بوصة', price: 320000,
+      images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400'], category: 'إلكترونيات', city: 'صنعاء',
+      sellerId: '1', sellerName: 'متجر التقنية', rating: 4.8, reviewCount: 67, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '14', title: 'سماعات AirPods Pro', description: 'AirPods Pro الجيل الثاني', price: 45000,
+      images: ['https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400'], category: 'إلكترونيات', city: 'صنعاء',
+      sellerId: '1', sellerName: 'متجر التقنية', rating: 4.6, reviewCount: 89, createdAt: DateTime.now(), isFeatured: true,
+    ),
+    ProductModel(
+      id: '15', title: 'بلاي ستيشن 5', description: 'PS5 Digital Edition', price: 280000,
+      images: ['https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=400'], category: 'ألعاب', city: 'صنعاء',
+      sellerId: '7', sellerName: 'متجر الألعاب', rating: 4.9, reviewCount: 123, createdAt: DateTime.now(), isFeatured: true,
     ),
   ];
 
   // مزادات نشطة
   final List<AuctionModel> _activeAuctions = [
     AuctionModel(
-      id: 'a1', title: 'ساعة رولكس أصلية', description: 'ساعة رولكس أصلية بحالة ممتازة', images: ['assets/images/products/watch.jpg'],
-      startingPrice: 500000, currentPrice: 620000, sellerId: '1', sellerName: 'أحمد علي', 
+      id: 'a1', title: 'ساعة رولكس أصلية', description: 'ساعة رولكس أصلية بحالة ممتازة', 
+      images: ['https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400'],
+      startingPrice: 500000, currentPrice: 620000, sellerId: '1', sellerName: 'أحمد علي',
       startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 2)),
       status: 'active', bidCount: 12, createdAt: DateTime.now(), category: 'ساعات',
     ),
     AuctionModel(
-      id: 'a2', title: 'جنبية يمنية أصلية', description: 'جنبية فضة يمنية أصلية', images: ['assets/images/products/shahs.jpg'],
-      startingPrice: 100000, currentPrice: 145000, sellerId: '2', sellerName: 'خالد محمود',
-      startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(hours: 36)),
-      status: 'active', bidCount: 25, createdAt: DateTime.now(), category: 'تحف',
-    ),
-    AuctionModel(
-      id: 'a3', title: 'لوحة فنية نادرة', description: 'لوحة زيتية لفنان مشهور', images: ['assets/images/products/art.jpg'],
-      startingPrice: 200000, currentPrice: 280000, sellerId: '3', sellerName: 'فاطمة محمد',
+      id: 'a2', title: 'لوحة فنية نادرة', description: 'لوحة زيتية لفنان مشهور', 
+      images: ['https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400'],
+      startingPrice: 200000, currentPrice: 280000, sellerId: '2', sellerName: 'فاطمة محمد',
       startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 3)),
       status: 'active', bidCount: 18, createdAt: DateTime.now(), category: 'فنون',
     ),
-    AuctionModel(
-      id: 'a4', title: 'عملة قديمة نادرة', description: 'عملة فضية من العصر العثماني', images: ['assets/images/products/coin.jpg'],
-      startingPrice: 5000, currentPrice: 8500, sellerId: '4', sellerName: 'خالد محمود',
-      startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 1)),
-      status: 'active', bidCount: 32, createdAt: DateTime.now(), category: 'عملات',
-    ),
-  ];
-
-  // الفئات الأكثر مشاهدة
-  final List<Map<String, dynamic>> _popularCategories = [
-    {'name': 'عقارات', 'icon': Icons.home, 'count': '1,245 إعلان', 'color': 0xFF4CAF50},
-    {'name': 'سيارات', 'icon': Icons.directions_car, 'count': '876 إعلان', 'color': 0xFF2196F3},
-    {'name': 'إلكترونيات', 'icon': Icons.devices, 'count': '2,345 إعلان', 'color': 0xFFFF9800},
-    {'name': 'أزياء', 'icon': Icons.checkroom, 'count': '1,567 إعلان', 'color': 0xFFE91E63},
   ];
 
   @override
@@ -150,8 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildFeaturedProducts(),
             const SizedBox(height: 24),
             _buildAuctionsSection(),
-            const SizedBox(height: 24),
-            _buildPopularCategories(),
             const SizedBox(height: 24),
           ],
         ),
@@ -183,6 +223,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Stack(
                 children: [
+                  Positioned.fill(
+                    child: Opacity(
+                      opacity: 0.3,
+                      child: CachedNetworkImage(
+                        imageUrl: item['image'] as String,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => Container(),
+                        errorWidget: (_, __, ___) => Container(),
+                      ),
+                    ),
+                  ),
                   Positioned(
                     right: 10,
                     top: 10,
@@ -410,12 +461,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                        child: Image.asset(
-                          product.images.first,
+                        child: CachedNetworkImage(
+                          imageUrl: product.images.first,
                           height: 140,
                           width: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
+                          placeholder: (_, __) => Container(
+                            height: 140,
+                            color: AppTheme.goldColor.withOpacity(0.1),
+                            child: const Center(child: CircularProgressIndicator()),
+                          ),
+                          errorWidget: (_, __, ___) => Container(
                             height: 140,
                             color: AppTheme.goldColor.withOpacity(0.1),
                             child: const Icon(Icons.image, size: 40, color: AppTheme.goldColor),
@@ -496,142 +552,65 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                          child: Container(
+                child: GestureDetector(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AuctionDetailScreen(auction: auction))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                        child: CachedNetworkImage(
+                          imageUrl: auction.images.first,
+                          height: 100,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => Container(
                             height: 100,
                             color: AppTheme.goldColor.withOpacity(0.1),
-                            child: const Center(
-                              child: Icon(Icons.gavel, size: 40, color: AppTheme.goldColor),
-                            ),
+                            child: const Center(child: CircularProgressIndicator()),
+                          ),
+                          errorWidget: (_, __, ___) => Container(
+                            height: 100,
+                            color: AppTheme.goldColor.withOpacity(0.1),
+                            child: const Icon(Icons.gavel, size: 30, color: AppTheme.goldColor),
                           ),
                         ),
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(8),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              auction.title,
+                              maxLines: 1,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                             ),
-                            child: const Text(
-                              'مباشر',
-                              style: TextStyle(color: Colors.white, fontSize: 10),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${auction.currentPrice.toStringAsFixed(0)} ر.ي',
+                              style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold),
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(Icons.timer, size: 12, color: Colors.red),
+                                const SizedBox(width: 4),
+                                Text(
+                                  auction.timeLeft,
+                                  style: const TextStyle(fontSize: 10, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              '${auction.bidCount} مزايد',
+                              style: TextStyle(fontSize: 10, color: AppTheme.getSecondaryTextColor(context)),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            auction.title,
-                            maxLines: 1,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${auction.currentPrice.toStringAsFixed(0)} ر.ي',
-                            style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              const Icon(Icons.timer, size: 12, color: Colors.red),
-                              const SizedBox(width: 4),
-                              Text(
-                                auction.timeLeft,
-                                style: const TextStyle(fontSize: 10, color: Colors.red),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${auction.bidCount} مزايد',
-                            style: TextStyle(fontSize: 10, color: AppTheme.getSecondaryTextColor(context)),
-                          ),
-                        ],
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPopularCategories() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: const Text(
-            'أكثر الفئات مشاهدة',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2.5,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemCount: _popularCategories.length,
-            itemBuilder: (context, index) {
-              final cat = _popularCategories[index];
-              return Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: (cat['color'] as int).toColor().withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(cat['icon'] as IconData, color: (cat['color'] as int).toColor()),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            cat['name'] as String,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            cat['count'] as String,
-                            style: TextStyle(fontSize: 11, color: AppTheme.getSecondaryTextColor(context)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
