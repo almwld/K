@@ -41,7 +41,7 @@ import 'screens/category_products_screen.dart';
 import 'screens/add_ad_screen.dart';
 import 'screens/identity_info_screen.dart';
 
-// Screens - Settings & Help (باستخدام الأسماء الصحيحة)
+// Screens - Settings
 import 'screens/settings/about_screen.dart';
 import 'screens/settings/account_settings_screen.dart';
 import 'screens/help_support_screen.dart';
@@ -63,6 +63,8 @@ import 'screens/privacy_settings_screen.dart';
 import 'screens/privacy_block_screen.dart';
 import 'screens/live_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
+import 'screens/report_problem_screen.dart';
+import 'screens/payment_method_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -212,7 +214,7 @@ class MyApp extends StatelessWidget {
       case '/add_ad':
         return MaterialPageRoute(builder: (_) => const AddAdScreen());
       
-      // صفحات الإعدادات والمساعدة (باستخدام الأسماء الصحيحة)
+      // صفحات الإعدادات
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/about':
@@ -227,6 +229,10 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const NotificationsSettingsScreen());
       case '/security_settings':
         return MaterialPageRoute(builder: (_) => const SecuritySettingsScreen());
+      case '/payment_methods':
+        return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
+      
+      // صفحات الملف الشخصي
       case '/invite_friends':
         return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
       case '/my_ads':
@@ -242,17 +248,7 @@ class MyApp extends StatelessWidget {
       case '/reviews':
         return MaterialPageRoute(builder: (_) => const ReviewsScreen());
       
-      default:
-        return MaterialPageRoute(builder: (_) => const Scaffold(
-          body: Center(
-            child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18)),
-          ),
-        ));
-    }
-  }
-}
-
-      // مسارات إضافية للإعدادات
+      // صفحات الأمان والخصوصية
       case '/change_password':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case '/biometric_auth':
@@ -265,9 +261,21 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const PrivacySettingsScreen());
       case '/privacy_block':
         return MaterialPageRoute(builder: (_) => const PrivacyBlockScreen());
+      
+      // صفحات الدعم
       case '/live_support':
         return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
       case '/support_tickets':
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
-      case '/followers':
-        return MaterialPageRoute(builder: (_) => const FollowersScreen());
+      case '/report_problem':
+        return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
+      
+      default:
+        return MaterialPageRoute(builder: (_) => const Scaffold(
+          body: Center(
+            child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18)),
+          ),
+        ));
+    }
+  }
+}
