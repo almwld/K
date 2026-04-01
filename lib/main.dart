@@ -1,3 +1,4 @@
+import 'models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -271,7 +272,6 @@ class MyApp extends StatelessWidget {
               '/': (context) => const SplashScreen(),
               '/login': (context) => const LoginScreen(),
               '/register': (context) => const RegisterScreen(),
-      '/identity_info': (context) => const IdentityInfoScreen(userData: UserModel(id: '', fullName: '', email: '', phone: '', userType: '')),
               '/main': (context) => const MainNavigation(),
               '/home': (context) => const HomeScreen(),
               '/search': (context) => const SearchScreen(),

@@ -116,3 +116,9 @@ class AppTheme {
     );
   }
 }
+
+  static LinearGradient get goldGradient => const LinearGradient(
+    colors: [goldColor, goldLight],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
