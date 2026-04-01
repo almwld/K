@@ -10,6 +10,7 @@ class AuctionModel {
   final double? minBidIncrement;
   final String sellerId;
   final String sellerName;
+  final String? sellerAvatar;
   final DateTime startTime;
   final DateTime endTime;
   final String status; // active, upcoming, ended
@@ -30,6 +31,7 @@ class AuctionModel {
     this.minBidIncrement,
     required this.sellerId,
     required this.sellerName,
+    this.sellerAvatar,
     required this.startTime,
     required this.endTime,
     required this.status,

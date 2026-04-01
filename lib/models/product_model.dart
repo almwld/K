@@ -15,6 +15,9 @@ class ProductModel {
   final bool isAuction;
   final DateTime? auctionEndTime;
   final double? currentBid;
+  final int? quantity;
+  final String? condition; // new, used
+  final List<String>? tags;
 
   ProductModel({
     required this.id,
@@ -33,6 +36,9 @@ class ProductModel {
     this.isAuction = false,
     this.auctionEndTime,
     this.currentBid,
+    this.quantity,
+    this.condition,
+    this.tags,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -51,10 +57,11 @@ class ProductModel {
       createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
       isFeatured: json['is_featured'] ?? false,
       isAuction: json['is_auction'] ?? false,
-      auctionEndTime: json['auction_end_time'] != null
-          ? DateTime.parse(json['auction_end_time'])
-          : null,
+      auctionEndTime: json['auction_end_time'] != null ? DateTime.parse(json['auction_end_time']) : null,
       currentBid: json['current_bid']?.toDouble(),
+      quantity: json['quantity'],
+      condition: json['condition'],
+      tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
     );
   }
 
@@ -76,125 +83,9 @@ class ProductModel {
       'is_auction': isAuction,
       'auction_end_time': auctionEndTime?.toIso8601String(),
       'current_bid': currentBid,
+      'quantity': quantity,
+      'condition': condition,
+      'tags': tags,
     };
   }
 }
-
-// Sample products
-final List<ProductModel> sampleProducts = [
-  ProductModel(
-    id: '1',
-    title: 'آيفون 14 برو ماكس',
-    description: 'هاتف آيفون 14 برو ماكس بحالة ممتازة',
-    price: 350000,
-    images: [],
-    category: 'إلكترونيات',
-    city: 'صنعاء',
-    sellerId: '1',
-    sellerName: 'متجر التقنية',
-    rating: 4.5,
-    reviewCount: 12,
-    createdAt: DateTime.now(),
-    isFeatured: true,
-  ),
-  ProductModel(
-    id: '2',
-    title: 'تويوتا كامري 2020',
-    description: 'سيارة تويوتا كامري موديل 2020',
-    price: 4500000,
-    images: [],
-    category: 'سيارات',
-    city: 'عدن',
-    sellerId: '2',
-    sellerName: 'سوق السيارات',
-    rating: 4.2,
-    reviewCount: 8,
-    createdAt: DateTime.now(),
-    isFeatured: true,
-  ),
-  ProductModel(
-    id: '3',
-    title: 'فيلا فاخرة في حدة',
-    description: 'فيلا فاخرة 5 غرف في حدة',
-    price: 150000000,
-    images: [],
-    category: 'عقارات',
-    city: 'صنعاء',
-    sellerId: '3',
-    sellerName: 'عقارات فلكس',
-    rating: 4.8,
-    reviewCount: 25,
-    createdAt: DateTime.now(),
-    isFeatured: true,
-  ),
-  ProductModel(
-    id: '4',
-    title: 'بدلة رجالية فاخرة',
-    description: 'بدلة رجالية فاخرة مقاس L',
-    price: 25000,
-    images: [],
-    category: 'أزياء',
-    city: 'تعز',
-    sellerId: '4',
-    sellerName: 'أزياء فلكس',
-    rating: 4.0,
-    reviewCount: 5,
-    createdAt: DateTime.now(),
-    isFeatured: false,
-  ),
-];
-
-// Auction products
-final List<ProductModel> sampleAuctions = [
-  ProductModel(
-    id: 'a1',
-    title: 'ساعة رولكس أصلية',
-    description: 'ساعة رولكس أصلية بحالة ممتازة',
-    price: 500000,
-    images: [],
-    category: 'إكسسوارات',
-    city: 'صنعاء',
-    sellerId: '5',
-    sellerName: 'مجوهرات فلكس',
-    rating: 4.9,
-    reviewCount: 45,
-    createdAt: DateTime.now(),
-    isAuction: true,
-    auctionEndTime: DateTime.now().add(const Duration(days: 2)),
-    currentBid: 520000,
-  ),
-  ProductModel(
-    id: 'a2',
-    title: 'لوحة فنية نادرة',
-    description: 'لوحة فنية يمنية نادرة',
-    price: 200000,
-    images: [],
-    category: 'فنون',
-    city: 'عدن',
-    sellerId: '6',
-    sellerName: 'معرض الفن',
-    rating: 4.7,
-    reviewCount: 18,
-    createdAt: DateTime.now(),
-    isAuction: true,
-    auctionEndTime: DateTime.now().add(const Duration(days: 3)),
-    currentBid: 225000,
-  ),
-  ProductModel(
-    id: 'a3',
-    title: 'عملة نادرة قديمة',
-    description: 'عملة يمنية نادرة من العهد المملوكي',
-    price: 100000,
-    images: [],
-    category: 'تحف',
-    city: 'تعز',
-    sellerId: '7',
-    sellerName: 'تحف فلكس',
-    rating: 4.5,
-    reviewCount: 32,
-    createdAt: DateTime.now(),
-    isAuction: true,
-    auctionEndTime: DateTime.now().add(const Duration(days: 1)),
-    currentBid: 115000,
-  ),
-];
