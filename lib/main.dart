@@ -25,6 +25,8 @@ import 'screens/auction_detail_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/chat_detail_screen.dart';
+import 'models/chat_model.dart';
+import 'models/message_model.dart';
 import 'screens/cart_screen.dart';
 import 'screens/checkout_screen.dart';
 import 'screens/track_order_screen.dart';
