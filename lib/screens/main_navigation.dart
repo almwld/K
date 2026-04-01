@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../providers/theme_manager.dart';
-import '../services/theme_service.dart';
 import 'home_screen.dart';
 import 'all_ads_screen.dart';
 import 'map/interactive_map_screen.dart';
 import 'wallet/wallet_screen.dart';
 import 'chat_screen.dart';
 import 'profile_screen.dart';
+import 'add_ad_screen.dart';
+import 'notifications_screen.dart';
+import 'cart_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -19,29 +20,32 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
-  Color _themeColor = AppTheme.goldColor;
+  late AnimationController _animationController;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),      // Index 0
-    AllAdsScreen(),    // Index 1
-    InteractiveMapScreen(), // Index 2
-    SizedBox(),        // Index 3 - Placeholder for FAB
-    WalletScreen(),    // Index 4
-    ChatScreen(),      // Index 5
-    ProfileScreen(),   // Index 6
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const AllAdsScreen(),
+    const InteractiveMapScreen(),
+    const WalletScreen(),
+    const ChatScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   void initState() {
     super.initState();
-    _loadThemeColor();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
   }
 
-  Future<void> _loadThemeColor() async {
-    final color = await ThemeService.getThemeColor();
-    setState(() => _themeColor = color);
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   void _onItemTapped(int index) {
@@ -49,247 +53,96 @@ class _MainNavigationState extends State<MainNavigation> {
       _showQuickActionsSheet();
       return;
     }
-    
-    setState(() {
-      _currentIndex = index;
-    });
+    int actualIndex = index > 3 ? index - 1 : index;
+    setState(() => _currentIndex = actualIndex);
   }
 
   void _showQuickActionsSheet() {
+    _animationController.forward();
+    Future.delayed(const Duration(milliseconds: 200), () {
+      _animationController.reverse();
+    });
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getSurfaceColor(context),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 12),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppTheme.getDividerColor(context),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'إجراءات سريعة',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getTextColor(context),
-              ),
-            ),
-            const SizedBox(height: 24),
-            _buildQuickActionItem(
-              icon: Icons.add_circle_outline,
-              title: 'إضافة إعلان',
-              subtitle: 'أضف إعلاناً جديداً للبيع',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/add_ad');
-              },
-            ),
-            _buildQuickActionItem(
-              icon: Icons.shopping_bag_outlined,
-              title: 'إضافة منتج',
-              subtitle: 'أضف منتجاً جديداً للمتجر',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/seller_products');
-              },
-            ),
-            _buildQuickActionItem(
-              icon: Icons.handyman_outlined,
-              title: 'طلب خدمة',
-              subtitle: 'اطلب خدمة من مزودي الخدمات',
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            _buildQuickActionItem(
-              icon: Icons.account_balance_wallet_outlined,
-              title: 'استلام حوالة',
-              subtitle: 'استلم حوالة مالية',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/receive_transfer');
-              },
-            ),
-            const SizedBox(height: 24),
-          ],
-        ),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      backgroundColor: AppTheme.getSurfaceColor(context),
+      builder: (context) => _buildQuickActionsSheet(context),
     );
   }
 
-  void _showColorPicker() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'اختر لون التطبيق',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: 'Changa'),
-        ),
-        content: SizedBox(
-          width: 300,
-          child: GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
+  Widget _buildQuickActionsSheet(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
             ),
-            itemCount: ThemeService.availableColors.length,
-            itemBuilder: (context, index) {
-              final color = ThemeService.availableColors[index];
-              final isSelected = _themeColor.value == color.value;
-              return GestureDetector(
-                onTap: () async {
-                  await ThemeService.saveThemeColor(color);
-                  setState(() => _themeColor = color);
-                  Navigator.pop(context);
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                          ),
-                        ],
-                        border: isSelected
-                            ? Border.all(color: Colors.black, width: 3)
-                            : null,
-                      ),
-                      child: isSelected
-                          ? const Icon(Icons.check, color: Colors.white, size: 30)
-                          : null,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      ThemeService.colorNames[index],
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
-              );
-            },
           ),
-        ),
+          const Text('إجراءات سريعة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          _buildActionItem(context, Icons.add_circle_outline, 'إضافة إعلان', 'انشر إعلاناً جديداً', AppTheme.goldColor, () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, '/add_ad');
+          }),
+          _buildActionItem(context, Icons.shopping_bag_outlined, 'إضافة منتج', 'أضف منتجاً جديداً للبيع', Colors.green, () {
+            Navigator.pop(context);
+          }),
+          _buildActionItem(context, Icons.build_outlined, 'طلب خدمة', 'اطلب خدمة معينة', Colors.blue, () {
+            Navigator.pop(context);
+          }),
+          _buildActionItem(context, Icons.download_outlined, 'استلام حوالة', 'استلم حوالة مالية', Colors.purple, () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, '/receive_transfer');
+          }),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
 
-  void _showQuickSettings() {
-    final themeManager = context.read<ThemeManager>();
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppTheme.getDividerColor(context),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'الإعدادات السريعة',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.brightness_6),
-              title: const Text('الوضع الليلي'),
-              trailing: Switch(
-                value: themeManager.isDarkMode,
-                onChanged: (v) => themeManager.toggleTheme(),
-                activeColor: _themeColor,
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.language),
-              title: const Text('اللغة'),
-              trailing: const Text('العربية'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text('الإشعارات'),
-              trailing: Switch(
-                value: true,
-                onChanged: (v) {},
-                activeColor: _themeColor,
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('جميع الإعدادات'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/settings');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQuickActionItem({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Container(
+  Widget _buildActionItem(BuildContext context, IconData icon, String title, String subtitle, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
-          ),
-          borderRadius: BorderRadius.circular(12),
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withOpacity(0.3)),
         ),
-        child: Icon(icon, color: Colors.black),
-      ),
-      title: Text(title),
-      subtitle: Text(
-        subtitle,
-        style: TextStyle(
-          fontSize: 12,
-          color: AppTheme.getSecondaryTextColor(context),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 28),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+          ],
         ),
       ),
-      onTap: onTap,
     );
   }
 
@@ -299,51 +152,59 @@ class _MainNavigationState extends State<MainNavigation> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'FLEX YEMEN',
-          style: TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.bold,
-            color: AppTheme.goldColor,
-          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'FLEX',
+              style: TextStyle(
+                color: AppTheme.goldColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                fontFamily: 'Changa',
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              'YEMEN',
+              style: TextStyle(
+                color: AppTheme.goldLight,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Changa',
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
         actions: [
           IconButton(
-            icon: const Icon(Icons.palette),
-            onPressed: _showColorPicker,
-            tooltip: 'تغيير الثيم',
+            icon: const Icon(Icons.settings_outlined, color: AppTheme.goldColor),
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+            tooltip: 'الإعدادات',
           ),
           IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: _showQuickSettings,
-            tooltip: 'الإعدادات السريعة',
-          ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () => Navigator.pushNamed(context, '/cart'),
-            tooltip: 'السلة',
-          ),
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
+            icon: const Icon(Icons.notifications_outlined, color: AppTheme.goldColor),
             onPressed: () => Navigator.pushNamed(context, '/notifications'),
             tooltip: 'الإشعارات',
           ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.goldColor),
+            onPressed: () => Navigator.pushNamed(context, '/cart'),
+            tooltip: 'السلة',
+          ),
         ],
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
+              blurRadius: 20,
               offset: const Offset(0, -5),
             ),
           ],
@@ -354,20 +215,13 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // الرئيسية (0)
-                _buildNavItem('assets/icons/svg/home.svg', 'الرئيسية', 0),
-                // المتجر (1)
-                _buildNavItem('assets/icons/svg/merchant.svg', 'المتجر', 1),
-                // الخريطة (2)
-                _buildNavItem('assets/icons/svg/location.svg', 'الخريطة', 2),
-                // FAB (3)
-                _buildFAB(),
-                // المحفظة (4)
-                _buildNavItem('assets/icons/svg/wallet.svg', 'المحفظة', 4),
-                // الدردشة (5)
-                _buildNavItem('assets/icons/svg/chat.svg', 'الدردشة', 5),
-                // حسابي (6)
-                _buildNavItem('assets/icons/svg/profile.svg', 'حسابي', 6),
+                _buildNavItem(Icons.home_outlined, 'الرئيسية', 0),
+                _buildNavItem(Icons.storefront_outlined, 'المتجر', 1),
+                _buildNavItem(Icons.map_outlined, 'الخريطة', 2),
+                _buildCenterButton(),
+                _buildNavItem(Icons.account_balance_wallet_outlined, 'المحفظة', 4),
+                _buildNavItem(Icons.chat_bubble_outline, 'الدردشة', 5),
+                _buildNavItem(Icons.person_outline, 'حسابي', 6),
               ],
             ),
           ),
@@ -376,88 +230,55 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  Widget _buildFAB() {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: _showQuickActionsSheet,
-        customBorder: const CircleBorder(),
-        child: Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: _themeColor.withOpacity(0.4),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: const Icon(
-            Icons.add,
-            color: Colors.black,
-            size: 32,
-          ),
-        ),
-      ),
-    ).animate(
-      onPlay: (controller) => controller.repeat(reverse: true),
-    ).scale(
-      begin: const Offset(1, 1),
-      end: const Offset(1.05, 1.05),
-      duration: 1.seconds,
-      curve: Curves.easeInOut,
-    );
-  }
-
-  Widget _buildNavItem(String svgPath, String label, int index) {
-    final isSelected = _currentIndex == index;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    final color = isSelected
-        ? _themeColor
-        : (isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary);
-
-    return Expanded(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _onItemTapped(index),
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    final bool isSelected = _currentIndex == (index > 3 ? index - 1 : index);
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset(
-                  svgPath,
-                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                  width: 24,
-                  height: 24,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: color,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
         ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: isSelected ? AppTheme.goldColor : AppTheme.getSecondaryTextColor(context), size: 24),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Changa',
+                fontSize: 11,
+                color: isSelected ? AppTheme.goldColor : AppTheme.getSecondaryTextColor(context),
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCenterButton() {
+    return GestureDetector(
+      onTap: () => _onItemTapped(3),
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          gradient: AppTheme.goldGradient,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.goldColor.withOpacity(0.4),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: const Icon(Icons.add, color: Colors.black, size: 32),
       ),
     );
   }

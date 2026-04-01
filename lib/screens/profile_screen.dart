@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
-import '../providers/auth_provider.dart';
 import '../widgets/custom_button.dart';
+import '../providers/auth_provider.dart';
 import 'my_ads_screen.dart';
 import 'favorites_screen.dart';
 import 'my_orders_screen.dart';
@@ -18,15 +17,15 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   final List<Map<String, dynamic>> _profileMenu = const [
-    {'title': 'إعلاناتي', 'icon': Icons.post_add, 'color': 0xFF4CAF50, 'screen': MyAdsScreen()},
-    {'title': 'المفضلة', 'icon': Icons.favorite_border, 'color': 0xFFE91E63, 'screen': FavoritesScreen()},
-    {'title': 'طلباتي', 'icon': Icons.shopping_bag_outlined, 'color': 0xFFFF9800, 'screen': MyOrdersScreen()},
-    {'title': 'المتابعون', 'icon': Icons.people_outline, 'color': 0xFF2196F3, 'screen': FollowingScreen()},
-    {'title': 'المراجعات', 'icon': Icons.rate_review, 'color': 0xFF9C27B0, 'screen': ReviewsScreen()},
-    {'title': 'نقاطي', 'icon': Icons.stars, 'color': 0xFFD4AF37, 'screen': GardenScreen()},
-    {'title': 'الإعدادات', 'icon': Icons.settings_outlined, 'color': 0xFF607D8B, 'screen': SettingsScreen()},
-    {'title': 'المساعدة', 'icon': Icons.help_outline, 'color': 0xFF00BCD4, 'screen': HelpSupportScreen()},
-    {'title': 'دعوة الأصدقاء', 'icon': Icons.share, 'color': 0xFF4CAF50, 'screen': InviteFriendsScreen()},
+    {'title': 'إعلاناتي', 'icon': Icons.post_add, 'color': 0xFF4CAF50, 'route': '/my_ads'},
+    {'title': 'المفضلة', 'icon': Icons.favorite_border, 'color': 0xFFE91E63, 'route': '/favorites'},
+    {'title': 'طلباتي', 'icon': Icons.shopping_bag_outlined, 'color': 0xFFFF9800, 'route': '/my_orders'},
+    {'title': 'المتابعون', 'icon': Icons.people_outline, 'color': 0xFF2196F3, 'route': '/followers'},
+    {'title': 'المراجعات', 'icon': Icons.rate_review, 'color': 0xFF9C27B0, 'route': '/reviews'},
+    {'title': 'نقاطي', 'icon': Icons.stars, 'color': 0xFFD4AF37, 'route': '/garden'},
+    {'title': 'الإعدادات', 'icon': Icons.settings_outlined, 'color': 0xFF607D8B, 'route': '/settings'},
+    {'title': 'المساعدة', 'icon': Icons.help_outline, 'color': 0xFF00BCD4, 'route': '/help_support'},
+    {'title': 'دعوة الأصدقاء', 'icon': Icons.share, 'color': 0xFF4CAF50, 'route': '/invite_friends'},
   ];
 
   @override
@@ -36,7 +35,6 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      // تم إزالة AppBar المخصص - سيتم استخدام AppBar من MainNavigation
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -49,34 +47,31 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white,
-                          backgroundImage: authProvider.userAvatar != null
-                              ? NetworkImage(authProvider.userAvatar!)
-                              : null,
-                          child: authProvider.userAvatar == null
-                              ? const Icon(Icons.person, size: 50, color: AppTheme.goldColor)
-                              : null,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: AppTheme.goldColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(Icons.camera_alt, size: 16, color: Colors.black),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white,
+                        backgroundImage: authProvider.userAvatar != null
+                            ? NetworkImage(authProvider.userAvatar!)
+                            : null,
+                        child: authProvider.userAvatar == null
+                            ? const Icon(Icons.person, size: 50, color: AppTheme.goldColor)
+                            : null,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: AppTheme.goldColor,
+                            shape: BoxShape.circle,
                           ),
+                          child: const Icon(Icons.camera_alt, size: 16, color: Colors.black),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -114,10 +109,10 @@ class ProfileScreen extends StatelessWidget {
             // القائمة
             ..._profileMenu.map((item) => _buildMenuItem(
                   context,
-                  item['title'],
-                  item['icon'],
-                  Color(item['color']),
-                  item['screen'],
+                  item['title'] as String,
+                  item['icon'] as IconData,
+                  Color(item['color'] as int),
+                  item['route'] as String,
                 )),
 
             const SizedBox(height: 24),
@@ -163,7 +158,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(BuildContext context, String title, IconData icon, Color color, Widget screen) {
+  Widget _buildMenuItem(BuildContext context, String title, IconData icon, Color color, String route) {
     return ListTile(
       leading: Container(
         width: 44,
@@ -182,7 +177,7 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => screen)),
+      onTap: () => Navigator.pushNamed(context, route),
     );
   }
 

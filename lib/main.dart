@@ -173,10 +173,27 @@ class MyApp extends StatelessWidget {
       case '/ad_detail':
         return MaterialPageRoute(builder: (_) => const AdDetailScreen());
       case '/profile':
+      case '/settings':
+        return MaterialPageRoute(builder: (_) => const SettingsScreen());
+      case '/help_support':
+        return MaterialPageRoute(builder: (_) => const HelpSupportScreen());
+      case '/invite_friends':
+        return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
+      case '/chat_detail':
+        return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
+      case '/my_ads':
+        return MaterialPageRoute(builder: (_) => const MyAdsScreen());
+      case '/favorites':
+        return MaterialPageRoute(builder: (_) => const FavoritesScreen());
+      case '/my_orders':
+        return MaterialPageRoute(builder: (_) => const MyOrdersScreen());
+      case '/followers':
+        return MaterialPageRoute(builder: (_) => const FollowersScreen());
+      case '/reviews':
+        return MaterialPageRoute(builder: (_) => const ReviewsScreen());
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case '/chat':
         return MaterialPageRoute(builder: (_) => const ChatScreen());
-      case '/chat_detail':
         return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
       case '/cart':
         return MaterialPageRoute(builder: (_) => const CartScreen());
@@ -192,7 +209,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const WalletScreen());
       case '/map':
         return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
-      case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());
@@ -205,3 +221,6 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+
+  // إضافة المسارات المفقودة للإعدادات والدردشة
+  // أضف هذه الأسطر في onGenerateRoute أو في routes
