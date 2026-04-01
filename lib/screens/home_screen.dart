@@ -6,8 +6,7 @@ import '../theme/app_theme.dart';
 import '../models/product_model.dart';
 import '../models/auction_model.dart';
 import 'ad_detail_screen.dart';
-import 'auction_detail_screen.dart';
-import 'categories/all_subcategories_screen.dart';
+import 'category_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,28 +23,24 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'title': 'عرض العيد',
       'subtitle': 'خصومات تصل إلى 50%',
-      'image': 'assets/images/products/iphone.jpg',
       'gradient': [const Color(0xFFD4AF37), const Color(0xFFF3E5AB)],
       'tag': 'عرض خاص',
     },
     {
       'title': 'مزاد الجنابي',
       'subtitle': 'أكبر مزاد للأسلحة التراثية',
-      'image': 'assets/images/products/shahs.jpg',
       'gradient': [const Color(0xFFE74C3C), const Color(0xFFC0392B)],
       'tag': 'مزاد',
     },
     {
       'title': 'توصيل مجاني',
       'subtitle': 'لجميع طلبات اليوم',
-      'image': 'assets/images/products/mandi.jpg',
       'gradient': [const Color(0xFF2ECC71), const Color(0xFF27AE60)],
       'tag': 'عرض سريع',
     },
     {
       'title': 'عقارات مميزة',
       'subtitle': 'أفضل العروض العقارية',
-      'image': 'assets/images/products/villa.jpg',
       'gradient': [const Color(0xFF3498DB), const Color(0xFF2980B9)],
       'tag': 'استثمار',
     },
@@ -97,110 +92,42 @@ class _HomeScreenState extends State<HomeScreen> {
       images: ['assets/images/products/camry.jpg'], category: 'سيارات', city: 'صنعاء',
       sellerId: '2', sellerName: 'معرض السيارات', rating: 4.7, reviewCount: 45, createdAt: DateTime.now(), isFeatured: true,
     ),
-    ProductModel(
-      id: '5', title: 'هيونداي النترا 2024', description: 'هيونداي النترا 2024', price: 6500000,
-      images: ['assets/images/products/elantra.jpg'], category: 'سيارات', city: 'عدن',
-      sellerId: '2', sellerName: 'معرض السيارات', rating: 4.6, reviewCount: 32, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '6', title: 'شقة فاخرة في حدة', description: 'شقة 3 غرف في حدة', price: 35000000,
-      images: ['assets/images/products/apartment.jpg'], category: 'عقارات', city: 'صنعاء',
-      sellerId: '3', sellerName: 'عقارات فلكس', rating: 4.8, reviewCount: 56, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '7', title: 'فيلا فاخرة', description: 'فيلا 5 غرف مع حديقة', price: 150000000,
-      images: ['assets/images/products/villa.jpg'], category: 'عقارات', city: 'صنعاء',
-      sellerId: '3', sellerName: 'عقارات فلكس', rating: 4.9, reviewCount: 89, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '8', title: 'كنب زاوية فاخر', description: 'كنب زاوية جلد طبيعي', price: 650000,
-      images: ['assets/images/products/majlis.jpg'], category: 'أثاث', city: 'صنعاء',
-      sellerId: '4', sellerName: 'متجر الأثاث', rating: 4.5, reviewCount: 34, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '9', title: 'غرفة نوم كاملة', description: 'غرفة نوم مودرن 5 قطع', price: 450000,
-      images: ['assets/images/products/bedroom.jpg'], category: 'أثاث', city: 'صنعاء',
-      sellerId: '4', sellerName: 'متجر الأثاث', rating: 4.6, reviewCount: 28, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '10', title: 'ثوب يمني تقليدي', description: 'ثوب يمني فاخر', price: 15000,
-      images: ['assets/images/products/thobe.jpg'], category: 'أزياء', city: 'صنعاء',
-      sellerId: '5', sellerName: 'أزياء فلكس', rating: 4.8, reviewCount: 112, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '11', title: 'عباية فاخرة', description: 'عباية خليجية', price: 25000,
-      images: ['assets/images/products/abaya.jpg'], category: 'أزياء', city: 'عدن',
-      sellerId: '5', sellerName: 'أزياء فلكس', rating: 4.7, reviewCount: 89, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '12', title: 'مندي دجاج عائلي', description: 'مندي دجاج عائلي 4 أشخاص', price: 8000,
-      images: ['assets/images/products/mandi.jpg'], category: 'مطاعم', city: 'صنعاء',
-      sellerId: '6', sellerName: 'مطعم الأصيل', rating: 4.9, reviewCount: 234, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '13', title: 'زربيان لحم', description: 'زربيان لحم عائلي', price: 12000,
-      images: ['assets/images/products/zurbian.jpg'], category: 'مطاعم', city: 'عدن',
-      sellerId: '6', sellerName: 'مطعم الأصيل', rating: 4.8, reviewCount: 178, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '14', title: 'شاهي بالحليب', description: 'شاهي بالحليب مع حلويات', price: 1500,
-      images: ['assets/images/products/shahs.jpg'], category: 'مطاعم', city: 'تعز',
-      sellerId: '6', sellerName: 'مطعم الأصيل', rating: 4.7, reviewCount: 456, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '15', title: 'ساعة أبل ووتش', description: 'Apple Watch Series 9', price: 120000,
-      images: ['assets/images/products/watch.jpg'], category: 'إلكترونيات', city: 'صنعاء',
-      sellerId: '1', sellerName: 'متجر التقنية', rating: 4.7, reviewCount: 45, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '16', title: 'آيباد برو', description: 'iPad Pro M2 11 بوصة', price: 320000,
-      images: ['assets/images/products/ipad.jpg'], category: 'إلكترونيات', city: 'صنعاء',
-      sellerId: '1', sellerName: 'متجر التقنية', rating: 4.8, reviewCount: 67, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '17', title: 'سماعات AirPods Pro', description: 'AirPods Pro الجيل الثاني', price: 45000,
-      images: ['assets/images/products/airpods.jpg'], category: 'إلكترونيات', city: 'صنعاء',
-      sellerId: '1', sellerName: 'متجر التقنية', rating: 4.6, reviewCount: 89, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '18', title: 'بلاي ستيشن 5', description: 'PS5 Digital Edition', price: 280000,
-      images: ['assets/images/products/ps5.jpg'], category: 'ألعاب', city: 'صنعاء',
-      sellerId: '7', sellerName: 'متجر الألعاب', rating: 4.9, reviewCount: 123, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '19', title: 'خدمة تنظيف منزل', description: 'تنظيف شامل للمنزل', price: 25000,
-      images: ['assets/images/products/cleaning.jpg'], category: 'خدمات منزلية', city: 'صنعاء',
-      sellerId: '8', sellerName: 'خدمات فلكس', rating: 4.5, reviewCount: 67, createdAt: DateTime.now(), isFeatured: true,
-    ),
-    ProductModel(
-      id: '20', title: 'صيانة أجهزة', description: 'صيانة جميع الأجهزة', price: 15000,
-      images: ['assets/images/products/maintenance.jpg'], category: 'خدمات', city: 'صنعاء',
-      sellerId: '8', sellerName: 'خدمات فلكس', rating: 4.6, reviewCount: 89, createdAt: DateTime.now(), isFeatured: true,
-    ),
   ];
 
   // مزادات نشطة
   final List<AuctionModel> _activeAuctions = [
     AuctionModel(
       id: 'a1', title: 'ساعة رولكس أصلية', description: 'ساعة رولكس أصلية بحالة ممتازة', images: ['assets/images/products/watch.jpg'],
-      startingPrice: 500000, currentPrice: 620000, sellerName: 'أحمد علي', endTime: DateTime.now().add(const Duration(days: 2)),
-      status: 'active', bidCount: 12, category: 'ساعات',
+      startingPrice: 500000, currentPrice: 620000, sellerId: '1', sellerName: 'أحمد علي', 
+      startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 2)),
+      status: 'active', bidCount: 12, createdAt: DateTime.now(), category: 'ساعات',
     ),
     AuctionModel(
       id: 'a2', title: 'جنبية يمنية أصلية', description: 'جنبية فضة يمنية أصلية', images: ['assets/images/products/shahs.jpg'],
-      startingPrice: 100000, currentPrice: 145000, sellerName: 'خالد محمود', endTime: DateTime.now().add(const Duration(hours: 36)),
-      status: 'active', bidCount: 25, category: 'تحف',
+      startingPrice: 100000, currentPrice: 145000, sellerId: '2', sellerName: 'خالد محمود',
+      startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(hours: 36)),
+      status: 'active', bidCount: 25, createdAt: DateTime.now(), category: 'تحف',
     ),
     AuctionModel(
       id: 'a3', title: 'لوحة فنية نادرة', description: 'لوحة زيتية لفنان مشهور', images: ['assets/images/products/art.jpg'],
-      startingPrice: 200000, currentPrice: 280000, sellerName: 'فاطمة محمد', endTime: DateTime.now().add(const Duration(days: 3)),
-      status: 'active', bidCount: 18, category: 'فنون',
+      startingPrice: 200000, currentPrice: 280000, sellerId: '3', sellerName: 'فاطمة محمد',
+      startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 3)),
+      status: 'active', bidCount: 18, createdAt: DateTime.now(), category: 'فنون',
     ),
     AuctionModel(
       id: 'a4', title: 'عملة قديمة نادرة', description: 'عملة فضية من العصر العثماني', images: ['assets/images/products/coin.jpg'],
-      startingPrice: 5000, currentPrice: 8500, sellerName: 'خالد محمود', endTime: DateTime.now().add(const Duration(days: 1)),
-      status: 'active', bidCount: 32, category: 'عملات',
+      startingPrice: 5000, currentPrice: 8500, sellerId: '4', sellerName: 'خالد محمود',
+      startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 1)),
+      status: 'active', bidCount: 32, createdAt: DateTime.now(), category: 'عملات',
     ),
+  ];
+
+  // الفئات الأكثر مشاهدة
+  final List<Map<String, dynamic>> _popularCategories = [
+    {'name': 'عقارات', 'icon': Icons.home, 'count': '1,245 إعلان', 'color': 0xFF4CAF50},
+    {'name': 'سيارات', 'icon': Icons.directions_car, 'count': '876 إعلان', 'color': 0xFF2196F3},
+    {'name': 'إلكترونيات', 'icon': Icons.devices, 'count': '2,345 إعلان', 'color': 0xFFFF9800},
+    {'name': 'أزياء', 'icon': Icons.checkroom, 'count': '1,567 إعلان', 'color': 0xFFE91E63},
   ];
 
   @override
@@ -214,22 +141,16 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            // Carousel Slider
             _buildCarousel(),
             const SizedBox(height: 16),
-            // Flex Garden Promo
             _buildGardenPromo(),
             const SizedBox(height: 24),
-            // Main Categories (20 قسم)
             _buildMainCategories(),
             const SizedBox(height: 24),
-            // Featured Products
             _buildFeaturedProducts(),
             const SizedBox(height: 24),
-            // Active Auctions
             _buildAuctionsSection(),
             const SizedBox(height: 24),
-            // Popular Categories
             _buildPopularCategories(),
             const SizedBox(height: 24),
           ],
@@ -254,18 +175,11 @@ class _HomeScreenState extends State<HomeScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: item['gradient'],
+                  colors: (item['gradient'] as List<Color>),
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: (item['gradient'][0] as Color).withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
               ),
               child: Stack(
                 children: [
@@ -279,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        item['tag'],
+                        item['tag'] as String,
                         style: const TextStyle(color: Colors.black, fontSize: 10),
                       ),
                     ),
@@ -291,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          item['title'],
+                          item['title'] as String,
                           style: const TextStyle(
                             fontFamily: 'Changa',
                             fontSize: 28,
@@ -301,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          item['subtitle'],
+                          item['subtitle'] as String,
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.white70,
@@ -431,14 +345,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Color(cat['color']).withOpacity(0.1),
+                          color: (cat['color'] as int).toColor().withOpacity(0.1),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Icon(cat['icon'], color: Color(cat['color']), size: 28),
+                        child: Icon(cat['icon'] as IconData, color: (cat['color'] as int).toColor(), size: 28),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        cat['name'],
+                        cat['name'] as String,
                         style: const TextStyle(fontSize: 12),
                         textAlign: TextAlign.center,
                       ),
@@ -488,13 +402,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   color: AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
                 child: GestureDetector(
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(product: product))),
@@ -599,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Container(
                             height: 100,
                             color: AppTheme.goldColor.withOpacity(0.1),
-                            child: Center(
+                            child: const Center(
                               child: Icon(Icons.gavel, size: 40, color: AppTheme.goldColor),
                             ),
                           ),
@@ -666,13 +573,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPopularCategories() {
-    final popularCategories = [
-      {'name': 'عقارات', 'icon': Icons.home, 'count': '1,245 إعلان', 'color': 0xFF4CAF50},
-      {'name': 'سيارات', 'icon': Icons.directions_car, 'count': '876 إعلان', 'color': 0xFF2196F3},
-      {'name': 'إلكترونيات', 'icon': Icons.devices, 'count': '2,345 إعلان', 'color': 0xFFFF9800},
-      {'name': 'أزياء', 'icon': Icons.checkroom, 'count': '1,567 إعلان', 'color': 0xFFE91E63},
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -695,9 +595,9 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
             ),
-            itemCount: popularCategories.length,
+            itemCount: _popularCategories.length,
             itemBuilder: (context, index) {
-              final cat = popularCategories[index];
+              final cat = _popularCategories[index];
               return Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -709,10 +609,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Color(cat['color']).withOpacity(0.1),
+                        color: (cat['color'] as int).toColor().withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(cat['icon'], color: Color(cat['color'])),
+                      child: Icon(cat['icon'] as IconData, color: (cat['color'] as int).toColor()),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -721,11 +621,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            cat['name'],
+                            cat['name'] as String,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            cat['count'],
+                            cat['count'] as String,
                             style: TextStyle(fontSize: 11, color: AppTheme.getSecondaryTextColor(context)),
                           ),
                         ],
@@ -739,5 +639,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+}
+
+// إضافة extension لتحويل int إلى Color
+extension ColorExtension on int {
+  Color toColor() {
+    return Color(this);
   }
 }
