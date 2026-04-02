@@ -35,8 +35,7 @@ import 'screens/garden_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/auctions_screen.dart';
 import 'screens/wallet/wallet_screen.dart';
-// Removed
-import 'screens/map/google_map_screen.dart';
+import 'screens/map/enhanced_map_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/all_categories_screen.dart';
@@ -66,6 +65,7 @@ import 'screens/live_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
+import 'screens/share_app_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -178,9 +178,9 @@ class MyApp extends StatelessWidget {
     }
 
     // مسار تفاصيل الدردشة
-    if (settings.name == '/chat_detail' && settings.arguments is ChatModel) {
+    if (settings.name == '/chat_detail' && settings.arguments is Map<String, dynamic>) {
       return MaterialPageRoute(
-        builder: (_) => ChatDetailScreen(chat: settings.arguments as ChatModel),
+        builder: (_) => ChatDetailScreen(chat: settings.arguments),
       );
     }
 
@@ -216,11 +216,8 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const AuctionsScreen());
       case '/wallet':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
-      case '/google_map':
-      case '/simple_map':
-        return MaterialPageRoute(builder: (_) => const SimpleMapScreen());
-        return MaterialPageRoute(builder: (_) => const GoogleMapScreen());
-        return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
+      case '/map':
+        return MaterialPageRoute(builder: (_) => const EnhancedMapScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());
       case '/all_categories':
@@ -274,9 +271,9 @@ class MyApp extends StatelessWidget {
       case '/support_tickets':
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
-      case '/statistics':
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
-      case '/statistics':
+      case '/share_app':
+        return MaterialPageRoute(builder: (_) => const ShareAppScreen());
       default:
         return MaterialPageRoute(builder: (_) => const Scaffold(
           body: Center(child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18))),
