@@ -36,6 +36,7 @@ import 'screens/notifications_screen.dart';
 import 'screens/auctions_screen.dart';
 import 'screens/wallet/wallet_screen.dart';
 import 'screens/map/interactive_map_screen.dart';
+import 'screens/map/google_map_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/all_categories_screen.dart';
@@ -216,6 +217,8 @@ class MyApp extends StatelessWidget {
       case '/wallet':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
       case '/map':
+      case '/google_map':
+        return MaterialPageRoute(builder: (_) => const GoogleMapScreen());
         return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());

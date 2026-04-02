@@ -61,3 +61,6 @@ flutter:
 dependency_overrides:
   share_plus: ^10.1.4
   share_plus_platform_interface: ^5.0.0
+
+  google_maps_flutter: ^2.5.0
+  geolocator: ^10.1.0
