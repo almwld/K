@@ -19,9 +19,12 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   Color _themeColor = AppTheme.goldColor;
+  late AnimationController _rotationController;
+  late Animation<double> _rotationAnimation;
+  bool _isExpanded = false;
 
   final List<Widget> _screens = const [
     HomeScreen(),      // Index 0
@@ -33,10 +36,53 @@ class _MainNavigationState extends State<MainNavigation> {
     ProfileScreen(),   // Index 6
   ];
 
+  // خيارات الزر الذهبي الدوار
+  final List<QuickActionItem> _quickActions = [
+    QuickActionItem(
+      icon: Icons.add_circle_outline,
+      label: 'إضافة إعلان',
+      color: Colors.green,
+      onTap: (context) => Navigator.pushNamed(context, '/add_ad'),
+    ),
+    QuickActionItem(
+      icon: Icons.shopping_bag_outlined,
+      label: 'إضافة منتج',
+      color: Colors.blue,
+      onTap: (context) => Navigator.pushNamed(context, '/seller_products'),
+    ),
+    QuickActionItem(
+      icon: Icons.handyman_outlined,
+      label: 'طلب خدمة',
+      color: Colors.orange,
+      onTap: (context) => ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('سيتم إضافة هذه الميزة قريباً')),
+      ),
+    ),
+    QuickActionItem(
+      icon: Icons.account_balance_wallet_outlined,
+      label: 'استلام حوالة',
+      color: Colors.purple,
+      onTap: (context) => Navigator.pushNamed(context, '/receive_transfer'),
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
     _loadThemeColor();
+    _rotationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    _rotationAnimation = Tween<double>(begin: 0, end: 0.5).animate(
+      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadThemeColor() async {
@@ -46,87 +92,30 @@ class _MainNavigationState extends State<MainNavigation> {
 
   void _onItemTapped(int index) {
     if (index == 3) {
-      _showQuickActionsSheet();
+      _toggleExpand();
       return;
     }
     
     setState(() {
       _currentIndex = index;
+      if (_isExpanded) _toggleExpand();
     });
   }
 
-  void _showQuickActionsSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getSurfaceColor(context),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 12),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppTheme.getDividerColor(context),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'إجراءات سريعة',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getTextColor(context),
-              ),
-            ),
-            const SizedBox(height: 24),
-            _buildQuickActionItem(
-              icon: Icons.add_circle_outline,
-              title: 'إضافة إعلان',
-              subtitle: 'أضف إعلاناً جديداً للبيع',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/add_ad');
-              },
-            ),
-            _buildQuickActionItem(
-              icon: Icons.shopping_bag_outlined,
-              title: 'إضافة منتج',
-              subtitle: 'أضف منتجاً جديداً للمتجر',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/seller_products');
-              },
-            ),
-            _buildQuickActionItem(
-              icon: Icons.handyman_outlined,
-              title: 'طلب خدمة',
-              subtitle: 'اطلب خدمة من مزودي الخدمات',
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            _buildQuickActionItem(
-              icon: Icons.account_balance_wallet_outlined,
-              title: 'استلام حوالة',
-              subtitle: 'استلم حوالة مالية',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/receive_transfer');
-              },
-            ),
-            const SizedBox(height: 24),
-          ],
-        ),
-      ),
-    );
+  void _toggleExpand() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _rotationController.forward();
+      } else {
+        _rotationController.reverse();
+      }
+    });
+  }
+
+  void _executeAction(QuickActionItem action) {
+    _toggleExpand();
+    action.onTap(context);
   }
 
   void _showColorPicker() {
@@ -264,35 +253,6 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  Widget _buildQuickActionItem({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(icon, color: Colors.black),
-      ),
-      title: Text(title),
-      subtitle: Text(
-        subtitle,
-        style: TextStyle(
-          fontSize: 12,
-          color: AppTheme.getSecondaryTextColor(context),
-        ),
-      ),
-      onTap: onTap,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -360,8 +320,8 @@ class _MainNavigationState extends State<MainNavigation> {
                 _buildNavItem('assets/icons/svg/merchant.svg', 'المتجر', 1),
                 // الخريطة (2)
                 _buildNavItem('assets/icons/svg/location.svg', 'الخريطة', 2),
-                // FAB (3)
-                _buildFAB(),
+                // الزر الذهبي الدوار (3)
+                _buildGoldenButton(),
                 // المحفظة (4)
                 _buildNavItem('assets/icons/svg/wallet.svg', 'المحفظة', 4),
                 // الدردشة (5)
@@ -376,44 +336,121 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  Widget _buildFAB() {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: _showQuickActionsSheet,
-        customBorder: const CircleBorder(),
-        child: Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: _themeColor.withOpacity(0.4),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+  Widget _buildGoldenButton() {
+    return Expanded(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // خيارات الزر (تظهر عند الضغط)
+          if (_isExpanded)
+            Positioned(
+              bottom: 70,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.getCardColor(context).withOpacity(0.95),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppTheme.goldColor.withOpacity(0.5),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _quickActions.map((action) {
+                    return _buildQuickActionItem(action);
+                  }).toList(),
+                ),
               ),
-            ],
+            ),
+
+          // الزر الذهبي الدوار
+          GestureDetector(
+            onTap: _toggleExpand,
+            child: AnimatedBuilder(
+              animation: _rotationAnimation,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: _rotationAnimation.value * 3.14159 * 2,
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          _themeColor,
+                          _themeColor.withOpacity(0.7),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _themeColor.withOpacity(0.5),
+                          blurRadius: 20,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      _isExpanded ? Icons.close : Icons.add,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
-          child: const Icon(
-            Icons.add,
-            color: Colors.black,
-            size: 32,
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickActionItem(QuickActionItem action) {
+    return GestureDetector(
+      onTap: () => _executeAction(action),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: action.color.withOpacity(0.2),
+                border: Border.all(
+                  color: action.color,
+                  width: 2,
+                ),
+              ),
+              child: Icon(
+                action.icon,
+                color: action.color,
+                size: 22,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              action.label,
+              style: TextStyle(
+                color: AppTheme.getTextColor(context).withOpacity(0.8),
+                fontSize: 10,
+              ),
+            ),
+          ],
         ),
       ),
-    ).animate(
-      onPlay: (controller) => controller.repeat(reverse: true),
-    ).scale(
-      begin: const Offset(1, 1),
-      end: const Offset(1.05, 1.05),
-      duration: 1.seconds,
-      curve: Curves.easeInOut,
     );
   }
 
@@ -461,4 +498,19 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
     );
   }
+}
+
+// نموذج العنصر السريع
+class QuickActionItem {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final Function(BuildContext) onTap;
+
+  QuickActionItem({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
 }
