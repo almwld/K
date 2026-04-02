@@ -41,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   // المنتجات المميزة
-  final List<ProductModel> _featuredProducts = [
     ProductModel(id: '1', title: 'آيفون 15 برو ماكس', description: '', price: 450000, images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400'], category: 'إلكترونيات', city: 'صنعاء', sellerId: '1', sellerName: 'متجر التقنية', rating: 4.9, createdAt: DateTime.now()),
     ProductModel(id: '2', title: 'سامسونج S24 الترا', description: '', price: 380000, images: ['https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400'], category: 'إلكترونيات', city: 'صنعاء', sellerId: '1', sellerName: 'متجر التقنية', rating: 4.8, createdAt: DateTime.now()),
     ProductModel(id: '3', title: 'ماك بوك برو M3', description: '', price: 1800000, images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'], category: 'إلكترونيات', city: 'عدن', sellerId: '1', sellerName: 'متجر التقنية', rating: 4.9, createdAt: DateTime.now()),
@@ -159,8 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('منتجات مميزة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), TextButton(onPressed: () => Navigator.pushNamed(context, '/all_ads'), child: const Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)))])),
       const SizedBox(height: 12),
-      SizedBox(height: 280, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: _featuredProducts.length, itemBuilder: (context, index) {
-        final product = _featuredProducts[index];
         return Container(width: 160, margin: const EdgeInsets.only(right: 12), decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)), child: GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(product: product))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(16)), child: CachedImageWithFallback(
             imageUrl: product.images.first,
@@ -199,11 +196,9 @@ class _HomeScreenState extends State<HomeScreen> {
 // إضافة دالة لجلب المنتجات من قاعدة البيانات المحلية
 Future<void> _loadProductsFromLocal() async {
   try {
-    final localDb = LocalDatabaseService();
     final products = await localDb.getProducts(featured: true);
     if (products.isNotEmpty) {
       setState(() {
-        _featuredProducts = products;
       });
     }
   } catch (e) {

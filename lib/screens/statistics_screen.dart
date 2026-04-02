@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
@@ -55,8 +54,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
                     labelColor: AppTheme.goldColor,
                     unselectedLabelColor: AppTheme.getSecondaryTextColor(context),
                     tabs: const [
-                      Tab(text: 'الإحصائيات العامة', icon: Icon(Icons.dashboard)),
-                      Tab(text: 'إحصائياتي الشخصية', icon: Icon(Icons.person)),
+                      Tab(text: 'عام', icon: Icon(Icons.dashboard)),
+                      Tab(text: 'شخصي', icon: Icon(Icons.person)),
                     ],
                   ),
                 ),
@@ -81,12 +80,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
         children: [
           _buildStatsCards(),
           const SizedBox(height: 24),
-          _buildSalesChart(),
-          const SizedBox(height: 24),
           _buildCategoryStats(),
           const SizedBox(height: 24),
           _buildCityStats(),
-          const SizedBox(height: 24),
         ],
       ),
     );
@@ -99,10 +95,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
         children: [
           _buildUserCards(),
           const SizedBox(height: 24),
-          _buildSpendingChart(),
-          const SizedBox(height: 24),
           _buildRecentOrders(),
-          const SizedBox(height: 24),
         ],
       ),
     );
@@ -110,9 +103,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
 
   Widget _buildStatsCards() {
     final cards = [
-      {'title': 'إجمالي المنتجات', 'value': '${_stats.totalProducts}', 'icon': Icons.inventory, 'color': 0xFF4CAF50},
-      {'title': 'إجمالي الطلبات', 'value': '${_stats.totalOrders}', 'icon': Icons.shopping_bag, 'color': 0xFF2196F3},
-      {'title': 'إجمالي المبيعات', 'value': '${_stats.totalSales.toStringAsFixed(0)} ر.ي', 'icon': Icons.trending_up, 'color': 0xFFFF9800},
+      {'title': 'المنتجات', 'value': '${_stats.totalProducts}', 'icon': Icons.inventory, 'color': 0xFF4CAF50},
+      {'title': 'الطلبات', 'value': '${_stats.totalOrders}', 'icon': Icons.shopping_bag, 'color': 0xFF2196F3},
+      {'title': 'المبيعات', 'value': '${_stats.totalSales.toStringAsFixed(0)} ر.ي', 'icon': Icons.trending_up, 'color': 0xFFFF9800},
       {'title': 'المستخدمين', 'value': '${_stats.totalUsers}', 'icon': Icons.people, 'color': 0xFF9C27B0},
     ];
 
@@ -158,7 +151,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
 
   Widget _buildUserCards() {
     final cards = [
-      {'title': 'إجمالي الطلبات', 'value': '${_userStats['totalOrders'] ?? 0}', 'icon': Icons.shopping_bag, 'color': 0xFF2196F3},
+      {'title': 'طلباتي', 'value': '${_userStats['totalOrders'] ?? 0}', 'icon': Icons.shopping_bag, 'color': 0xFF2196F3},
       {'title': 'إجمالي الإنفاق', 'value': '${(_userStats['totalSpent'] ?? 0).toStringAsFixed(0)} ر.ي', 'icon': Icons.money, 'color': 0xFFFF9800},
       {'title': 'المفضلة', 'value': '${_userStats['totalFavorites'] ?? 0}', 'icon': Icons.favorite, 'color': 0xFFE91E63},
       {'title': 'رصيد المحفظة', 'value': '${(_userStats['walletBalance'] ?? 0).toStringAsFixed(0)} ر.ي', 'icon': Icons.account_balance_wallet, 'color': 0xFF4CAF50},
@@ -204,66 +197,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
     );
   }
 
-  Widget _buildSalesChart() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('المبيعات', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          Center(
-            child: Text(
-              '${_stats.totalSales.toStringAsFixed(0)} ر.ي',
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppTheme.goldColor),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              'إجمالي المبيعات',
-              style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSpendingChart() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('إجمالي إنفاقي', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          Center(
-            child: Text(
-              '${(_userStats['totalSpent'] ?? 0).toStringAsFixed(0)} ر.ي',
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppTheme.goldColor),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              'إجمالي المشتريات',
-              style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildCategoryStats() {
     if (_stats.categoryStats.isEmpty) {
       return Container(
@@ -272,7 +205,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
           color: AppTheme.getCardColor(context),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: const Center(child: Text('لا توجد بيانات كافية')),
+        child: const Center(child: Text('لا توجد بيانات')),
       );
     }
 
@@ -285,25 +218,16 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('أفضل الفئات مبيعاً', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('أفضل الفئات', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           ..._stats.categoryStats.take(5).map((stat) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
-                  SizedBox(width: 80, child: Text(stat.category, style: const TextStyle(fontSize: 12))),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: LinearProgressIndicator(
-                      value: stat.percentage / 100,
-                      backgroundColor: Colors.grey.withOpacity(0.2),
-                      color: AppTheme.goldColor,
-                      minHeight: 6,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text('${stat.percentage.toStringAsFixed(1)}%', style: const TextStyle(fontSize: 12)),
+                  SizedBox(width: 100, child: Text(stat.category, style: const TextStyle(fontSize: 12))),
+                  const Spacer(),
+                  Text('${stat.percentage.toStringAsFixed(1)}%', style: const TextStyle(fontSize: 12, color: AppTheme.goldColor)),
                 ],
               ),
             );
@@ -337,8 +261,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
                   SizedBox(width: 80, child: Text(stat.city, style: const TextStyle(fontSize: 12))),
                   const Spacer(),
                   Text('${stat.orders} طلب', style: const TextStyle(fontSize: 12, color: AppTheme.goldColor)),
-                  const SizedBox(width: 8),
-                  Text('${stat.revenue.toStringAsFixed(0)} ر.ي', style: const TextStyle(fontSize: 12)),
                 ],
               ),
             );
@@ -357,7 +279,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> with SingleTickerPr
           color: AppTheme.getCardColor(context),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: const Center(child: Text('لا توجد طلبات سابقة')),
+        child: const Center(child: Text('لا توجد طلبات')),
       );
     }
 
