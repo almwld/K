@@ -22,6 +22,7 @@ dependencies:
   url_launcher: ^6.2.2
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  path_provider: ^2.1.5
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.1.0
   flutter_dotenv: ^5.1.0
@@ -31,6 +32,7 @@ dependencies:
   connectivity_plus: ^6.0.5
   share_plus: ^6.3.0
   flutter_cache_manager: ^3.3.1
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   flutter_test:
@@ -64,13 +66,3 @@ flutter:
 dependency_overrides:
   share_plus: ^10.1.4
   share_plus_platform_interface: ^5.0.0
-
-  # قاعدة بيانات محلية
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-
-  # الرسوم البيانية
-  fl_chart: ^0.68.0
-
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
