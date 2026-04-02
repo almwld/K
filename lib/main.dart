@@ -65,12 +65,12 @@ import 'screens/live_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
+import 'screens/statistics_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageService.init();
   
-  // تحميل متغيرات البيئة
   try {
     await dotenv.load(fileName: ".env");
     debugPrint('✅ .env file loaded');
@@ -78,7 +78,6 @@ void main() async {
     debugPrint('⚠️ .env file not found: $e');
   }
   
-  // تهيئة Supabase
   await SupabaseService.initialize();
   
   SystemChrome.setSystemUIOverlayStyle(
@@ -273,23 +272,12 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
+      case '/statistics':
+        return MaterialPageRoute(builder: (_) => const StatisticsScreen());
       default:
         return MaterialPageRoute(builder: (_) => const Scaffold(
           body: Center(child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18))),
         ));
     }
-  }
-}
-
-// إضافة import لقاعدة البيانات المحلية
-import 'services/local_database_service.dart';
-
-// إضافة تهيئة قاعدة البيانات المحلية في main()
-void _initLocalDatabase() async {
-  try {
-    await LocalDatabaseService().database;
-    debugPrint('✅ Local database initialized');
-  } catch (e) {
-    debugPrint('❌ Local database error: $e');
   }
 }

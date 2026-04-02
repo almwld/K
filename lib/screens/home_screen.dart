@@ -195,7 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // إضافة import لقاعدة البيانات المحلية
-import '../services/local_database_service.dart';
 
 // إضافة دالة لجلب المنتجات من قاعدة البيانات المحلية
 Future<void> _loadProductsFromLocal() async {
