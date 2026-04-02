@@ -35,7 +35,7 @@ import 'screens/garden_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/auctions_screen.dart';
 import 'screens/wallet/wallet_screen.dart';
-import 'screens/map/interactive_map_screen.dart';
+// Removed
 import 'screens/map/google_map_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/categories_screen.dart';
@@ -216,8 +216,9 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const AuctionsScreen());
       case '/wallet':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
-      case '/map':
       case '/google_map':
+      case '/simple_map':
+        return MaterialPageRoute(builder: (_) => const SimpleMapScreen());
         return MaterialPageRoute(builder: (_) => const GoogleMapScreen());
         return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
       case '/categories':
