@@ -28,15 +28,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       _messages = [
         {'id': '1', 'sender': 'other', 'message': 'مرحباً، كيف يمكنني مساعدتك؟', 'time': '10:30', 'read': true},
         {'id': '2', 'sender': 'me', 'message': 'مرحباً، هل المنتج متوفر؟', 'time': '10:31', 'read': true},
-        {'id': '3', 'sender': 'other', 'message': 'نعم متوفر، كم تريد؟', 'time': '10:32', 'read': true},
-        {'id': '4', 'sender': 'me', 'message': 'أريد قطعة واحدة، كم السعر النهائي؟', 'time': '10:33', 'read': false},
       ];
     });
   }
 
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
-
     setState(() {
       _messages.add({
         'id': DateTime.now().millisecondsSinceEpoch.toString(),
@@ -73,28 +70,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: AppBar(
-        title: Row(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: AppTheme.goldColor.withOpacity(0.2),
-              child: Text(widget.chat['name'][0], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
-            ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.chat['name'], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text(
-                  widget.chat['online'] ? 'متصل الآن' : 'غير متصل',
-                  style: TextStyle(fontSize: 11, color: widget.chat['online'] ? Colors.green : Colors.grey),
-                ),
-              ],
-            ),
-          ],
-        ),
-        centerTitle: false,
-        elevation: 0,
+        title: Text(widget.chat['name']),
+        centerTitle: true,
         backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
       ),
       body: Column(
@@ -107,7 +84,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               itemBuilder: (context, index) {
                 final message = _messages[index];
                 final isMe = message['sender'] == 'me';
-
                 return Align(
                   alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
@@ -123,24 +99,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                         bottomRight: isMe ? Radius.zero : const Radius.circular(12),
                       ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(message['message'], style: TextStyle(color: isMe ? Colors.black : AppTheme.getTextColor(context))),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(message['time'], style: TextStyle(fontSize: 10, color: isMe ? Colors.black54 : AppTheme.getSecondaryTextColor(context))),
-                            if (isMe && message['read'])
-                              const Padding(
-                                padding: EdgeInsets.only(left: 4),
-                                child: Icon(Icons.done_all, size: 12, color: Colors.blue),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: Text(message['message']),
                   ),
                 );
               },
@@ -154,11 +113,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             ),
             child: Row(
               children: [
-                IconButton(
-                  icon: const Icon(Icons.attach_file),
-                  onPressed: () {},
-                  color: AppTheme.goldColor,
-                ),
                 Expanded(
                   child: TextField(
                     controller: _messageController,
@@ -168,8 +122,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       filled: true,
                       fillColor: isDark ? AppTheme.darkCard : Colors.grey[100],
                     ),
-                    maxLines: 4,
-                    minLines: 1,
                   ),
                 ),
                 const SizedBox(width: 8),
