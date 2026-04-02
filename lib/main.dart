@@ -13,7 +13,6 @@ import 'theme/app_theme.dart';
 import 'models/user_model.dart';
 import 'models/order_model.dart';
 import 'models/auction_model.dart';
-import 'models/chat_model.dart';
 
 // Screens
 import 'screens/splash_screen.dart';
@@ -35,13 +34,15 @@ import 'screens/garden_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/auctions_screen.dart';
 import 'screens/wallet/wallet_screen.dart';
-import 'screens/map/enhanced_map_screen.dart';
+import 'screens/map/interactive_map_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/all_categories_screen.dart';
 import 'screens/category_products_screen.dart';
 import 'screens/add_ad_screen.dart';
 import 'screens/identity_info_screen.dart';
+
+// Screens - Settings
 import 'screens/settings/about_screen.dart';
 import 'screens/settings/account_settings_screen.dart';
 import 'screens/help_support_screen.dart';
@@ -65,7 +66,6 @@ import 'screens/live_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
-import 'screens/share_app_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -177,10 +177,14 @@ class MyApp extends StatelessWidget {
       );
     }
 
-    // مسار تفاصيل الدردشة
-    if (settings.name == '/chat_detail' && settings.arguments is Map<String, dynamic>) {
+    // مسار تفاصيل الدردشة - تم إصلاحه
+    if (settings.name == '/chat_detail') {
+      final args = settings.arguments as Map<String, dynamic>?;
+      if (args == null) {
+        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('بيانات المحادثة غير موجودة'))));
+      }
       return MaterialPageRoute(
-        builder: (_) => ChatDetailScreen(chat: settings.arguments),
+        builder: (_) => ChatDetailScreen(chat: args),
       );
     }
 
@@ -217,7 +221,7 @@ class MyApp extends StatelessWidget {
       case '/wallet':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
       case '/map':
-        return MaterialPageRoute(builder: (_) => const EnhancedMapScreen());
+        return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());
       case '/all_categories':
@@ -272,8 +276,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
-      case '/share_app':
-        return MaterialPageRoute(builder: (_) => const ShareAppScreen());
       default:
         return MaterialPageRoute(builder: (_) => const Scaffold(
           body: Center(child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18))),
