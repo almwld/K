@@ -193,3 +193,21 @@ class _HomeScreenState extends State<HomeScreen> {
     ]);
   }
 }
+
+// إضافة import لقاعدة البيانات المحلية
+import '../services/local_database_service.dart';
+
+// إضافة دالة لجلب المنتجات من قاعدة البيانات المحلية
+Future<void> _loadProductsFromLocal() async {
+  try {
+    final localDb = LocalDatabaseService();
+    final products = await localDb.getProducts(featured: true);
+    if (products.isNotEmpty) {
+      setState(() {
+        _featuredProducts = products;
+      });
+    }
+  } catch (e) {
+    debugPrint('Error loading from local DB: $e');
+  }
+}

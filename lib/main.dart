@@ -280,3 +280,16 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+
+// إضافة import لقاعدة البيانات المحلية
+import 'services/local_database_service.dart';
+
+// إضافة تهيئة قاعدة البيانات المحلية في main()
+void _initLocalDatabase() async {
+  try {
+    await LocalDatabaseService().database;
+    debugPrint('✅ Local database initialized');
+  } catch (e) {
+    debugPrint('❌ Local database error: $e');
+  }
+}
