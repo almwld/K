@@ -15,7 +15,7 @@ import 'models/order_model.dart';
 import 'models/auction_model.dart';
 import 'models/chat_model.dart';
 
-// Screens - Main
+// Screens
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -42,8 +42,6 @@ import 'screens/all_categories_screen.dart';
 import 'screens/category_products_screen.dart';
 import 'screens/add_ad_screen.dart';
 import 'screens/identity_info_screen.dart';
-
-// Screens - Settings
 import 'screens/settings/about_screen.dart';
 import 'screens/settings/account_settings_screen.dart';
 import 'screens/help_support_screen.dart';
@@ -71,13 +69,18 @@ import 'screens/payment_method_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageService.init();
+  
+  // تحميل متغيرات البيئة
   try {
     await dotenv.load(fileName: ".env");
-    await SupabaseService.initialize();
-    debugPrint('Supabase initialized successfully');
+    debugPrint('✅ .env file loaded');
   } catch (e) {
-    debugPrint('Warning: .env file not found or Supabase error: $e');
+    debugPrint('⚠️ .env file not found: $e');
   }
+  
+  // تهيئة Supabase
+  await SupabaseService.initialize();
+  
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
