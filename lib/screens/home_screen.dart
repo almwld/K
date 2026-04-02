@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../models/product_model.dart';
 import '../models/auction_model.dart';
+import '../services/offline_storage_service.dart';
 import 'ad_detail_screen.dart';
 import 'auction_detail_screen.dart';
 import 'category_products_screen.dart';
@@ -45,6 +46,22 @@ class _HomeScreenState extends State<HomeScreen> {
     AuctionModel(id: 'a1', title: 'ساعة رولكس أصلية', description: '', images: ['https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400'], startingPrice: 500000, currentPrice: 620000, sellerId: '1', sellerName: 'أحمد علي', startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 2)), status: 'active', bidCount: 12, createdAt: DateTime.now(), category: 'ساعات'),
     AuctionModel(id: 'a2', title: 'لوحة فنية نادرة', description: '', images: ['https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400'], startingPrice: 200000, currentPrice: 280000, sellerId: '2', sellerName: 'فاطمة محمد', startTime: DateTime.now(), endTime: DateTime.now().add(const Duration(days: 3)), status: 'active', bidCount: 18, createdAt: DateTime.now(), category: 'فنون'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCachedProducts();
+  }
+
+  void _loadCachedProducts() {
+    if (OfflineStorageService.hasProducts()) {
+      final cachedProducts = OfflineStorageService.getProducts();
+      if (cachedProducts.isNotEmpty) {
+        // تحديث المنتجات المميزة من التخزين المحلي
+        // ملاحظة: هذا مجرد مثال، يمكنك تعديله حسب الحاجة
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,19 +184,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ])));
       })),
     ]);
-  }
-}
-
-import '../services/offline_storage_service.dart';
-
-// تعديل دالة تحميل المنتجات
-void _loadProductsFromCache() {
-  if (OfflineStorageService.hasProducts()) {
-    final cachedProducts = OfflineStorageService.getProducts();
-    if (cachedProducts.isNotEmpty) {
-      setState(() {
-        _featuredProducts = cachedProducts.take(4).toList();
-      });
-    }
   }
 }
