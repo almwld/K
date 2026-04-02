@@ -55,7 +55,28 @@ class _ChatScreenState extends State<ChatScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _chats.isEmpty
-              ? _buildEmptyState()
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        size: 80,
+                        color: AppTheme.goldColor.withOpacity(0.5),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'لا توجد محادثات',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'ابدأ محادثة مع البائعين',
+                        style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
+                      ),
+                    ],
+                  ),
+                )
               : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: _chats.length,
@@ -169,31 +190,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     );
                   },
                 ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.chat_bubble_outline,
-            size: 80,
-            color: AppTheme.goldColor.withOpacity(0.5),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'لا توجد محادثات',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'ابدأ محادثة مع البائعين',
-            style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -212,6 +212,8 @@ class MyApp extends StatelessWidget {
       case '/wallet':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
       case '/map':
+      case '/professional_map':
+        return MaterialPageRoute(builder: (_) => const ProfessionalMapScreen());
         return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());

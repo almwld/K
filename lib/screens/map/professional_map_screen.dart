@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 import '../../models/store_model.dart';
@@ -49,11 +48,54 @@ class _ProfessionalMapScreenState extends State<ProfessionalMapScreen> {
           _mapController.move(_currentLocation!, 15);
         });
         _loadNearbyStores();
+      } else {
+        setState(() => _isLoading = false);
+        _showLocationPermissionDialog();
       }
     } catch (e) {
       debugPrint('Error getting location: $e');
       setState(() => _isLoading = false);
+      _showLocationErrorDialog();
     }
+  }
+
+  void _showLocationPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('الموقع'),
+        content: const Text('يرجى السماح للتطبيق بالوصول إلى موقعك لعرض المتاجر القريبة'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('إلغاء'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _getCurrentLocation();
+            },
+            child: const Text('إعادة المحاولة'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLocationErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('خطأ'),
+        content: const Text('تعذر الحصول على الموقع. يرجى التحقق من إعدادات الموقع'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('حسناً'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _loadNearbyStores() async {
@@ -189,6 +231,7 @@ class _ProfessionalMapScreenState extends State<ProfessionalMapScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الخريطة'),
       body: Stack(
         children: [
