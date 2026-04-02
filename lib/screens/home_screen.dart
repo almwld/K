@@ -69,6 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _onGoldenButtonTap() {
+    // عند الضغط على الزر الذهبي، يمكن فتح قائمة أو تنفيذ إجراء
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تم فتح القائمة السريعة')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -159,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // الزر الذهبي الدوار
             GoldenFloatingButton(
-              onCommandSelected: _executeQuickCommand,
+              onCommandSelected: _onGoldenButtonTap,
               actions: quickActions,
             ),
           ],
