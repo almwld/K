@@ -64,3 +64,8 @@ flutter:
 dependency_overrides:
   share_plus: ^10.1.4
   share_plus_platform_interface: ^5.0.0
+
+  # التخزين المؤقت للصور
+  flutter_cache_manager: ^3.3.1
+  path_provider: ^2.1.1
+  sqflite: ^2.3.0
