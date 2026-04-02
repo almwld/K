@@ -79,13 +79,59 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             _buildSortChip('الأعلى تقييماً', 'rating'),
           ]))),
           const SizedBox(height: 12),
-          Expanded(child: _isLoading ? const Center(child: CircularProgressIndicator()) : _filteredProducts.isEmpty ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.inbox, size: 80, color: AppTheme.goldColor.withOpacity(0.5)), const SizedBox(height: 16), const Text('لا توجد منتجات')])) : GridView.builder(padding: const EdgeInsets.all(16), gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 12, mainAxisSpacing: 12), itemCount: _filteredProducts.length, itemBuilder: (context, index) {
-            final product = _filteredProducts[index];
-            return GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(product: product))), child: Container(decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(16)), child: CachedNetworkImage(imageUrl: product.images.first, height: 120, width: double.infinity, fit: BoxFit.cover, placeholder: (_, __) => Container(height: 120, color: AppTheme.goldColor.withOpacity(0.1)), errorWidget: (_, __, ___) => Container(height: 120, color: AppTheme.goldColor.withOpacity(0.1), child: const Icon(Icons.image)))),
-              Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product.title, maxLines: 1, style: const TextStyle(fontWeight: FontWeight.bold)), const SizedBox(height: 4), Text('${product.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)), Row(children: [const Icon(Icons.star, size: 12, color: Colors.amber), const SizedBox(width: 2), Text('${product.rating}')])])),
-            ])));
-          }))),
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _filteredProducts.isEmpty
+                    ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.inbox, size: 80, color: AppTheme.goldColor.withOpacity(0.5)), const SizedBox(height: 16), const Text('لا توجد منتجات')]))
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(16),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.75,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemCount: _filteredProducts.length,
+                        itemBuilder: (context, index) {
+                          final product = _filteredProducts[index];
+                          return GestureDetector(
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(product: product))),
+                            child: Container(
+                              decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                                    child: CachedNetworkImage(
+                                      imageUrl: product.images.first,
+                                      height: 120,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      placeholder: (_, __) => Container(height: 120, color: AppTheme.goldColor.withOpacity(0.1)),
+                                      errorWidget: (_, __, ___) => Container(height: 120, color: AppTheme.goldColor.withOpacity(0.1), child: const Icon(Icons.image)),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(product.title, maxLines: 1, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                        const SizedBox(height: 4),
+                                        Text('${product.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
+                                        Row(children: [const Icon(Icons.star, size: 12, color: Colors.amber), const SizedBox(width: 2), Text('${product.rating}')]),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+          ),
         ],
       ),
     );
@@ -93,6 +139,19 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
   Widget _buildSortChip(String label, String value) {
     final isSelected = _sortBy == value;
-    return FilterChip(label: Text(label), selected: isSelected, onSelected: (selected) { setState(() { _sortBy = value; _sortProducts(); }); }, selectedColor: AppTheme.goldColor, backgroundColor: AppTheme.getCardColor(context), checkmarkColor: Colors.black, labelStyle: TextStyle(color: isSelected ? Colors.black : AppTheme.getTextColor(context)));
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) {
+        setState(() {
+          _sortBy = value;
+          _sortProducts();
+        });
+      },
+      selectedColor: AppTheme.goldColor,
+      backgroundColor: AppTheme.getCardColor(context),
+      checkmarkColor: Colors.black,
+      labelStyle: TextStyle(color: isSelected ? Colors.black : AppTheme.getTextColor(context)),
+    );
   }
 }
