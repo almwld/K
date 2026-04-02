@@ -1,128 +1,165 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/user_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SupabaseService {
-  static final SupabaseClient _client = Supabase.instance.client;
+  static SupabaseClient? _client;
+  
+  static SupabaseClient get client {
+    if (_client == null) {
+      _client = Supabase.instance.client;
+    }
+    return _client!;
+  }
 
-  // Auth methods
-  static Future<AuthResponse> signUp({
-    required String email,
-    required String password,
-    required Map<String, dynamic> userData,
-  }) async {
-    final response = await _client.auth.signUp(
-      email: email,
-      password: password,
-      data: userData,
+  static Future<void> initialize() async {
+    await dotenv.load();
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL']!,
+      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
     );
+  }
+
+  // ==================== المنتجات ====================
+  static Future<List<Map<String, dynamic>>> getProducts() async {
+    final response = await client.from('products').select('*').order('created_at', ascending: false);
     return response;
   }
 
-  static Future<AuthResponse> signIn({
-    required String email,
-    required String password,
-  }) async {
-    final response = await _client.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
+  static Future<Map<String, dynamic>?> getProduct(String id) async {
+    final response = await client.from('products').select('*').eq('id', id).maybeSingle();
     return response;
   }
 
-  static Future<void> signOut() async {
-    await _client.auth.signOut();
+  static Future<void> addProduct(Map<String, dynamic> product) async {
+    await client.from('products').insert(product);
   }
 
-  static User? get currentUser => _client.auth.currentUser;
-  static Session? get currentSession => _client.auth.currentSession;
-  static bool get isAuthenticated => currentUser != null;
-
-  // Database methods
-  static Future<List<Map<String, dynamic>>> getData(String table, {Map<String, dynamic>? filters}) async {
-    var query = _client.from(table).select();
-    
-    if (filters != null) {
-      filters.forEach((key, value) {
-        query = query.eq(key, value);
-      });
-    }
-    
-    final response = await query;
-    return List<Map<String, dynamic>>.from(response);
-  }
-
-  static Future<Map<String, dynamic>?> getById(String table, String id) async {
-    final response = await _client.from(table).select().eq('id', id).single();
+  // ==================== الطلبات ====================
+  static Future<List<Map<String, dynamic>>> getOrders(String userId) async {
+    final response = await client.from('orders').select('*').eq('user_id', userId).order('created_at', ascending: false);
     return response;
   }
 
-  static Future<void> insertData(String table, Map<String, dynamic> data) async {
-    await _client.from(table).insert(data);
+  static Future<void> createOrder(Map<String, dynamic> order) async {
+    await client.from('orders').insert(order);
   }
 
-  static Future<void> updateData(String table, String id, Map<String, dynamic> data) async {
-    await _client.from(table).update(data).eq('id', id);
+  static Future<void> updateOrderStatus(String orderId, String status) async {
+    await client.from('orders').update({'status': status}).eq('id', orderId);
   }
 
-  static Future<void> deleteData(String table, String id) async {
-    await _client.from(table).delete().eq('id', id);
-  }
-
-  // User profile methods
-  static Future<UserModel?> getUserProfile(String userId) async {
-    try {
-      final response = await _client.from('users').select().eq('id', userId).single();
-      return UserModel.fromJson(response);
-    } catch (e) {
-      debugPrint('Error getting user profile: $e');
-      return null;
-    }
-  }
-
-  static Future<void> updateUserProfile(String userId, Map<String, dynamic> data) async {
-    await _client.from('users').update(data).eq('id', userId);
-  }
-
-  // Products methods
-  static Future<List<Map<String, dynamic>>> getProducts({String? category, String? city, int? limit}) async {
-    var query = _client.from('products').select();
-    
-    if (category != null) {
-      query = query.eq('category', category);
-    }
-    if (city != null) {
-      query = query.eq('city', city);
-    }
-    if (limit != null) {
-      query = query.limit(limit);
-    }
-    
-    final response = await query.order('created_at', ascending: false);
-    return List<Map<String, dynamic>>.from(response);
-  }
-
-  static Future<List<Map<String, dynamic>>> searchProducts(String query) async {
-    final response = await _client
-        .from('products')
-        .select()
-        .ilike('title', '%$query%')
-        .order('created_at', ascending: false);
-    return List<Map<String, dynamic>>.from(response);
-  }
-
-  // Real-time subscriptions
-  static Stream<List<Map<String, dynamic>>> subscribeToTable(String table) {
-    return _client.from(table).stream(primaryKey: ['id']);
-  }
-
-  // Storage methods
-  static Future<String> uploadFile(String bucket, String path, List<int> file) async {
-    final response = await _client.storage.from(bucket).uploadBinary(path, file);
+  // ==================== المزادات ====================
+  static Future<List<Map<String, dynamic>>> getActiveAuctions() async {
+    final response = await client.from('auctions').select('*').eq('status', 'active').order('end_time', ascending: true);
     return response;
   }
 
-  static String getFileUrl(String bucket, String path) {
-    return _client.storage.from(bucket).getPublicUrl(path);
+  static Future<void> placeBid(String auctionId, double amount, String userId) async {
+    await client.rpc('place_bid', params: {
+      'auction_id': auctionId,
+      'bid_amount': amount,
+      'user_id': userId,
+    });
+  }
+
+  // ==================== المحفظة ====================
+  static Future<Map<String, dynamic>?> getWallet(String userId) async {
+    final response = await client.from('wallets').select('*').eq('user_id', userId).maybeSingle();
+    return response;
+  }
+
+  static Future<void> updateWalletBalance(String userId, double amount) async {
+    await client.from('wallets').update({'balance': amount}).eq('user_id', userId);
+  }
+
+  static Future<void> createTransaction(Map<String, dynamic> transaction) async {
+    await client.from('transactions').insert(transaction);
+  }
+
+  static Future<List<Map<String, dynamic>>> getTransactions(String userId) async {
+    final response = await client.from('transactions').select('*').eq('user_id', userId).order('created_at', ascending: false);
+    return response;
+  }
+
+  // ==================== التقييمات ====================
+  static Future<void> addRating(Map<String, dynamic> rating) async {
+    await client.from('ratings').insert(rating);
+  }
+
+  static Future<List<Map<String, dynamic>>> getProductRatings(String productId) async {
+    final response = await client.from('ratings').select('*, profiles(*)').eq('product_id', productId).order('created_at', ascending: false);
+    return response;
+  }
+
+  // ==================== الإشعارات ====================
+  static Future<List<Map<String, dynamic>>> getNotifications(String userId) async {
+    final response = await client.from('notifications').select('*').eq('user_id', userId).order('created_at', ascending: false);
+    return response;
+  }
+
+  static Future<void> markNotificationAsRead(String notificationId) async {
+    await client.from('notifications').update({'is_read': true}).eq('id', notificationId);
+  }
+
+  // ==================== الرسائل الداخلية ====================
+  static Future<List<Map<String, dynamic>>> getMessages(String userId, String otherUserId) async {
+    final response = await client
+        .from('internal_messages')
+        .select('*')
+        .or('sender_id.eq.$userId,receiver_id.eq.$userId')
+        .order('created_at', ascending: true);
+    return response;
+  }
+
+  static Future<void> sendMessage(Map<String, dynamic> message) async {
+    await client.from('internal_messages').insert(message);
+  }
+
+  // ==================== الكوبونات ====================
+  static Future<Map<String, dynamic>?> validateCoupon(String code) async {
+    final response = await client.from('coupons').select('*').eq('code', code).eq('is_active', true).maybeSingle();
+    return response;
+  }
+
+  // ==================== طلبات السحب ====================
+  static Future<void> requestWithdrawal(Map<String, dynamic> withdrawal) async {
+    await client.from('withdrawal_requests').insert(withdrawal);
+  }
+
+  // ==================== Realtime ====================
+  static Stream<List<Map<String, dynamic>>> subscribeToTable(String table, {String? filterColumn, String? filterValue}) {
+    var query = client.from(table).stream(primaryKey: ['id']);
+    if (filterColumn != null && filterValue != null) {
+      query = query.eq(filterColumn, filterValue);
+    }
+    return query;
+  }
+
+  // ==================== البانرات ====================
+  static Future<List<Map<String, dynamic>>> getActiveBanners() async {
+    final response = await client.from('banners').select('*').eq('is_active', true).order('order_index', ascending: true);
+    return response;
+  }
+
+  // ==================== المتاجر ====================
+  static Future<List<Map<String, dynamic>>> getStores() async {
+    final response = await client.from('stores').select('*');
+    return response;
+  }
+
+  static Future<Map<String, dynamic>?> getStore(String storeId) async {
+    final response = await client.from('stores').select('*').eq('id', storeId).maybeSingle();
+    return response;
+  }
+
+  // ==================== الملفات الشخصية ====================
+  static Future<Map<String, dynamic>?> getProfile(String userId) async {
+    final response = await client.from('profiles').select('*').eq('id', userId).maybeSingle();
+    return response;
+  }
+
+  static Future<void> updateProfile(String userId, Map<String, dynamic> data) async {
+    await client.from('profiles').update(data).eq('id', userId);
   }
 }
