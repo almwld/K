@@ -14,12 +14,19 @@ class AllAdsScreen extends StatefulWidget {
 
 class _AllAdsScreenState extends State<AllAdsScreen> {
   final TextEditingController _searchController = TextEditingController();
+  
   String _selectedCategory = 'الكل';
+  String _selectedCity = 'الكل';
   String _sortBy = 'newest';
+  RangeValues _priceRange = const RangeValues(0, 10000000);
+  double _minRating = 0;
+  bool _showFilter = false;
+  
   List<ProductModel> _filteredProducts = [];
   bool _isLoading = true;
 
   final List<String> _categories = ['الكل', 'عقارات', 'سيارات', 'إلكترونيات', 'أزياء', 'أثاث', 'مطاعم'];
+  final List<String> _cities = ['الكل', 'صنعاء', 'عدن', 'تعز', 'الحديدة', 'المكلا', 'إب', 'ذمار'];
 
   @override
   void initState() {
@@ -47,7 +54,10 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
         final matchesSearch = _searchController.text.isEmpty ||
             p.title.toLowerCase().contains(_searchController.text.toLowerCase());
         final matchesCategory = _selectedCategory == 'الكل' || p.category == _selectedCategory;
-        return matchesSearch && matchesCategory;
+        final matchesCity = _selectedCity == 'الكل' || p.city == _selectedCity;
+        final matchesPrice = p.price >= _priceRange.start && p.price <= _priceRange.end;
+        final matchesRating = p.rating >= _minRating;
+        return matchesSearch && matchesCategory && matchesCity && matchesPrice && matchesRating;
       }).toList();
       _sortProducts();
     });
@@ -65,13 +75,34 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
     }
   }
 
+  void _resetFilters() {
+    setState(() {
+      _selectedCategory = 'الكل';
+      _selectedCity = 'الكل';
+      _priceRange = const RangeValues(0, 10000000);
+      _minRating = 0;
+      _sortBy = 'newest';
+      _searchController.clear();
+      _filterProducts();
+      _showFilter = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'جميع الإعلانات'),
+      appBar: SimpleAppBar(
+        title: 'جميع الإعلانات',
+        actions: [
+          IconButton(
+            icon: Icon(_showFilter ? Icons.filter_alt : Icons.filter_alt_outlined, color: AppTheme.goldColor),
+            onPressed: () => setState(() => _showFilter = !_showFilter),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           // شريط البحث
@@ -100,13 +131,17 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
               ),
             ),
           ),
-          // الفلتر والترتيب
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<String>(
+
+          // لوحة الفلتر المتقدم
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: _showFilter ? 280 : 0,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  // الفئة
+                  DropdownButtonFormField<String>(
                     value: _selectedCategory,
                     decoration: InputDecoration(
                       labelText: 'الفئة',
@@ -123,13 +158,13 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                       _filterProducts();
                     },
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: _sortBy,
+                  const SizedBox(height: 12),
+                  
+                  // المدينة
+                  DropdownButtonFormField<String>(
+                    value: _selectedCity,
                     decoration: InputDecoration(
-                      labelText: 'ترتيب',
+                      labelText: 'المدينة',
                       filled: true,
                       fillColor: AppTheme.getCardColor(context),
                       border: OutlineInputBorder(
@@ -137,23 +172,100 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    items: const [
-                      DropdownMenuItem(value: 'newest', child: Text('الأحدث')),
-                      DropdownMenuItem(value: 'price_low', child: Text('الأقل سعراً')),
-                      DropdownMenuItem(value: 'price_high', child: Text('الأعلى سعراً')),
-                      DropdownMenuItem(value: 'rating', child: Text('الأعلى تقييماً')),
-                    ],
+                    items: _cities.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                     onChanged: (v) {
-                      setState(() => _sortBy = v!);
+                      setState(() => _selectedCity = v!);
                       _filterProducts();
                     },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+                  
+                  // نطاق السعر
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'السعر: ${_priceRange.start.toStringAsFixed(0)} - ${_priceRange.end.toStringAsFixed(0)} ر.ي',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => setState(() => _priceRange = const RangeValues(0, 10000000)),
+                        child: const Text('إعادة'),
+                      ),
+                    ],
+                  ),
+                  RangeSlider(
+                    values: _priceRange,
+                    min: 0,
+                    max: 10000000,
+                    divisions: 100,
+                    activeColor: AppTheme.goldColor,
+                    onChanged: (values) {
+                      setState(() => _priceRange = values);
+                      _filterProducts();
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // الحد الأدنى للتقييم
+                  Row(
+                    children: [
+                      const Text('الحد الأدنى للتقييم: ', style: TextStyle(fontSize: 12)),
+                      Row(
+                        children: List.generate(5, (index) {
+                          return IconButton(
+                            icon: Icon(index < _minRating ? Icons.star : Icons.star_border, color: Colors.amber, size: 20),
+                            onPressed: () {
+                              setState(() => _minRating = index + 1.0);
+                              _filterProducts();
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // زر إعادة تعيين
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _resetFilters,
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('إعادة تعيين جميع الفلاتر'),
+                      style: OutlinedButton.styleFrom(side: const BorderSide(color: AppTheme.goldColor)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+
+          // خيارات الترتيب
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildSortChip('الأحدث', 'newest'),
+                  const SizedBox(width: 8),
+                  _buildSortChip('الأقل سعراً', 'price_low'),
+                  const SizedBox(width: 8),
+                  _buildSortChip('الأعلى سعراً', 'price_high'),
+                  const SizedBox(width: 8),
+                  _buildSortChip('الأعلى تقييماً', 'rating'),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 12),
-          // عرض المنتجات
+          
+          // عرض النتائج
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -165,6 +277,8 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                             Icon(Icons.inbox, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
                             const SizedBox(height: 16),
                             const Text('لا توجد إعلانات'),
+                            const SizedBox(height: 8),
+                            Text('حاول تغيير معايير البحث', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
                           ],
                         ),
                       )
@@ -274,6 +388,22 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSortChip(String label, String value) {
+    final isSelected = _sortBy == value;
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) {
+        setState(() => _sortBy = value);
+        _sortProducts();
+      },
+      selectedColor: AppTheme.goldColor,
+      backgroundColor: AppTheme.getCardColor(context),
+      checkmarkColor: Colors.black,
+      labelStyle: TextStyle(color: isSelected ? Colors.black : AppTheme.getTextColor(context)),
     );
   }
 }
