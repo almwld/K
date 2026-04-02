@@ -271,10 +271,8 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
       case '/statistics':
-        return MaterialPageRoute(builder: (_) => const StatisticsScreen());
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
       case '/statistics':
-        return MaterialPageRoute(builder: (_) => const StatisticsScreen());
       default:
         return MaterialPageRoute(builder: (_) => const Scaffold(
           body: Center(child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18))),
