@@ -65,8 +65,6 @@ import 'screens/live_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
-import 'screens/statistics_screen.dart';
-import 'screens/statistics_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
