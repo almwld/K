@@ -66,6 +66,7 @@ import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
 import 'screens/statistics_screen.dart';
+import 'screens/statistics_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -271,6 +272,8 @@ class MyApp extends StatelessWidget {
       case '/support_tickets':
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
+      case '/statistics':
+        return MaterialPageRoute(builder: (_) => const StatisticsScreen());
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
       case '/statistics':
         return MaterialPageRoute(builder: (_) => const StatisticsScreen());
