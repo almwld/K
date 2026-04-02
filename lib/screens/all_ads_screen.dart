@@ -73,10 +73,12 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: SimpleAppBar(title: 'جميع الإعلانات'),
+      appBar: SimpleAppBar(
+        title: 'جميع الإعلانات',
+        showBackButton: false,  // إخفاء زر الرجوع
+      ),
       body: Column(
         children: [
-          // شريط البحث
           Padding(
             padding: const EdgeInsets.all(16),
             child: TextField(
@@ -93,7 +95,6 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
               ),
             ),
           ),
-          // الفلتر والترتيب
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -146,7 +147,6 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          // عرض المنتجات
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())

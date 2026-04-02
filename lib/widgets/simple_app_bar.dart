@@ -13,7 +13,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.actions,
-    this.showBackButton = true,
+    this.showBackButton = false,  // تغيير القيمة الافتراضية إلى false
     this.onBackPressed,
     this.leading,
     this.backgroundColor,
@@ -33,17 +33,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: 0,
       backgroundColor: backgroundColor ?? (isDark ? AppTheme.darkSurface : AppTheme.lightSurface),
-      automaticallyImplyLeading: showBackButton && leading == null,
-      leading: leading ?? (showBackButton
-          ? IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: onBackPressed ?? () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
-              },
-            )
-          : null),
+      automaticallyImplyLeading: false,  // إخفاء زر الرجوع التلقائي
+      leading: leading,  // استخدام الـ leading المخصص فقط
       actions: actions,
     );
   }
