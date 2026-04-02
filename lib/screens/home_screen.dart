@@ -169,3 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
     ]);
   }
 }
+
+import '../services/offline_storage_service.dart';
+
+// تعديل دالة تحميل المنتجات
+void _loadProductsFromCache() {
+  if (OfflineStorageService.hasProducts()) {
+    final cachedProducts = OfflineStorageService.getProducts();
+    if (cachedProducts.isNotEmpty) {
+      setState(() {
+        _featuredProducts = cachedProducts.take(4).toList();
+      });
+    }
+  }
+}

@@ -8,6 +8,7 @@ import 'providers/theme_manager.dart';
 import 'providers/auth_provider.dart';
 import 'services/connection_checker.dart';
 import 'services/cache/local_storage_service.dart';
+import 'services/offline_storage_service.dart';
 import 'services/supabase_service.dart';
 import 'theme/app_theme.dart';
 import 'models/user_model.dart';
@@ -69,6 +70,7 @@ import 'screens/payment_method_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageService.init();
+  await OfflineStorageService.init();
   
   try {
     await dotenv.load(fileName: ".env");

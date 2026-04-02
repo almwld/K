@@ -117,3 +117,19 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
+import '../services/offline_storage_service.dart';
+import '../services/supabase_service.dart';
+
+// إضافة دالة لتحميل البيانات
+Future<void> _loadInitialData() async {
+  // محاولة جلب البيانات من Supabase
+  if (await SupabaseService.checkConnection()) {
+    final products = await SupabaseService.getProducts();
+    if (products.isNotEmpty) {
+      await OfflineStorageService.saveProducts(
+        products.map((p) => ProductModel.fromJson(p)).toList()
+      );
+    }
+  }
+}
