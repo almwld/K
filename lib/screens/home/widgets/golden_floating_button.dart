@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../theme/app_theme.dart';
+
+class QuickAction {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  QuickAction({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+}
 
 class GoldenFloatingButton extends StatefulWidget {
   final VoidCallback onCommandSelected;
@@ -66,8 +80,8 @@ class _GoldenFloatingButtonState extends State<GoldenFloatingButton>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: AppTheme.cardDark.withOpacity(0.95),
-                borderRadius: BorderRadius.circular(60),
+                color: AppTheme.getCardColor(context).withOpacity(0.95),
+                borderRadius: BorderRadius.circular(24),
                 border: Border.all(
                   color: AppTheme.goldColor.withOpacity(0.5),
                   width: 1,
@@ -135,7 +149,7 @@ class _GoldenFloatingButtonState extends State<GoldenFloatingButton>
                     ),
                     child: Icon(
                       _isExpanded ? Icons.close : Icons.add,
-                      color: Colors.white,
+                      color: Colors.black,
                       size: 32,
                     ),
                   ),
@@ -187,7 +201,7 @@ class _GoldenFloatingButtonState extends State<GoldenFloatingButton>
           Text(
             action.label,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
+              color: AppTheme.getTextColor(context).withOpacity(0.8),
               fontSize: 11,
               fontWeight: FontWeight.w500,
             ),
@@ -196,18 +210,4 @@ class _GoldenFloatingButtonState extends State<GoldenFloatingButton>
       ),
     );
   }
-}
-
-class QuickAction {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  QuickAction({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
 }
