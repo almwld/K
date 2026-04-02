@@ -14,70 +14,115 @@ class AllAdsScreen extends StatefulWidget {
 
 class _AllAdsScreenState extends State<AllAdsScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  
   String _selectedCategory = 'الكل';
   String _selectedCity = 'الكل';
   String _sortBy = 'newest';
   RangeValues _priceRange = const RangeValues(0, 10000000);
   double _minRating = 0;
   bool _showFilter = false;
-  
-  List<ProductModel> _products = [];
-  List<ProductModel> _filteredProducts = [];
   bool _isLoading = true;
+  bool _hasMore = true;
+  int _currentPage = 1;
+  final int _itemsPerPage = 10;
+  
+  List<ProductModel> _allProducts = [];
+  List<ProductModel> _displayedProducts = [];
 
   final List<String> _categories = ['الكل', 'عقارات', 'سيارات', 'إلكترونيات', 'أزياء', 'أثاث', 'مطاعم', 'خدمات'];
   final List<String> _cities = ['الكل', 'صنعاء', 'عدن', 'تعز', 'الحديدة', 'المكلا', 'إب', 'ذمار'];
 
-  final List<ProductModel> _allProducts = [
-    ProductModel(id: '1', title: 'شقة فاخرة في حدة', description: '', price: 35000000, images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400'], category: 'عقارات', city: 'صنعاء', sellerId: '1', sellerName: 'عقارات فلكس', rating: 4.8, createdAt: DateTime.now()),
-    ProductModel(id: '2', title: 'تويوتا كامري 2024', description: '', price: 8500000, images: ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'], category: 'سيارات', city: 'صنعاء', sellerId: '2', sellerName: 'معرض السيارات', rating: 4.7, createdAt: DateTime.now()),
-    ProductModel(id: '3', title: 'ماك بوك برو M3', description: '', price: 1800000, images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'], category: 'إلكترونيات', city: 'عدن', sellerId: '1', sellerName: 'متجر التقنية', rating: 4.9, createdAt: DateTime.now()),
-    ProductModel(id: '4', title: 'سامسونج S24 الترا', description: '', price: 380000, images: ['https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400'], category: 'إلكترونيات', city: 'صنعاء', sellerId: '1', sellerName: 'متجر التقنية', rating: 4.8, createdAt: DateTime.now()),
-    ProductModel(id: '5', title: 'فيلا فاخرة', description: '', price: 150000000, images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400'], category: 'عقارات', city: 'صنعاء', sellerId: '3', sellerName: 'عقارات فلكس', rating: 4.9, createdAt: DateTime.now()),
-    ProductModel(id: '6', title: 'هيونداي النترا', description: '', price: 6500000, images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400'], category: 'سيارات', city: 'عدن', sellerId: '2', sellerName: 'معرض السيارات', rating: 4.6, createdAt: DateTime.now()),
-    ProductModel(id: '7', title: 'آيباد برو', description: '', price: 320000, images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400'], category: 'إلكترونيات', city: 'صنعاء', sellerId: '1', sellerName: 'متجر التقنية', rating: 4.8, createdAt: DateTime.now()),
-    ProductModel(id: '8', title: 'مندي دجاج عائلي', description: '', price: 8000, images: ['https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'], category: 'مطاعم', city: 'صنعاء', sellerId: '6', sellerName: 'مطعم الأصيل', rating: 4.9, createdAt: DateTime.now()),
-  ];
+  // قائمة المنتجات الكاملة (50 منتج)
+  final List<ProductModel> _fullProductsList = List.generate(50, (index) {
+    final categories = ['عقارات', 'سيارات', 'إلكترونيات', 'أزياء', 'أثاث', 'مطاعم'];
+    final cities = ['صنعاء', 'عدن', 'تعز', 'الحديدة', 'المكلا'];
+    final titles = [
+      'منتج مميز ${index + 1}', 'سلعة رائعة ${index + 1}', 'عرض خاص ${index + 1}',
+      'جودة عالية ${index + 1}', 'سعر منافس ${index + 1}', 'تخفيضات ${index + 1}'
+    ];
+    final images = [
+      'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400',
+      'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400',
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400',
+      'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400',
+    ];
+    
+    return ProductModel(
+      id: (index + 1).toString(),
+      title: titles[index % titles.length],
+      description: '',
+      price: 10000 * (index + 1) * (index % 5 + 1),
+      images: [images[index % images.length]],
+      category: categories[index % categories.length],
+      city: cities[index % cities.length],
+      sellerId: '1',
+      sellerName: 'بائع ${index + 1}',
+      rating: 3 + (index % 20) / 10,
+      reviewCount: (index + 1) * 5,
+      createdAt: DateTime.now().subtract(Duration(days: index)),
+      isFeatured: index < 10,
+    );
+  });
 
   @override
   void initState() {
     super.initState();
-    _loadProducts();
-    _searchController.addListener(_filterProducts);
+    _allProducts = List.from(_fullProductsList);
+    _filterAndLoadMore();
+    _searchController.addListener(_filterAndReset);
+    _scrollController.addListener(_onScroll);
   }
 
-  void _loadProducts() {
+  void _filterAndReset() {
     setState(() {
-      _products = _allProducts;
-      _filterProducts();
+      _currentPage = 1;
+      _displayedProducts.clear();
+      _hasMore = true;
+      _filterAndLoadMore();
+    });
+  }
+
+  void _filterAndLoadMore() {
+    final filtered = _allProducts.where((p) {
+      final matchesSearch = _searchController.text.isEmpty || p.title.toLowerCase().contains(_searchController.text.toLowerCase());
+      final matchesCategory = _selectedCategory == 'الكل' || p.category == _selectedCategory;
+      final matchesCity = _selectedCity == 'الكل' || p.city == _selectedCity;
+      final matchesPrice = p.price >= _priceRange.start && p.price <= _priceRange.end;
+      final matchesRating = (p.rating ?? 0) >= _minRating;
+      return matchesSearch && matchesCategory && matchesCity && matchesPrice && matchesRating;
+    }).toList();
+
+    final start = (_currentPage - 1) * _itemsPerPage;
+    final end = start + _itemsPerPage;
+    final newItems = filtered.skip(start).take(_itemsPerPage).toList();
+
+    setState(() {
+      _displayedProducts.addAll(newItems);
+      _hasMore = end < filtered.length;
       _isLoading = false;
     });
   }
 
-  void _filterProducts() {
-    setState(() {
-      _filteredProducts = _products.where((p) {
-        final matchesSearch = _searchController.text.isEmpty || p.title.toLowerCase().contains(_searchController.text.toLowerCase());
-        final matchesCategory = _selectedCategory == 'الكل' || p.category == _selectedCategory;
-        final matchesCity = _selectedCity == 'الكل' || p.city == _selectedCity;
-        final matchesPrice = p.price >= _priceRange.start && p.price <= _priceRange.end;
-        final matchesRating = (p.rating ?? 0) >= _minRating;
-        return matchesSearch && matchesCategory && matchesCity && matchesPrice && matchesRating;
-      }).toList();
-      _sortProducts();
-    });
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200 && _hasMore && !_isLoading) {
+      setState(() {
+        _isLoading = true;
+        _currentPage++;
+        _filterAndLoadMore();
+      });
+    }
   }
 
-  void _sortProducts() {
-    if (_sortBy == 'newest') {
-      _filteredProducts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    } else if (_sortBy == 'price_low') {
-      _filteredProducts.sort((a, b) => a.price.compareTo(b.price));
-    } else if (_sortBy == 'price_high') {
-      _filteredProducts.sort((a, b) => b.price.compareTo(a.price));
-    } else if (_sortBy == 'rating') {
-      _filteredProducts.sort((a, b) => (b.rating ?? 0).compareTo(a.rating ?? 0));
-    }
+  void _applyFilters() {
+    setState(() {
+      _currentPage = 1;
+      _displayedProducts.clear();
+      _hasMore = true;
+      _isLoading = true;
+      _filterAndLoadMore();
+      _showFilter = false;
+    });
   }
 
   void _resetFilters() {
@@ -88,8 +133,25 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
       _minRating = 0;
       _sortBy = 'newest';
       _searchController.clear();
-      _filterProducts();
+      _currentPage = 1;
+      _displayedProducts.clear();
+      _hasMore = true;
+      _sortProducts();
+      _applyFilters();
     });
+  }
+
+  void _sortProducts() {
+    if (_sortBy == 'newest') {
+      _allProducts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    } else if (_sortBy == 'price_low') {
+      _allProducts.sort((a, b) => a.price.compareTo(b.price));
+    } else if (_sortBy == 'price_high') {
+      _allProducts.sort((a, b) => b.price.compareTo(a.price));
+    } else if (_sortBy == 'rating') {
+      _allProducts.sort((a, b) => (b.rating ?? 0).compareTo(a.rating ?? 0));
+    }
+    _applyFilters();
   }
 
   @override
@@ -122,7 +184,7 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
-                          _filterProducts();
+                          _filterAndReset();
                         },
                       )
                     : null,
@@ -136,33 +198,23 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
           // لوحة الفلتر المتقدم
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: _showFilter ? 280 : 0,
+            height: _showFilter ? 320 : 0,
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  // الفئة
                   _buildFilterDropdown('الفئة', _selectedCategory, _categories, (v) {
                     setState(() => _selectedCategory = v);
-                    _filterProducts();
                   }),
                   const SizedBox(height: 12),
-
-                  // المدينة
                   _buildFilterDropdown('المدينة', _selectedCity, _cities, (v) {
                     setState(() => _selectedCity = v);
-                    _filterProducts();
                   }),
                   const SizedBox(height: 12),
-
-                  // نطاق السعر
                   Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          'السعر: ${_priceRange.start.toStringAsFixed(0)} - ${_priceRange.end.toStringAsFixed(0)} ر.ي',
-                          style: const TextStyle(fontSize: 12),
-                        ),
+                        child: Text('السعر: ${_priceRange.start.toStringAsFixed(0)} - ${_priceRange.end.toStringAsFixed(0)} ر.ي', style: const TextStyle(fontSize: 12)),
                       ),
                       TextButton(
                         onPressed: () => setState(() => _priceRange = const RangeValues(0, 10000000)),
@@ -176,14 +228,9 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                     max: 10000000,
                     divisions: 100,
                     activeColor: AppTheme.goldColor,
-                    onChanged: (values) {
-                      setState(() => _priceRange = values);
-                      _filterProducts();
-                    },
+                    onChanged: (values) => setState(() => _priceRange = values),
                   ),
                   const SizedBox(height: 12),
-
-                  // الحد الأدنى للتقييم
                   Row(
                     children: [
                       const Text('الحد الأدنى للتقييم: ', style: TextStyle(fontSize: 12)),
@@ -191,10 +238,7 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                         children: List.generate(5, (index) {
                           return IconButton(
                             icon: Icon(index < _minRating ? Icons.star : Icons.star_border, color: Colors.amber, size: 20),
-                            onPressed: () {
-                              setState(() => _minRating = index + 1.0);
-                              _filterProducts();
-                            },
+                            onPressed: () => setState(() => _minRating = index + 1.0),
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                           );
@@ -203,16 +247,26 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-
-                  // زر إعادة تعيين الفلتر
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: _resetFilters,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('إعادة تعيين جميع الفلاتر'),
-                      style: OutlinedButton.styleFrom(side: const BorderSide(color: AppTheme.goldColor)),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: _resetFilters,
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('إعادة تعيين'),
+                          style: OutlinedButton.styleFrom(side: const BorderSide(color: AppTheme.goldColor)),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: _applyFilters,
+                          icon: const Icon(Icons.check),
+                          label: const Text('تطبيق'),
+                          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -220,32 +274,42 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
             ),
           ),
 
-          // خيارات الترتيب
+          // خيارات الترتيب وعدد النتائج
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _buildSortChip('الأحدث', 'newest'),
-                  const SizedBox(width: 8),
-                  _buildSortChip('الأقل سعراً', 'price_low'),
-                  const SizedBox(width: 8),
-                  _buildSortChip('الأعلى سعراً', 'price_high'),
-                  const SizedBox(width: 8),
-                  _buildSortChip('الأعلى تقييماً', 'rating'),
-                ],
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildSortChip('الأحدث', 'newest'),
+                        const SizedBox(width: 8),
+                        _buildSortChip('الأقل سعراً', 'price_low'),
+                        const SizedBox(width: 8),
+                        _buildSortChip('الأعلى سعراً', 'price_high'),
+                        const SizedBox(width: 8),
+                        _buildSortChip('الأعلى تقييماً', 'rating'),
+                      ],
+                    ),
+                  ),
+                ),
+                Text(
+                  '${_displayedProducts.length}',
+                  style: const TextStyle(fontSize: 12, color: AppTheme.goldColor),
+                ),
+              ],
             ),
           ),
 
           const SizedBox(height: 12),
 
-          // عرض النتائج
+          // عرض النتائج مع تحميل المزيد
           Expanded(
-            child: _isLoading
+            child: _displayedProducts.isEmpty && _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : _filteredProducts.isEmpty
+                : _displayedProducts.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -253,15 +317,11 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                             Icon(Icons.inbox, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
                             const SizedBox(height: 16),
                             const Text('لا توجد إعلانات'),
-                            const SizedBox(height: 8),
-                            Text(
-                              'حاول تغيير معايير البحث',
-                              style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
-                            ),
                           ],
                         ),
                       )
                     : GridView.builder(
+                        controller: _scrollController,
                         padding: const EdgeInsets.all(16),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -269,9 +329,20 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         ),
-                        itemCount: _filteredProducts.length,
+                        itemCount: _displayedProducts.length + (_hasMore ? 1 : 0),
                         itemBuilder: (context, index) {
-                          final product = _filteredProducts[index];
+                          if (index == _displayedProducts.length) {
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(
+                                child: SizedBox(
+                                  width: 30, height: 30,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                ),
+                              ),
+                            );
+                          }
+                          final product = _displayedProducts[index];
                           return GestureDetector(
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(product: product))),
                             child: Container(
@@ -301,7 +372,6 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
                                         Text(product.title, maxLines: 1, style: const TextStyle(fontWeight: FontWeight.bold)),
                                         const SizedBox(height: 4),
                                         Text('${product.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 2),
                                         Row(
                                           children: [
                                             const Icon(Icons.location_on, size: 10, color: Colors.grey),
