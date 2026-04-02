@@ -148,8 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 24),
 
                   // الأقسام السريعة
-                  const QuickCommandsGrid(
-                    onCommandSelected: null,
+                  QuickCommandsGrid(
+                    onCommandSelected: _executeQuickCommand,
                   ),
 
                   const SizedBox(height: 80),
