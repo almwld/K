@@ -25,7 +25,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
   bool _isSubmitting = false;
   
   final List<String> _categories = [
-    'إلكترونيات', 'سيارات', 'عقارات', 'أزياء', 'أثاث', 'مطاعم', 'خدمات', 'ألعاب', 'صحة وجمال'
+    'إلكترونيات', 'سيارات', 'عقارات', 'أزياء', 'أثاث', 'مطاعم', 'خدمات', 'ألعاب'
   ];
   
   final List<String> _cities = [
@@ -46,7 +46,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
   Future<void> _submitAd() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedImages.isEmpty) {
-      _showSnackBar('الرجاء إضافة صورة واحدة على الأقل');
+      _showSnackBar('الرجاء إضافة صورة واحدة على الأقل', Colors.red);
       return;
     }
     
@@ -61,6 +61,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('تم النشر'),
         content: const Text('تم نشر إعلانك بنجاح! سيتم مراجعته قريباً.'),
         actions: [
@@ -69,6 +70,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
               Navigator.pop(context);
               Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
             child: const Text('حسناً'),
           ),
         ],
@@ -76,9 +78,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
     );
   }
   
-  void _showSnackBar(String message) {
+  void _showSnackBar(String message, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackBar(content: Text(message), backgroundColor: color),
     );
   }
   
@@ -98,13 +100,13 @@ class _AddAdScreenState extends State<AddAdScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // رفع الصور
                   const Text('صور الإعلان', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   GestureDetector(
                     onTap: _pickImages,
                     child: Container(
                       height: 120,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: isDark ? AppTheme.darkCard : AppTheme.lightCard,
                         borderRadius: BorderRadius.circular(12),
@@ -146,16 +148,12 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
-                  // العنوان
                   TextFormField(
                     controller: _titleController,
                     decoration: const InputDecoration(labelText: 'عنوان الإعلان', border: OutlineInputBorder()),
                     validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
                   ),
                   const SizedBox(height: 12),
-                  
-                  // السعر
                   TextFormField(
                     controller: _priceController,
                     keyboardType: TextInputType.number,
@@ -163,8 +161,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
                   ),
                   const SizedBox(height: 12),
-                  
-                  // الفئة
                   DropdownButtonFormField<String>(
                     value: _selectedCategory,
                     decoration: const InputDecoration(labelText: 'الفئة', border: OutlineInputBorder()),
@@ -172,8 +168,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     onChanged: (v) => setState(() => _selectedCategory = v!),
                   ),
                   const SizedBox(height: 12),
-                  
-                  // المدينة
                   DropdownButtonFormField<String>(
                     value: _selectedCity,
                     decoration: const InputDecoration(labelText: 'المدينة', border: OutlineInputBorder()),
@@ -181,8 +175,6 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     onChanged: (v) => setState(() => _selectedCity = v!),
                   ),
                   const SizedBox(height: 12),
-                  
-                  // الوصف
                   TextFormField(
                     controller: _descriptionController,
                     maxLines: 4,
@@ -190,13 +182,11 @@ class _AddAdScreenState extends State<AddAdScreen> {
                     validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
                   ),
                   const SizedBox(height: 32),
-                  
                   CustomButton(
                     text: 'نشر الإعلان',
                     onPressed: _submitAd,
                     isLoading: _isSubmitting,
                   ),
-                  
                   const SizedBox(height: 32),
                 ],
               ),
