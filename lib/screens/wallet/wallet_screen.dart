@@ -20,7 +20,6 @@ import 'local_transfer_networks_screen.dart';
 import 'recharge_credit_screen.dart';
 import 'transfer_network_screen.dart';
 import 'pay_bundles_screen.dart';
-import 'flex_transfers_screen.dart';
 import 'wasil_transfers_screen.dart';
 import 'receive_transfer_request_screen.dart';
 import 'cash_withdrawal_screen.dart';
@@ -71,7 +70,7 @@ class _WalletScreenState extends State<WalletScreen> {
     {'name': 'إيداع', 'icon': Icons.arrow_downward, 'color': 0xFF4CAF50, 'route': DepositScreen},
     {'name': 'سحب', 'icon': Icons.arrow_upward, 'color': 0xFFF44336, 'route': WithdrawScreen},
     {'name': 'تحويل', 'icon': Icons.swap_horiz, 'color': 0xFF2196F3, 'route': TransferScreen},
-    {'name': 'فلكس حوالات', 'icon': Icons.send, 'color': 0xFFD4AF37, 'route': FlexTransfersScreen},
+    
     {'name': 'محافظ', 'icon': Icons.account_balance_wallet, 'color': 0xFF9C27B0, 'route': BanksWalletsScreen},
     {'name': 'فواتير', 'icon': Icons.receipt, 'color': 0xFFFF9800, 'route': BillPaymentScreen},
     {'name': 'بطاقات', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'route': GiftCardsScreen},
