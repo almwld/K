@@ -329,3 +329,10 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 }
+
+// إضافة هذه الواردات في بداية الملف
+// import 'wallet/transfers_history_screen.dart';
+// import 'wallet/transactions_screen.dart';
+
+// في قائمة أيقونات التبويب، أضف المحفظة
+// يمكنك تعديل التبويب الخامس ليكون المحفظة بدلاً من الإعدادات
