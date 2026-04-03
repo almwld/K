@@ -29,7 +29,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final remaining = widget.auction['endTime'].difference(DateTime.now());
+    final remaining = widget.auction['endTime'] as DateTime;
     
     return Scaffold(
       appBar: SimpleAppBar(title: widget.auction['title']),
@@ -39,7 +39,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
           children: [
             _buildImage(),
             _buildInfo(),
-            _buildBidSection(),
+            _buildBidSection(remaining),
             _buildBidHistory(),
           ],
         ),
@@ -106,7 +106,29 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBidSection(DateTime remaining) {
+    final now = DateTime.now();
+    final diff = remaining.difference(now);
+    final days = diff.inDays;
+    final hours = diff.inHours % 24;
+    final minutes = diff.inMinutes % 60;
+    final minBid = _currentBid + 10000;
+    
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.getCardColor(context),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
+      ),
+      child: Column(
+        children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -123,7 +145,11 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
                     children: [
                       const Text('الوقت المتبقي', style: TextStyle(fontWeight: FontWeight.bold)),
                       Text(
-                        '${remaining.inDays} يوم ${remaining.inHours % 24} ساعة ${remaining.inMinutes % 60} دقيقة',
+                        days > 0
+                            ? '$days يوم $hours ساعة $minutes دقيقة'
+                            : hours > 0
+                                ? '$hours ساعة $minutes دقيقة'
+                                : '$minutes دقيقة',
                         style: const TextStyle(fontSize: 16),
                       ),
                     ],
@@ -132,24 +158,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBidSection() {
-    final minBid = _currentBid + 10000;
-    
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
-      ),
-      child: Column(
-        children: [
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
@@ -167,7 +176,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
               ),
               const SizedBox(width: 12),
               ElevatedButton(
-                onPressed: _placeBid,
+                onPressed: () => _placeBid(minBid),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.goldColor,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -224,9 +233,8 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
     );
   }
 
-  void _placeBid() {
+  void _placeBid(int minBid) {
     final bidAmount = int.tryParse(_bidController.text);
-    final minBid = _currentBid + 10000;
     
     if (bidAmount == null || bidAmount < minBid) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -245,7 +253,6 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
         'bid': bidAmount,
         'time': 'الآن',
       });
-      widget.auction['bids']++;
     });
     
     _bidController.clear();

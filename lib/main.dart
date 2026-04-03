@@ -190,7 +190,7 @@ class MyApp extends StatelessWidget {
     // مسار تفاصيل المزاد
     if (settings.name == '/auction_detail' && settings.arguments is AuctionModel) {
       return MaterialPageRoute(
-        builder: (_) => AuctionDetailScreen(auction: settings.arguments as AuctionModel),
+        builder: (_) => AuctionDetailScreen(auction: settings.arguments as Map<String, dynamic>),
       );
     }
 
