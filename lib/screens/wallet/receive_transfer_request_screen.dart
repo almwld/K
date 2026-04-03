@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
-import '../../widgets/custom_button.dart';
 
 class ReceiveTransferRequestScreen extends StatefulWidget {
   const ReceiveTransferRequestScreen({super.key});
@@ -12,179 +11,265 @@ class ReceiveTransferRequestScreen extends StatefulWidget {
 }
 
 class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScreen> {
-  final _amountController = TextEditingController();
-  final _noteController = TextEditingController();
-  bool _isSubmitting = false;
-  String _generatedCode = '';
-  
-  final String _userPhone = '777123456';
-  final String _userName = 'أحمد محمد';
-  
-  void _generateRequest() {
-    if (_amountController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال المبلغ'), backgroundColor: Colors.red),
-      );
-      return;
-    }
-    
-    setState(() {
-      _generatedCode = 'TRF${DateTime.now().millisecondsSinceEpoch}';
-    });
-  }
-  
-  void _shareRequest() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم نسخ رابط الطلب'), backgroundColor: AppTheme.goldColor),
-    );
-  }
-  
+  String _selectedWallet = '';
+  final TextEditingController _codeController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+
+  final List<Map<String, dynamic>> _wallets = [
+    {'name': 'موبايل موني', 'code': 'MobileMoney', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFE31E24},
+    {'name': 'كاش', 'code': 'Cash', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4CAF50},
+    {'name': 'جيب', 'code': 'Jaib', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFD4AF37},
+    {'name': 'واصل', 'code': 'Wasel', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4CAF50},
+  ];
+
+  final List<Map<String, dynamic>> _requests = [
+    {'code': 'REQ-123456', 'amount': '25,000', 'sender': 'أحمد علي', 'date': '2024-04-03', 'status': 'pending', 'wallet': 'جيب'},
+    {'code': 'REQ-123457', 'amount': '10,000', 'sender': 'محمد حسن', 'date': '2024-04-02', 'status': 'pending', 'wallet': 'واصل'},
+    {'code': 'REQ-123458', 'amount': '5,000', 'sender': 'خالد عبدالله', 'date': '2024-04-02', 'status': 'completed', 'wallet': 'موبايل موني'},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'استلام حوالة'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      appBar: const SimpleAppBar(title: 'استلام طلب تحويل'),
+      body: DefaultTabController(
+        length: 2,
         child: Column(
           children: [
-            // معلومات المستخدم
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
+            TabBar(
+              tabs: const [Tab(text: 'طلبات مستلمة'), Tab(text: 'استلام برمز')],
+              labelColor: AppTheme.goldColor,
+              indicatorColor: AppTheme.goldColor,
+            ),
+            Expanded(
+              child: TabBarView(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: AppTheme.goldColor.withOpacity(0.2),
-                    child: const Icon(Icons.person, color: AppTheme.goldColor, size: 30),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_userName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                        const SizedBox(height: 4),
-                        Text(_userPhone, style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
-                      ],
-                    ),
-                  ),
+                  _buildRequestsList(),
+                  _buildReceiveByCode(),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            
-            // المبلغ
-            TextField(
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'المبلغ',
-                border: OutlineInputBorder(),
-                suffixText: 'ر.ي',
-                prefixIcon: Icon(Icons.money),
-              ),
-            ),
-            const SizedBox(height: 12),
-            
-            // ملاحظة
-            TextField(
-              controller: _noteController,
-              maxLines: 2,
-              decoration: const InputDecoration(
-                labelText: 'السبب (اختياري)',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.note),
-              ),
-            ),
-            const SizedBox(height: 24),
-            
-            // زر إنشاء طلب
-            CustomButton(
-              text: 'إنشاء طلب استلام',
-              onPressed: _generateRequest,
-              icon: Icons.qr_code,
-            ),
-            
-            if (_generatedCode.isNotEmpty) ...[
-              const SizedBox(height: 32),
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
-                ),
-                child: Column(
-                  children: [
-                    const Text('رمز الطلب', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    const SizedBox(height: 16),
-                    QrImageView(
-                      data: _generatedCode,
-                      version: QrVersions.auto,
-                      size: 150,
-                      backgroundColor: Colors.white,
-                    ),
-                    const SizedBox(height: 16),
-                    SelectableText(
-                      _generatedCode,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.goldColor),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: _shareRequest,
-                            icon: const Icon(Icons.share),
-                            label: const Text('مشاركة'),
-                            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.copy),
-                            label: const Text('نسخ'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.goldColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.info_outline, color: AppTheme.goldColor),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'شارك هذا الرمز مع المرسل ليتمكن من تحويل المبلغ إليك',
-                        style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            
-            const SizedBox(height: 32),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildRequestsList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(12),
+      itemCount: _requests.length,
+      itemBuilder: (context, index) {
+        final request = _requests[index];
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppTheme.getCardColor(context),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppTheme.goldColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.request_page, color: Colors.orange),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('رمز: ${request['code']}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text('من: ${request['sender']}', style: const TextStyle(fontSize: 12)),
+                    Text(request['date'], style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('${request['amount']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  if (request['status'] == 'pending')
+                    ElevatedButton(
+                      onPressed: () => _acceptRequest(request),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+                      child: const Text('استلام', style: TextStyle(fontSize: 12)),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildReceiveByCode() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DropdownButtonFormField<String>(
+            value: _selectedWallet.isEmpty ? null : _selectedWallet,
+            decoration: InputDecoration(
+              labelText: 'اختر المحفظة المستلمة',
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            items: _wallets.map((wallet) {
+              return DropdownMenuItem<String>(
+                value: wallet['code'],
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        imageUrl: wallet['image'],
+                        width: 30,
+                        height: 30,
+                        fit: BoxFit.cover,
+                        errorWidget: (_, __, ___) => Icon(Icons.account_balance_wallet, size: 20, color: Color(wallet['color'])),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(wallet['name']),
+                  ],
+                ),
+              );
+            }).toList(),
+            onChanged: (value) => setState(() => _selectedWallet = value!),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _codeController,
+            decoration: InputDecoration(
+              labelText: 'رمز الطلب',
+              prefixIcon: const Icon(Icons.qr_code),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _amountController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: 'المبلغ',
+              prefixIcon: const Icon(Icons.attach_money),
+              suffixText: 'ر.ي',
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: (_selectedWallet.isNotEmpty && _codeController.text.isNotEmpty && _amountController.text.isNotEmpty) ? () => _receiveByCode() : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text('استلام', style: TextStyle(fontSize: 18)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _acceptRequest(Map<String, dynamic> request) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('تأكيد استلام الطلب'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.check_circle, size: 60, color: Colors.green),
+            const SizedBox(height: 16),
+            Text('استلام طلب تحويل بقيمة ${request['amount']} ر.ي'),
+            Text('من: ${request['sender']}'),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showSuccessDialog(request['amount']);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            child: const Text('تأكيد'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _receiveByCode() {
+    final amount = _amountController.text;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('تأكيد الاستلام'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.qr_code, size: 60, color: Colors.blue),
+            const SizedBox(height: 16),
+            Text('استلام $amount ر.ي'),
+            Text('برمز الطلب: ${_codeController.text}'),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showSuccessDialog(amount);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            child: const Text('تأكيد'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSuccessDialog(String amount) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('تم استلام التحويل بنجاح'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.check_circle, color: Colors.green, size: 60),
+            const SizedBox(height: 16),
+            Text('تم استلام $amount ر.ي'),
+            const Text('سيتم إضافتها إلى محفظتك'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text('حسناً'),
+          ),
+        ],
       ),
     );
   }
