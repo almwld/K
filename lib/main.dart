@@ -67,6 +67,7 @@ import 'screens/smart_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
+import 'screens/addresses_screen.dart';
 import 'screens/advanced_search_screen.dart';
 
 void main() async {
@@ -245,6 +246,8 @@ class MyApp extends StatelessWidget {
       case '/security_settings':
         return MaterialPageRoute(builder: (_) => const SecuritySettingsScreen());
       case '/payment_methods':
+      case '/addresses':
+        return MaterialPageRoute(builder: (_) => const AddressesScreen());
         return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
       case '/invite_friends':
         return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
