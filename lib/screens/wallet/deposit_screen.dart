@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/custom_button.dart';
 import '../../widgets/simple_app_bar.dart';
+import 'banks_wallets_screen.dart';
+import 'gift_cards_screen.dart';
 
-class DepositScreen extends StatefulWidget {
+class DepositScreen extends StatelessWidget {
   const DepositScreen({super.key});
 
-  @override
-  State<DepositScreen> createState() => _DepositScreenState();
-}
-
-class _DepositScreenState extends State<DepositScreen> {
-  final _amountController = TextEditingController();
-  String? _selectedMethod;
-
-  final List<Map<String, dynamic>> _paymentMethods = [
-    {'id': 'bank', 'name': 'تحويل بنكي', 'icon': Icons.account_balance},
-    {'id': 'card', 'name': 'بطاقة ائتمانية', 'icon': Icons.credit_card},
-    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet},
-    {'id': 'cash', 'name': 'دفع نقدي', 'icon': Icons.money},
+  final List<Map<String, dynamic>> _depositMethods = const [
+    {'id': 'bank', 'name': 'تحويل بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'route': BanksWalletsScreen'},
+    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37, 'route': BanksWalletsScreen},
+    {'id': 'card', 'name': 'بطاقة هدايا', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'route': GiftCardsScreen},
+    {'id': 'cash', 'name': 'إيداع نقدي', 'icon': Icons.money, 'color': 0xFF4CAF50, 'route': null},
   ];
 
   @override
@@ -33,100 +26,156 @@ class _DepositScreenState extends State<DepositScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Amount Input
-            Text(
-              'المبلغ',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getTextColor(context),
-              ),
+            const Text(
+              'اختر طريقة الإيداع',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 16),
+            ..._depositMethods.map((method) => _buildDepositMethod(method, context)),
+            const SizedBox(height: 24),
+            _buildInfoCard(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDepositMethod(Map<String, dynamic> method, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        onTap: () {
+          if (method['route'] != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => method['route']()),
+            );
+          } else {
+            _showCashDepositDialog(context);
+          }
+        },
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Color(method['color']).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(method['icon'], color: Color(method['color']), size: 28),
+        ),
+        title: Text(method['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        tileColor: AppTheme.getCardColor(context),
+      ),
+    );
+  }
+
+  void _showCashDepositDialog(BuildContext context) {
+    final TextEditingController _amountController = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('إيداع نقدي'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.money, size: 50, color: Colors.green),
+            const SizedBox(height: 16),
+            const Text('يمكنك الإيداع النقدي من خلال:'),
             const SizedBox(height: 8),
+            const Text('• فروع فلكس يمن'),
+            const Text('• وكلاء فلكس يمن'),
+            const SizedBox(height: 16),
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: 'أدخل المبلغ',
+                labelText: 'المبلغ',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 suffixText: 'ر.ي',
-                filled: true,
-                fillColor: AppTheme.getCardColor(context),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
               ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Quick Amounts
-            Wrap(
-              spacing: 8,
-              children: [5000, 10000, 25000, 50000, 100000].map((amount) {
-                return ActionChip(
-                  label: Text('$amount ر.ي'),
-                  onPressed: () => _amountController.text = amount.toString(),
-                  backgroundColor: AppTheme.getCardColor(context),
-                );
-              }).toList(),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Payment Methods
-            Text(
-              'طريقة الدفع',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getTextColor(context),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ..._paymentMethods.map((method) {
-              final isSelected = _selectedMethod == method['id'];
-              return Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
-                  borderRadius: BorderRadius.circular(12),
-                  border: isSelected
-                      ? Border.all(color: AppTheme.goldColor, width: 2)
-                      : null,
-                ),
-                child: ListTile(
-                  leading: Icon(method['icon'] as IconData, color: AppTheme.goldColor),
-                  title: Text(method['name'] as String),
-                  trailing: isSelected
-                      ? const Icon(Icons.check_circle, color: AppTheme.goldColor)
-                      : const Icon(Icons.circle_outlined, color: Colors.grey),
-                  onTap: () => setState(() => _selectedMethod = method['id'] as String),
-                ),
-              );
-            }),
-
-            const SizedBox(height: 32),
-
-            CustomButton(
-              text: 'إيداع',
-              onPressed: () {
-                if (_amountController.text.isEmpty || _selectedMethod == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('يرجى إدخال المبلغ واختيار طريقة الدفع')),
-                  );
-                  return;
-                }
-                // Process deposit
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('جاري معالجة الإيداع...')),
-                );
-              },
             ),
           ],
         ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          ElevatedButton(
+            onPressed: () {
+              if (_amountController.text.isNotEmpty) {
+                Navigator.pop(context);
+                _showRequestDialog(context, _amountController.text);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            child: const Text('تقديم طلب'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRequestDialog(BuildContext context, String amount) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('تم تقديم الطلب'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.check_circle, color: Colors.green, size: 60),
+            const SizedBox(height: 16),
+            Text('تم تقديم طلب إيداع بقيمة $amount ر.ي'),
+            const SizedBox(height: 8),
+            const Text('سيتم التواصل معك لتأكيد العملية'),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('حسناً')),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.goldColor.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.goldColor.withOpacity(0.2)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.info_outline, color: Colors.blue),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'معلومات الإيداع',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  '• الحد الأدنى للإيداع 1000 ر.ي',
+                  style: TextStyle(fontSize: 12),
+                ),
+                Text(
+                  '• الإيداع متاح 24/7',
+                  style: TextStyle(fontSize: 12),
+                ),
+                Text(
+                  '• العمولة 0% على الإيداع',
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
