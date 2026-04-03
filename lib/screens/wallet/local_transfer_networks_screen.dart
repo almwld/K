@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 
@@ -16,23 +17,23 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
   final TextEditingController _receiverPhoneController = TextEditingController();
 
   final List<Map<String, dynamic>> _networks = [
-    {'name': 'شبكة حزمي', 'code': 'Hazmi', 'icon': Icons.network_cell, 'color': 0xFF2196F3, 'fee': '1%', 'time': 'فوري'},
-    {'name': 'جيب حوالات', 'code': 'JaibTransfers', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37, 'fee': '0.5%', 'time': 'فوري'},
-    {'name': 'الامتياز', 'code': 'AlEmtiaz', 'icon': Icons.star, 'color': 0xFFFF9800, 'fee': '1.5%', 'time': 'خلال ساعة'},
-    {'name': 'شبكة النجم', 'code': 'AlNajm', 'icon': Icons.star, 'color': 0xFF4CAF50, 'fee': '1%', 'time': 'خلال ساعة'},
-    {'name': 'يمن اكسبرس', 'code': 'YemenExpress', 'icon': Icons.local_shipping, 'color': 0xFFE91E63, 'fee': '1.5%', 'time': 'خلال ساعتين'},
-    {'name': 'إتش بي فاست', 'code': 'HBFast', 'icon': Icons.speed, 'color': 0xFF9C27B0, 'fee': '1%', 'time': 'فوري'},
-    {'name': 'شبكة الحوشي', 'code': 'AlHawshi', 'icon': Icons.network_cell, 'color': 0xFF1B5E20, 'fee': '1.2%', 'time': 'خلال ساعة'},
-    {'name': 'شبكة الاكوع', 'code': 'AlAkoa', 'icon': Icons.network_cell, 'color': 0xFF0D47A1, 'fee': '1%', 'time': 'خلال ساعة'},
-    {'name': 'الشبكة اليمنية للتحويلات', 'code': 'YemenTransfers', 'icon': Icons.public, 'color': 0xFFE65100, 'fee': '1.5%', 'time': 'خلال 24 ساعة'},
-    {'name': 'شبكة المميز', 'code': 'AlMomayaz', 'icon': Icons.workspace_premium, 'color': 0xFFD4AF37, 'fee': '0.8%', 'time': 'فوري'},
-    {'name': 'شبكة الهتار', 'code': 'AlHattar', 'icon': Icons.network_cell, 'color': 0xFF4A148C, 'fee': '1%', 'time': 'خلال ساعة'},
-    {'name': 'شبكة مال موني', 'code': 'MalMoney', 'icon': Icons.money, 'color': 0xFF4CAF50, 'fee': '1%', 'time': 'فوري'},
-    {'name': 'شبكة البرق', 'code': 'AlBarq', 'icon': Icons.flash_on, 'color': 0xFFFF9800, 'fee': '0.8%', 'time': 'فوري'},
-    {'name': 'السريع للحوالات', 'code': 'AlSaree', 'icon': Icons.speed, 'color': 0xFFF44336, 'fee': '1.2%', 'time': 'فوري'},
-    {'name': 'شبكة الناصر', 'code': 'AlNaser', 'icon': Icons.network_cell, 'color': 0xFF2196F3, 'fee': '1%', 'time': 'خلال ساعة'},
-    {'name': 'شبكة المحيط', 'code': 'AlMuheet', 'icon': Icons.water, 'color': 0xFF1B5E20, 'fee': '1.3%', 'time': 'خلال ساعتين'},
-    {'name': 'شبكة العامري كاش', 'code': 'AlAmeryCash', 'icon': Icons.account_balance_wallet, 'color': 0xFF9C27B0, 'fee': '0.9%', 'time': 'فوري'},
+    {'name': 'شبكة حزمي', 'code': 'Hazmi', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF2196F3, 'fee': '1%', 'time': 'فوري'},
+    {'name': 'جيب حوالات', 'code': 'JaibTransfers', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFD4AF37, 'fee': '0.5%', 'time': 'فوري'},
+    {'name': 'الامتياز', 'code': 'AlEmtiaz', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFFF9800, 'fee': '1.5%', 'time': 'خلال ساعة'},
+    {'name': 'شبكة النجم', 'code': 'AlNajm', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4CAF50, 'fee': '1%', 'time': 'خلال ساعة'},
+    {'name': 'يمن اكسبرس', 'code': 'YemenExpress', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFE91E63, 'fee': '1.5%', 'time': 'خلال ساعتين'},
+    {'name': 'إتش بي فاست', 'code': 'HBFast', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF9C27B0, 'fee': '1%', 'time': 'فوري'},
+    {'name': 'شبكة الحوشي', 'code': 'AlHawshi', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF1B5E20, 'fee': '1.2%', 'time': 'خلال ساعة'},
+    {'name': 'شبكة الاكوع', 'code': 'AlAkoa', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF0D47A1, 'fee': '1%', 'time': 'خلال ساعة'},
+    {'name': 'الشبكة اليمنية للتحويلات', 'code': 'YemenTransfers', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFE65100, 'fee': '1.5%', 'time': 'خلال 24 ساعة'},
+    {'name': 'شبكة المميز', 'code': 'AlMomayaz', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFD4AF37, 'fee': '0.8%', 'time': 'فوري'},
+    {'name': 'شبكة الهتار', 'code': 'AlHattar', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4A148C, 'fee': '1%', 'time': 'خلال ساعة'},
+    {'name': 'شبكة مال موني', 'code': 'MalMoney', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4CAF50, 'fee': '1%', 'time': 'فوري'},
+    {'name': 'شبكة البرق', 'code': 'AlBarq', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFFF9800, 'fee': '0.8%', 'time': 'فوري'},
+    {'name': 'السريع للحوالات', 'code': 'AlSaree', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFF44336, 'fee': '1.2%', 'time': 'فوري'},
+    {'name': 'شبكة الناصر', 'code': 'AlNaser', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF2196F3, 'fee': '1%', 'time': 'خلال ساعة'},
+    {'name': 'شبكة المحيط', 'code': 'AlMuheet', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF1B5E20, 'fee': '1.3%', 'time': 'خلال ساعتين'},
+    {'name': 'شبكة العامري كاش', 'code': 'AlAmeryCash', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF9C27B0, 'fee': '0.9%', 'time': 'فوري'},
   ];
 
   @override
@@ -90,7 +91,25 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(network['icon'], color: isSelected ? AppTheme.goldColor : Color(network['color']), size: 32),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: CachedNetworkImage(
+                        imageUrl: network['image'],
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          width: 50, height: 50,
+                          color: Color(network['color']).withOpacity(0.1),
+                          child: Icon(Icons.network_cell, color: Color(network['color']), size: 30),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: 50, height: 50,
+                          color: Color(network['color']).withOpacity(0.1),
+                          child: Icon(Icons.network_cell, color: Color(network['color']), size: 30),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     Text(network['name'], textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, fontSize: 12)),
