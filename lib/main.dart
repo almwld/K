@@ -68,6 +68,7 @@ import 'screens/privacy_settings_screen.dart';
 import 'screens/privacy_block_screen.dart';
 import 'screens/live_support_screen.dart';
 import 'screens/smart_support_screen.dart';
+import 'screens/ai_chat_assistant.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
@@ -289,6 +290,8 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const PrivacyBlockScreen());
       case '/live_support':
       case '/smart_support':
+      case '/ai_chat':
+        return MaterialPageRoute(builder: (_) => const AIChatAssistant());
         return MaterialPageRoute(builder: (_) => const SmartSupportScreen());
         return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
       case '/support_tickets':

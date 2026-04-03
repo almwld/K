@@ -5,6 +5,7 @@ import '../models/product_model.dart';
 import '../widgets/simple_app_bar.dart';
 import 'checkout_screen.dart';
 import 'chat_screen.dart';
+import 'ai_chat_assistant.dart';
 
 class AdDetailScreen extends StatelessWidget {
   final ProductModel? product;
@@ -137,6 +138,29 @@ class AdDetailScreen extends StatelessWidget {
                     },
                     icon: const Icon(Icons.chat),
                     label: const Text('محادثة'),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AIChatAssistant(
+                          product: product,
+                          sellerId: product.sellerId,
+                          sellerName: product.sellerName,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.bolt),
+                  label: const Text('AI مساعد'),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: AppTheme.goldColor),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                ),
+              ),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppTheme.goldColor),
                       padding: const EdgeInsets.symmetric(vertical: 14),
