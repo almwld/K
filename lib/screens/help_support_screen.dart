@@ -7,6 +7,7 @@ class HelpSupportScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> _supportOptions = const [
     {'icon': Icons.chat_bubble_outline, 'title': 'الدردشة المباشرة', 'subtitle': 'تحدث مع فريق الدعم', 'route': '/live_support'},
+    {'icon': Icons.smart_toy, 'title': 'الدعم الذكي', 'subtitle': 'بوت ذكي يجيب على أسئلتك', 'route': '/smart_support'},
     {'icon': Icons.email_outlined, 'title': 'البريد الإلكتروني', 'subtitle': 'support@flexyemen.com', 'route': null},
     {'icon': Icons.phone_outlined, 'title': 'الهاتف', 'subtitle': '777-123-456', 'route': null},
     {'icon': Icons.help_outline, 'title': 'الأسئلة الشائعة', 'subtitle': 'إجابات على أسئلتك', 'route': '/faq'},

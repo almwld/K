@@ -63,6 +63,7 @@ import 'screens/login_history_screen.dart';
 import 'screens/privacy_settings_screen.dart';
 import 'screens/privacy_block_screen.dart';
 import 'screens/live_support_screen.dart';
+import 'screens/smart_support_screen.dart';
 import 'screens/support_tickets_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/payment_method_screen.dart';
@@ -272,6 +273,8 @@ class MyApp extends StatelessWidget {
       case '/privacy_block':
         return MaterialPageRoute(builder: (_) => const PrivacyBlockScreen());
       case '/live_support':
+      case '/smart_support':
+        return MaterialPageRoute(builder: (_) => const SmartSupportScreen());
         return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
       case '/support_tickets':
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
