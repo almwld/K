@@ -21,28 +21,129 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentCarouselIndex = 0;
   
+  // 10 سلايدرات لمطاعم وأكلات شهية
   final List<Map<String, dynamic>> _carouselItems = [
-    {'image': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800', 'title': 'عروض رمضان', 'subtitle': 'خصومات تصل إلى 50%'},
-    {'image': 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800', 'title': 'تخفيضات الصيف', 'subtitle': 'أفضل العروض'},
-    {'image': 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800', 'title': 'مزاد الجنابي', 'subtitle': 'أكبر مزاد للسيوف التراثية'},
+    {
+      'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800',
+      'title': 'مندي يمني',
+      'subtitle': 'لحم ضأن مع أرز - طعم لا يقاوم',
+      'restaurant': 'مطعم المندي الملكي',
+      'discount': '20%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=800',
+      'title': 'مقلقل دجاج',
+      'subtitle': 'بهارات يمنية أصلية',
+      'restaurant': 'مطعم المقلقل اليمني',
+      'discount': '15%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800',
+      'title': 'فتة يمنية',
+      'subtitle': 'فتة باللحم والزبادي',
+      'restaurant': 'مطعم الفتة الشعبية',
+      'discount': '10%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800',
+      'title': 'شاورما عربية',
+      'subtitle': 'دجاج ولحم - ساندوتشات شهية',
+      'restaurant': 'مطعم الشاورما الملكي',
+      'discount': '25%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800',
+      'title': 'زبيدي بالخضار',
+      'subtitle': 'سمك طازج مع أرز',
+      'restaurant': 'مطعم السمك اليمني',
+      'discount': '30%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800',
+      'title': 'عصير طازج',
+      'subtitle': 'عصائر فواكه طبيعية',
+      'restaurant': 'عصائر الطبيعية',
+      'discount': '10%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=800',
+      'title': 'حلويات شرقية',
+      'subtitle': 'كنافة، بقلاوة، قطايف',
+      'restaurant': 'حلويات الشام',
+      'discount': '20%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800',
+      'title': 'بيتزا إيطالية',
+      'subtitle': 'بيتزا طازجة بالجبن',
+      'restaurant': 'بيتزا إيطاليا',
+      'discount': '15%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
+      'title': 'برجر لحم',
+      'subtitle': 'برجر طازج مع بطاطس',
+      'restaurant': 'برجر هاوس',
+      'discount': '20%',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800',
+      'title': 'كبة وسبرينغ رول',
+      'subtitle': 'مقبلات ساخنة متنوعة',
+      'restaurant': 'مقبلات الشرق',
+      'discount': '10%',
+    },
   ];
 
-  // 30 منتج مقترح
-  final List<Map<String, dynamic>> _featuredProducts = List.generate(30, (index) {
-    final products = [
-      {'name': 'تويوتا كامري 2024', 'price': '850,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300'},
-      {'name': 'ماك بوك برو M3', 'price': '1,800,000', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300'},
-      {'name': 'سامسونج اس 24 الترا', 'price': '350,000', 'image': 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300'},
-      {'name': 'ايفون 15 برو', 'price': '400,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300'},
-      {'name': 'ساعة ابل', 'price': '120,000', 'image': 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=300'},
-      {'name': 'سماعات ايربودز', 'price': '45,000', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=300'},
-      {'name': 'بلاي ستيشن 5', 'price': '250,000', 'image': 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300'},
-      {'name': 'شاشة سامسونج 65 بوصة', 'price': '350,000', 'image': 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300'},
-      {'name': 'ثلاجة سامسونج', 'price': '280,000', 'image': 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=300'},
-      {'name': 'غسالة اتوماتيك', 'price': '95,000', 'image': 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=300'},
-    ];
-    return products[index % products.length];
-  });
+  // 30 منتج مميز (عقارات + مولات + منتجات متنوعة)
+  final List<Map<String, dynamic>> _featuredProducts = [
+    // عقارات فاخرة
+    {'name': 'فيلا فاخرة في صنعاء', 'price': '45,000,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300', 'tag': 'عقار', 'tagColor': 0xFF2196F3},
+    {'name': 'شقة مطلة على البحر - عدن', 'price': '25,000,000', 'image': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300', 'tag': 'عقار', 'tagColor': 0xFF2196F3},
+    {'name': 'أرض سكنية - تعز', 'price': '12,000,000', 'image': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300', 'tag': 'عقار', 'tagColor': 0xFF2196F3},
+    {'name': 'برج تجاري - المكلا', 'price': '120,000,000', 'image': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300', 'tag': 'عقار', 'tagColor': 0xFF2196F3},
+    {'name': 'منتجع سياحي - سقطرى', 'price': '250,000,000', 'image': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300', 'tag': 'عقار', 'tagColor': 0xFF2196F3},
+    
+    // مولات ومراكز تجارية
+    {'name': 'مول اليمن مول - صنعاء', 'price': '85,000,000', 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=300', 'tag': 'مول', 'tagColor': 0xFF9C27B0},
+    {'name': 'سيتي مول - عدن', 'price': '65,000,000', 'image': 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=300', 'tag': 'مول', 'tagColor': 0xFF9C27B0},
+    {'name': 'الراشد مول - تعز', 'price': '55,000,000', 'image': 'https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=300', 'tag': 'مول', 'tagColor': 0xFF9C27B0},
+    {'name': 'الهايبر مول - الحديدة', 'price': '45,000,000', 'image': 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300', 'tag': 'مول', 'tagColor': 0xFF9C27B0},
+    {'name': 'فاميلي مول - إب', 'price': '35,000,000', 'image': 'https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?w=300', 'tag': 'مول', 'tagColor': 0xFF9C27B0},
+    
+    // سيارات فاخرة
+    {'name': 'تويوتا كامري 2024', 'price': '8,500,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300', 'tag': 'سيارة', 'tagColor': 0xFF4CAF50},
+    {'name': 'مرسيدس S-Class', 'price': '45,000,000', 'image': 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=300', 'tag': 'سيارة', 'tagColor': 0xFF4CAF50},
+    {'name': 'بي إم دبليو X6', 'price': '38,000,000', 'image': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300', 'tag': 'سيارة', 'tagColor': 0xFF4CAF50},
+    
+    // إلكترونيات فاخرة
+    {'name': 'ماك بوك برو M3', 'price': '1,800,000', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300', 'tag': 'إلكتروني', 'tagColor': 0xFFE91E63},
+    {'name': 'ايفون 15 برو ماكس', 'price': '450,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300', 'tag': 'إلكتروني', 'tagColor': 0xFFE91E63},
+    {'name': 'سامسونج اس 24 الترا', 'price': '380,000', 'image': 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300', 'tag': 'إلكتروني', 'tagColor': 0xFFE91E63},
+    
+    // أجهزة منزلية فاخرة
+    {'name': 'ثلاجة سامسونج 24 قدم', 'price': '350,000', 'image': 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=300', 'tag': 'منزلي', 'tagColor': 0xFF795548},
+    {'name': 'غسالة LG أوتوماتيك', 'price': '120,000', 'image': 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=300', 'tag': 'منزلي', 'tagColor': 0xFF795548},
+    {'name': 'مكيف سبليت 3 طن', 'price': '95,000', 'image': 'https://images.unsplash.com/photo-1633608607992-28810f6df2db?w=300', 'tag': 'منزلي', 'tagColor': 0xFF795548},
+    
+    // مجوهرات وساعات
+    {'name': 'ساعة رولكس', 'price': '850,000', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=300', 'tag': 'مجوهرات', 'tagColor': 0xFFFF9800},
+    {'name': 'طقم ذهب عيار 21', 'price': '1,200,000', 'image': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300', 'tag': 'مجوهرات', 'tagColor': 0xFFFF9800},
+    {'name': 'ألماسة 5 قيراط', 'price': '5,000,000', 'image': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300', 'tag': 'مجوهرات', 'tagColor': 0xFFFF9800},
+    
+    // عطور فاخرة
+    {'name': 'عود كمبودي فاخر', 'price': '250,000', 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300', 'tag': 'عطر', 'tagColor': 0xFF9C27B0},
+    {'name': 'مسك أبيض ملكي', 'price': '180,000', 'image': 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=300', 'tag': 'عطر', 'tagColor': 0xFF9C27B0},
+    
+    // مطاعم فاخرة
+    {'name': 'عشاء رومانسي (لفردين)', 'price': '25,000', 'image': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300', 'tag': 'مطعم', 'tagColor': 0xFFF44336},
+    {'name': 'بوفيه مفتوح (10 أشخاص)', 'price': '80,000', 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300', 'tag': 'مطعم', 'tagColor': 0xFFF44336},
+    
+    // خدمات فاخرة
+    {'name': 'تنسيق حفلات زفاف', 'price': '150,000', 'image': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300', 'tag': 'خدمة', 'tagColor': 0xFF607D8B},
+    {'name': 'تنظيف منازل (شامل)', 'price': '35,000', 'image': 'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=300', 'tag': 'خدمة', 'tagColor': 0xFF607D8B},
+    {'name': 'تصميم داخلي فاخر', 'price': '200,000', 'image': 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=300', 'tag': 'خدمة', 'tagColor': 0xFF607D8B},
+  ];
 
   final List<Map<String, dynamic>> _mainCategories = [
     {'id': 'real_estate', 'name': 'عقارات', 'icon': Icons.house, 'color': 0xFF2196F3},
@@ -82,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildSectionHeader('جميع الأقسام', 'عرض الكل'),
             _buildAllCategories(),
             const SizedBox(height: 24),
-            _buildSectionHeader('منتجات مميزة', ''),
+            _buildSectionHeader('منتجات حصرية', ''),
             _buildFeaturedProducts(),
             const SizedBox(height: 16),
             _buildBottomNavBar(),
@@ -93,69 +194,128 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCarousel() {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 180,
-        autoPlay: true,
-        enlargeCenterPage: true,
-        viewportFraction: 0.9,
-        onPageChanged: (index, reason) {
-          setState(() {
-            _currentCarouselIndex = index;
-          });
-        },
-      ),
-      items: _carouselItems.map((item) {
-        return Builder(
-          builder: (BuildContext context) {
-            return Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                  image: NetworkImage(item['image']),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
-                  ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          item['title'],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          item['subtitle'],
-                          style: const TextStyle(color: Colors.white70),
-                        ),
-                      ],
+    return Column(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 200,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 4),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            enlargeCenterPage: true,
+            viewportFraction: 0.9,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentCarouselIndex = index;
+              });
+            },
+          ),
+          items: _carouselItems.map((item) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      image: NetworkImage(item['image']),
+                      fit: BoxFit.cover,
                     ),
                   ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.goldColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    'خصم ${item['discount']}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              item['title'],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              item['subtitle'],
+                              style: const TextStyle(color: Colors.white70, fontSize: 12),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Icon(Icons.restaurant, size: 12, color: Colors.white70),
+                                const SizedBox(width: 4),
+                                Text(
+                                  item['restaurant'],
+                                  style: const TextStyle(color: Colors.white70, fontSize: 10),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: _carouselItems.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => _buildCarousel(),
+              child: Container(
+                width: 8.0,
+                height: 8.0,
+                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _currentCarouselIndex == entry.key
+                      ? AppTheme.goldColor
+                      : Colors.grey.withOpacity(0.5),
                 ),
               ),
             );
-          },
-        );
-      }).toList(),
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -350,16 +510,39 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network(
-                  product['image'],
-                  height: 130,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    height: 130,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image),
-                  ),
+                child: Stack(
+                  children: [
+                    Image.network(
+                      product['image'],
+                      height: 130,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        height: 130,
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.image),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Color(product['tagColor']),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          product['tag'],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
@@ -371,7 +554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       product['name'],
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -379,6 +562,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         color: AppTheme.goldColor,
                         fontWeight: FontWeight.bold,
+                        fontSize: 14,
                       ),
                     ),
                   ],
