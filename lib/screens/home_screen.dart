@@ -53,6 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'مكاتب', 'count': 78, 'icon': Icons.business},
   ];
 
+  final List<Map<String, dynamic>> _auctionsList = [
+    {'title': 'ساعة رولكس', 'price': '620,000', 'time': '02:45:30'},
+    {'title': 'لوحة فنية', 'price': '280,000', 'time': '05:20:15'},
+    {'title': 'عملة نادرة', 'price': '8,500', 'time': '23:59:59'},
+    {'title': 'جنبية يمنية', 'price': '145,000', 'time': '01:30:00'},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -328,8 +335,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: 4,
+            itemCount: _auctionsList.length,
             itemBuilder: (context, index) {
+              final auction = _auctionsList[index];
               return Container(
                 width: 160,
                 margin: const EdgeInsets.only(left: 12),
@@ -356,19 +364,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'منتج مزاد',
+                          Text(
+                            auction['title']!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.getTextColor(context),
+                            ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            '0 ر.ي',
-                            style: TextStyle(
+                          Text(
+                            '${auction['price']} ر.ي',
+                            style: const TextStyle(
                               color: AppTheme.goldColor,
                               fontWeight: FontWeight.bold,
                             ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.timer, size: 12, color: Colors.red),
+                              const SizedBox(width: 4),
+                              Text(
+                                auction['time']!,
+                                style: const TextStyle(fontSize: 10, color: Colors.red),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 4),
                           Container(
@@ -604,76 +626,3 @@ class _HomeScreenState extends State<HomeScreen> {
     ).animate().fadeIn(delay: 600.ms);
   }
 }
-
-  // تحديث قسم المزادات بمنتجات حقيقية
-  Widget _buildAuctionsSection() {
-    final auctions = [
-      {'title': 'ساعة رولكس', 'price': '620,000', 'time': '02:45:30'},
-      {'title': 'لوحة فنية', 'price': '280,000', 'time': '05:20:15'},
-      {'title': 'عملة نادرة', 'price': '8,500', 'time': '23:59:59'},
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('مزاد الجنابي الأسبوعي', style: TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.getTextColor(context))),
-              TextButton(onPressed: () => Navigator.pushNamed(context, '/auctions'), child: const Text('المزيد', style: TextStyle(color: AppTheme.goldColor))),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 180,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: auctions.length,
-            itemBuilder: (context, index) {
-              final auction = auctions[index];
-              return Container(
-                width: 160,
-                margin: const EdgeInsets.only(left: 12),
-                decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: AppTheme.goldColor.withOpacity(0.1),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                      ),
-                      child: const Center(child: Icon(Icons.gavel, color: AppTheme.goldColor, size: 40)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(auction['title']!, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 4),
-                          Text('${auction['price']} ر.ي', style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 4),
-                          Row(children: [const Icon(Icons.timer, size: 12, color: Colors.red), const SizedBox(width: 4), Text(auction['time']!, style: const TextStyle(fontSize: 10, color: Colors.red))]),
-                          const SizedBox(height: 4),
-                          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Text('مزايدة', style: TextStyle(fontSize: 10, color: AppTheme.goldColor))),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
