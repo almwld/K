@@ -1,74 +1,112 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/simple_app_bar.dart';
+import '../../widgets/custom_button.dart';
 
-class LiveSupportScreen extends StatelessWidget {
+class LiveSupportScreen extends StatefulWidget {
   const LiveSupportScreen({super.key});
 
   @override
+  State<LiveSupportScreen> createState() => _LiveSupportScreenState();
+}
+
+class _LiveSupportScreenState extends State<LiveSupportScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  List<Map<String, dynamic>> _messages = [
+    {'sender': 'support', 'message': 'مرحباً! كيف يمكنني مساعدتك؟', 'time': 'الآن'},
+  ];
+  
+  void _sendMessage() {
+    if (_messageController.text.trim().isEmpty) return;
+    setState(() {
+      _messages.add({
+        'sender': 'user',
+        'message': _messageController.text.trim(),
+        'time': 'الآن',
+      });
+      _messageController.clear();
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _messages.add({
+          'sender': 'support',
+          'message': 'شكراً لتواصلك. سيتم الرد عليك قريباً.',
+          'time': 'الآن',
+        });
+      });
+    });
+  }
+  
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الدعم المباشر'),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const CircleAvatar(child: Icon(Icons.headset_mic)),
-                  const SizedBox(width: 12),
-                  Expanded(
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final msg = _messages[index];
+                final isUser = msg['sender'] == 'user';
+                return Align(
+                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+                    decoration: BoxDecoration(
+                      color: isUser ? AppTheme.goldColor : AppTheme.getCardColor(context),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text('الدردشة مع الدعم', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(msg['message'], style: TextStyle(color: isUser ? Colors.black : AppTheme.getTextColor(context))),
                         const SizedBox(height: 4),
-                        Text('متوفر 24/7', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                        Text(msg['time'], style: const TextStyle(fontSize: 10, color: Colors.grey)),
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // open chat or start live call
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
-                    child: const Text('بدء الدردشة'),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.help_outline),
-                    title: const Text('الأسئلة الشائعة'),
-                    onTap: () {},
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.email_outlined),
-                    title: const Text('إرسال بريد للدعم'),
-                    onTap: () {},
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.phone_outlined),
-                    title: const Text('الاتصال بنا'),
-                    onTap: () {},
-                  ),
-                ],
-              ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppTheme.getCardColor(context),
+              border: Border(top: BorderSide(color: AppTheme.getDividerColor(context))),
             ),
-          ],
-        ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: 'اكتب رسالتك...',
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
+                      filled: true,
+                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[100],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.black),
+                    onPressed: _sendMessage,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

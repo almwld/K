@@ -17,36 +17,56 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSection(context, 'مقدمة', 'نحن في Flex Yemen نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيفية جمعنا واستخدامنا وحمايتنا لمعلوماتك.'),
-            _buildBulletSection(context, 'المعلومات التي نجمعها', [
-              'المعلومات الشخصية: الاسم، رقم الهاتف، البريد الإلكتروني، العنوان',
-              'معلومات المعاملات: الطلبات، عمليات الشراء، سجل الدفع',
-              'المعلومات التقنية: نوع الجهاز، نظام التشغيل، عنوان IP',
-              'معلومات الموقع: الموقع الجغرافي لتحسين الخدمة',
+            _buildSection('مقدمة', 'نحن في Flex Yemen نلتزم بحماية خصوصيتك وبياناتك الشخصية. توضح هذه السياسة كيفية جمعنا واستخدامنا وحمايتنا لمعلوماتك.'),
+            _buildBulletSection('المعلومات التي نجمعها', [
+              'الاسم الكامل، البريد الإلكتروني، رقم الهاتف',
+              'معلومات الدفع والمعاملات المالية',
+              'بيانات الموقع الجغرافي',
+              'سجل التصفح والبحث',
+              'الصور والمستندات التي ترفعها',
             ]),
-            _buildBulletSection(context, 'استخدام المعلومات', [
-              'تشغيل التطبيق وتقديم الخدمات',
+            _buildBulletSection('كيف نستخدم معلوماتك', [
+              'توفير وتحسين خدمات المنصة',
               'معالجة الطلبات والمدفوعات',
-              'إرسال الإشعارات والتحديثات',
-              'تقديم دعم العملاء',
-              'تحسين تجربة المستخدم',
+              'التواصل معك بشأن حسابك وطلباتك',
+              'إرسال العروض والتحديثات (يمكنك إلغاء الاشتراك)',
+              'الامتثال للالتزامات القانونية',
             ]),
-            _buildBulletSection(context, 'مشاركة البيانات', [
+            _buildBulletSection('حماية المعلومات', [
+              'نستخدم تشفير SSL لحماية بياناتك',
+              'نخزن بياناتك على خوادم آمنة',
+              'نحدد الوصول إلى بياناتك للموظفين المصرح لهم فقط',
+              'نقوم بمراجعات أمنية دورية',
+            ]),
+            _buildBulletSection('مشاركة المعلومات', [
               'لا نبيع بياناتك لأي طرف ثالث',
-              'نشارك فقط مع مزودي الدفع وشركات الشحن',
-              'قد نشارك مع السلطات إذا تطلب القانون ذلك',
+              'نشارك المعلومات مع شركات الشحن لتوصيل الطلبات',
+              'قد نشارك المعلومات مع السلطات إذا تطلب القانون ذلك',
             ]),
-            _buildBulletSection(context, 'حقوق المستخدم', [
+            _buildBulletSection('حقوقك', [
               'الحق في الوصول إلى بياناتك',
-              'الحق في تعديل معلوماتك',
-              'الحق في حذف حسابك',
-              'الحق في إيقاف الإشعارات',
+              'الحق في تصحيح بياناتك',
+              'الحق في حذف بياناتك',
+              'الحق في نقل بياناتك',
+              'الحق في الاعتراض على معالجة بياناتك',
             ]),
-            _buildSection(context, 'اتصل بنا', 'لأي استفسارات، يرجى التواصل معنا على: privacy@flexyemen.com'),
-            const SizedBox(height: 24),
-            Text(
-              'آخر تحديث: مارس 2026',
-              style: TextStyle(color: AppTheme.getSecondaryTextColor(context), fontSize: 12),
+            _buildSection('ملفات تعريف الارتباط (Cookies)', 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. يمكنك تعطيلها من إعدادات المتصفح.'),
+            _buildSection('تخزين البيانات', 'نحتفظ ببياناتك طالما أن حسابك نشط. يمكنك طلب حذف بياناتك في أي وقت.'),
+            _buildSection('خصوصية الأطفال', 'لا نستخدم خدماتنا للأطفال دون سن 18 عاماً. إذا علمنا بذلك، سنحذف الحساب فوراً.'),
+            _buildSection('التعديلات', 'قد نقوم بتحديث سياسة الخصوصية من وقت لآخر. سنقوم بإشعارك بأي تغييرات جوهرية.'),
+            _buildSection('اتصل بنا', 'للاستفسارات: privacy@flexyemen.com'),
+            const SizedBox(height: 32),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.goldColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Text(
+                'آخر تحديث: 1 أبريل 2026',
+                style: TextStyle(fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
@@ -54,38 +74,35 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(BuildContext context, String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: const TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
-        const SizedBox(height: 8),
-        Text(content, style: const TextStyle(height: 1.6)),
-        const SizedBox(height: 24),
-      ],
-    );
-  }
-
-  Widget _buildBulletSection(BuildContext context, String title, List<String> items) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: const TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
-        const SizedBox(height: 8),
-        ...items.map((item) => _buildBulletPoint(context, item)),
-        const SizedBox(height: 24),
-      ],
-    );
-  }
-
-  Widget _buildBulletPoint(BuildContext context, String text) {
+  Widget _buildSection(String title, String content) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4, right: 16),
-      child: Row(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('- ', style: TextStyle(fontSize: 14, color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
-          Expanded(child: Text(text, style: const TextStyle(fontSize: 14, height: 1.5))),
+          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
+          const SizedBox(height: 8),
+          Text(content, style: const TextStyle(height: 1.5)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBulletSection(String title, List<String> items) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
+          const SizedBox(height: 8),
+          ...items.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 4, right: 16),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Text('• ', style: TextStyle(fontSize: 16, color: AppTheme.goldColor)),
+              Expanded(child: Text(item)),
+            ]),
+          )),
         ],
       ),
     );
