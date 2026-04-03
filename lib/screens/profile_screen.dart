@@ -47,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     {'title': 'الإحصائيات', 'icon': Icons.analytics, 'color': 0xFF00BCD4, 'route': '/statistics'},
     {'title': 'الإعدادات', 'icon': Icons.settings_outlined, 'color': 0xFF607D8B, 'route': '/settings'},
     {'title': 'عناويني', 'icon': Icons.location_on, 'color': 0xFF4CAF50, 'route': '/addresses'},
+    {'title': 'طرق الدفع', 'icon': Icons.credit_card, 'color': 0xFF2196F3, 'route': '/saved_payment_methods'},
     {'title': 'المساعدة', 'icon': Icons.help_outline, 'color': 0xFF00BCD4, 'route': '/help_support'},
     {'title': 'الدعم الذكي', 'icon': Icons.smart_toy, 'color': 0xFF9C27B0, 'route': '/smart_support'},
     {'title': 'دعوة الأصدقاء', 'icon': Icons.share, 'color': 0xFF4CAF50, 'route': '/invite_friends'},
