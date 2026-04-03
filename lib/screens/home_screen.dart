@@ -305,3 +305,40 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+  // إضافة روابط سريعة في الأعلى
+  Widget _buildQuickLinks() {
+    final quickLinks = [
+      {'icon': Icons.local_offer, 'label': 'عروض', 'color': 0xFFE74C3C, 'route': '/all_ads'},
+      {'icon': Icons.gavel, 'label': 'مزادات', 'color': 0xFFFF9800, 'route': '/auctions'},
+      {'icon': Icons.store, 'label': 'متاجر', 'color': 0xFF2196F3, 'route': '/nearby_stores'},
+      {'icon': Icons.support_agent, 'label': 'مساعد', 'color': 0xFF4CAF50, 'route': '/ai_chat'},
+    ];
+    
+    return Container(
+      height: 70,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: quickLinks.map((link) {
+          return GestureDetector(
+            onTap: () => Navigator.pushNamed(context, link['route']),
+            child: Column(
+              children: [
+                Container(
+                  width: 45, height: 45,
+                  decoration: BoxDecoration(
+                    color: Color(link['color']).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(link['icon'], color: Color(link['color']), size: 24),
+                ),
+                const SizedBox(height: 4),
+                Text(link['label'], style: const TextStyle(fontSize: 10)),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }

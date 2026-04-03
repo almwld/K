@@ -47,6 +47,7 @@ class SettingsScreen extends StatelessWidget {
             Navigator.pushNamed(context, '/privacy_policy');
           }),
           _buildItem(context, Icons.info, 'حول التطبيق', 'الإصدار 1.0.0', () {
+    {'title': 'حول Flex Yemen', 'icon': Icons.info, 'color': 0xFF9C27B0, 'route': '/about_app'},
             Navigator.pushNamed(context, '/about');
           }),
           

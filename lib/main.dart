@@ -240,6 +240,10 @@ class MyApp extends StatelessWidget {
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/about':
+      case '/about_app':
+        return MaterialPageRoute(builder: (_) => const AboutAppScreen());
+      case '/push_notifications':
+        return MaterialPageRoute(builder: (_) => const PushNotificationsScreen());
         return MaterialPageRoute(builder: (_) => const AboutScreen());
       case '/account_info':
         return MaterialPageRoute(builder: (_) => const AccountSettingsScreen());
