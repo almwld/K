@@ -322,7 +322,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     items: _currencies.map((currency) {
-                      return DropdownMenuItem(
+                      return DropdownMenuItem<String>(
                         value: currency['code'],
                         child: Text('${currency['name']} (${currency['symbol']})'),
                       );
