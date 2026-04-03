@@ -21,77 +21,97 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentCarouselIndex = 0;
   
-  // 10 سلايدرات لمطاعم وأكلات شهية
+  // 10 سلايدرات تغطي جميع أقسام المتجر
   final List<Map<String, dynamic>> _carouselItems = [
     {
-      'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800',
-      'title': 'مندي يمني',
-      'subtitle': 'لحم ضأن مع أرز - طعم لا يقاوم',
-      'restaurant': 'مطعم المندي الملكي',
-      'discount': '20%',
+      'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800',
+      'title': 'عقارات فاخرة',
+      'subtitle': 'فلل، شقق، أراضي بأسعار مميزة',
+      'category': 'عقارات',
+      'categoryId': 'real_estate',
+      'discount': 'خصم يصل إلى 30%',
+      'icon': Icons.house,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=800',
-      'title': 'مقلقل دجاج',
-      'subtitle': 'بهارات يمنية أصلية',
-      'restaurant': 'مطعم المقلقل اليمني',
-      'discount': '15%',
+      'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
+      'title': 'سيارات جديدة ومستعملة',
+      'subtitle': 'أحدث الموديلات بأفضل الأسعار',
+      'category': 'سيارات',
+      'categoryId': 'cars',
+      'discount': 'تخفيضات تصل إلى 25%',
+      'icon': Icons.directions_car,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800',
-      'title': 'فتة يمنية',
-      'subtitle': 'فتة باللحم والزبادي',
-      'restaurant': 'مطعم الفتة الشعبية',
-      'discount': '10%',
+      'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800',
+      'title': 'إلكترونيات وأجهزة',
+      'subtitle': 'هواتف، كمبيوترات، شاشات',
+      'category': 'إلكترونيات',
+      'categoryId': 'electronics',
+      'discount': 'خصم يصل إلى 40%',
+      'icon': Icons.electrical_services,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800',
-      'title': 'شاورما عربية',
-      'subtitle': 'دجاج ولحم - ساندوتشات شهية',
-      'restaurant': 'مطعم الشاورما الملكي',
-      'discount': '25%',
+      'image': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800',
+      'title': 'أزياء وموضة',
+      'subtitle': 'ملابس، أحذية، إكسسوارات',
+      'category': 'أزياء',
+      'categoryId': 'fashion',
+      'discount': 'تخفيضات تصل إلى 50%',
+      'icon': Icons.checkroom,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800',
-      'title': 'زبيدي بالخضار',
-      'subtitle': 'سمك طازج مع أرز',
-      'restaurant': 'مطعم السمك اليمني',
-      'discount': '30%',
+      'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800',
+      'title': 'أثاث منزلي فاخر',
+      'subtitle': 'غرف نوم، مجالس، مطابخ',
+      'category': 'أثاث',
+      'categoryId': 'furniture',
+      'discount': 'خصم يصل إلى 35%',
+      'icon': Icons.weekend,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800',
-      'title': 'عصير طازج',
-      'subtitle': 'عصائر فواكه طبيعية',
-      'restaurant': 'عصائر الطبيعية',
-      'discount': '10%',
+      'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800',
+      'title': 'مطاعم وأكلات شهية',
+      'subtitle': 'أشهى المأكولات اليمنية والعربية',
+      'category': 'مطاعم',
+      'categoryId': 'restaurants',
+      'discount': 'عروض تصل إلى 30%',
+      'icon': Icons.restaurant,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=800',
-      'title': 'حلويات شرقية',
-      'subtitle': 'كنافة، بقلاوة، قطايف',
-      'restaurant': 'حلويات الشام',
-      'discount': '20%',
+      'image': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800',
+      'title': 'خدمات منزلية ومهنية',
+      'subtitle': 'تنظيف، صيانة، نقل أثاث',
+      'category': 'خدمات',
+      'categoryId': 'services',
+      'discount': 'خصم 20% للخدمات الأولى',
+      'icon': Icons.build,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800',
-      'title': 'بيتزا إيطالية',
-      'subtitle': 'بيتزا طازجة بالجبن',
-      'restaurant': 'بيتزا إيطاليا',
-      'discount': '15%',
+      'image': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800',
+      'title': 'ألعاب إلكترونية',
+      'subtitle': 'بلاي ستيشن، ألعاب كمبيوتر',
+      'category': 'ألعاب',
+      'categoryId': 'games',
+      'discount': 'تخفيضات تصل إلى 45%',
+      'icon': Icons.sports_esports,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
-      'title': 'برجر لحم',
-      'subtitle': 'برجر طازج مع بطاطس',
-      'restaurant': 'برجر هاوس',
-      'discount': '20%',
+      'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800',
+      'title': 'صحة وجمال',
+      'subtitle': 'مكياج، عطور، عناية بالبشرة',
+      'category': 'جمال',
+      'categoryId': 'beauty',
+      'discount': 'خصم يصل إلى 30%',
+      'icon': Icons.spa,
     },
     {
-      'image': 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800',
-      'title': 'كبة وسبرينغ رول',
-      'subtitle': 'مقبلات ساخنة متنوعة',
-      'restaurant': 'مقبلات الشرق',
-      'discount': '10%',
+      'image': 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800',
+      'title': 'كتب وتعليم',
+      'subtitle': 'كتب، دورات، مستلزمات مدرسية',
+      'category': 'تعليم',
+      'categoryId': 'education',
+      'discount': 'خصم 25%',
+      'icon': Icons.menu_book,
     },
   ];
 
@@ -129,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // مجوهرات وساعات
     {'name': 'ساعة رولكس', 'price': '850,000', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=300', 'tag': 'مجوهرات', 'tagColor': 0xFFFF9800},
     {'name': 'طقم ذهب عيار 21', 'price': '1,200,000', 'image': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300', 'tag': 'مجوهرات', 'tagColor': 0xFFFF9800},
-    {'name': 'ألماسة 5 قيراط', 'price': '5,000,000', 'image': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300', 'tag': 'مجوهرات', 'tagColor': 0xFFFF9800},
     
     // عطور فاخرة
     {'name': 'عود كمبودي فاخر', 'price': '250,000', 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300', 'tag': 'عطر', 'tagColor': 0xFF9C27B0},
@@ -213,79 +232,94 @@ class _HomeScreenState extends State<HomeScreen> {
           items: _carouselItems.map((item) {
             return Builder(
               builder: (BuildContext context) {
-                return Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      image: NetworkImage(item['image']),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CategoryProductsScreen(
+                          categoryId: item['categoryId'],
+                          categoryName: item['category'],
+                        ),
+                      ),
+                    );
+                  },
                   child: Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                      image: DecorationImage(
+                        image: NetworkImage(item['image']),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.goldColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    'خصم ${item['discount']}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(item['icon'], size: 16, color: Colors.white),
+                                  const SizedBox(width: 4),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.goldColor,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      item['discount'],
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item['title'],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                                ],
                               ),
-                            ),
-                            Text(
-                              item['subtitle'],
-                              style: const TextStyle(color: Colors.white70, fontSize: 12),
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Icon(Icons.restaurant, size: 12, color: Colors.white70),
-                                const SizedBox(width: 4),
-                                Text(
-                                  item['restaurant'],
+                              const SizedBox(height: 4),
+                              Text(
+                                item['title'],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                item['subtitle'],
+                                style: const TextStyle(color: Colors.white70, fontSize: 12),
+                              ),
+                              const SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  item['category'],
                                   style: const TextStyle(color: Colors.white70, fontSize: 10),
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
