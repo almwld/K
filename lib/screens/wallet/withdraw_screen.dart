@@ -162,7 +162,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             ),
             items: _banks.map((bank) {
-              return DropdownMenuItem(
+              return DropdownMenuItem<String>(
                 value: bank['id'],
                 child: Row(
                   children: [

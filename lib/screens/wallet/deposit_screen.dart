@@ -8,10 +8,10 @@ class DepositScreen extends StatelessWidget {
   const DepositScreen({super.key});
 
   final List<Map<String, dynamic>> _depositMethods = const [
-    {'id': 'bank', 'name': 'تحويل بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'route': BanksWalletsScreen'},
-    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37, 'route': BanksWalletsScreen},
-    {'id': 'card', 'name': 'بطاقة هدايا', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'route': GiftCardsScreen},
-    {'id': 'cash', 'name': 'إيداع نقدي', 'icon': Icons.money, 'color': 0xFF4CAF50, 'route': null},
+    {'id': 'bank', 'name': 'تحويل بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20},
+    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37},
+    {'id': 'card', 'name': 'بطاقة هدايا', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63},
+    {'id': 'cash', 'name': 'إيداع نقدي', 'icon': Icons.money, 'color': 0xFF4CAF50},
   ];
 
   @override
@@ -45,10 +45,15 @@ class DepositScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         onTap: () {
-          if (method['route'] != null) {
+          if (method['id'] == 'bank' || method['id'] == 'wallet') {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => method['route']()),
+              MaterialPageRoute(builder: (_) => const BanksWalletsScreen()),
+            );
+          } else if (method['id'] == 'card') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const GiftCardsScreen()),
             );
           } else {
             _showCashDepositDialog(context);
