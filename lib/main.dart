@@ -137,24 +137,53 @@ class MyApp extends StatelessWidget {
   }
 
   Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
-    // مسارات الفئات الديناميكية
+    // مسارات الفئات الديناميكية - تم الإصلاح: تغيير category إلى categoryId
     if (settings.name != null && settings.name!.startsWith('/category/')) {
-      final category = settings.name!.replaceFirst('/category/', '');
+      final categoryId = settings.name!.replaceFirst('/category/', '');
       final categoryNames = {
-        'real_estate': 'عقارات',
-        'cars': 'سيارات',
-        'electronics': 'إلكترونيات',
-        'fashion': 'أزياء',
-        'furniture': 'أثاث',
-        'restaurants': 'مطاعم',
-        'services': 'خدمات',
-        'games': 'ألعاب',
-        'health_beauty': 'صحة وجمال',
-        'education': 'تعليم',
+        'agriculture': 'الزراعة',
+        'real_estate': 'العقارات',
+        'cars': 'السيارات',
+        'electronics': 'الإلكترونيات',
+        'fashion': 'الأزياء',
+        'furniture': 'الأثاث',
+        'restaurants': 'المطاعم',
+        'services': 'الخدمات',
+        'games': 'الألعاب',
+        'health_beauty': 'الصحة والجمال',
+        'education': 'التعليم',
+        'baby': 'مستلزمات الأطفال',
+        'sports': 'الرياضة',
+        'jewelry': 'المجوهرات',
+        'watches': 'الساعات',
+        'perfumes': 'العطور',
+        'bags': 'الحقائب',
+        'shoes': 'الأحذية',
+        'phones': 'الجوالات',
+        'laptops': 'الكمبيوترات',
+        'tv': 'الشاشات',
+        'home_appliances': 'الأجهزة المنزلية',
+        'books': 'الكتب',
+        'gifts': 'الهدايا',
+        'flowers': 'الورود',
+        'bakery': 'المخبوزات',
+        'grocery': 'المواد الغذائية',
+        'meat': 'اللحوم',
+        'vegetables': 'الخضروات',
+        'dairy': 'منتجات الألبان',
+        'drinks': 'المشروبات',
+        'coffee': 'القهوة',
+        'dates': 'التمور',
+        'honey': 'العسل',
+        'incense': 'البخور',
+        'carpets': 'السجاد',
       };
-      final categoryName = categoryNames[category] ?? category;
+      final categoryName = categoryNames[categoryId] ?? categoryId;
       return MaterialPageRoute(
-        builder: (_) => CategoryProductsScreen(category: category, categoryName: categoryName),
+        builder: (_) => CategoryProductsScreen(
+          categoryId: categoryId,
+          categoryName: categoryName,
+        ),
       );
     }
 
@@ -186,7 +215,7 @@ class MyApp extends StatelessWidget {
       );
     }
 
-    // مسار تفاصيل الدردشة - تم إصلاحه
+    // مسار تفاصيل الدردشة
     if (settings.name == '/chat_detail') {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null) {
@@ -241,7 +270,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case '/about':
       case '/about_app':
-      case '/push_notifications':
         return MaterialPageRoute(builder: (_) => const AboutScreen());
       case '/account_info':
         return MaterialPageRoute(builder: (_) => const AccountSettingsScreen());
@@ -255,13 +283,17 @@ class MyApp extends StatelessWidget {
       case '/security_settings':
         return MaterialPageRoute(builder: (_) => const SecuritySettingsScreen());
       case '/payment_methods':
+        return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
       case '/addresses':
+        return MaterialPageRoute(builder: (_) => const AddressesScreen());
       case '/saved_payment_methods':
         return MaterialPageRoute(builder: (_) => const SavedPaymentMethodsScreen());
-        return MaterialPageRoute(builder: (_) => const AddressesScreen());
-        return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
       case '/invite_friends':
         return MaterialPageRoute(builder: (_) => const InviteFriendsScreen());
+      case '/share_profile':
+        return MaterialPageRoute(builder: (_) => const ShareProfileScreen());
+      case '/export_data':
+        return MaterialPageRoute(builder: (_) => const ExportDataScreen());
       case '/my_ads':
         return MaterialPageRoute(builder: (_) => const MyAdsScreen());
       case '/favorites':
@@ -273,11 +305,11 @@ class MyApp extends StatelessWidget {
       case '/following':
         return MaterialPageRoute(builder: (_) => const FollowingScreen());
       case '/reviews':
+        return MaterialPageRoute(builder: (_) => const ReviewsScreen());
       case '/product_review':
         return MaterialPageRoute(builder: (_) => const ProductReviewScreen());
       case '/seller_review':
         return MaterialPageRoute(builder: (_) => const SellerReviewScreen());
-        return MaterialPageRoute(builder: (_) => const ReviewsScreen());
       case '/change_password':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case '/biometric_auth':
@@ -291,17 +323,17 @@ class MyApp extends StatelessWidget {
       case '/privacy_block':
         return MaterialPageRoute(builder: (_) => const PrivacyBlockScreen());
       case '/live_support':
+        return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
       case '/smart_support':
+        return MaterialPageRoute(builder: (_) => const SmartSupportScreen());
       case '/ai_chat':
         return MaterialPageRoute(builder: (_) => const AIChatAssistant());
-        return MaterialPageRoute(builder: (_) => const SmartSupportScreen());
-        return MaterialPageRoute(builder: (_) => const LiveSupportScreen());
       case '/support_tickets':
         return MaterialPageRoute(builder: (_) => const SupportTicketsScreen());
       case '/report_problem':
+        return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
       case '/advanced_search':
         return MaterialPageRoute(builder: (_) => const AdvancedSearchScreen());
-        return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
       default:
         return MaterialPageRoute(builder: (_) => const Scaffold(
           body: Center(child: Text('الصفحة غير موجودة', style: TextStyle(fontSize: 18))),
