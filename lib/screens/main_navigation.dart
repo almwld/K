@@ -216,36 +216,37 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   // الزر الذهبي الدوار مع الخيارات
   Widget _buildGoldenButton() {
     return Expanded(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // الخيارات الأربعة (تظهر عند الضغط)
-          if (_isExpanded)
-            Positioned(
-              bottom: 70,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context).withOpacity(0.95),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppTheme.goldColor.withOpacity(0.5), width: 1),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 4))],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _quickActions.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final action = entry.value;
-                    return _buildQuickActionItem(action, index);
-                  }).toList(),
+      child: GestureDetector(
+        onTap: _toggleExpand,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            // الخيارات الأربعة (تظهر عند الضغط)
+            if (_isExpanded)
+              Positioned(
+                bottom: 70,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.getCardColor(context).withOpacity(0.95),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppTheme.goldColor.withOpacity(0.5), width: 1),
+                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 4))],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _quickActions.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final action = entry.value;
+                      return _buildQuickActionItem(action, index);
+                    }).toList(),
+                  ),
                 ),
               ),
-            ),
 
-          // الزر الذهبي الدوار
-          GestureDetector(
-            onTap: _toggleExpand,
-            child: AnimatedBuilder(
+            // الزر الذهبي الدوار
+            AnimatedBuilder(
               animation: _rotationAnimation,
               builder: (context, child) {
                 return Transform.rotate(
@@ -267,8 +268,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
