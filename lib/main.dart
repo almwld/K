@@ -241,6 +241,8 @@ class MyApp extends StatelessWidget {
       case '/help_support':
         return MaterialPageRoute(builder: (_) => const HelpSupportScreen());
       case '/language':
+      case '/appearance':
+        return MaterialPageRoute(builder: (_) => const AppearanceScreen());
         return MaterialPageRoute(builder: (_) => const LanguageScreen());
       case '/notifications_settings':
         return MaterialPageRoute(builder: (_) => const NotificationsSettingsScreen());

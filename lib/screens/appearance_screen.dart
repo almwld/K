@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../theme/app_theme.dart';
-import '../../providers/theme_manager.dart';
-import '../../services/theme_service.dart';
-import '../../widgets/simple_app_bar.dart';
+import '../theme/app_theme.dart';
+import '../providers/theme_manager.dart';
+import '../services/theme_service.dart';
+import '../widgets/simple_app_bar.dart';
 
 class AppearanceScreen extends StatefulWidget {
   const AppearanceScreen({super.key});
@@ -14,14 +14,26 @@ class AppearanceScreen extends StatefulWidget {
 
 class _AppearanceScreenState extends State<AppearanceScreen> {
   late Color _selectedColor;
+  double _fontSize = 14;
+  String _selectedFont = 'Changa';
   
   final List<Map<String, dynamic>> _colors = [
-    {'name': 'ذهبي', 'color': const Color(0xFFD4AF37), 'icon': Icons.star},
-    {'name': 'أزرق', 'color': Colors.blue, 'icon': Icons.water_drop},
-    {'name': 'أخضر', 'color': Colors.green, 'icon': Icons.eco},
-    {'name': 'برتقالي', 'color': Colors.orange, 'icon': Icons.brightness_low},
-    {'name': 'بنفسجي', 'color': Colors.purple, 'icon': Icons.grade},
-    {'name': 'وردي', 'color': Colors.pink, 'icon': Icons.favorite},
+    {'name': 'ذهبي', 'color': const Color(0xFFD4AF37), 'icon': Icons.star, 'primary': true},
+    {'name': 'أزرق', 'color': Colors.blue, 'icon': Icons.water_drop, 'primary': false},
+    {'name': 'أخضر', 'color': Colors.green, 'icon': Icons.eco, 'primary': false},
+    {'name': 'برتقالي', 'color': Colors.orange, 'icon': Icons.brightness_low, 'primary': false},
+    {'name': 'بنفسجي', 'color': Colors.purple, 'icon': Icons.grade, 'primary': false},
+    {'name': 'وردي', 'color': Colors.pink, 'icon': Icons.favorite, 'primary': false},
+    {'name': 'أحمر', 'color': Colors.red, 'icon': Icons.whatshot, 'primary': false},
+    {'name': 'تركواز', 'color': Colors.teal, 'icon': Icons.water, 'primary': false},
+  ];
+  
+  final List<Map<String, dynamic>> _fonts = [
+    {'name': 'Changa', 'family': 'Changa', 'type': 'عربي'},
+    {'name': 'Cairo', 'family': 'Cairo', 'type': 'عربي'},
+    {'name': 'Tajawal', 'family': 'Tajawal', 'type': 'عربي'},
+    {'name': 'Roboto', 'family': 'Roboto', 'type': 'إنجليزي'},
+    {'name': 'Poppins', 'family': 'Poppins', 'type': 'إنجليزي'},
   ];
   
   @override
@@ -95,14 +107,14 @@ class _AppearanceScreenState extends State<AppearanceScreen> {
             ),
             const SizedBox(height: 24),
             
-            // ألوان الثيم
+            // ألوان التطبيق
             const Text('ألوان التطبيق', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
+                crossAxisCount: 4,
                 childAspectRatio: 1,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
@@ -113,35 +125,38 @@ class _AppearanceScreenState extends State<AppearanceScreen> {
                 final isSelected = _selectedColor == item['color'];
                 return GestureDetector(
                   onTap: () => _selectColor(item['color'], item['name']),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppTheme.getCardColor(context),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: isSelected ? item['color'] : Colors.transparent, width: 2),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 50, height: 50,
-                          decoration: BoxDecoration(
-                            color: item['color'],
-                            shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: item['color'].withOpacity(0.3), blurRadius: 8)],
-                          ),
-                          child: isSelected ? const Icon(Icons.check, color: Colors.white) : null,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 50, height: 50,
+                        decoration: BoxDecoration(
+                          color: item['color'],
+                          shape: BoxShape.circle,
+                          boxShadow: [BoxShadow(color: item['color'].withOpacity(0.3), blurRadius: 8)],
+                          border: isSelected ? Border.all(color: Colors.white, width: 3) : null,
                         ),
-                        const SizedBox(height: 8),
-                        Text(item['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                        child: isSelected ? const Icon(Icons.check, color: Colors.white) : null,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(item['name'], style: const TextStyle(fontSize: 11)),
+                      if (item['primary'])
+                        Container(
+                          margin: const EdgeInsets.only(top: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: AppTheme.goldColor,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: const Text('أساسي', style: TextStyle(fontSize: 8, color: Colors.black)),
+                        ),
+                    ],
                   ),
                 );
               },
             ),
             const SizedBox(height: 24),
             
-            // معاينة
+            // حجم الخط
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -149,19 +164,132 @@ class _AppearanceScreenState extends State<AppearanceScreen> {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('معاينة', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [_selectedColor, _selectedColor.withOpacity(0.7)]),
-                      borderRadius: BorderRadius.circular(12),
+                  const Text('حجم الخط', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(Icons.text_fields, size: 20),
+                      Expanded(
+                        child: Slider(
+                          value: _fontSize,
+                          min: 12,
+                          max: 22,
+                          divisions: 5,
+                          activeColor: _selectedColor,
+                          onChanged: (v) => setState(() => _fontSize = v),
+                        ),
+                      ),
+                      const Icon(Icons.text_fields, size: 28),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Center(
+                    child: Text(
+                      'نموذج للنص بحجم ${_fontSize.toInt()}',
+                      style: TextStyle(fontSize: _fontSize),
                     ),
-                    child: const Center(child: Text('Flex Yemen', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // الخط
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.getCardColor(context),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('نوع الخط', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _fonts.map((font) {
+                      final isSelected = _selectedFont == font['name'];
+                      return FilterChip(
+                        label: Text(font['name']),
+                        selected: isSelected,
+                        onSelected: (selected) {
+                          setState(() => _selectedFont = font['name']);
+                        },
+                        selectedColor: _selectedColor,
+                        backgroundColor: AppTheme.getCardColor(context),
+                        labelStyle: TextStyle(
+                          fontFamily: isSelected ? font['family'] : null,
+                          color: isSelected ? Colors.black : null,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // معاينة
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [_selectedColor, _selectedColor.withOpacity(0.7)]),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  const Text('معاينة', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Flex Yemen',
+                          style: TextStyle(
+                            color: _selectedColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(backgroundColor: _selectedColor),
+                          child: const Text('زر تجريبي'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // زر حفظ
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('تم حفظ إعدادات المظهر'), backgroundColor: Colors.green),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _selectedColor,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text('حفظ الإعدادات'),
               ),
             ),
           ],
