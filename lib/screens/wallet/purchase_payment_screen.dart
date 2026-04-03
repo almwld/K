@@ -20,9 +20,9 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
 
   final List<Map<String, dynamic>> _paymentMethods = [
     {'id': 'flexpay', 'name': 'فلكس باي', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldColor, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
-    {'id': 'jaib', 'name': 'جيب', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37, 'fee': '100', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
-    {'id': 'other', 'name': 'محافظ أخرى', 'icon': Icons.account_balance_wallet, 'color': 0xFF4CAF50, 'fee': '200', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
-    {'id': 'wint', 'name': 'Wint', 'icon': Icons.account_balance_wallet, 'color': 0xFF2196F3, 'fee': '150', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
+    {'id': 'jaib', 'name': 'جيب', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
+    {'id': 'other', 'name': 'محافظ أخرى', 'icon': Icons.account_balance_wallet, 'color': 0xFF4CAF50, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
+    {'id': 'wint', 'name': 'Wint', 'icon': Icons.account_balance_wallet, 'color': 0xFF2196F3, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
   ];
 
   final List<Map<String, dynamic>> _wallets = [

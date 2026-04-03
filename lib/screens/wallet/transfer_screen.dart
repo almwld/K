@@ -17,10 +17,10 @@ class _TransferScreenState extends State<TransferScreen> {
   
   final List<Map<String, dynamic>> _transferMethods = [
     {'id': 'flexpay', 'name': 'محفظة فلكس', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldColor, 'fee': '0'},
-    {'id': 'yemen_mobile', 'name': 'يمن موبايل', 'icon': Icons.phone_android, 'color': 0xFFE31E24, 'fee': '200'},
-    {'id': 'you', 'name': 'YOU', 'icon': Icons.phone_android, 'color': 0xFF4CAF50, 'fee': '200'},
-    {'id': 'way', 'name': 'Way', 'icon': Icons.phone_android, 'color': 0xFF9C27B0, 'fee': '200'},
-    {'id': 'bank', 'name': 'حساب بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'fee': '500'},
+    {'id': 'yemen_mobile', 'name': 'يمن موبايل', 'icon': Icons.phone_android, 'color': 0xFFE31E24, 'fee': '0'},
+    {'id': 'you', 'name': 'YOU', 'icon': Icons.phone_android, 'color': 0xFF4CAF50, 'fee': '0'},
+    {'id': 'way', 'name': 'Way', 'icon': Icons.phone_android, 'color': 0xFF9C27B0, 'fee': '0'},
+    {'id': 'bank', 'name': 'حساب بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'fee': '0'},
   ];
 
   @override

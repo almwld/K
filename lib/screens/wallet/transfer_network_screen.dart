@@ -16,10 +16,10 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
   final TextEditingController _amountController = TextEditingController();
 
   final List<Map<String, dynamic>> _networks = [
-    {'name': 'يمن موبايل', 'code': 'ymobile', 'color': 0xFFE31E24, 'fee': '200'},
-    {'name': 'YOU', 'code': 'you', 'color': 0xFF4CAF50, 'fee': '200'},
-    {'name': 'سبأفون', 'code': 'sabafon', 'color': 0xFF2196F3, 'fee': '200'},
-    {'name': 'واي', 'code': 'way', 'color': 0xFF9C27B0, 'fee': '200'},
+    {'name': 'يمن موبايل', 'code': 'ymobile', 'color': 0xFFE31E24, 'fee': '0'},
+    {'name': 'YOU', 'code': 'you', 'color': 0xFF4CAF50, 'fee': '0'},
+    {'name': 'سبأفون', 'code': 'sabafon', 'color': 0xFF2196F3, 'fee': '0'},
+    {'name': 'واي', 'code': 'way', 'color': 0xFF9C27B0, 'fee': '0'},
   ];
 
   @override

@@ -16,10 +16,10 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
   final TextEditingController _receiverCountryController = TextEditingController();
 
   final List<Map<String, dynamic>> _services = [
-    {'id': 'western', 'name': 'ويسترن يونيون', 'icon': Icons.currency_exchange, 'color': 0xFFF44336, 'fee': '2', 'min': '10000', 'max': '5000000', 'time': 'خلال ساعة'},
-    {'id': 'moneygram', 'name': 'ماني غرام', 'icon': Icons.currency_exchange, 'color': 0xFF2196F3, 'fee': '1.5', 'min': '5000', 'max': '3000000', 'time': 'خلال ساعتين'},
-    {'id': 'riyad', 'name': 'بنك الرياض', 'icon': Icons.account_balance, 'color': 0xFF4CAF50, 'fee': '1', 'min': '20000', 'max': '10000000', 'time': 'خلال 24 ساعة'},
-    {'id': 'alrajhi', 'name': 'مصرف الراجحي', 'icon': Icons.account_balance, 'color': 0xFF9C27B0, 'fee': '1', 'min': '20000', 'max': '10000000', 'time': 'خلال 24 ساعة'},
+    {'id': 'western', 'name': 'ويسترن يونيون', 'icon': Icons.currency_exchange, 'color': 0xFFF44336, 'fee': '0', 'min': '10000', 'max': '5000000', 'time': 'خلال ساعة'},
+    {'id': 'moneygram', 'name': 'ماني غرام', 'icon': Icons.currency_exchange, 'color': 0xFF2196F3, 'fee': '0', 'min': '5000', 'max': '3000000', 'time': 'خلال ساعتين'},
+    {'id': 'riyad', 'name': 'بنك الرياض', 'icon': Icons.account_balance, 'color': 0xFF4CAF50, 'fee': '0', 'min': '20000', 'max': '10000000', 'time': 'خلال 24 ساعة'},
+    {'id': 'alrajhi', 'name': 'مصرف الراجحي', 'icon': Icons.account_balance, 'color': 0xFF9C27B0, 'fee': '0', 'min': '20000', 'max': '10000000', 'time': 'خلال 24 ساعة'},
   ];
 
   final List<Map<String, dynamic>> _countries = [

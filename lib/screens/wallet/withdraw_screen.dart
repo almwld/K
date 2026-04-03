@@ -25,8 +25,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   ];
   
   final List<Map<String, dynamic>> _withdrawMethods = [
-    {'id': 'bank', 'name': 'حساب بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'fee': '500', 'min': '5000', 'max': '500000', 'time': '24 ساعة'},
-    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldColor, 'fee': '200', 'min': '1000', 'max': '100000', 'time': 'فوري'},
+    {'id': 'bank', 'name': 'حساب بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'fee': '0', 'min': '5000', 'max': '500000', 'time': '24 ساعة'},
+    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldColor, 'fee': '0', 'min': '1000', 'max': '100000', 'time': 'فوري'},
     {'id': 'cash', 'name': 'سحب نقدي', 'icon': Icons.money, 'color': 0xFF4CAF50, 'fee': '0', 'min': '1000', 'max': '50000', 'time': 'فوري'},
   ];
 
