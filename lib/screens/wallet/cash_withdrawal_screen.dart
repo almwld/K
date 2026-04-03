@@ -62,7 +62,7 @@ class _CashWithdrawalScreenState extends State<CashWithdrawalScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   'السحب النقدي',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

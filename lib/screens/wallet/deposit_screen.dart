@@ -7,7 +7,7 @@ import 'gift_cards_screen.dart';
 class DepositScreen extends StatelessWidget {
   const DepositScreen({super.key});
 
-  final List<Map<String, dynamic>> _depositMethods = const [
+  final List<Map<String, dynamic>> _depositMethods = [
     {'id': 'bank', 'name': 'تحويل بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20},
     {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37},
     {'id': 'card', 'name': 'بطاقة هدايا', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63},
@@ -159,7 +159,7 @@ class DepositScreen extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   'معلومات الإيداع',
                   style: TextStyle(fontWeight: FontWeight.bold),

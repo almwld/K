@@ -40,7 +40,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
         child: Column(
           children: [
             TabBar(
-              tabs: const [Tab(text: 'طلبات مستلمة'), Tab(text: 'استلام برمز')],
+              tabs: [Tab(text: 'طلبات مستلمة'), Tab(text: 'استلام برمز')],
               labelColor: AppTheme.goldColor,
               indicatorColor: AppTheme.goldColor,
             ),
