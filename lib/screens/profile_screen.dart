@@ -51,6 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     {'title': 'الإشعارات', 'icon': Icons.notifications, 'color': 0xFFFF9800, 'route': '/notifications_settings'},
     {'title': 'المظهر', 'icon': Icons.palette, 'color': 0xFF9C27B0, 'route': '/appearance'},
     {'title': 'مشاركة الملف الشخصي', 'icon': Icons.share, 'color': 0xFF00BCD4, 'route': '/share_profile'},
+    {'title': 'تصدير البيانات', 'icon': Icons.download, 'color': 0xFF607D8B, 'route': '/export_data'},
     {'title': 'المساعدة', 'icon': Icons.help_outline, 'color': 0xFF00BCD4, 'route': '/help_support'},
     {'title': 'الدعم الذكي', 'icon': Icons.smart_toy, 'color': 0xFF9C27B0, 'route': '/smart_support'},
     {'title': 'دعوة الأصدقاء', 'icon': Icons.share, 'color': 0xFF4CAF50, 'route': '/invite_friends'},

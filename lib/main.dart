@@ -51,6 +51,7 @@ import 'screens/settings/notifications_settings_screen.dart';
 import 'screens/settings/security_settings_screen.dart';
 import 'screens/invite_friends_screen.dart';
 import 'screens/share_profile_screen.dart';
+import 'screens/export_data_screen.dart';
 import 'screens/my_ads_screen.dart';
 import 'screens/favorites_screen.dart';
 import 'screens/my_orders_screen.dart';
