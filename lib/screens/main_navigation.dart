@@ -11,6 +11,8 @@ import 'map/interactive_map_screen.dart';
 import 'wallet/wallet_screen.dart';
 import 'chat_screen.dart';
 import 'profile_screen.dart';
+import 'add_ad_screen.dart';
+import 'seller_products_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -25,23 +27,23 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   bool _isExpanded = false;
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
-
+  
   final List<Widget> _screens = const [
     HomeScreen(),
     AllAdsScreen(),
     InteractiveMapScreen(),
-    SizedBox(),
+    SizedBox(), // placeholder for golden button
     WalletScreen(),
     ChatScreen(),
     ProfileScreen(),
   ];
-
-  // خيارات الزر الذهبي الدوار
+  
+  // الخيارات الأربعة مع الروابط الصحيحة
   final List<Map<String, dynamic>> _quickActions = [
-    {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': 0xFF4CAF50, 'route': '/add_ad'},
-    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': 0xFF2196F3, 'route': '/seller_products'},
-    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': 0xFFFF9800, 'route': null},
-    {'icon': Icons.account_balance_wallet_outlined, 'label': 'استلام حوالة', 'color': 0xFF9C27B0, 'route': '/receive_transfer'},
+    {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': 0xFF4CAF50, 'screen': AddAdScreen()},
+    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': 0xFF2196F3, 'screen': SellerProductsScreen()},
+    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': 0xFFFF9800, 'screen': null},
+    {'icon': Icons.account_balance_wallet_outlined, 'label': 'استلام حوالة', 'color': 0xFF9C27B0, 'screen': null},
   ];
 
   @override
@@ -92,8 +94,11 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
   void _executeAction(Map<String, dynamic> action) {
     _toggleExpand();
-    if (action['route'] != null) {
-      Navigator.pushNamed(context, action['route']);
+    if (action['screen'] != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => action['screen']),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('سيتم إضافة ${action['label']} قريباً')),
@@ -191,7 +196,10 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       ),
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -5))]),
+        decoration: BoxDecoration(
+          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -5))],
+        ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -213,7 +221,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 
-  // الزر الذهبي الدوار مع الخيارات
   Widget _buildGoldenButton() {
     return Expanded(
       child: GestureDetector(
@@ -222,7 +229,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           alignment: Alignment.center,
           clipBehavior: Clip.none,
           children: [
-            // الخيارات الأربعة (تظهر عند الضغط)
             if (_isExpanded)
               Positioned(
                 bottom: 70,
@@ -244,8 +250,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   ),
                 ),
               ),
-
-            // الزر الذهبي الدوار
             AnimatedBuilder(
               animation: _rotationAnimation,
               builder: (context, child) {
@@ -296,14 +300,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             Text(action['label'], style: TextStyle(color: AppTheme.getTextColor(context).withOpacity(0.8), fontSize: 10)),
           ],
         ),
-      ).animate().fadeIn(delay: Duration(milliseconds: 50 * index), duration: 300.ms).scale(begin: const Offset(0, 0.5), end: const Offset(1, 1), curve: Curves.elasticOut),
-    );
+      ),
+    ).animate().fadeIn(delay: Duration(milliseconds: 50 * index), duration: 300.ms).scale(begin: const Offset(0, 0.5), end: const Offset(1, 1), curve: Curves.elasticOut);
   }
 
   Widget _buildNavItem(String svgPath, String label, int index) {
     final isSelected = _currentIndex == index;
     final color = isSelected ? _themeColor : (Theme.of(context).brightness == Brightness.dark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary);
-
     return Expanded(
       child: Material(
         color: Colors.transparent,
