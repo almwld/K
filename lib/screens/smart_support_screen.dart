@@ -301,21 +301,21 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
+          children: const [
+            SizedBox(
               width: 8, height: 8,
-              decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
-            ).animate().fadeIn(delay: 0.ms).then().fadeOut(delay: 600.ms),
-            const SizedBox(width: 4),
-            Container(
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldColor),
+            ),
+            SizedBox(width: 4),
+            SizedBox(
               width: 8, height: 8,
-              decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
-            ).animate().fadeIn(delay: 200.ms).then().fadeOut(delay: 800.ms),
-            const SizedBox(width: 4),
-            Container(
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldColor),
+            ),
+            SizedBox(width: 4),
+            SizedBox(
               width: 8, height: 8,
-              decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
-            ).animate().fadeIn(delay: 400.ms).then().fadeOut(delay: 1000.ms),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldColor),
+            ),
           ],
         ),
       ),

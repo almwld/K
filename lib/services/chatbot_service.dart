@@ -44,7 +44,7 @@ class ChatbotService {
     'تذكرة دعم': 'يمكنك إنشاء تذكرة دعم من صفحة "تذاكر الدعم".',
   };
   
-  static String getResponse(String message) {
+  static String? getResponse(String message) {
     final lowerMessage = message.toLowerCase();
     
     // البحث عن إجابة مطابقة
