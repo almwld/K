@@ -10,33 +10,18 @@ class GovernmentPaymentsScreen extends StatefulWidget {
 }
 
 class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
-  String _selectedService = 'electricity';
-  String _selectedAmount = '5000';
-  final TextEditingController _accountNumberController = TextEditingController();
-  final TextEditingController _customerNameController = TextEditingController();
+  String _selectedService = 'tax';
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   final List<Map<String, dynamic>> _services = [
-    {'id': 'electricity', 'name': 'كهرباء', 'icon': Icons.electric_bolt, 'color': 0xFFFF9800},
-    {'id': 'water', 'name': 'مياه', 'icon': Icons.water_drop, 'color': 0xFF2196F3},
-    {'id': 'internet', 'name': 'إنترنت', 'icon': Icons.wifi, 'color': 0xFF4CAF50},
-    {'id': 'landline', 'name': 'هاتف أرضي', 'icon': Icons.phone, 'color': 0xFF9C27B0},
-    {'id': 'tax', 'name': 'ضرائب', 'icon': Icons.receipt, 'color': 0xFFE31E24},
-    {'id': 'municipality', 'name': 'أمانة', 'icon': Icons.business, 'color': 0xFF607D8B},
+    {'id': 'tax', 'name': 'الضرائب', 'icon': Icons.receipt, 'color': 0xFFF44336},
+    {'id': 'customs', 'name': 'الجمارك', 'icon': Icons.local_shipping, 'color': 0xFF2196F3},
+    {'id': 'license', 'name': 'تراخيص', 'icon': Icons.assignment, 'color': 0xFF4CAF50},
+    {'id': 'municipality', 'name': 'أمانة العاصمة', 'icon': Icons.location_city, 'color': 0xFFFF9800},
+    {'id': 'passport', 'name': 'الجوازات', 'icon': Icons.passport, 'color': 0xFF9C27B0},
+    {'id': 'traffic', 'name': 'المرور', 'icon': Icons.traffic, 'color': 0xFFE91E63},
   ];
-
-  final List<Map<String, dynamic>> _amounts = [
-    {'value': '1000', 'label': '1,000 ر.ي'},
-    {'value': '2000', 'label': '2,000 ر.ي'},
-    {'value': '5000', 'label': '5,000 ر.ي'},
-    {'value': '10000', 'label': '10,000 ر.ي'},
-    {'value': '20000', 'label': '20,000 ر.ي'},
-    {'value': '50000', 'label': '50,000 ر.ي'},
-  ];
-
-  String get _selectedServiceName {
-    final service = _services.firstWhere((s) => s['id'] == _selectedService);
-    return service['name'];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,32 +29,22 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'المدفوعات الحكومية'),
+      appBar: const SimpleAppBar(title: 'مدفوعات حكومية'),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildServices(),
-              const SizedBox(height: 24),
-              _buildAccountNumberField(),
-              const SizedBox(height: 16),
-              _buildCustomerNameField(),
-              const SizedBox(height: 24),
-              _buildAmounts(),
-              const SizedBox(height: 24),
-              _buildSummary(),
-              const SizedBox(height: 24),
-              _buildPayButton(),
-            ],
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildServicesGrid(),
+            const SizedBox(height: 24),
+            _buildPaymentForm(),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildServices() {
+  Widget _buildServicesGrid() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,25 +56,22 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             childAspectRatio: 1.2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
           ),
           itemCount: _services.length,
           itemBuilder: (context, index) {
             final service = _services[index];
             final isSelected = _selectedService == service['id'];
             return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedService = service['id'];
-                });
-              },
+              onTap: () => setState(() => _selectedService = service['id']),
               child: Container(
                 decoration: BoxDecoration(
                   color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.3),
+                    color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2),
+                    width: isSelected ? 2 : 1,
                   ),
                 ),
                 child: Column(
@@ -107,13 +79,7 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
                   children: [
                     Icon(service['icon'], color: isSelected ? AppTheme.goldColor : Color(service['color']), size: 28),
                     const SizedBox(height: 8),
-                    Text(
-                      service['name'],
-                      style: TextStyle(
-                        color: isSelected ? AppTheme.goldColor : null,
-                        fontSize: 12,
-                      ),
-                    ),
+                    Text(service['name'], style: TextStyle(fontSize: 12, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
                   ],
                 ),
               ),
@@ -124,187 +90,87 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
     );
   }
 
-  Widget _buildAccountNumberField() {
+  Widget _buildPaymentForm() {
+    final service = _services.firstWhere((s) => s['id'] == _selectedService);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('رقم الحساب / العداد', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
+        const Text('بيانات الدفع', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 12),
         TextField(
-          controller: _accountNumberController,
+          controller: _idController,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            hintText: 'أدخل رقم الحساب',
-            prefixIcon: const Icon(Icons.numbers),
+            labelText: 'الرقم التعريفي / رقم الهوية',
+            prefixIcon: const Icon(Icons.badge),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildCustomerNameField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('اسم العميل', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _customerNameController,
-          decoration: InputDecoration(
-            hintText: 'أدخل اسم العميل',
-            prefixIcon: const Icon(Icons.person),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAmounts() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('المبلغ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _amounts.map((amount) {
-            final isSelected = _selectedAmount == amount['value'];
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedAmount = amount['value'];
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldColor : AppTheme.getCardColor(context),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.3),
-                  ),
-                ),
-                child: Text(
-                  amount['label'],
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : null,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+        TextField(
+          controller: _amountController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: 'المبلغ',
+            prefixIcon: const Icon(Icons.attach_money),
+            suffixText: 'ر.ي',
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+        const SizedBox(height: 24),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: (_idController.text.isNotEmpty && _amountController.text.isNotEmpty)
+                ? () => _processPayment(service)
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.goldColor,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            child: const Text('دفع', style: TextStyle(fontSize: 18)),
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildSummary() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.goldColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('ملخص الدفع', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('الخدمة:'),
-              Text(_selectedServiceName, style: const TextStyle(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('رقم الحساب:'),
-              Text(_accountNumberController.text.isEmpty ? '---' : _accountNumberController.text),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('اسم العميل:'),
-              Text(_customerNameController.text.isEmpty ? '---' : _customerNameController.text),
-            ],
-          ),
-          const Divider(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('المبلغ:', style: TextStyle(fontSize: 16)),
-              Text(
-                '${int.parse(_selectedAmount).toString()} ر.ي',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('رسوم الخدمة:'),
-              const Text('500 ر.ي'),
-            ],
-          ),
-          const Divider(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('الإجمالي:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Text(
-                '${(int.parse(_selectedAmount) + 500).toString()} ر.ي',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
-              ),
-            ],
+  void _processPayment(Map<String, dynamic> service) {
+    final amount = int.parse(_amountController.text);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('تأكيد الدفع'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.receipt, size: 60, color: Colors.orange),
+            const SizedBox(height: 16),
+            Text('دفع ${service['name']}'),
+            Text('الرقم: ${_idController.text}'),
+            Text('المبلغ: $amount ر.ي', style: const TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showSuccessDialog(service);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            child: const Text('تأكيد'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPayButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          if (_accountNumberController.text.isEmpty) {
-            _showError('الرجاء إدخال رقم الحساب');
-            return;
-          }
-          if (_customerNameController.text.isEmpty) {
-            _showError('الرجاء إدخال اسم العميل');
-            return;
-          }
-          _showSuccessDialog();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.goldColor,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        ),
-        child: const Text('تأكيد الدفع', style: TextStyle(fontSize: 16)),
-      ),
-    );
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
-    );
-  }
-
-  void _showSuccessDialog() {
+  void _showSuccessDialog(Map<String, dynamic> service) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -315,8 +181,8 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 60),
             const SizedBox(height: 16),
-            Text('تم دفع فاتورة $_selectedServiceName'),
-            Text('بمبلغ ${(int.parse(_selectedAmount) + 500).toString()} ريال'),
+            Text('تم دفع ${service['name']} بنجاح'),
+            const Text('سيتم إرسال إيصال الدفع إلى بريدك الإلكتروني'),
           ],
         ),
         actions: [
