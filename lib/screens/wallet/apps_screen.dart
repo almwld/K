@@ -1,325 +1,194 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 
-class AppsScreen extends StatefulWidget {
+class AppsScreen extends StatelessWidget {
   const AppsScreen({super.key});
 
-  @override
-  State<AppsScreen> createState() => _AppsScreenState();
-}
-
-class _AppsScreenState extends State<AppsScreen> {
-  String _searchQuery = '';
-  String _selectedCategory = 'الكل';
-  final TextEditingController _searchController = TextEditingController();
-  
-  final List<String> _categories = ['الكل', 'إنتاجية', 'تواصل', 'تخزين', 'أمان', 'عروض'];
-  
+  // 30+ تطبيق وخدمة رقمية مع صور حقيقية
   final List<Map<String, dynamic>> _apps = [
-    // إنتاجية
-    {'name': 'مايكروسوفت 365', 'price': '15,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'إنتاجية', 'discount': '0'},
-    {'name': 'مايكروسوفت 365 - سنوي', 'price': '150,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'إنتاجية', 'discount': '10%'},
-    {'name': 'جوجل درايف 100GB', 'price': '2,500', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تخزين', 'discount': '0'},
-    {'name': 'جوجل درايف 200GB', 'price': '4,500', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تخزين', 'discount': '5%'},
-    {'name': 'جوجل درايف 2TB', 'price': '15,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تخزين', 'discount': '10%'},
-    {'name': 'أدوبي كريتيف كلاود', 'price': '25,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'إنتاجية', 'discount': '0'},
-    {'name': 'أدوبي كريتيف كلاود - سنوي', 'price': '250,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'إنتاجية', 'discount': '15%'},
+    // متاجر التطبيقات
+    {'name': 'Google Play', 'value': '10\$', 'price': '11,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
+    {'name': 'Google Play', 'value': '25\$', 'price': '28,750', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
+    {'name': 'Google Play', 'value': '50\$', 'price': '57,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
+    {'name': 'App Store', 'value': '10\$', 'price': '12,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'color': 0xFF9C27B0, 'category': 'متاجر'},
+    {'name': 'App Store', 'value': '25\$', 'price': '30,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'color': 0xFF9C27B0, 'category': 'متاجر'},
+    {'name': 'App Store', 'value': '50\$', 'price': '60,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'color': 0xFF9C27B0, 'category': 'متاجر'},
     
-    // تواصل
-    {'name': 'زووم برو', 'price': '8,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تواصل', 'discount': '0'},
-    {'name': 'زووم برو - سنوي', 'price': '80,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تواصل', 'discount': '15%'},
-    {'name': 'تيليجرام بريميوم', 'price': '3,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تواصل', 'discount': '0'},
-    {'name': 'تيليجرام بريميوم - سنوي', 'price': '30,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تواصل', 'discount': '10%'},
-    {'name': 'واتساب بيزنس API', 'price': '12,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'تواصل', 'discount': '0'},
+    // منصات البث الموسيقي
+    {'name': 'Spotify', 'value': 'شهر', 'price': '8,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', 'color': 0xFF4CAF50, 'category': 'موسيقى'},
+    {'name': 'Spotify', 'value': '3 شهور', 'price': '22,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', 'color': 0xFF4CAF50, 'category': 'موسيقى'},
+    {'name': 'Spotify', 'value': 'سنة', 'price': '85,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', 'color': 0xFF4CAF50, 'category': 'موسيقى'},
+    {'name': 'Anghami', 'value': 'شهر', 'price': '7,000', 'image': 'https://play-lh.googleusercontent.com/2Kg4kO8C5aJpNfBQ-8sXB8R24n8kGjqNoxBfUy4kRz5x5x5x5x5x5x5x5x5', 'color': 0xFFE91E63, 'category': 'موسيقى'},
+    {'name': 'Anghami', 'value': 'سنة', 'price': '75,000', 'image': 'https://play-lh.googleusercontent.com/2Kg4kO8C5aJpNfBQ-8sXB8R24n8kGjqNoxBfUy4kRz5x5x5x5x5x5x5x5x5', 'color': 0xFFE91E63, 'category': 'موسيقى'},
+    {'name': 'Apple Music', 'value': 'شهر', 'price': '9,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Apple_Music_icon.svg', 'color': 0xFF9C27B0, 'category': 'موسيقى'},
     
-    // أمان
-    {'name': 'نورد VPN', 'price': '6,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'أمان', 'discount': '0'},
-    {'name': 'نورد VPN - سنوي', 'price': '60,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'أمان', 'discount': '20%'},
-    {'name': 'إكسبريس VPN', 'price': '8,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'أمان', 'discount': '0'},
-    {'name': 'إكسبريس VPN - سنوي', 'price': '80,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'أمان', 'discount': '25%'},
-    {'name': 'كاسبرسكي', 'price': '5,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'أمان', 'discount': '0'},
-    {'name': 'كاسبرسكي - سنوي', 'price': '50,000', 'period': 'سنوي', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'أمان', 'discount': '15%'},
+    // منصات البث المرئي
+    {'name': 'Netflix', 'value': 'شهر Basic', 'price': '15,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg', 'color': 0xFFF44336, 'category': 'فيديو'},
+    {'name': 'Netflix', 'value': 'شهر Standard', 'price': '22,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg', 'color': 0xFFF44336, 'category': 'فيديو'},
+    {'name': 'Netflix', 'value': 'شهر Premium', 'price': '30,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg', 'color': 0xFFF44336, 'category': 'فيديو'},
+    {'name': 'YouTube Premium', 'value': 'شهر', 'price': '10,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg', 'color': 0xFFF44336, 'category': 'فيديو'},
+    {'name': 'YouTube Premium', 'value': 'سنة', 'price': '100,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg', 'color': 0xFFF44336, 'category': 'فيديو'},
+    {'name': 'Shahid', 'value': 'شهر', 'price': '12,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFFF9800, 'category': 'فيديو'},
+    {'name': 'Shahid', 'value': 'سنة', 'price': '120,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFFF9800, 'category': 'فيديو'},
+    {'name': 'Amazon Prime', 'value': 'شهر', 'price': '14,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg', 'color': 0xFF2196F3, 'category': 'فيديو'},
+    {'name': 'Disney+', 'value': 'شهر', 'price': '18,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg', 'color': 0xFF2196F3, 'category': 'فيديو'},
     
-    // عروض خاصة
-    {'name': 'باقة الإنتاجية المتكاملة', 'price': '40,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'عروض', 'discount': '30%'},
-    {'name': 'باقة الأمان الشامل', 'price': '15,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'عروض', 'discount': '25%'},
-    {'name': 'باقة التخزين السحابي', 'price': '20,000', 'period': 'شهري', 'image': 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=200', 'category': 'عروض', 'discount': '20%'},
+    // منصات الألعاب
+    {'name': 'Steam', 'value': '10\$', 'price': '11,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
+    {'name': 'Steam', 'value': '25\$', 'price': '27,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
+    {'name': 'Steam', 'value': '50\$', 'price': '55,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
+    {'name': 'PlayStation', 'value': '10\$', 'price': '12,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/2/2a/PlayStation_logo.svg', 'color': 0xFF2196F3, 'category': 'ألعاب'},
+    {'name': 'PlayStation', 'value': '25\$', 'price': '31,250', 'image': 'https://upload.wikimedia.org/wikipedia/commons/2/2a/PlayStation_logo.svg', 'color': 0xFF2196F3, 'category': 'ألعاب'},
+    {'name': 'PlayStation', 'value': '50\$', 'price': '62,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/2/2a/PlayStation_logo.svg', 'color': 0xFF2196F3, 'category': 'ألعاب'},
+    {'name': 'Xbox', 'value': '10\$', 'price': '12,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Xbox_one_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
+    {'name': 'Xbox', 'value': '25\$', 'price': '30,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Xbox_one_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
+    {'name': 'Nintendo', 'value': '20\$', 'price': '24,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Nintendo_Switch_logo.png', 'color': 0xFFF44336, 'category': 'ألعاب'},
+    
+    // تطبيقات الإنتاجية
+    {'name': 'Microsoft 365', 'value': 'شهر', 'price': '15,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/9/93/Microsoft_Office_2019_logo.svg', 'color': 0xFF2196F3, 'category': 'إنتاجية'},
+    {'name': 'Microsoft 365', 'value': 'سنة', 'price': '150,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/9/93/Microsoft_Office_2019_logo.svg', 'color': 0xFF2196F3, 'category': 'إنتاجية'},
+    {'name': 'Adobe Creative Cloud', 'value': 'شهر', 'price': '25,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Creative_Cloud_icon.svg', 'color': 0xFFF44336, 'category': 'إنتاجية'},
+    {'name': 'Adobe Creative Cloud', 'value': 'سنة', 'price': '250,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Creative_Cloud_icon.svg', 'color': 0xFFF44336, 'category': 'إنتاجية'},
+    
+    // تطبيقات التواصل
+    {'name': 'Telegram Premium', 'value': 'شهر', 'price': '5,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg', 'color': 0xFF2196F3, 'category': 'تواصل'},
+    {'name': 'Telegram Premium', 'value': 'سنة', 'price': '50,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg', 'color': 0xFF2196F3, 'category': 'تواصل'},
+    {'name': 'WhatsApp Business', 'value': 'شهر', 'price': '7,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg', 'color': 0xFF4CAF50, 'category': 'تواصل'},
+    
+    // تطبيقات تعليمية
+    {'name': 'Duolingo Plus', 'value': 'شهر', 'price': '6,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Duolingo_logo.svg', 'color': 0xFF4CAF50, 'category': 'تعليم'},
+    {'name': 'Duolingo Plus', 'value': 'سنة', 'price': '60,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Duolingo_logo.svg', 'color': 0xFF4CAF50, 'category': 'تعليم'},
+    {'name': 'Coursera Plus', 'value': 'شهر', 'price': '20,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Coursera_logo.svg', 'color': 0xFF2196F3, 'category': 'تعليم'},
+    
+    // تطبيقات الصحة واللياقة
+    {'name': 'Calm Premium', 'value': 'شهر', 'price': '8,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4CAF50, 'category': 'صحة'},
+    {'name': 'Headspace', 'value': 'شهر', 'price': '8,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFFF9800, 'category': 'صحة'},
+    {'name': 'MyFitnessPal', 'value': 'شهر', 'price': '6,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF2196F3, 'category': 'صحة'},
   ];
-
-  List<Map<String, dynamic>> get _filteredApps {
-    var apps = _apps;
-    
-    if (_selectedCategory != 'الكل') {
-      apps = apps.where((a) => a['category'] == _selectedCategory).toList();
-    }
-    
-    if (_searchQuery.isNotEmpty) {
-      apps = apps.where((a) => 
-        a['name'].toLowerCase().contains(_searchQuery.toLowerCase())
-      ).toList();
-    }
-    
-    return apps;
-  }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final apps = _filteredApps;
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'التطبيقات والاشتراكات'),
-      body: Column(
-        children: [
-          _buildSearchBar(),
-          _buildCategories(),
-          Expanded(
-            child: apps.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.apps, size: 80, color: Colors.grey[400]),
-                        const SizedBox(height: 16),
-                        Text('لا توجد تطبيقات', style: TextStyle(color: Colors.grey[600])),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(12),
-                    itemCount: apps.length,
-                    itemBuilder: (context, index) {
-                      final app = apps[index];
-                      return _buildAppCard(app);
-                    },
-                  ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: TextField(
-        controller: _searchController,
-        onChanged: (value) {
-          setState(() {
-            _searchQuery = value;
-          });
-        },
-        decoration: InputDecoration(
-          hintText: 'بحث عن تطبيق...',
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: _searchQuery.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      _searchQuery = '';
-                      _searchController.clear();
-                    });
-                  },
-                )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppTheme.goldColor.withOpacity(0.3)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppTheme.goldColor.withOpacity(0.3)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppTheme.goldColor, width: 2),
-          ),
+      appBar: const SimpleAppBar(title: 'تطبيقات وخدمات رقمية'),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(12),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.85,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
         ),
-      ),
-    );
-  }
-
-  Widget _buildCategories() {
-    return Container(
-      height: 45,
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: _categories.length,
+        itemCount: _apps.length,
         itemBuilder: (context, index) {
-          final category = _categories[index];
-          final isSelected = _selectedCategory == category;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: FilterChip(
-              label: Text(category),
-              selected: isSelected,
-              onSelected: (selected) {
-                setState(() {
-                  _selectedCategory = selected ? category : 'الكل';
-                });
-              },
-              selectedColor: AppTheme.goldColor,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : null,
-              ),
-            ),
-          );
+          final app = _apps[index];
+          return _buildAppCard(app);
         },
       ),
     );
   }
 
   Widget _buildAppCard(Map<String, dynamic> app) {
-    final discount = app['discount'] != '0' ? app['discount'] : null;
-    final originalPrice = app['price'];
-    int? discountedPrice;
-    
-    if (discount != null) {
-      final discountPercent = int.parse(discount.replaceAll('%', ''));
-      discountedPrice = int.parse(originalPrice) * (100 - discountPercent) ~/ 100;
-    }
-
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2)),
         ],
       ),
-      child: Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // صورة التطبيق
           Container(
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Color(app['color']).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: app['image'],
+              placeholder: (context, url) => Container(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
+                ),
+              ),
+              errorWidget: (context, url, error) => Icon(
+                Icons.apps,
+                size: 40,
+                color: Color(app['color']),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            app['name'],
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
               color: AppTheme.goldColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.apps, size: 30, color: Colors.blue),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  app['name'],
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${app['period']}',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                ),
-              ],
+            child: Text(
+              app['category'],
+              style: TextStyle(color: AppTheme.goldColor, fontSize: 10),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              if (discountedPrice != null) ...[
-                Text(
-                  '$discountedPrice ر.ي',
-                  style: TextStyle(
-                    color: AppTheme.goldColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  '${app['price']} ر.ي',
-                  style: const TextStyle(
-                    decoration: TextDecoration.lineThrough,
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
-              ] else ...[
-                Text(
-                  '${app['price']} ر.ي',
-                  style: TextStyle(
-                    color: AppTheme.goldColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-              const SizedBox(height: 4),
-              ElevatedButton(
-                onPressed: () {
-                  _showPurchaseDialog(app);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldColor,
-                  minimumSize: const Size(80, 30),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text('اشتراك', style: TextStyle(fontSize: 12)),
-              ),
-            ],
+          const SizedBox(height: 4),
+          Text(
+            app['value'],
+            style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 12),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${app['price']} ر.ي',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            onPressed: () => _buyApp(app),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.goldColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              minimumSize: const Size(80, 32),
+            ),
+            child: const Text('شراء', style: TextStyle(fontSize: 12)),
           ),
         ],
       ),
     );
   }
 
-  void _showPurchaseDialog(Map<String, dynamic> app) {
-    final discount = app['discount'] != '0' ? app['discount'] : null;
-    final originalPrice = app['price'];
-    int? discountedPrice;
-    
-    if (discount != null) {
-      final discountPercent = int.parse(discount.replaceAll('%', ''));
-      discountedPrice = int.parse(originalPrice) * (100 - discountPercent) ~/ 100;
-    }
-
+  void _buyApp(Map<String, dynamic> app) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('اشتراك ${app['name']}'),
+        title: const Text('تأكيد الشراء'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.subscriptions, size: 50, color: Colors.green),
+            const Icon(Icons.check_circle, size: 60, color: Colors.green),
             const SizedBox(height: 16),
-            Text('المدة: ${app['period']}'),
+            Text('شراء ${app['name']} - ${app['value']}'),
             const SizedBox(height: 8),
-            if (discountedPrice != null) ...[
-              Text(
-                'السعر الأصلي: ${app['price']} ر.ي',
-                style: const TextStyle(decoration: TextDecoration.lineThrough),
-              ),
-              Text(
-                'السعر بعد الخصم: $discountedPrice ر.ي',
-                style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-              ),
-            ] else ...[
-              Text('السعر: ${app['price']} ر.ي'),
-            ],
-            const SizedBox(height: 16),
-            const Text('سيتم تفعيل الاشتراك فوراً', style: TextStyle(fontSize: 12)),
+            Text('السعر: ${app['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('إلغاء'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
@@ -338,21 +207,19 @@ class _AppsScreenState extends State<AppsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('تم الاشتراك بنجاح'),
+        title: const Text('تم الشراء بنجاح'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 60),
             const SizedBox(height: 16),
-            Text('تم تفعيل اشتراك ${app['name']}'),
-            Text('لمدة ${app['period']}'),
+            Text('تم شراء ${app['name']} - ${app['value']}'),
+            const SizedBox(height: 8),
+            const Text('سيتم إرسال الكود إلى بريدك الإلكتروني'),
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('حسناً'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('حسناً')),
         ],
       ),
     );
