@@ -142,7 +142,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                             if (_selectedType == 'card') ...[
                               TextFormField(
                                 controller: _cardNumberController,
-                                keyboardType: TextInputTypes.number,
+                                keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   labelText: 'رقم البطاقة',
                                   hintText: '1234 5678 9012 3456',

@@ -12,7 +12,6 @@ import 'settings/settings_screen.dart';
 import 'help_support_screen.dart';
 import 'invite_friends_screen.dart';
 import 'reviews_screen.dart';
-import 'statistics_screen.dart';
 import 'smart_support_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
