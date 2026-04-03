@@ -13,116 +13,34 @@ class InteractiveMapScreen extends StatefulWidget {
 
 class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
   late MapController _mapController;
-  LatLng _currentLocation = const LatLng(15.3694, 44.1910); // صنعاء
+  LatLng _currentLocation = const LatLng(15.3694, 44.1910);
   String _selectedStoreType = 'الكل';
+  String _searchQuery = '';
   bool _isLoading = true;
   
-  // أنواع المتاجر
-  final List<String> _storeTypes = ['الكل', 'مطاعم', 'مقاهي', 'محلات', 'خدمات', 'مولات'];
+  final List<String> _storeTypes = ['الكل', 'مطاعم', 'مقاهي', 'محلات', 'خدمات', 'مولات', 'فنادق', 'مدارس', 'مستشفيات'];
   
-  // المتاجر القريبة
   final List<Map<String, dynamic>> _stores = [
-    {
-      'id': '1',
-      'name': 'مطعم المندي الملكي',
-      'type': 'مطاعم',
-      'lat': 15.3714,
-      'lng': 44.1930,
-      'address': 'شارع حدة، صنعاء',
-      'rating': 4.8,
-      'phone': '+967712345678',
-      'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200',
-      'distance': '0.3 كم',
-    },
-    {
-      'id': '2',
-      'name': 'مقهى ستاربكس',
-      'type': 'مقاهي',
-      'lat': 15.3650,
-      'lng': 44.1950,
-      'address': 'شارع الزراعة، صنعاء',
-      'rating': 4.5,
-      'phone': '+967712345679',
-      'image': 'https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=200',
-      'distance': '0.5 كم',
-    },
-    {
-      'id': '3',
-      'name': 'سوق اليمن مول',
-      'type': 'مولات',
-      'lat': 15.3620,
-      'lng': 44.1880,
-      'address': 'شارع الستين، صنعاء',
-      'rating': 4.7,
-      'phone': '+967712345680',
-      'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200',
-      'distance': '0.8 كم',
-    },
-    {
-      'id': '4',
-      'name': 'محل العود الفاخر',
-      'type': 'محلات',
-      'lat': 15.3670,
-      'lng': 44.2000,
-      'address': 'شارع تعز، صنعاء',
-      'rating': 4.6,
-      'phone': '+967712345681',
-      'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200',
-      'distance': '0.6 كم',
-    },
-    {
-      'id': '5',
-      'name': 'خدمة توصيل سريع',
-      'type': 'خدمات',
-      'lat': 15.3730,
-      'lng': 44.1900,
-      'address': 'شارع الرباط، صنعاء',
-      'rating': 4.4,
-      'phone': '+967712345682',
-      'image': 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=200',
-      'distance': '0.4 كم',
-    },
-    {
-      'id': '6',
-      'name': 'مطعم السمك اليمني',
-      'type': 'مطاعم',
-      'lat': 15.3750,
-      'lng': 44.1980,
-      'address': 'شارع المطار، صنعاء',
-      'rating': 4.9,
-      'phone': '+967712345683',
-      'image': 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200',
-      'distance': '0.7 كم',
-    },
-    {
-      'id': '7',
-      'name': 'مقهى الجبل الأخضر',
-      'type': 'مقاهي',
-      'lat': 15.3600,
-      'lng': 44.1850,
-      'address': 'شارع الخمسين، صنعاء',
-      'rating': 4.3,
-      'phone': '+967712345684',
-      'image': 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=200',
-      'distance': '1.0 كم',
-    },
-    {
-      'id': '8',
-      'name': 'مجمع فاميلي مول',
-      'type': 'مولات',
-      'lat': 15.3680,
-      'lng': 44.2030,
-      'address': 'شارع الحديدة، صنعاء',
-      'rating': 4.6,
-      'phone': '+967712345685',
-      'image': 'https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?w=200',
-      'distance': '0.9 كم',
-    },
+    {'id': '1', 'name': 'مطعم المندي الملكي', 'type': 'مطاعم', 'lat': 15.3714, 'lng': 44.1930, 'address': 'شارع حدة، صنعاء', 'rating': 4.8, 'phone': '+967712345678', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200', 'distance': '0.3 كم', 'price': 'متوسط', 'hours': '12م - 12ص'},
+    {'id': '2', 'name': 'مطعم السمك اليمني', 'type': 'مطاعم', 'lat': 15.3750, 'lng': 44.1980, 'address': 'شارع المطار، صنعاء', 'rating': 4.9, 'phone': '+967712345683', 'image': 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200', 'distance': '0.7 كم', 'price': 'مرتفع', 'hours': '1م - 12ص'},
+    {'id': '3', 'name': 'مقهى ستاربكس', 'type': 'مقاهي', 'lat': 15.3650, 'lng': 44.1950, 'address': 'شارع الزراعة، صنعاء', 'rating': 4.5, 'phone': '+967712345679', 'image': 'https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=200', 'distance': '0.5 كم', 'price': 'مرتفع', 'hours': '7ص - 12ص'},
+    {'id': '4', 'name': 'محل العود الفاخر', 'type': 'محلات', 'lat': 15.3670, 'lng': 44.2000, 'address': 'شارع تعز، صنعاء', 'rating': 4.6, 'phone': '+967712345681', 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200', 'distance': '0.6 كم', 'price': 'مرتفع', 'hours': '10ص - 10م'},
+    {'id': '5', 'name': 'خدمة توصيل سريع', 'type': 'خدمات', 'lat': 15.3730, 'lng': 44.1900, 'address': 'شارع الرباط، صنعاء', 'rating': 4.4, 'phone': '+967712345682', 'image': 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=200', 'distance': '0.4 كم', 'price': 'متوسط', 'hours': '8ص - 10م'},
+    {'id': '6', 'name': 'سوق اليمن مول', 'type': 'مولات', 'lat': 15.3620, 'lng': 44.1880, 'address': 'شارع الستين، صنعاء', 'rating': 4.7, 'phone': '+967712345680', 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200', 'distance': '0.8 كم', 'price': 'متوسط', 'hours': '10ص - 10م'},
+    {'id': '7', 'name': 'فندق موفنبيك', 'type': 'فنادق', 'lat': 15.3630, 'lng': 44.1900, 'address': 'شارع حدة، صنعاء', 'rating': 4.8, 'phone': '+967712345696', 'image': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200', 'distance': '0.7 كم', 'price': 'مرتفع', 'hours': '24 ساعة'},
+    {'id': '8', 'name': 'مدرسة صنعاء الحديثة', 'type': 'مدارس', 'lat': 15.3710, 'lng': 44.1890, 'address': 'شارع الزراعة، صنعاء', 'rating': 4.5, 'phone': '+967712345698', 'image': 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200', 'distance': '0.4 كم', 'price': 'مرتفع', 'hours': '7ص - 2م'},
+    {'id': '9', 'name': 'مستشفى الثورة', 'type': 'مستشفيات', 'lat': 15.3650, 'lng': 44.2000, 'address': 'شارع المطار، صنعاء', 'rating': 4.6, 'phone': '+967712345700', 'image': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=200', 'distance': '0.5 كم', 'price': 'مرتفع', 'hours': '24 ساعة'},
   ];
 
   List<Map<String, dynamic>> get _filteredStores {
-    if (_selectedStoreType == 'الكل') return _stores;
-    return _stores.where((store) => store['type'] == _selectedStoreType).toList();
+    var stores = _stores;
+    if (_selectedStoreType != 'الكل') {
+      stores = stores.where((store) => store['type'] == _selectedStoreType).toList();
+    }
+    if (_searchQuery.isNotEmpty) {
+      stores = stores.where((store) => store['name'].toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+    }
+    return stores;
   }
 
   @override
@@ -148,17 +66,11 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
       appBar: const SimpleAppBar(title: 'الخريطة التفاعلية'),
       body: Stack(
         children: [
-          // الخريطة
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
               initialCenter: _currentLocation,
-              initialZoom: 14,
-              interactionOptions: const InteractionOptions(
-                enableMultiFingerGestureZoom: true,
-                enablePinchZoom: true,
-                enableScrollWheelZoom: true,
-              ),
+              initialZoom: 13,
             ),
             children: [
               TileLayer(
@@ -166,45 +78,28 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                 subdomains: const ['a', 'b', 'c'],
                 userAgentPackageName: 'com.flex.yemen',
               ),
-              // علامة الموقع الحالي
               MarkerLayer(
                 markers: [
                   Marker(
                     width: 40,
                     height: 40,
                     point: _currentLocation,
-                    child: const Icon(
-                      Icons.my_location,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
+                    child: const Icon(Icons.my_location, color: Colors.blue, size: 30),
                   ),
-                  // علامات المتاجر
                   ...filteredStores.map((store) => Marker(
                     width: 40,
                     height: 40,
                     point: LatLng(store['lat'], store['lng']),
                     child: GestureDetector(
-                      onTap: () {
-                        _showStoreDetails(store);
-                      },
+                      onTap: () => _showStoreDetails(store),
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           color: AppTheme.goldColor,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 4,
-                            ),
-                          ],
+                          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 4)],
                         ),
-                        child: Icon(
-                          _getStoreIcon(store['type']),
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                        child: Icon(_getStoreIcon(store['type']), color: Colors.white, size: 20),
                       ),
                     ),
                   )),
@@ -213,48 +108,35 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
             ],
           ),
           
-          // شريط البحث والفلتر
           Positioned(
             top: 10,
             left: 10,
             right: 10,
             child: Card(
               elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   children: [
                     const Icon(Icons.search, color: Colors.grey),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'بحث عن متجر...',
-                          border: InputBorder.none,
-                        ),
+                        onChanged: (value) => setState(() => _searchQuery = value),
+                        decoration: const InputDecoration(hintText: 'بحث عن متجر...', border: InputBorder.none),
                       ),
                     ),
-                    Container(
-                      width: 1,
-                      height: 30,
-                      color: Colors.grey[300],
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.filter_list),
-                      onPressed: () {
-                        _showFilterDialog();
-                      },
-                    ),
+                    if (_searchQuery.isNotEmpty)
+                      IconButton(icon: const Icon(Icons.clear), onPressed: () => setState(() => _searchQuery = '')),
+                    Container(width: 1, height: 30, color: Colors.grey[300]),
+                    IconButton(icon: const Icon(Icons.filter_list), onPressed: _showFilterDialog),
                   ],
                 ),
               ),
             ),
           ),
           
-          // فلتر الأنواع
           Positioned(
             top: 80,
             left: 0,
@@ -274,15 +156,9 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                     child: FilterChip(
                       label: Text(type),
                       selected: isSelected,
-                      onSelected: (selected) {
-                        setState(() {
-                          _selectedStoreType = selected ? type : 'الكل';
-                        });
-                      },
+                      onSelected: (selected) => setState(() => _selectedStoreType = selected ? type : 'الكل'),
                       selectedColor: AppTheme.goldColor,
-                      labelStyle: TextStyle(
-                        color: isSelected ? Colors.white : null,
-                      ),
+                      labelStyle: TextStyle(color: isSelected ? Colors.white : null),
                     ),
                   );
                 },
@@ -290,20 +166,16 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
             ),
           ),
           
-          // زر تحديد الموقع
           Positioned(
             bottom: 20,
             right: 20,
             child: FloatingActionButton.small(
-              onPressed: () {
-                _mapController.move(_currentLocation, 15);
-              },
+              onPressed: () => _mapController.move(_currentLocation, 15),
               backgroundColor: AppTheme.goldColor,
               child: const Icon(Icons.my_location, color: Colors.white),
             ),
           ),
           
-          // قائمة المتاجر الجانبية
           Positioned(
             bottom: 20,
             left: 10,
@@ -326,28 +198,14 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                       decoration: BoxDecoration(
                         color: AppTheme.getCardColor(context),
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                          ),
-                        ],
+                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)],
                       ),
                       child: Row(
                         children: [
                           ClipRRect(
                             borderRadius: const BorderRadius.horizontal(left: Radius.circular(12)),
-                            child: Image.network(
-                              store['image'],
-                              width: 60,
-                              height: 120,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
-                                width: 60,
-                                color: Colors.grey[300],
-                                child: const Icon(Icons.store),
-                              ),
-                            ),
+                            child: Image.network(store['image'], width: 60, height: 120, fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(width: 60, color: Colors.grey[300], child: const Icon(Icons.store))),
                           ),
                           Expanded(
                             child: Padding(
@@ -356,26 +214,10 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    store['name'],
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  Text(store['name'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12), maxLines: 2),
                                   const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.star, size: 12, color: Colors.amber),
-                                      Text(' ${store['rating']}', style: const TextStyle(fontSize: 10)),
-                                    ],
-                                  ),
-                                  Text(
-                                    store['distance'],
-                                    style: const TextStyle(fontSize: 10, color: Colors.grey),
-                                  ),
+                                  Row(children: [const Icon(Icons.star, size: 12, color: Colors.amber), Text(' ${store['rating']}', style: const TextStyle(fontSize: 10))]),
+                                  Text(store['distance'], style: const TextStyle(fontSize: 10, color: Colors.grey)),
                                 ],
                               ),
                             ),
@@ -389,13 +231,10 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
             ),
           ),
           
-          // مؤشر التحميل
           if (_isLoading)
             Container(
               color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: const Center(child: CircularProgressIndicator()),
             ),
         ],
       ),
@@ -405,19 +244,14 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
   void _showFilterDialog() {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'تصفية المتاجر',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+              const Text('تصفية المتاجر', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
               Wrap(
                 spacing: 10,
@@ -426,9 +260,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                     label: Text(type),
                     selected: _selectedStoreType == type,
                     onSelected: (selected) {
-                      setState(() {
-                        _selectedStoreType = selected ? type : 'الكل';
-                      });
+                      setState(() => _selectedStoreType = selected ? type : 'الكل');
                       Navigator.pop(context);
                     },
                     selectedColor: AppTheme.goldColor,
@@ -445,9 +277,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
   void _showStoreDetails(Map<String, dynamic> store) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(20),
@@ -459,100 +289,37 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      store['image'],
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        width: 80,
-                        height: 80,
-                        color: Colors.grey[300],
-                        child: const Icon(Icons.store),
-                      ),
-                    ),
+                    child: Image.network(store['image'], width: 80, height: 80, fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(width: 80, height: 80, color: Colors.grey[300], child: const Icon(Icons.store))),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          store['name'],
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            const Icon(Icons.star, size: 16, color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text('${store['rating']}'),
-                            const SizedBox(width: 12),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: AppTheme.goldColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                store['type'],
-                                style: TextStyle(
-                                  color: AppTheme.goldColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        Text(store['name'], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Row(children: [const Icon(Icons.star, size: 16, color: Colors.amber), Text(' ${store['rating']}'), const SizedBox(width: 12),
+                          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                            child: Text(store['type'], style: TextStyle(color: AppTheme.goldColor, fontSize: 10)))]),
                       ],
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
-                children: [
-                  const Icon(Icons.location_on, size: 16, color: Colors.grey),
-                  const SizedBox(width: 8),
-                  Expanded(child: Text(store['address'])),
-                ],
-              ),
+              Row(children: [const Icon(Icons.location_on, size: 16, color: Colors.grey), const SizedBox(width: 8), Expanded(child: Text(store['address']))]),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(Icons.phone, size: 16, color: Colors.grey),
-                  const SizedBox(width: 8),
-                  Text(store['phone']),
-                ],
-              ),
+              Row(children: [const Icon(Icons.phone, size: 16, color: Colors.grey), const SizedBox(width: 8), Text(store['phone'])]),
+              const SizedBox(height: 8),
+              Row(children: [const Icon(Icons.attach_money, size: 16, color: Colors.grey), const SizedBox(width: 8), Text('المستوى: ${store['price']}')]),
+              const SizedBox(height: 8),
+              Row(children: [const Icon(Icons.access_time, size: 16, color: Colors.grey), const SizedBox(width: 8), Text(store['hours'])]),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.directions),
-                      label: const Text('الاتجاهات'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.goldColor,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ),
+                  Expanded(child: ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.directions), label: const Text('الاتجاهات'), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.white))),
                   const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.phone),
-                      label: const Text('اتصال'),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppTheme.goldColor),
-                      ),
-                    ),
-                  ),
+                  Expanded(child: OutlinedButton.icon(onPressed: () {}, icon: const Icon(Icons.phone), label: const Text('اتصال'), style: OutlinedButton.styleFrom(side: BorderSide(color: AppTheme.goldColor)))),
                 ],
               ),
             ],
@@ -564,18 +331,15 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
 
   IconData _getStoreIcon(String type) {
     switch (type) {
-      case 'مطاعم':
-        return Icons.restaurant;
-      case 'مقاهي':
-        return Icons.coffee;
-      case 'محلات':
-        return Icons.store;
-      case 'خدمات':
-        return Icons.build;
-      case 'مولات':
-        return Icons.shopping_mall;
-      default:
-        return Icons.place;
+      case 'مطاعم': return Icons.restaurant;
+      case 'مقاهي': return Icons.coffee;
+      case 'محلات': return Icons.store;
+      case 'خدمات': return Icons.build;
+      case 'مولات': return Icons.storefront;
+      case 'فنادق': return Icons.hotel;
+      case 'مدارس': return Icons.school;
+      case 'مستشفيات': return Icons.local_hospital;
+      default: return Icons.place;
     }
   }
 }
