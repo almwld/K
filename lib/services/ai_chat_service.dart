@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AIChatService {
-  // قاعدة المعرفة الذكية
   static final Map<String, List<String>> _knowledgeBase = {
     'المنتج': [
       'هل المنتج متوفر؟', 'ما هي مواصفات المنتج؟', 'ما هو سعر المنتج؟',
@@ -35,10 +34,9 @@ class AIChatService {
     'return_policy': 'يمكن استرجاع المنتج خلال 14 يوماً من تاريخ الشراء.',
   };
   
-  static Future<String> getAIResponse(String message, {String? productTitle, double? productPrice}) async {
+  static Future<String?> getAIResponse(String message, {String? productTitle, double? productPrice}) async {
     final lowerMsg = message.toLowerCase();
     
-    // التحقق من نية المستخدم
     if (lowerMsg.contains('متوفر') || lowerMsg.contains('موجود')) {
       return _intentResponses['product_available'] ?? 'نعم، المنتج متوفر حالياً.';
     }
@@ -66,7 +64,6 @@ class AIChatService {
       return _intentResponses['return_policy']!;
     }
     
-    // أسئلة عامة
     if (lowerMsg.contains('مرحب') || lowerMsg.contains('السلام')) {
       return '👋 وعليكم السلام! أنا مساعد Flex Yemen الذكي. كيف يمكنني مساعدتك اليوم؟';
     }
@@ -74,7 +71,6 @@ class AIChatService {
       return '🌹 العفو! دائماً في خدمتك. هل هناك شيء آخر؟';
     }
     
-    // إذا لم يفهم السؤال
     return null;
   }
   

@@ -129,7 +129,7 @@ class AdDetailScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: OutlinedButton.icon(icon: const Icon(Icons.bolt), label: const Text("AI مساعد"), onPressed: () {}
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -140,7 +140,7 @@ class AdDetailScreen extends StatelessWidget {
                     label: const Text('محادثة'),
               const SizedBox(width: 12),
               Expanded(
-                child: OutlinedButton.icon(
+                child: OutlinedButton.icon(icon: const Icon(Icons.bolt), label: const Text("AI مساعد"), onPressed: () {}
                   onPressed: () {
                     Navigator.push(
                       context,

@@ -25,7 +25,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
   final ScrollController _scrollController = ScrollController();
   List<Map<String, dynamic>> _messages = [];
   bool _isTyping = false;
-  bool _transferToHuman = false;
+  bool _isTransferring = false;
   
   @override
   void initState() {
@@ -103,8 +103,8 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
     _scrollToBottom();
   }
   
-  void _transferToHuman() {
-    setState(() => _transferToHuman = true);
+  void _transferToSeller() {
+    setState(() => _isTransferring = true);
     
     // إضافة رسالة تحويل
     setState(() {
@@ -149,10 +149,10 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
       appBar: SimpleAppBar(
         title: widget.product != null ? 'AI مساعد' : 'AI الدعم الذكي',
         actions: [
-          if (!_transferToHuman)
+          if (!_isTransferring)
             IconButton(
               icon: const Icon(Icons.headset_mic),
-              onPressed: _transferToHuman,
+              onPressed: _transferToSeller,
               tooltip: 'تحدث مع التاجر',
             ),
         ],
@@ -203,17 +203,17 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                 Container(
                   width: 8, height: 8,
                   decoration: BoxDecoration(
-                    color: _transferToHuman ? Colors.orange : Colors.green,
+                    color: _isTransferring ? Colors.orange : Colors.green,
                     shape: BoxShape.circle,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  _transferToHuman ? 'متصل مع التاجر' : 'AI مساعد نشط',
+                  _isTransferring ? 'متصل مع التاجر' : 'AI مساعد نشط',
                   style: const TextStyle(fontSize: 12),
                 ),
                 const Spacer(),
-                if (!_transferToHuman) ...[
+                if (!_isTransferring) ...[
                   const Icon(Icons.bolt, size: 16, color: AppTheme.goldColor),
                   const SizedBox(width: 4),
                   const Text('ذكي', style: TextStyle(fontSize: 12)),
@@ -239,7 +239,6 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                 final isSystem = message['sender'] == 'system';
                 
                 Color bgColor;
-                IconData? icon;
                 
                 if (isUser) {
                   bgColor = AppTheme.goldColor;
@@ -303,7 +302,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                         Padding(
                           padding: const EdgeInsets.only(top: 8, left: 8),
                           child: ElevatedButton.icon(
-                            onPressed: _transferToHuman,
+                            onPressed: _transferToSeller,
                             icon: const Icon(Icons.support_agent),
                             label: const Text('تحدث مع التاجر'),
                             style: ElevatedButton.styleFrom(
@@ -328,7 +327,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
           ),
           
           // الأسئلة المقترحة (قبل بدء المحادثة)
-          if (_messages.length <= 2 && !_transferToHuman)
+          if (_messages.length <= 2 && !_isTransferring)
             Container(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -365,7 +364,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                   child: TextField(
                     controller: _messageController,
                     decoration: InputDecoration(
-                      hintText: _transferToHuman ? 'اكتب رسالتك للتاجر...' : 'اسأل AI assistant...',
+                      hintText: _isTransferring ? 'اكتب رسالتك للتاجر...' : 'اسأل AI assistant...',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
                         borderSide: BorderSide.none,
@@ -383,7 +382,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    icon: Icon(_transferToHuman ? Icons.send : Icons.bolt, color: Colors.black),
+                    icon: Icon(_isTransferring ? Icons.send : Icons.bolt, color: Colors.black),
                     onPressed: () => _sendMessage(_messageController.text),
                   ),
                 ),
