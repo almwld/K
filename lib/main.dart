@@ -50,6 +50,7 @@ import 'screens/settings/language_screen.dart';
 import 'screens/settings/notifications_settings_screen.dart';
 import 'screens/settings/security_settings_screen.dart';
 import 'screens/invite_friends_screen.dart';
+import 'screens/share_profile_screen.dart';
 import 'screens/my_ads_screen.dart';
 import 'screens/favorites_screen.dart';
 import 'screens/my_orders_screen.dart';
