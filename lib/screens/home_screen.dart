@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../theme/app_theme.dart';
 import '../models/product_model.dart';
-import '../widgets/shimmer_effect.dart';
+import '../widgets/shimmer_effect.dart' as shimmer;
 import 'ad_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: double.infinity,
                       height: 180,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) => const ShimmerEffect(width: double.infinity, height: 180),
+                      placeholder: (_, __) => const CustomShimmer(width: double.infinity, height: 180),
                       errorWidget: (_, __, ___) => Container(color: Colors.grey[300], child: const Icon(Icons.error)),
                     ),
                     Container(
@@ -280,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 140,
                           width: double.infinity,
                           fit: BoxFit.cover,
-                          placeholder: (_, __) => const ShimmerEffect(width: double.infinity, height: 140),
+                          placeholder: (_, __) => const CustomShimmer(width: double.infinity, height: 140),
                           errorWidget: (_, __, ___) => Container(color: Colors.grey[300], child: const Icon(Icons.image, size: 40)),
                         ),
                       ),

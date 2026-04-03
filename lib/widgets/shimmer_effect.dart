@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../theme/app_theme.dart';
 
-class ShimmerEffect extends StatelessWidget {
+class CustomShimmer extends StatelessWidget {
   final double width;
   final double height;
   final BorderRadius? borderRadius;
 
-  const ShimmerEffect({
+  const CustomShimmer({
     super.key,
     required this.width,
     required this.height,
@@ -59,11 +59,11 @@ class ShimmerGrid extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShimmerEffect(width: double.infinity, height: 120, borderRadius: BorderRadius.circular(12)),
+            CustomShimmer(width: double.infinity, height: 120, borderRadius: BorderRadius.circular(12)),
             const SizedBox(height: 8),
-            ShimmerEffect(width: double.infinity, height: 14),
+            CustomShimmer(width: double.infinity, height: 14),
             const SizedBox(height: 4),
-            ShimmerEffect(width: 80, height: 12),
+            CustomShimmer(width: 80, height: 12),
           ],
         );
       },
@@ -91,7 +91,7 @@ class ShimmerCarousel extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: Colors.grey[300],
             ),
-            child: ShimmerEffect(width: double.infinity, height: 180, borderRadius: BorderRadius.circular(20)),
+            child: CustomShimmer(width: double.infinity, height: 180, borderRadius: BorderRadius.circular(20)),
           );
         },
       ),

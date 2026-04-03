@@ -324,3 +324,7 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
     );
   }
 }
+import '../widgets/shimmer_effect.dart' as shimmer;
+
+// في دالة build، استبدال الـ isLoading الحالي بـ:
+// if (_isLoading) return const ShimmerGrid(itemCount: 6);
