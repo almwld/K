@@ -12,26 +12,30 @@ class GiftCardsScreen extends StatefulWidget {
 class _GiftCardsScreenState extends State<GiftCardsScreen> {
   String _selectedCategory = 'الكل';
   
-  final List<String> _categories = ['الكل', 'متاجر', 'مطاعم', 'ألعاب', 'مواقع', 'طيران'];
+  final List<String> _categories = ['الكل', 'أمازون', 'جوجل بلاي', 'آب ستور', 'ستيم', 'نتفليكس'];
   
   final List<Map<String, dynamic>> _giftCards = [
-    {'name': 'أمازون', 'value': '50', 'currency': 'USD', 'price': '28,000', 'image': 'https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=200', 'category': 'مواقع', 'discount': '5%'},
-    {'name': 'ستاربكس', 'value': '20', 'currency': 'USD', 'price': '11,000', 'image': 'https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=200', 'category': 'مطاعم', 'discount': '10%'},
-    {'name': 'بلاي ستيشن', 'value': '50', 'currency': 'USD', 'price': '27,000', 'image': 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=200', 'category': 'ألعاب', 'discount': '8%'},
-    {'name': 'نيتفليكس', 'value': '30', 'currency': 'USD', 'price': '16,000', 'image': 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=200', 'category': 'مواقع', 'discount': '12%'},
-    {'name': 'جوجل بلاي', 'value': '25', 'currency': 'USD', 'price': '13,500', 'image': 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=200', 'category': 'ألعاب', 'discount': '7%'},
-    {'name': 'آبل', 'value': '100', 'currency': 'USD', 'price': '54,000', 'image': 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=200', 'category': 'متاجر', 'discount': '10%'},
+    {'name': 'أمازون', 'value': '10\$', 'price': '12,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg', 'category': 'أمازون', 'stock': 'متوفر'},
+    {'name': 'أمازون', 'value': '25\$', 'price': '31,250', 'image': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg', 'category': 'أمازون', 'stock': 'متوفر'},
+    {'name': 'أمازون', 'value': '50\$', 'price': '62,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg', 'category': 'أمازون', 'stock': 'متوفر'},
+    {'name': 'جوجل بلاي', 'value': '10\$', 'price': '11,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'category': 'جوجل بلاي', 'stock': 'متوفر'},
+    {'name': 'جوجل بلاي', 'value': '25\$', 'price': '28,750', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'category': 'جوجل بلاي', 'stock': 'متوفر'},
+    {'name': 'آب ستور', 'value': '10\$', 'price': '12,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'category': 'آب ستور', 'stock': 'متوفر'},
+    {'name': 'آب ستور', 'value': '25\$', 'price': '30,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'category': 'آب ستور', 'stock': 'نفد'},
+    {'name': 'ستيم', 'value': '10\$', 'price': '11,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'category': 'ستيم', 'stock': 'متوفر'},
+    {'name': 'ستيم', 'value': '20\$', 'price': '22,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'category': 'ستيم', 'stock': 'متوفر'},
+    {'name': 'نتفليكس', 'value': '1 شهر', 'price': '15,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg', 'category': 'نتفليكس', 'stock': 'متوفر'},
   ];
 
   List<Map<String, dynamic>> get _filteredCards {
     if (_selectedCategory == 'الكل') return _giftCards;
-    return _giftCards.where((card) => card['category'] == _selectedCategory).toList();
+    return _giftCards.where((c) => c['category'] == _selectedCategory).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cards = _filteredCards;
+    final filtered = _filteredCards;
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
@@ -40,31 +44,20 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
         children: [
           _buildCategories(),
           Expanded(
-            child: cards.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.card_giftcard, size: 80, color: Colors.grey[400]),
-                        const SizedBox(height: 16),
-                        Text('لا توجد بطاقات', style: TextStyle(color: Colors.grey[600])),
-                      ],
-                    ),
-                  )
-                : GridView.builder(
-                    padding: const EdgeInsets.all(12),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.8,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                    ),
-                    itemCount: cards.length,
-                    itemBuilder: (context, index) {
-                      final card = cards[index];
-                      return _buildGiftCard(card);
-                    },
-                  ),
+            child: GridView.builder(
+              padding: const EdgeInsets.all(12),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.8,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              itemCount: filtered.length,
+              itemBuilder: (context, index) {
+                final card = filtered[index];
+                return _buildGiftCard(card);
+              },
+            ),
           ),
         ],
       ),
@@ -72,9 +65,8 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
   }
 
   Widget _buildCategories() {
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+    return SizedBox(
+      height: 45,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -102,125 +94,98 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
   }
 
   Widget _buildGiftCard(Map<String, dynamic> card) {
-    return GestureDetector(
-      onTap: () {
-        _showPurchaseDialog(card);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.network(
-                card['image'],
-                height: 100,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  height: 100,
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.card_giftcard, size: 40),
+    final isOutOfStock = card['stock'] == 'نفد';
+    
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.getCardColor(context),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2)),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                padding: const EdgeInsets.all(12),
+                child: Image.network(
+                  card['image'],
+                  errorBuilder: (_, __, ___) => Icon(Icons.card_giftcard, size: 50, color: AppTheme.goldColor),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        card['name'],
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          card['discount'],
-                          style: const TextStyle(color: Colors.green, fontSize: 10),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${card['value']} ${card['currency']}',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${card['price']} ر.ي',
-                        style: TextStyle(
-                          color: AppTheme.goldColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        card['category'],
-                        style: TextStyle(fontSize: 10, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ],
+              const SizedBox(height: 8),
+              Text(
+                card['name'],
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              Text(
+                card['value'],
+                style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '${card['price']} ر.ي',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: isOutOfStock ? null : () => _buyGiftCard(card),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.goldColor,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                child: Text(isOutOfStock ? 'نفد' : 'شراء'),
+              ),
+            ],
+          ),
+          if (isOutOfStock)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text('نفد', style: TextStyle(color: Colors.white, fontSize: 10)),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
 
-  void _showPurchaseDialog(Map<String, dynamic> card) {
+  void _buyGiftCard(Map<String, dynamic> card) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('شراء بطاقة ${card['name']}'),
+        title: const Text('تأكيد الشراء'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network(card['image'], height: 80, errorBuilder: (_, __, ___) => const Icon(Icons.card_giftcard, size: 50)),
+            const Icon(Icons.card_giftcard, size: 60, color: Colors.green),
             const SizedBox(height: 16),
-            Text('القيمة: ${card['value']} ${card['currency']}'),
-            Text('السعر: ${card['price']} ريال'),
-            Text('الخصم: ${card['discount']}'),
-            const SizedBox(height: 16),
-            const Text('سيتم إرسال البطاقة إلى بريدك الإلكتروني', style: TextStyle(fontSize: 12)),
+            Text('شراء بطاقة ${card['name']} - ${card['value']}'),
+            const SizedBox(height: 8),
+            Text('السعر: ${card['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('إلغاء'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _showSuccessDialog(card);
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
-            child: const Text('شراء الآن'),
+            child: const Text('تأكيد'),
           ),
         ],
       ),
@@ -238,15 +203,13 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 60),
             const SizedBox(height: 16),
-            Text('تم شراء بطاقة ${card['name']}'),
-            Text('بمبلغ ${card['price']} ريال'),
+            Text('تم شراء بطاقة ${card['name']} - ${card['value']}'),
+            const SizedBox(height: 8),
+            Text('سيتم إرسال الكود إلى بريدك الإلكتروني'),
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('حسناً'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('حسناً')),
         ],
       ),
     );
