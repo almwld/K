@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentCarouselIndex = 0;
-  final PageController _pageController = PageController();
   
   // 10 سلايدرات تغطي جميع أقسام المتجر مع أكلات
   final List<Map<String, dynamic>> _carouselItems = [
@@ -213,10 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // بدء التشغيل التلقائي للسلايدر
-    Future.delayed(Duration.zero, () {
-      _startAutoPlay();
-    });
+    _startAutoPlay();
   }
 
   void _startAutoPlay() {
@@ -282,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 200,
           child: PageView.builder(
             itemCount: _carouselItems.length,
-            onPageChanged: (index, reason) {
+            onPageChanged: (index) {
               setState(() {
                 _currentCarouselIndex = index;
               });
