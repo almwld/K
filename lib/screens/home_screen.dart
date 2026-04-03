@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../theme/app_theme.dart';
 import '../models/product_model.dart';
-import '../widgets/shimmer_effect.dart' as shimmer;
+import '../widgets/shimmer_effect.dart';
 import 'ad_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // محاكاة تحميل البيانات
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => _isLoading = false);
     });
@@ -50,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
               _buildCarousel(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import '../theme/app_theme.dart';
 
 class CustomShimmer extends StatelessWidget {
   final double width;
@@ -33,15 +32,8 @@ class CustomShimmer extends StatelessWidget {
 
 class ShimmerGrid extends StatelessWidget {
   final int itemCount;
-  final double height;
-  final double width;
 
-  const ShimmerGrid({
-    super.key,
-    required this.itemCount,
-    this.height = 120,
-    this.width = double.infinity,
-  });
+  const ShimmerGrid({super.key, this.itemCount = 6});
 
   @override
   Widget build(BuildContext context) {
@@ -96,5 +88,23 @@ class ShimmerCarousel extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class ShimmerEffect extends StatelessWidget {
+  final double width;
+  final double height;
+  final BorderRadius? borderRadius;
+
+  const ShimmerEffect({
+    super.key,
+    required this.width,
+    required this.height,
+    this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomShimmer(width: width, height: height, borderRadius: borderRadius);
   }
 }

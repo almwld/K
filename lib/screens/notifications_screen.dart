@@ -79,17 +79,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 margin: const EdgeInsets.only(bottom: 12),
                 child: Row(
                   children: [
-                    const ShimmerEffect(width: 50, height: 50, borderRadius: BorderRadius.all(Radius.circular(25))),
+                    const CustomShimmer(width: 50, height: 50, borderRadius: BorderRadius.all(Radius.circular(25))),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const ShimmerEffect(width: 120, height: 16),
+                          const CustomShimmer(width: 120, height: 16),
                           const SizedBox(height: 4),
-                          const ShimmerEffect(width: double.infinity, height: 12),
+                          const CustomShimmer(width: double.infinity, height: 12),
                           const SizedBox(height: 4),
-                          ShimmerEffect(width: 60, height: 10),
+                          const CustomShimmer(width: 60, height: 10),
                         ],
                       ),
                     ),
