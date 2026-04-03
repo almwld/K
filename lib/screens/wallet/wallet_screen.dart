@@ -34,43 +34,50 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   int _currentCarouselIndex = 0;
-  double _balance = 125000;
-  bool _isBalanceHidden = false;
+  
+  // حالة إخفاء الرصيد لكل عملة على حدة
+  Map<int, bool> _isBalanceHidden = {
+    0: false,  // ريال يمني
+    1: false,  // ريال سعودي
+    2: false,  // دولار أمريكي
+  };
 
-  // 3 سلايدرات للرصيد
-  final List<Map<String, dynamic>> _balanceSliders = [
+  // أرصدة العملات
+  final List<Map<String, dynamic>> _currencySliders = [
     {
-      'title': 'الرصيد المتاح',
+      'title': 'الريال اليمني',
       'balance': '125,000',
       'currency': 'ر.ي',
+      'code': 'YER',
       'gradient': [0xFFD4AF37, 0xFFB8860B],
-      'icon': Icons.account_balance_wallet,
-      'subtitle': 'آخر تحديث: اليوم',
+      'icon': Icons.currency_exchange,
+      'rate': 'السعر الأساسي',
     },
     {
-      'title': 'الرصيد المحجوز',
-      'balance': '5,000',
-      'currency': 'ر.ي',
+      'title': 'الريال السعودي',
+      'balance': '1,850',
+      'currency': 'ر.س',
+      'code': 'SAR',
       'gradient': [0xFF2196F3, 0xFF1976D2],
-      'icon': Icons.lock_outline,
-      'subtitle': 'معلق حتى 05/04',
+      'icon': Icons.currency_exchange,
+      'rate': '1 SAR = 67.5 ر.ي',
     },
     {
-      'title': 'إجمالي الأرباح',
-      'balance': '12,500',
-      'currency': 'ر.ي',
+      'title': 'الدولار الأمريكي',
+      'balance': '495',
+      'currency': '$',
+      'code': 'USD',
       'gradient': [0xFF4CAF50, 0xFF388E3C],
-      'icon': Icons.trending_up,
-      'subtitle': 'هذا الشهر',
+      'icon': Icons.currency_exchange,
+      'rate': '1 USD = 250 ر.ي',
     },
   ];
 
-  // الخدمات الرئيسية (12 خدمة)
+  // الخدمات الرئيسية
   final List<Map<String, dynamic>> _mainServices = [
     {'name': 'إيداع', 'icon': Icons.arrow_downward, 'color': 0xFF4CAF50, 'route': DepositScreen},
     {'name': 'سحب', 'icon': Icons.arrow_upward, 'color': 0xFFF44336, 'route': WithdrawScreen},
     {'name': 'تحويل', 'icon': Icons.swap_horiz, 'color': 0xFF2196F3, 'route': TransferScreen},
-    
     {'name': 'محافظ', 'icon': Icons.account_balance_wallet, 'color': 0xFF9C27B0, 'route': BanksWalletsScreen},
     {'name': 'فواتير', 'icon': Icons.receipt, 'color': 0xFFFF9800, 'route': BillPaymentScreen},
     {'name': 'بطاقات', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'route': GiftCardsScreen},
@@ -79,6 +86,7 @@ class _WalletScreenState extends State<WalletScreen> {
     {'name': 'تطبيقات', 'icon': Icons.apps, 'color': 0xFF1B5E20, 'route': AppsScreen},
     {'name': 'حوالات محلية', 'icon': Icons.network_cell, 'color': 0xFF795548, 'route': LocalTransferNetworksScreen},
     {'name': 'مدفوعات', 'icon': Icons.account_balance, 'color': 0xFF607D8B, 'route': GovernmentPaymentsScreen},
+    {'name': 'تحويلات دولية', 'icon': Icons.public, 'color': 0xFF2196F3, 'route': MoneyTransfersScreen},
   ];
 
   // الإجراءات السريعة
@@ -93,10 +101,10 @@ class _WalletScreenState extends State<WalletScreen> {
 
   // آخر المعاملات
   final List<Map<String, dynamic>> _recentTransactions = [
-    {'title': 'تحويل إلى جيب', 'amount': '-5,000', 'date': 'اليوم', 'time': '10:30', 'type': 'send', 'status': 'completed'},
-    {'title': 'إيداع نقدي', 'amount': '+10,000', 'date': 'الأمس', 'time': '14:20', 'type': 'deposit', 'status': 'completed'},
-    {'title': 'شراء باقة نت', 'amount': '-2,000', 'date': '2024-04-02', 'time': '09:15', 'type': 'payment', 'status': 'completed'},
-    {'title': 'استلام حوالة', 'amount': '+25,000', 'date': '2024-04-01', 'time': '16:45', 'type': 'receive', 'status': 'completed'},
+    {'title': 'تحويل إلى جيب', 'amount': '-5,000', 'currency': 'ر.ي', 'date': 'اليوم', 'time': '10:30', 'type': 'send', 'status': 'completed'},
+    {'title': 'إيداع نقدي', 'amount': '+10,000', 'currency': 'ر.ي', 'date': 'الأمس', 'time': '14:20', 'type': 'deposit', 'status': 'completed'},
+    {'title': 'شراء باقة نت', 'amount': '-2,000', 'currency': 'ر.ي', 'date': '2024-04-02', 'time': '09:15', 'type': 'payment', 'status': 'completed'},
+    {'title': 'استلام حوالة', 'amount': '+25,000', 'currency': 'ر.ي', 'date': '2024-04-01', 'time': '16:45', 'type': 'receive', 'status': 'completed'},
   ];
 
   @override
@@ -108,9 +116,9 @@ class _WalletScreenState extends State<WalletScreen> {
       appBar: const SimpleAppBar(title: 'محفظة فلكس'),
       body: CustomScrollView(
         slivers: [
-          // 3 سلايدرات للرصيد
+          // 3 سلايدرات للعملات
           SliverToBoxAdapter(
-            child: _buildBalanceCarousel(),
+            child: _buildCurrencyCarousel(),
           ),
           // الخدمات الرئيسية
           SliverToBoxAdapter(
@@ -130,7 +138,7 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  Widget _buildBalanceCarousel() {
+  Widget _buildCurrencyCarousel() {
     return Column(
       children: [
         CarouselSlider(
@@ -146,7 +154,11 @@ class _WalletScreenState extends State<WalletScreen> {
               });
             },
           ),
-          items: _balanceSliders.map((item) {
+          items: _currencySliders.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+            final isHidden = _isBalanceHidden[index] ?? false;
+            
             return Builder(
               builder: (BuildContext context) {
                 return Container(
@@ -191,7 +203,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      _isBalanceHidden = !_isBalanceHidden;
+                                      _isBalanceHidden[index] = !(_isBalanceHidden[index] ?? false);
                                     });
                                   },
                                   child: Container(
@@ -201,7 +213,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Icon(
-                                      _isBalanceHidden ? Icons.visibility_off : Icons.visibility,
+                                      isHidden ? Icons.visibility_off : Icons.visibility,
                                       color: Colors.white,
                                       size: 18,
                                     ),
@@ -215,7 +227,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               textBaseline: TextBaseline.alphabetic,
                               children: [
                                 Text(
-                                  _isBalanceHidden ? '●●●●●' : item['balance'],
+                                  isHidden ? '●●●●●' : item['balance'],
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 32,
@@ -232,10 +244,10 @@ class _WalletScreenState extends State<WalletScreen> {
                             const SizedBox(height: 8),
                             Row(
                               children: [
-                                Icon(Icons.access_time, size: 14, color: Colors.white70),
+                                Icon(Icons.info_outline, size: 14, color: Colors.white70),
                                 const SizedBox(width: 4),
                                 Text(
-                                  item['subtitle'],
+                                  item['rate'],
                                   style: const TextStyle(color: Colors.white70, fontSize: 11),
                                 ),
                               ],
@@ -253,7 +265,7 @@ class _WalletScreenState extends State<WalletScreen> {
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: _balanceSliders.asMap().entries.map((entry) {
+          children: _currencySliders.asMap().entries.map((entry) {
             return Container(
               width: _currentCarouselIndex == entry.key ? 24.0 : 8.0,
               height: 8.0,
@@ -480,7 +492,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     ),
                   ),
                   Text(
-                    '${transaction['amount']} ر.ي',
+                    '${transaction['amount']} ${transaction['currency']}',
                     style: TextStyle(fontWeight: FontWeight.bold, color: amountColor),
                   ),
                 ],
