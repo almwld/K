@@ -58,6 +58,8 @@ import 'screens/my_orders_screen.dart';
 import 'screens/followers_screen.dart';
 import 'screens/following_screen.dart';
 import 'screens/reviews_screen.dart';
+import 'screens/product_review_screen.dart';
+import 'screens/seller_review_screen.dart';
 import 'screens/change_password_screen.dart';
 import 'screens/biometric_screen.dart';
 import 'screens/connected_devices_screen.dart';
@@ -269,6 +271,10 @@ class MyApp extends StatelessWidget {
       case '/following':
         return MaterialPageRoute(builder: (_) => const FollowingScreen());
       case '/reviews':
+      case '/product_review':
+        return MaterialPageRoute(builder: (_) => const ProductReviewScreen());
+      case '/seller_review':
+        return MaterialPageRoute(builder: (_) => const SellerReviewScreen());
         return MaterialPageRoute(builder: (_) => const ReviewsScreen());
       case '/change_password':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
