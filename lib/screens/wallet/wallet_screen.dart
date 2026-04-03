@@ -65,7 +65,7 @@ class _WalletScreenState extends State<WalletScreen> {
     {
       'title': 'الدولار الأمريكي',
       'balance': '495',
-      'currency': '$',
+      'currency': 'USD',
       'code': 'USD',
       'gradient': [0xFF4CAF50, 0xFF388E3C],
       'icon': Icons.currency_exchange,

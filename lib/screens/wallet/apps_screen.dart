@@ -7,12 +7,12 @@ class AppsScreen extends StatelessWidget {
   const AppsScreen({super.key});
 
   final List<Map<String, dynamic>> _apps = [
-    {'name': 'Google Play', 'value': '10\$', 'price': '11,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
-    {'name': 'Google Play', 'value': '25\$', 'price': '28,750', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
-    {'name': 'App Store', 'value': '10\$', 'price': '12,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'color': 0xFF9C27B0, 'category': 'متاجر'},
+    {'name': 'Google Play', 'value': '10 USD', 'price': '11,500', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
+    {'name': 'Google Play', 'value': '25 USD', 'price': '28,750', 'image': 'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_2022_logo.png', 'color': 0xFF4CAF50, 'category': 'متاجر'},
+    {'name': 'App Store', 'value': '10 USD', 'price': '12,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_Logo.svg', 'color': 0xFF9C27B0, 'category': 'متاجر'},
     {'name': 'Spotify', 'value': 'شهر', 'price': '8,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', 'color': 0xFF4CAF50, 'category': 'موسيقى'},
     {'name': 'Netflix', 'value': 'شهر Basic', 'price': '15,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg', 'color': 0xFFF44336, 'category': 'فيديو'},
-    {'name': 'Steam', 'value': '10\$', 'price': '11,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
+    {'name': 'Steam', 'value': '10 USD', 'price': '11,000', 'image': 'https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg', 'color': 0xFF4CAF50, 'category': 'ألعاب'},
   ];
 
   @override

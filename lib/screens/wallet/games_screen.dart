@@ -5,11 +5,11 @@ import '../../widgets/simple_app_bar.dart';
 class GamesScreen extends StatelessWidget {
   const GamesScreen({super.key});
 
-  final List<Map<String, dynamic>> _games = const [
-    {'name': 'بلاي ستيشن', 'value': '10\$', 'price': '12,500', 'icon': Icons.sports_esports, 'color': 0xFF2196F3},
-    {'name': 'بلاي ستيشن', 'value': '25\$', 'price': '31,250', 'icon': Icons.sports_esports, 'color': 0xFF2196F3},
-    {'name': 'ستيم', 'value': '10\$', 'price': '11,000', 'icon': Icons.games, 'color': 0xFF4CAF50},
-    {'name': 'ستيم', 'value': '25\$', 'price': '27,500', 'icon': Icons.games, 'color': 0xFF4CAF50},
+  final List<Map<String, dynamic>> _games = [
+    {'name': 'بلاي ستيشن', 'value': '10 USD', 'price': '12,500', 'icon': Icons.sports_esports, 'color': 0xFF2196F3},
+    {'name': 'بلاي ستيشن', 'value': '25 USD', 'price': '31,250', 'icon': Icons.sports_esports, 'color': 0xFF2196F3},
+    {'name': 'ستيم', 'value': '10 USD', 'price': '11,000', 'icon': Icons.games, 'color': 0xFF4CAF50},
+    {'name': 'ستيم', 'value': '25 USD', 'price': '27,500', 'icon': Icons.games, 'color': 0xFF4CAF50},
   ];
 
   @override
