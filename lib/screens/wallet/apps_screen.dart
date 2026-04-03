@@ -66,7 +66,7 @@ class AppsScreen extends StatelessWidget {
     {'name': 'Calm Premium', 'value': 'شهر', 'price': '8,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF4CAF50, 'category': 'صحة'},
     {'name': 'Headspace', 'value': 'شهر', 'price': '8,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFFFF9800, 'category': 'صحة'},
     {'name': 'MyFitnessPal', 'value': 'شهر', 'price': '6,000', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x', 'color': 0xFF2196F3, 'category': 'صحة'},
-  ];
+  ]
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class AppsScreen extends StatelessWidget {
         ),
         itemCount: _apps.length,
         itemBuilder: (context, index) {
-          final app = _apps[index];
+          final app = _apps[index]
           return _buildAppCard(app);
         },
       ),

@@ -146,7 +146,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
           ),
           hint: const Text('اختر المزود'),
           items: providers.map((provider) {
-            return DropdownMenuItem(
+            return DropdownMenuItem<String>(
               value: provider['code'],
               child: Row(
                 children: [

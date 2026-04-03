@@ -19,7 +19,7 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
     {'id': 'customs', 'name': 'الجمارك', 'icon': Icons.local_shipping, 'color': 0xFF2196F3},
     {'id': 'license', 'name': 'تراخيص', 'icon': Icons.assignment, 'color': 0xFF4CAF50},
     {'id': 'municipality', 'name': 'أمانة العاصمة', 'icon': Icons.location_city, 'color': 0xFFFF9800},
-    {'id': 'passport', 'name': 'الجوازات', 'icon': Icons.passport, 'color': 0xFF9C27B0},
+    {'id': 'passport', 'name': 'الجوازات', 'icon': Icons.airplane_ticket, 'color': 0xFF9C27B0},
     {'id': 'traffic', 'name': 'المرور', 'icon': Icons.traffic, 'color': 0xFFE91E63},
   ];
 
