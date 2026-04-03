@@ -1,48 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
+import '../services/image_cache_service.dart';
 import 'category_products_screen.dart';
 import 'all_ads_screen.dart';
 import 'auctions_screen.dart';
 import 'garden_screen.dart';
-
-// Shimmer effect مخصص بدون حزمة خارجية
-class ShimmerEffect extends StatelessWidget {
-  final Widget child;
-  const ShimmerEffect({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: child,
-    );
-  }
-}
-
-// شيمر لودينغ للصور
-class ImageShimmer extends StatelessWidget {
-  final double height;
-  final double width;
-  const ImageShimmer({super.key, this.height = 130, this.width = double.infinity});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      color: Colors.grey[300],
-      child: const Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
-        ),
-      ),
-    );
-  }
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentCarouselIndex = 0;
-  int _visibleProductsCount = 10; // Pagination: ابدأ بـ 10 منتجات
+  int _visibleProductsCount = 10;
   bool _isLoadingMore = false;
   final ScrollController _scrollController = ScrollController();
 
@@ -149,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    // تنظيف الكاش القديم عند بدء التطبيق
+    ImageCacheService.clearOldCache();
   }
 
   void _scrollListener() {
@@ -234,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(image: NetworkImage(item['image']), fit: BoxFit.cover),
+                    image: DecorationImage(image: CachedNetworkImageProvider(item['image']), fit: BoxFit.cover),
                   ),
                   child: Container(
                     decoration: BoxDecoration(
@@ -396,31 +363,25 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.network(
-                product['image'],
+              child: CachedNetworkImage(
+                imageUrl: product['image'],
                 height: 130,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    height: 130,
-                    color: isDark ? Colors.grey[800] : Colors.grey[200],
-                    child: Center(
-                      child: SizedBox(
-                        height: 30, width: 30,
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                              : null,
-                          strokeWidth: 2,
-                          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
-                        ),
+                placeholder: (context, url) => Container(
+                  height: 130,
+                  color: isDark ? Colors.grey[800] : Colors.grey[200],
+                  child: Center(
+                    child: SizedBox(
+                      height: 30, width: 30,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
                       ),
                     ),
-                  );
-                },
-                errorBuilder: (_, __, ___) => Container(
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
                   height: 130, color: Colors.grey[300],
                   child: const Icon(Icons.image_not_supported),
                 ),
