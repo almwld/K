@@ -16,20 +16,21 @@ class OrderDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _buildInfoCard(),
+            _buildInfoCard(context),
             const SizedBox(height: 16),
-            _buildProductCard(),
+            _buildProductCard(context),
             const SizedBox(height: 16),
-            _buildPriceCard(),
+            _buildPriceCard(context),
             const SizedBox(height: 16),
-            _buildActionButtons(),
+            _buildActionButtons(context),
           ],
         ),
       ),
     );
   }
   
-  Widget _buildInfoCard() {
+  Widget _buildInfoCard(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -50,7 +51,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
   
-  Widget _buildProductCard() {
+  Widget _buildProductCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -94,7 +95,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
   
-  Widget _buildPriceCard() {
+  Widget _buildPriceCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -113,7 +114,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
   
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Row(
       children: [
         Expanded(
