@@ -1,76 +1,72 @@
 name: flex_yemen
-description: Flex Yemen Market - السوق الإلكتروني اليمني
-version: 1.0.0+1
-publish_to: none
+description: Flex Yemen - Yemeni E-commerce Platform
+publish_to: 'none'
+version: 2.0.0+1
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  
+  # UI
   cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  carousel_slider: ^4.2.1
+  flutter_animate: ^4.0.0
+  
+  # State Management
   provider: ^6.1.1
-  supabase_flutter: ^2.0.0
-  carousel_slider: ^5.1.2
-  flutter_animate: ^4.3.0
-  flutter_svg: ^2.0.17
-  image_picker: ^1.0.7
-  cached_network_image: ^3.3.1
+  
+  # Storage
   shared_preferences: ^2.2.2
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.1
+  
+  # Images
+  cached_network_image: ^3.3.1
+  image_picker: ^1.0.5
+  
+  # Maps
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+  
+  # Chat
+  flutter_chat_ui: ^1.6.12
+  
+  # Payment
+  webview_flutter: ^4.5.0
+  
+  # Notifications
+  flutter_local_notifications: ^16.3.0
+  
+  # Biometric
+  local_auth: ^2.1.7
+  
+  # Supabase
+  supabase_flutter: ^2.0.0
+  
+  # Utils
+  url_launcher: ^6.2.1
   intl: ^0.18.1
-  url_launcher: ^6.2.2
-  path_provider: ^2.1.5
-  shimmer: ^3.0.0
-  smooth_page_indicator: ^1.1.0
-  flutter_dotenv: ^5.1.0
-  google_fonts: ^6.2.1
-  flutter_map: ^7.0.2
-  latlong2: ^0.9.1
-  connectivity_plus: ^6.0.5
-  share_plus: ^6.3.0
-  flutter_cache_manager: ^3.3.1
-  fl_chart: ^0.68.0
-  local_auth: ^2.1.6
-  qr_flutter: ^4.1.0
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
-  flutter_launcher_icons: ^0.14.4
-
-flutter_launcher_icons:
-  android: true
-  ios: false
-  image_path: "assets/icons/icon.png"
-  adaptive_icon_background: "#00000000"
-  adaptive_icon_foreground: "assets/icons/icon.png"
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-
+  
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/fonts/
+    - .env
+  
   fonts:
     - family: Changa
       fonts:
         - asset: assets/fonts/Changa-SemiBold.ttf
-          weight: 600
-
-  assets:
-    - .env
-    - assets/images/
-    - assets/icons/
-    - assets/icons/svg/
-    - assets/animations/
-
-dependency_overrides:
-  share_plus: ^10.1.4
-  share_plus_platform_interface: ^5.0.0
-
-# Caching
-  cached_network_image: ^3.3.1
-  path_provider: ^2.1.1
-
-# Caching
-  cached_network_image: ^3.3.1
-  path_provider: ^2.1.1
