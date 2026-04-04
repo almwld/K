@@ -280,7 +280,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
       case 'مطاعم': return Icons.restaurant;
       case 'مقاهي': return Icons.coffee;
       case 'فنادق': return Icons.hotel;
-      case 'مولات': return Icons.shopping_mall;
+      case 'مولات': return Icons.storefront;
       case 'صيدليات': return Icons.medical_services;
       case 'نوادي رياضية': return Icons.fitness_center;
       case 'صالونات تجميل': return Icons.spa;
