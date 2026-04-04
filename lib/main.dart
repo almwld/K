@@ -341,3 +341,4 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+import 'providers/view_mode_provider.dart';
