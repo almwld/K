@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'providers/view_mode_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -341,4 +342,3 @@ class MyApp extends StatelessWidget {
     }
   }
 }
-import 'providers/view_mode_provider.dart';
