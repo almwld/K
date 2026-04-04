@@ -112,7 +112,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeManager()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ConnectionChecker()),
-        ChangeNotifierProvider(create: (_) => NotificationService()),
       ],
       child: Consumer<ThemeManager>(
         builder: (context, themeManager, child) {
