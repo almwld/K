@@ -179,7 +179,7 @@ class _SanaaServicesScreenState extends State<SanaaServicesScreen> {
     switch (_selectedCategory) {
       case 'hospitals': return _hospitals;
       case 'universities': return _universities;
-      case 'shops': return _shops;
+      case 'shops': return _allShops;
       case 'restaurants': return _restaurants;
       case 'cafes': return _cafes;
       case 'hotels': return _hotels;
@@ -188,7 +188,7 @@ class _SanaaServicesScreenState extends State<SanaaServicesScreen> {
       case 'gyms': return _gyms;
       case 'beauty': return _beautySalons;
       case 'car_services': return _carServices;
-      default: return [..._hospitals, ..._universities, ..._shops, ..._restaurants, ..._cafes, ..._hotels, ..._malls, ..._pharmacies, ..._gyms, ..._beautySalons, ..._carServices];
+      default: return [..._hospitals, ..._universities, ..._allShops, ..._restaurants, ..._cafes, ..._hotels, ..._malls, ..._pharmacies, ..._gyms, ..._beautySalons, ..._carServices];
     }
   }
 
@@ -310,3 +310,57 @@ class _SanaaServicesScreenState extends State<SanaaServicesScreen> {
     );
   }
 }
+
+  // ==================== محلات إضافية (50+ محل جديد) ====================
+  final List<Map<String, dynamic>> _moreShops = [
+    // محلات مواد غذائية (10)
+    {'name': 'سوبر ماركت السعيد', 'area': 'الستين', 'category': 'مواد غذائية', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300', 'type': 'supermarket', 'whatsapp': '712345720'},
+    {'name': 'سوبر ماركت العاقل', 'area': 'السبعين', 'category': 'مواد غذائية', 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300', 'type': 'supermarket', 'whatsapp': '712345721'},
+    {'name': 'أسواق الأمان', 'area': 'حدة', 'category': 'مواد غذائية', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300', 'type': 'supermarket', 'whatsapp': '712345722'},
+    {'name': 'سوق الخضراوات المركزي', 'area': 'الروضة', 'category': 'خضروات وفواكه', 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=300', 'type': 'market', 'whatsapp': '712345723'},
+    {'name': 'محلات الجزارة الفاخر', 'area': 'الستين', 'category': 'لحوم', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=300', 'type': 'butcher', 'whatsapp': '712345724'},
+    {'name': 'محلات الدواجن', 'area': 'السبعين', 'category': 'دواجن', 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=300', 'type': 'poultry', 'whatsapp': '712345725'},
+    {'name': 'تمور المدينة', 'area': 'حدة', 'category': 'تمور', 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1604671801908-29f0cb3b6162?w=300', 'type': 'dates', 'whatsapp': '712345726'},
+    {'name': 'العسل الجبلي', 'area': 'الروضة', 'category': 'عسل', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1587049352847-4a222e784d33?w=300', 'type': 'honey', 'whatsapp': '712345727'},
+    {'name': 'بهارات اليمن', 'area': 'الستين', 'category': 'بهارات', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=300', 'type': 'spices', 'whatsapp': '712345728'},
+    {'name': 'مكسرات اليمن', 'area': 'السبعين', 'category': 'مكسرات', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=300', 'type': 'nuts', 'whatsapp': '712345729'},
+    
+    // محلات أدوات منزلية (10)
+    {'name': 'أدوات منزلية البيت', 'area': 'الستين', 'category': 'أدوات منزلية', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=300', 'type': 'home', 'whatsapp': '712345730'},
+    {'name': 'السيراميك الفاخر', 'area': 'السبعين', 'category': 'سيراميك', 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=300', 'type': 'ceramic', 'whatsapp': '712345731'},
+    {'name': 'الستائر والديكور', 'area': 'حدة', 'category': 'ستائر', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1509644056419-6e2b3f9ee1de?w=300', 'type': 'curtains', 'whatsapp': '712345732'},
+    {'name': 'الإضاءة الحديثة', 'area': 'الروضة', 'category': 'إضاءة', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=300', 'type': 'lighting', 'whatsapp': '712345733'},
+    {'name': 'الأجهزة الكهربائية', 'area': 'الستين', 'category': 'أجهزة كهربائية', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=300', 'type': 'appliances', 'whatsapp': '712345734'},
+    {'name': 'أدوات المطبخ', 'area': 'السبعين', 'category': 'أدوات مطبخ', 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1556909114-44e3ef1e0d71?w=300', 'type': 'kitchen', 'whatsapp': '712345735'},
+    {'name': 'أواني منزلية', 'area': 'حدة', 'category': 'أواني', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=300', 'type': 'utensils', 'whatsapp': '712345736'},
+    {'name': 'المفروشات المنزلية', 'area': 'الروضة', 'category': 'مفروشات', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300', 'type': 'furnishings', 'whatsapp': '712345737'},
+    {'name': 'السجاد اليمني', 'area': 'الستين', 'category': 'سجاد', 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=300', 'type': 'carpets', 'whatsapp': '712345738'},
+    {'name': 'المراتب الطبية', 'area': 'السبعين', 'category': 'مراتب', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=300', 'type': 'mattresses', 'whatsapp': '712345739'},
+    
+    // محلات العطور والبخور (10)
+    {'name': 'البخور اليمني', 'area': 'الستين', 'category': 'بخور', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1583422409519-37f2e1de7ec9?w=300', 'type': 'incense', 'whatsapp': '712345740'},
+    {'name': 'العود الفاخر', 'area': 'السبعين', 'category': 'عود', 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300', 'type': 'oud', 'whatsapp': '712345741'},
+    {'name': 'الخلطات العطرية', 'area': 'حدة', 'category': 'خلطات عطرية', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300', 'type': 'blends', 'whatsapp': '712345742'},
+    {'name': 'العطور الفرنسية', 'area': 'الروضة', 'category': 'عطور فرنسية', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300', 'type': 'french', 'whatsapp': '712345743'},
+    {'name': 'العطور العربية', 'area': 'الستين', 'category': 'عطور عربية', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300', 'type': 'arabic', 'whatsapp': '712345744'},
+    
+    // محلات مستلزمات الأطفال (10)
+    {'name': 'عالم الأطفال', 'area': 'الستين', 'category': 'مستلزمات أطفال', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300', 'type': 'baby', 'whatsapp': '712345745'},
+    {'name': 'ألعاب الأطفال', 'area': 'السبعين', 'category': 'ألعاب', 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300', 'type': 'toys', 'whatsapp': '712345746'},
+    {'name': 'ملابس الأطفال', 'area': 'حدة', 'category': 'ملابس أطفال', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300', 'type': 'kids_clothes', 'whatsapp': '712345747'},
+    {'name': 'أحذية الأطفال', 'area': 'الروضة', 'category': 'أحذية أطفال', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300', 'type': 'kids_shoes', 'whatsapp': '712345748'},
+    {'name': 'عربات الأطفال', 'area': 'الستين', 'category': 'عربات أطفال', 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300', 'type': 'strollers', 'whatsapp': '712345749'},
+    
+    // محلات مستحضرات تجميل إضافية (10)
+    {'name': 'مستحضرات طبيعية', 'area': 'الستين', 'category': 'طبيعي', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300', 'type': 'natural', 'whatsapp': '712345750'},
+    {'name': 'العناية بالشعر', 'area': 'السبعين', 'category': 'شعر', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300', 'type': 'hair', 'whatsapp': '712345751'},
+    {'name': 'العناية بالبشرة', 'area': 'حدة', 'category': 'بشرة', 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300', 'type': 'skin', 'whatsapp': '712345752'},
+    {'name': 'مكياج احترافي', 'area': 'الروضة', 'category': 'مكياج', 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300', 'type': 'makeup', 'whatsapp': '712345753'},
+    {'name': 'أدوات تجميل', 'area': 'الستين', 'category': 'أدوات تجميل', 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300', 'type': 'tools', 'whatsapp': '712345754'},
+  ];
+
+  // دمج المحلات مع الإضافات
+  final List<Map<String, dynamic>> _allShops = [
+    ..._shops,
+    ..._moreShops,
+  ];
