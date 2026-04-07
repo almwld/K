@@ -1,10 +1,10 @@
 name: flex_yemen
-description: Flex Yemen Market - السوق الإلكتروني اليمني
+description: Flex Yemen E-commerce Platform
 version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -20,22 +20,15 @@ dependencies:
   shared_preferences: ^2.2.2
   intl: ^0.18.1
   url_launcher: ^6.2.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   path_provider: ^2.1.5
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.1.0
   flutter_dotenv: ^5.1.0
-  google_fonts: ^6.2.1
-  flutter_map: ^7.0.2
-  latlong2: ^0.9.1
-  connectivity_plus: ^6.0.5
-  share_plus: ^6.3.0
-  flutter_cache_manager: ^3.3.1
-  fl_chart: ^0.68.0
-  local_auth: ^2.1.6
-  qr_flutter: ^4.1.0
-  flutter_rating_bar: ^4.0.1
-  badges: ^3.1.2
-  dropdown_button2: ^2.0.0
+  file_picker: ^8.0.0+1
+  permission_handler: ^11.3.1
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -47,25 +40,19 @@ flutter_launcher_icons:
   android: true
   ios: false
   image_path: "assets/icons/icon.png"
-  adaptive_icon_background: "#D4AF37"
-  adaptive_icon_foreground: "assets/icons/icon.png"
 
 flutter:
   uses-material-design: true
-
+  
   fonts:
     - family: Changa
       fonts:
         - asset: assets/fonts/Changa-SemiBold.ttf
           weight: 600
-
+  
   assets:
-    - .env
     - assets/images/
     - assets/icons/
     - assets/icons/svg/
     - assets/animations/
-
-dependency_overrides:
-  share_plus: ^10.1.4
-  share_plus_platform_interface: ^5.0.0
+    - .env
