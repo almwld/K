@@ -314,7 +314,7 @@ class MyApp extends StatelessWidget {
       case '/change_password':
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case '/biometric_auth':
-        return MaterialPageRoute(builder: (_) => const BiometricScreen());
+        return MaterialPageRoute(builder: (_) => const BiometricScreen(userId: 'temp'));
       case '/connected_devices':
         return MaterialPageRoute(builder: (_) => const ConnectedDevicesScreen());
       case '/login_history':
