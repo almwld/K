@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Create Android project structure (basic folders)
+      - name: Create Android project structure
         run: |
           mkdir -p android/app/src/main/kotlin/com/flexyemen/flex_yemen
           mkdir -p android/gradle/wrapper
@@ -36,15 +36,15 @@ jobs:
 
       - name: Create gradle.properties
         run: |
-          cat > android/gradle.properties << 'EOF'
+          cat > android/gradle.properties << 'GRADLEPROP'
           org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g
           android.useAndroidX=true
           android.enableJetifier=true
-          EOF
+          GRADLEPROP
 
       - name: Create settings.gradle
         run: |
-          cat > android/settings.gradle << 'EOF'
+          cat > android/settings.gradle << 'SETTINGS'
           pluginManagement {
               def flutterSdkPath = {
                   def properties = new Properties()
@@ -66,11 +66,11 @@ jobs:
               id "org.jetbrains.kotlin.android" version "1.9.0" apply false
           }
           include ":app"
-          EOF
+          SETTINGS
 
       - name: Create build.gradle (project level)
         run: |
-          cat > android/build.gradle << 'EOF'
+          cat > android/build.gradle << 'PROJECTGRADLE'
           buildscript {
               ext.kotlin_version = '1.9.0'
               repositories {
@@ -98,11 +98,11 @@ jobs:
           tasks.register("clean", Delete) {
               delete rootProject.buildDir
           }
-          EOF
+          PROJECTGRADLE
 
-      - name: Create app build.gradle (with Java/Kotlin JVM target 17)
+      - name: Create app build.gradle
         run: |
-          cat > android/app/build.gradle << 'EOF'
+          cat > android/app/build.gradle << 'APPGRADLE'
           plugins {
               id "com.android.application"
               id "kotlin-android"
@@ -129,7 +129,7 @@ jobs:
 
           android {
               namespace "com.flexyemen.flex_yemen"
-              compileSdkVersion 34
+              compileSdkVersion 35
               ndkVersion flutter.ndkVersion
 
               compileOptions {
@@ -147,8 +147,8 @@ jobs:
 
               defaultConfig {
                   applicationId "com.flexyemen.flex_yemen"
-                  minSdkVersion 21
-                  targetSdkVersion 34
+                  minSdkVersion 23
+                  targetSdkVersion 35
                   versionCode flutterVersionCode.toInteger()
                   versionName flutterVersionName
               }
@@ -165,26 +165,31 @@ jobs:
           flutter {
               source '../..'
           }
-          EOF
+          APPGRADLE
 
       - name: Create gradle-wrapper.properties
         run: |
-          cat > android/gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          cat > android/gradle/wrapper/gradle-wrapper.properties << 'WRAPPER'
           distributionBase=GRADLE_USER_HOME
           distributionPath=wrapper/dists
           zipStoreBase=GRADLE_USER_HOME
           zipStorePath=wrapper/dists
           distributionUrl=https\://services.gradle.org/distributions/gradle-8.0-all.zip
-          EOF
+          WRAPPER
 
       - name: Create AndroidManifest.xml
         run: |
-          cat > android/app/src/main/AndroidManifest.xml << 'EOF'
+          cat > android/app/src/main/AndroidManifest.xml << 'MANIFEST'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+              <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+              
               <application
                   android:label="Flex Yemen"
                   android:name="${applicationName}"
-                  android:icon="@mipmap/ic_launcher">
+                  android:icon="@mipmap/ic_launcher"
+                  android:usesCleartextTraffic="true">
                   <activity
                       android:name=".MainActivity"
                       android:exported="true"
@@ -195,8 +200,7 @@ jobs:
                       android:windowSoftInputMode="adjustResize">
                       <meta-data
                           android:name="io.flutter.embedding.android.NormalTheme"
-                          android:resource="@style/NormalTheme"
-                          />
+                          android:resource="@style/NormalTheme"/>
                       <intent-filter>
                           <action android:name="android.intent.action.MAIN"/>
                           <category android:name="android.intent.category.LAUNCHER"/>
@@ -206,26 +210,20 @@ jobs:
                       android:name="flutterEmbedding"
                       android:value="2" />
               </application>
-              <uses-permission android:name="android.permission.INTERNET"/>
-              <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-              <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
           </manifest>
-          EOF
+          MANIFEST
 
       - name: Create MainActivity.kt
         run: |
-          cat > android/app/src/main/kotlin/com/flexyemen/flex_yemen/MainActivity.kt << 'EOF'
+          cat > android/app/src/main/kotlin/com/flexyemen/flex_yemen/MainActivity.kt << 'ACTIVITY'
           package com.flexyemen.flex_yemen
-
           import io.flutter.embedding.android.FlutterActivity
-
-          class MainActivity: FlutterActivity() {
-          }
-          EOF
+          class MainActivity: FlutterActivity()
+          ACTIVITY
 
       - name: Create styles.xml
         run: |
-          cat > android/app/src/main/res/values/styles.xml << 'EOF'
+          cat > android/app/src/main/res/values/styles.xml << 'STYLES'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
               <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
@@ -235,16 +233,16 @@ jobs:
                   <item name="android:windowBackground">@drawable/launch_background</item>
               </style>
           </resources>
-          EOF
+          STYLES
 
       - name: Create launch_background.xml
         run: |
-          cat > android/app/src/main/res/drawable/launch_background.xml << 'EOF'
+          cat > android/app/src/main/res/drawable/launch_background.xml << 'BACKGROUND'
           <?xml version="1.0" encoding="utf-8"?>
           <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-              <item android:drawable="@android:color/black" />
+              <item android:drawable="@android:color/black"/>
           </layer-list>
-          EOF
+          BACKGROUND
 
       - name: Create local.properties
         run: |
@@ -255,30 +253,11 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      - name: Ensure flutter_launcher_icons is available and generate Android-only launcher icons
+      - name: Ensure flutter_launcher_icons is available
         run: |
-          # Add the dev dependency if it's missing (idempotent)
           flutter pub add --dev flutter_launcher_icons || true
           flutter pub get
-
-          # Ensure iOS generation is disabled in pubspec.yaml (make it Android-only)
-          if grep -q "flutter_launcher_icons:" pubspec.yaml; then
-            sed -n '/flutter_launcher_icons:/,/flutter:/p' pubspec.yaml || true
-            # replace 'ios: true' with 'ios: false' if present
-            sed -i 's/ios:[[:space:]]*true/ios: false/g' pubspec.yaml || true
-          fi
-
-          # Remove any partial iOS assets to avoid errors
-          rm -rf ios/Runner/Assets.xcassets || true
-          rm -rf ios/Runner/Images.xcassets || true
-
-          # Run generator (will create Android icons only)
-          flutter pub run flutter_launcher_icons:main
-
-      - name: Create .env file
-        run: |
-          echo "SUPABASE_URL=https://your-project.supabase.co" > .env
-          echo "SUPABASE_ANON_KEY=your-anon-key-here" >> .env
+          sed -i 's/ios:[[:space:]]*true/ios: false/g' pubspec.yaml || true
 
       - name: Build APK
         run: flutter build apk --release --split-per-abi

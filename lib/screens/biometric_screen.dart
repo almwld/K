@@ -1,237 +1,260 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import '../services/biometric_service.dart';
 import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import 'home_screen.dart';
 
 class BiometricScreen extends StatefulWidget {
-  const BiometricScreen({super.key});
+  final String userId;
+  final String? redirectTo;
+  
+  const BiometricScreen({
+    super.key, 
+    required this.userId,
+    this.redirectTo,
+  });
 
   @override
   State<BiometricScreen> createState() => _BiometricScreenState();
 }
 
 class _BiometricScreenState extends State<BiometricScreen> {
-  final LocalAuthentication _localAuth = LocalAuthentication();
-  
-  bool _isBiometricEnabled = false;
+  final BiometricService _biometricService = BiometricService();
   bool _isBiometricAvailable = false;
-  bool _isDeviceSupported = false;
+  bool _hasEnrolledBiometrics = false;
   List<BiometricType> _availableBiometrics = [];
-  
+  bool _isLoading = true;
+  bool _isAuthenticating = false;
+
   @override
   void initState() {
     super.initState();
     _checkBiometricAvailability();
   }
-  
+
   Future<void> _checkBiometricAvailability() async {
-    final isAvailable = await _localAuth.canCheckBiometrics;
-    final isSupported = await _localAuth.isDeviceSupported();
-    final biometrics = await _localAuth.getAvailableBiometrics();
+    setState(() => _isLoading = true);
+    
+    final isAvailable = await _biometricService.isBiometricAvailable();
+    final hasEnrolled = await _biometricService.hasEnrolledBiometrics();
+    final biometrics = await _biometricService.getAvailableBiometrics();
     
     setState(() {
       _isBiometricAvailable = isAvailable;
-      _isDeviceSupported = isSupported;
+      _hasEnrolledBiometrics = hasEnrolled;
       _availableBiometrics = biometrics;
+      _isLoading = false;
     });
   }
-  
-  String _getBiometricType() {
-    if (_availableBiometrics.contains(BiometricType.face)) return 'التعرف على الوجه';
-    if (_availableBiometrics.contains(BiometricType.fingerprint)) return 'بصمة الإصبع';
-    if (_availableBiometrics.contains(BiometricType.iris)) return 'مسح العين';
-    return 'المصادقة البيومترية';
+
+  String _getBiometricIcon() {
+    if (_availableBiometrics.contains(BiometricType.face)) return '😊';
+    if (_availableBiometrics.contains(BiometricType.fingerprint)) return '👆';
+    if (_availableBiometrics.contains(BiometricType.iris)) return '👁️';
+    return '🔐';
   }
-  
-  Future<void> _enableBiometric() async {
-    if (!_isDeviceSupported) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('جهازك لا يدعم المصادقة البيومترية'), backgroundColor: Colors.red),
-      );
-      return;
-    }
+
+  String _getBiometricTypeText() {
+    if (_availableBiometrics.contains(BiometricType.face)) return 'الوجه';
+    if (_availableBiometrics.contains(BiometricType.fingerprint)) return 'البصمة';
+    if (_availableBiometrics.contains(BiometricType.iris)) return 'العين';
+    return 'البيومترية';
+  }
+
+  Future<void> _authenticate() async {
+    if (_isAuthenticating) return;
     
-    if (!_isBiometricAvailable) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('لم يتم إعداد المصادقة البيومترية على جهازك'), backgroundColor: Colors.red),
-      );
-      return;
-    }
+    setState(() => _isAuthenticating = true);
     
-    final authenticated = await _localAuth.authenticate(
-      localizedReason: 'سجل دخولك باستخدام ${_getBiometricType()} لتأكيد هويتك',
-      options: const AuthenticationOptions(
-        biometricOnly: true,
-        stickyAuth: true,
+    final success = await _biometricService.authenticateWithBiometrics(
+      reason: 'الرجاء المصادقة للوصول إلى حسابك في Flex Yemen',
+      title: 'المصادقة البيومترية',
+      subtitle: 'استخدم ${_getBiometricTypeText()} للدخول',
+      cancelButtonTitle: 'إلغاء',
+    );
+    
+    setState(() => _isAuthenticating = false);
+    
+    if (success && mounted) {
+      // حفظ تفضيل استخدام البصمة
+      await _biometricService.saveBiometricPreference(true);
+      
+      // الانتقال إلى الشاشة الرئيسية
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('فشلت المصادقة. الرجاء المحاولة مرة أخرى'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _skipForNow() async {
+    await _biometricService.saveBiometricPreference(false);
+    
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
       ),
     );
-    
-    if (authenticated) {
-      setState(() => _isBiometricEnabled = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تم تفعيل ${_getBiometricType()} بنجاح'), backgroundColor: Colors.green),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل التحقق من الهوية'), backgroundColor: Colors.red),
-      );
-    }
   }
-  
-  Future<void> _disableBiometric() async {
-    setState(() => _isBiometricEnabled = false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم تعطيل المصادقة البيومترية'), backgroundColor: Colors.orange),
-    );
-  }
-  
-  Future<void> _testBiometric() async {
-    final authenticated = await _localAuth.authenticate(
-      localizedReason: 'اختبر ${_getBiometricType()} الخاص بك',
-      options: const AuthenticationOptions(biometricOnly: true),
-    );
-    
-    if (authenticated) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم التحقق بنجاح'), backgroundColor: Colors.green),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل التحقق'), backgroundColor: Colors.red),
-      );
-    }
-  }
-  
+
   @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'المصادقة البيومترية'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Theme.of(context).brightness == Brightness.dark 
+        ? AppTheme.darkBackground 
+        : AppTheme.lightBackground,
+    body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // أيقونات البيومترية
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: AppTheme.goldGradient,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                _availableBiometrics.contains(BiometricType.face) ? Icons.face : Icons.fingerprint,
-                size: 60,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 24),
-            
-            // حالة الجهاز
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                children: [
-                  _buildInfoRow('نوع المصادقة', _getBiometricType()),
-                  _buildInfoRow('دعم الجهاز', _isDeviceSupported ? 'مدعوم ✅' : 'غير مدعوم ❌'),
-                  _buildInfoRow('الحالة', _isBiometricEnabled ? 'مفعل ✅' : 'غير مفعل ❌'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            
-            // تفعيل/تعطيل
-            if (!_isBiometricEnabled)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _enableBiometric,
-                  icon: const Icon(Icons.fingerprint),
-                  label: const Text('تفعيل المصادقة البيومترية'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.goldColor,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
+            if (_isLoading)
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
               )
+            else if (!_isBiometricAvailable || !_hasEnrolledBiometrics)
+              _buildNotAvailableWidget()
             else
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: _disableBiometric,
-                  icon: const Icon(Icons.lock_open),
-                  label: const Text('تعطيل المصادقة البيومترية'),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.red),
-                    foregroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-            
-            const SizedBox(height: 12),
-            
-            // اختبار
-            if (_isBiometricEnabled)
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: _testBiometric,
-                  icon: const Icon(Icons.check_circle),
-                  label: Text('اختبار ${_getBiometricType()}'),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppTheme.goldColor),
-                    foregroundColor: AppTheme.goldColor,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-            
-            const SizedBox(height: 24),
-            
-            // معلومات
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.info_outline, color: AppTheme.goldColor),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'المصادقة البيومترية توفر طبقة إضافية من الأمان لحسابك. '
-                      'سيتم طلب بصمتك أو وجهك عند تسجيل الدخول أو إجراء عمليات حساسة.',
-                      style: TextStyle(fontSize: 12, color: AppTheme.getSecondaryTextColor(context)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              _buildBiometricWidget(),
           ],
         ),
       ),
-    );
-  }
-  
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(value, style: const TextStyle(color: AppTheme.goldColor)),
-        ],
+    ),
+  );
+}
+
+Widget _buildNotAvailableWidget() {
+  return Column(
+    children: [
+      Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.fingerprint_off,
+          size: 60,
+          color: Colors.grey,
+        ),
       ),
-    );
-  }
+      const SizedBox(height: 24),
+      const Text(
+        'المصادقة البيومترية غير متوفرة',
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 12),
+      Text(
+        _hasEnrolledBiometrics 
+            ? 'الجهاز لا يدعم المصادقة البيومترية'
+            : 'الرجاء إضافة بصمة أو وجه في إعدادات جهازك أولاً',
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 16, color: Colors.grey),
+      ),
+      const SizedBox(height: 32),
+      ElevatedButton(
+        onPressed: _skipForNow,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.goldColor,
+          foregroundColor: Colors.white,
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: const Text('تخطي الآن'),
+      ),
+    ],
+  );
+}
+
+Widget _buildBiometricWidget() {
+  return Column(
+    children: [
+      Container(
+        width: 140,
+        height: 140,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppTheme.goldColor, Color(0xFFFFD700)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.goldColor.withOpacity(0.3),
+              blurRadius: 20,
+              spreadRadius: 5,
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            _getBiometricIcon(),
+            style: const TextStyle(fontSize: 60),
+          ),
+        ),
+      ),
+      const SizedBox(height: 32),
+      const Text(
+        'مرحباً بعودتك',
+        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        'استخدم ${_getBiometricTypeText()} للدخول بسرعة وأمان',
+        style: const TextStyle(fontSize: 16, color: Colors.grey),
+      ),
+      const SizedBox(height: 40),
+      ElevatedButton(
+        onPressed: _isAuthenticating ? null : _authenticate,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.goldColor,
+          foregroundColor: Colors.white,
+          minimumSize: const Size(double.infinity, 55),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: _isAuthenticating
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                'المصادقة باستخدام ${_getBiometricTypeText()}',
+                style: const TextStyle(fontSize: 18),
+              ),
+      ),
+      const SizedBox(height: 16),
+      TextButton(
+        onPressed: _skipForNow,
+        child: const Text(
+          'تخطي الآن',
+          style: TextStyle(color: AppTheme.goldColor),
+        ),
+      ),
+    ],
+  );
+}
 }
