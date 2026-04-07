@@ -10,7 +10,6 @@ class BiometricService {
 
   final LocalAuthentication _localAuth = LocalAuthentication();
   
-  // أنواع البصمة المدعومة
   Future<List<BiometricType>> getAvailableBiometrics() async {
     try {
       return await _localAuth.getAvailableBiometrics();
@@ -20,7 +19,6 @@ class BiometricService {
     }
   }
 
-  // التحقق من إمكانية استخدام البصمة
   Future<bool> isBiometricAvailable() async {
     try {
       final isAvailable = await _localAuth.canCheckBiometrics;
@@ -31,17 +29,19 @@ class BiometricService {
     }
   }
 
-  // التحقق من وجود بصمة مسجلة
   Future<bool> hasEnrolledBiometrics() async {
     try {
-      final enrolled = await _localAuth.getEnrolledBiometrics();
-      return enrolled.isNotEmpty;
+      // طريقة جديدة للتحقق من وجود بصمات
+      final isAvailable = await isBiometricAvailable();
+      if (!isAvailable) return false;
+      
+      final biometrics = await getAvailableBiometrics();
+      return biometrics.isNotEmpty;
     } catch (e) {
       return false;
     }
   }
 
-  // المصادقة بالبصمة
   Future<bool> authenticateWithBiometrics({
     required String reason,
     String? title,
@@ -94,26 +94,22 @@ class BiometricService {
     }
   }
 
-  // حفظ تفضيل استخدام البصمة
   Future<void> saveBiometricPreference(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('biometric_enabled', enabled);
   }
 
-  // جلب تفضيل استخدام البصمة
   Future<bool> getBiometricPreference() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('biometric_enabled') ?? false;
   }
 
-  // حفظ بيانات المستخدم بعد المصادقة
   Future<void> saveUserData(String userId, String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_id', userId);
     await prefs.setString('auth_token', token);
   }
 
-  // استرجاع بيانات المستخدم
   Future<Map<String, String?>> getUserData() async {
     final prefs = await SharedPreferences.getInstance();
     return {
@@ -122,7 +118,6 @@ class BiometricService {
     };
   }
 
-  // مسح بيانات المستخدم
   Future<void> clearUserData() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_id');
@@ -130,7 +125,6 @@ class BiometricService {
     await prefs.remove('biometric_enabled');
   }
 
-  // الحصول على اسم نوع البصمة المناسب
   String getBiometricTypeName(BiometricType type) {
     switch (type) {
       case BiometricType.face:

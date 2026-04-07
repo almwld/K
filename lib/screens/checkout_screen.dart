@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'order_success_screen.dart';
 
-class CheckoutScreen extends StatefulWidget {
+class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
 
-  @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
-}
-
-class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,28 +43,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'عنوان التوصيل',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text('صنعاء، اليمن'),
-                          const Text('شارع التعاون، مبنى ١٢'),
-                          const Text('هاتف: 777777777'),
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -79,7 +52,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               height: 55,
               child: ElevatedButton(
                 onPressed: () async {
-                  // عرض شعار متحرك عند الدفع
                   showDialog(
                     context: context,
                     barrierDismissible: false,
@@ -114,16 +86,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   );
 
-                  // محاكاة معالجة الدفع
                   await Future.delayed(const Duration(seconds: 2));
 
                   if (context.mounted) {
-                    Navigator.pop(context); // إغلاق الشعار
+                    Navigator.pop(context);
                     
-                    // الانتقال لصفحة النجاح
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const OrderSuccessScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const OrderSuccessScreen(),
+                      ),
                     );
                   }
                 },

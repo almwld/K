@@ -57,7 +57,7 @@ class AdDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen(product: p))),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen())),
                     icon: const Icon(Icons.shopping_cart),
                     label: const Text('شراء الآن'),
                     style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
