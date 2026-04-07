@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../services/biometric_service.dart';
 import '../theme/app_theme.dart';
-import '../widgets/custom_button.dart';
-import '../providers/auth_provider.dart';
-import '../models/user_model.dart';
-import 'package:provider/provider.dart';
+import 'biometric_screen.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,166 +13,172 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isLoading = false;
-  bool _obscurePassword = true;
+  final BiometricService _biometricService = BiometricService();
+  bool _isLoading = true;
+  bool _showBiometricOption = false;
+  String? _savedUserId;
 
-  Future<void> _login() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال البريد الإلكتروني وكلمة المرور')),
-      );
-      return;
-    }
-
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 2));
-
-    // إنشاء بيانات المستخدم بتنسيق متوافق مع UserModel
-    final userData = {
-      'id': 'temp_id_123',
-      'full_name': 'أحمد محمد',
-      'email': _emailController.text,
-      'phone': '777123456',
-      'user_type': 'customer',
-    };
-
-    if (!mounted) return;
-
-    // إصلاح الخطأ: تمرير كائن UserModel بدلاً من Map
-    await context.read<AuthProvider>().login(UserModel.fromJson(userData));
-
-    Navigator.pushReplacementNamed(context, '/main');
+  @override
+  void initState() {
+    super.initState();
+    _checkSavedUser();
   }
 
-  Future<void> _loginAsGuest() async {
+  Future<void> _checkSavedUser() async {
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
-    await context.read<AuthProvider>().loginAsGuest();
-    Navigator.pushReplacementNamed(context, '/main');
+    
+    final userData = await _biometricService.getUserData();
+    final biometricEnabled = await _biometricService.getBiometricPreference();
+    
+    if (userData['user_id'] != null && biometricEnabled) {
+      setState(() {
+        _savedUserId = userData['user_id'];
+        _showBiometricOption = true;
+      });
+    }
+    
+    setState(() => _isLoading = false);
+  }
+
+  Future<void> _loginWithBiometric() async {
+    final success = await _biometricService.authenticateWithBiometrics(
+      reason: 'استخدم بصمتك للدخول إلى حسابك',
+      title: 'تسجيل الدخول',
+      subtitle: 'مرحباً بعودتك',
+    );
+    
+    if (success && mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BiometricScreen(userId: _savedUserId!),
+        ),
+      );
+    }
+  }
+
+  Future<void> _loginWithPassword() async {
+    // محاكاة تسجيل الدخول
+    final userId = 'user_${DateTime.now().millisecondsSinceEpoch}';
+    await _biometricService.saveUserData(userId, 'token_123');
+    
+    // عرض خيار تفعيل البصمة
+    if (mounted) {
+      _showEnableBiometricDialog();
+    }
+  }
+
+  void _showEnableBiometricDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('تفعيل المصادقة البيومترية'),
+        content: const Text('هل تريد تفعيل البصمة لتسجيل الدخول السريع في المرات القادمة؟'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _goToHome();
+            },
+            child: const Text('ليس الآن'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              final success = await _biometricService.authenticateWithBiometrics(
+                reason: 'تأكيد هويتك لتفعيل البصمة',
+                title: 'تفعيل البصمة',
+              );
+              
+              if (success && mounted) {
+                await _biometricService.saveBiometricPreference(true);
+                _goToHome();
+              } else if (mounted) {
+                _goToHome();
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.goldColor,
+            ),
+            child: const Text('تفعيل'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _goToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: AppTheme.lightBackground,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppTheme.goldColor, AppTheme.goldLight],
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: const Icon(Icons.shopping_bag, size: 50, color: Colors.black),
-              ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
-              const SizedBox(height: 32),
-              Text(
-                'تسجيل الدخول',
+              const Spacer(),
+              const Text(
+                'Flex Yemen',
                 style: TextStyle(
-                  fontFamily: 'Changa',
-                  fontSize: 28,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.getTextColor(context),
+                  color: AppTheme.goldColor,
                 ),
-              ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0, delay: 200.ms),
+              ),
               const SizedBox(height: 8),
-              Text(
-                'أهلاً بعودتك! سجل دخول للمتابعة',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppTheme.getSecondaryTextColor(context),
+              const Text(
+                'السوق الإلكتروني اليمني',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 60),
+              
+              if (_showBiometricOption) ...[
+                ElevatedButton(
+                  onPressed: _loginWithBiometric,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.goldColor,
+                    minimumSize: const Size(double.infinity, 55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    '🔐 تسجيل الدخول بالبصمة',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
-              ).animate().fadeIn(delay: 300.ms),
-              const SizedBox(height: 40),
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'البريد الإلكتروني',
-                  prefixIcon: const Icon(Icons.email_outlined),
-                  filled: true,
-                  fillColor: AppTheme.getCardColor(context),
-                  border: OutlineInputBorder(
+                const SizedBox(height: 16),
+              ],
+              
+              ElevatedButton(
+                onPressed: _loginWithPassword,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.goldColor.withOpacity(0.9),
+                  minimumSize: const Size(double.infinity, 55),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
                   ),
                 ),
-              ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.2, end: 0, delay: 400.ms),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  labelText: 'كلمة المرور',
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                  ),
-                  filled: true,
-                  fillColor: AppTheme.getCardColor(context),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
+                child: const Text(
+                  'تسجيل الدخول',
+                  style: TextStyle(fontSize: 18),
                 ),
-              ).animate().fadeIn(delay: 500.ms).slideX(begin: 0.2, end: 0, delay: 500.ms),
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('نسيت كلمة المرور؟', style: TextStyle(color: AppTheme.goldColor)),
-                ),
-              ).animate().fadeIn(delay: 600.ms),
-              const SizedBox(height: 24),
-              CustomButton(
-                text: 'تسجيل الدخول',
-                onPressed: _login,
-                isLoading: _isLoading,
-              ).animate().fadeIn(delay: 700.ms).slideY(begin: 0.2, end: 0, delay: 700.ms),
-              const SizedBox(height: 16),
-              CustomButton(
-                text: 'الدخول كضيف',
-                onPressed: _loginAsGuest,
-                isOutlined: true,
-                isLoading: _isLoading,
-              ).animate().fadeIn(delay: 800.ms),
-              const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('ليس لديك حساب؟', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
-                  TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/register'),
-                    child: const Text('إنشاء حساب', style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ).animate().fadeIn(delay: 900.ms),
+              ),
+              
+              const Spacer(),
             ],
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }

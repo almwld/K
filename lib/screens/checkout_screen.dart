@@ -1,269 +1,178 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
-import '../widgets/custom_button.dart';
-import '../models/product_model.dart';
-import '../models/order_model.dart';
+import 'package:lottie/lottie.dart';
 import 'order_success_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  final ProductModel? product;
-  const CheckoutScreen({super.key, this.product});
+  const CheckoutScreen({super.key});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _cityController = TextEditingController();
-  
-  String _selectedCompanyId = '';
-  String _selectedPaymentMethod = 'cash';
-  bool _isSubmitting = false;
-  
-  final List<Map<String, dynamic>> _shippingCompanies = [
-    {'id': '1', 'name': 'سبيدكس اليمن', 'price': 1500, 'days': '2-3 أيام'},
-    {'id': '2', 'name': 'يمن إكسبرس', 'price': 2000, 'days': '1-2 أيام'},
-    {'id': '3', 'name': 'دليفري بلس', 'price': 1200, 'days': '3-4 أيام'},
-    {'id': '4', 'name': 'شحن سريع اليمن', 'price': 2500, 'days': '1-2 أيام'},
-    {'id': '5', 'name': 'بريد اليمن', 'price': 800, 'days': '5-7 أيام'},
-  ];
-  
-  double get _productPrice => widget.product?.price ?? 0;
-  double get _shippingCost {
-    final company = _shippingCompanies.firstWhere((c) => c['id'] == _selectedCompanyId, orElse: () => {});
-    return (company['price'] ?? 0).toDouble();
-  }
-  double get _totalPrice => _productPrice + _shippingCost;
-  
-  Future<void> _submitOrder() async {
-    if (!_formKey.currentState!.validate()) return;
-    if (_selectedCompanyId.isEmpty) {
-      _showSnackBar('الرجاء اختيار شركة الشحن');
-      return;
-    }
-    
-    setState(() => _isSubmitting = true);
-    await Future.delayed(const Duration(seconds: 2));
-    
-    if (mounted) {
-      setState(() => _isSubmitting = false);
-      
-      final order = OrderModel(
-        id: 'ORD${DateTime.now().millisecondsSinceEpoch}',
-        productId: widget.product?.id ?? '',
-        productTitle: widget.product?.title ?? '',
-        productImage: widget.product?.images.isNotEmpty == true ? widget.product!.images.first : '',
-        productPrice: _productPrice,
-        quantity: 1,
-        shippingCost: _shippingCost,
-        totalPrice: _totalPrice,
-        customerName: _nameController.text,
-        customerPhone: _phoneController.text,
-        address: _addressController.text,
-        city: _cityController.text,
-        shippingCompany: _shippingCompanies.firstWhere((c) => c['id'] == _selectedCompanyId)['name'],
-        trackingNumber: 'TRK${DateTime.now().millisecondsSinceEpoch}',
-        status: 'pending',
-        orderDate: DateTime.now(),
-      );
-      
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => OrderSuccessScreen(order: order),
-        ),
-      );
-    }
-  }
-  
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: AppTheme.goldColor),
-    );
-  }
-  
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'إتمام الشراء'),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // ملخص الطلب
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: AppTheme.goldColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(Icons.image, color: AppTheme.goldColor, size: 30),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(widget.product?.title ?? 'المنتج', style: const TextStyle(fontWeight: FontWeight.bold)),
-                              Text('${_productPrice.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // معلومات العميل
-                  const Text('معلومات العميل', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'الاسم الكامل', border: OutlineInputBorder()),
-                    validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(labelText: 'رقم الجوال', border: OutlineInputBorder()),
-                    validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _cityController,
-                    decoration: const InputDecoration(labelText: 'المدينة', border: OutlineInputBorder()),
-                    validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _addressController,
-                    maxLines: 2,
-                    decoration: const InputDecoration(labelText: 'العنوان التفصيلي', border: OutlineInputBorder()),
-                    validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // شركات الشحن
-                  const Text('شركة الشحن', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  ..._shippingCompanies.map((company) => _buildShippingCard(company)),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // تفاصيل الأسعار
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E1E1E) : Colors.grey[50],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        _buildPriceRow('سعر المنتج', _productPrice),
-                        _buildPriceRow('تكلفة الشحن', _shippingCost),
-                        const Divider(height: 24),
-                        _buildPriceRow('الإجمالي', _totalPrice, isTotal: true),
-                      ],
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 32),
-                  
-                  CustomButton(
-                    text: 'تأكيد الطلب',
-                    onPressed: _submitOrder,
-                    isLoading: _isSubmitting,
-                  ),
-                  
-                  const SizedBox(height: 32),
-                ],
-              ),
-            ),
-          ),
-          if (_isSubmitting)
-            Container(
-              color: Colors.black.withOpacity(0.7),
-              child: const Center(child: CircularProgressIndicator(color: AppTheme.goldColor)),
-            ),
-        ],
+      appBar: AppBar(
+        title: const Text('تأكيد الطلب'),
+        backgroundColor: const Color(0xFFD4AF37),
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
-    );
-  }
-  
-  Widget _buildShippingCard(Map<String, dynamic> company) {
-    final isSelected = _selectedCompanyId == company['id'];
-    return GestureDetector(
-      onTap: () => setState(() => _selectedCompanyId = company['id']),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.3)),
-        ),
-        child: Row(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           children: [
-            const Icon(Icons.local_shipping, color: AppTheme.goldColor),
-            const SizedBox(width: 12),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
-                  Text(company['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text('${company['days']} • ${company['price']} ر.ي', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'ملخص الطلب',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Divider(),
+                          _buildOrderItem('منتج 1', 1, 50.0),
+                          _buildOrderItem('منتج 2', 2, 30.0),
+                          const Divider(),
+                          _buildTotalRow(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'عنوان التوصيل',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text('صنعاء، اليمن'),
+                          const Text('شارع التعاون، مبنى ١٢'),
+                          const Text('هاتف: 777777777'),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            if (isSelected) const Icon(Icons.check_circle, color: AppTheme.goldColor),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                onPressed: () async {
+                  // عرض شعار متحرك عند الدفع
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark 
+                              ? Colors.grey[900] 
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Lottie.asset(
+                              'assets/animations/loading_logo.json',
+                              width: 120,
+                              height: 120,
+                              repeat: true,
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'جاري تأكيد الطلب...',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+
+                  // محاكاة معالجة الدفع
+                  await Future.delayed(const Duration(seconds: 2));
+
+                  if (context.mounted) {
+                    Navigator.pop(context); // إغلاق الشعار
+                    
+                    // الانتقال لصفحة النجاح
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const OrderSuccessScreen()),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFD4AF37),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'تأكيد الطلب',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-  
-  Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
+
+  Widget _buildOrderItem(String name, int quantity, double price) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
-          Text(
-            '${amount.toStringAsFixed(0)} ر.ي',
-            style: TextStyle(
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? AppTheme.goldColor : null,
-            ),
-          ),
+          Text('$name x $quantity'),
+          Text('${(price * quantity).toStringAsFixed(2)} ر.ي'),
         ],
       ),
+    );
+  }
+
+  Widget _buildTotalRow() {
+    double total = 50.0 + (2 * 30.0);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'المجموع',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          '${total.toStringAsFixed(2)} ر.ي',
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }
