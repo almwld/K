@@ -79,8 +79,11 @@ flutter:
           weight: 600
 
   assets:
-    - .env
     - assets/images/
     - assets/icons/
     - assets/icons/svg/
     - assets/animations/
+
+    - assets/animations/
+    - assets/icons/svg/
+    - assets/images/
