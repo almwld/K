@@ -22,8 +22,6 @@ class _ProfessionalMapScreenState extends State<ProfessionalMapScreen> with Sing
   bool _isLoading = true;
   String _selectedFilter = 'all';
   StoreModel? _selectedStore;
-  bool _showRoute = false;
-  List<LatLng> _routePoints = [];
   
   late AnimationController _animationController;
 
@@ -162,127 +160,109 @@ class _ProfessionalMapScreenState extends State<ProfessionalMapScreen> with Sing
   Future<void> _showStoreDetails(StoreModel store) async {
     setState(() {
       _selectedStore = store;
-      _showRoute = false;
     });
     _animationController.forward();
-    await Future.delayed(const Duration(milliseconds: 300));
     
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.5,
-        minChildSize: 0.3,
-        maxChildSize: 0.8,
-        expand: false,
-        builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Center(
-                child: Container(
-                  width: 40, height: 4,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40, height: 4,
+                decoration: BoxDecoration(
+                  color: AppTheme.getDividerColor(context),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Container(
+                  width: 60, height: 60,
                   decoration: BoxDecoration(
-                    color: AppTheme.getDividerColor(context),
-                    borderRadius: BorderRadius.circular(2),
+                    color: _getCategoryColor(store.category).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
+                  child: Icon(_getCategoryIcon(store.category), color: _getCategoryColor(store.category), size: 30),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Container(
-                    width: 60, height: 60,
-                    decoration: BoxDecoration(
-                      color: _getCategoryColor(store.category).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(_getCategoryIcon(store.category), color: _getCategoryColor(store.category), size: 30),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(store.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text(store.address, style: const TextStyle(color: Colors.grey)),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Icon(Icons.star, size: 16, color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text('${store.rating}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                            const SizedBox(width: 12),
-                            Container(
-                              width: 8, height: 8,
-                              decoration: BoxDecoration(
-                                color: store.isOpen ? Colors.green : Colors.red,
-                                shape: BoxShape.circle,
-                              ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(store.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text(store.address, style: const TextStyle(color: Colors.grey)),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.star, size: 16, color: Colors.amber),
+                          const SizedBox(width: 4),
+                          Text('${store.rating}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          const SizedBox(width: 12),
+                          Container(
+                            width: 8, height: 8,
+                            decoration: BoxDecoration(
+                              color: store.isOpen ? Colors.green : Colors.red,
+                              shape: BoxShape.circle,
                             ),
-                            const SizedBox(width: 4),
-                            Text(store.isOpen ? 'مفتوح الآن' : 'مغلق', style: const TextStyle(fontSize: 12)),
-                            const SizedBox(width: 12),
-                            Text('${store.distance.toInt()} م', style: const TextStyle(fontSize: 12)),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(store.isOpen ? 'مفتوح الآن' : 'مغلق', style: const TextStyle(fontSize: 12)),
+                          const SizedBox(width: 12),
+                          Text('${store.distance.toInt()} م', style: const TextStyle(fontSize: 12)),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              if (store.description != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Text(store.description!, style: const TextStyle(height: 1.5)),
                 ),
-              const Divider(),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () => _openDirections(store),
-                      icon: const Icon(Icons.directions),
-                      label: const Text('الاتجاهات'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.goldColor,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => _makePhoneCall(store.phone ?? ''),
-                      icon: const Icon(Icons.phone),
-                      label: const Text('اتصال'),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppTheme.goldColor),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                    ),
-                  ),
-                ],
+              ],
+            ),
+            const SizedBox(height: 20),
+            if (store.description != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(store.description!, style: const TextStyle(height: 1.5)),
               ),
-              const SizedBox(height: 12),
-              if (_currentLocation != null)
-                SizedBox(
-                  width: double.infinity,
+            const Divider(),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => _openDirections(store),
+                    icon: const Icon(Icons.directions),
+                    label: const Text('الاتجاهات'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.goldColor,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () => _calculateRoute(store),
-                    icon: const Icon(Icons.route),
-                    label: const Text('حساب المسافة والوقت'),
+                    onPressed: () => _makePhoneCall(store.phone ?? ''),
+                    icon: const Icon(Icons.phone),
+                    label: const Text('اتصال'),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppTheme.goldColor),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
                   ),
                 ),
-              const SizedBox(height: 20),
-            ],
-          ),
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -310,33 +290,6 @@ class _ProfessionalMapScreenState extends State<ProfessionalMapScreen> with Sing
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     }
-  }
-
-  Future<void> _calculateRoute(StoreModel store) async {
-    // حساب المسافة التقريبية
-    const double earthRadius = 6371;
-    final dLat = _toRadians(store.lat - _currentLocation!.latitude);
-    final dLng = _toRadians(store.lng - _currentLocation!.longitude);
-    final a = (dLat / 2).sin() * (dLat / 2).sin() +
-        _toRadians(_currentLocation!.latitude).cos() *
-        _toRadians(store.lat).cos() *
-        (dLng / 2).sin() *
-        (dLng / 2).sin();
-    final c = 2 * a.asin();
-    final distance = earthRadius * c;
-    
-    final estimatedTime = (distance / 40) * 60; // متوسط السرعة 40 كم/ساعة
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('المسافة: ${distance.toStringAsFixed(1)} كم • الوقت المتوقع: ${estimatedTime.toInt()} دقيقة'),
-        backgroundColor: AppTheme.goldColor,
-      ),
-    );
-  }
-
-  double _toRadians(double degree) {
-    return degree * 3.14159 / 180;
   }
 
   void _showLocationPermissionDialog() {
