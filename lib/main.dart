@@ -77,7 +77,6 @@ import 'screens/payment_method_screen.dart';
 import 'screens/addresses_screen.dart';
 import 'screens/saved_payment_methods_screen.dart';
 import 'screens/advanced_search_screen.dart';
-import 'screens/mode_switch_screen.dart';
 
 // ============================================
 // شاشة التهيئة الأولية (تظهر فوراً)
