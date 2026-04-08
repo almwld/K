@@ -1,3 +1,4 @@
+import '../widgets/date_picker_dropdown.dart';
 import 'terms_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -26,6 +27,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isLoading = false;
   String _userType = 'customer';
   bool _agreeToTerms = false;
+  
+  // تاريخ الميلاد
+  int? _birthYear;
+  int? _birthMonth;
+  int? _birthDay;
+  
+  // تاريخ إصدار الهوية
+  int? _issueYear;
+  int? _issueMonth;
+  int? _issueDay;
 
   Future<void> _register() async {
     if (_nameController.text.isEmpty ||
@@ -295,3 +306,48 @@ class _UserTypeCard extends StatelessWidget {
     );
   }
 }
+
+// ============================================
+// إضافة متغيرات التاريخ في بداية class _RegisterScreenState
+// ============================================
+/*
+  // أضف هذه المتغيرات مع المتغيرات الأخرى:
+  
+  int? _selectedBirthYear;
+  int? _selectedBirthMonth;
+  int? _selectedBirthDay;
+  
+  int? _selectedIssueYear;
+  int? _selectedIssueMonth;
+  int? _selectedIssueDay;
+  
+  // قوائم السنوات
+  List<int> get _years => List.generate(100, (i) => DateTime.now().year - i);
+  List<int> get _months => List.generate(12, (i) => i + 1);
+  
+  List<int> get _days {
+    if (_selectedBirthYear == null || _selectedBirthMonth == null) return [];
+    final daysInMonth = DateTime(_selectedBirthYear!, _selectedBirthMonth! + 1, 0).day;
+    return List.generate(daysInMonth, (i) => i + 1);
+  }
+  
+  List<int> get _issueDays {
+    if (_selectedIssueYear == null || _selectedIssueMonth == null) return [];
+    final daysInMonth = DateTime(_selectedIssueYear!, _selectedIssueMonth! + 1, 0).day;
+    return List.generate(daysInMonth, (i) => i + 1);
+  }
+  
+  String get _formattedBirthDate {
+    if (_selectedBirthYear == null || _selectedBirthMonth == null || _selectedBirthDay == null) {
+      return 'تاريخ الميلاد';
+    }
+    return '$_selectedBirthYear/${_selectedBirthMonth!.toString().padLeft(2, '0')}/${_selectedBirthDay!.toString().padLeft(2, '0')}';
+  }
+  
+  String get _formattedIssueDate {
+    if (_selectedIssueYear == null || _selectedIssueMonth == null || _selectedIssueDay == null) {
+      return 'تاريخ إصدار الهوية';
+    }
+    return '$_selectedIssueYear/${_selectedIssueMonth!.toString().padLeft(2, '0')}/${_selectedIssueDay!.toString().padLeft(2, '0')}';
+  }
+*/
