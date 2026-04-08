@@ -33,6 +33,11 @@ jobs:
           mkdir -p android/gradle/wrapper
           mkdir -p android/app/src/main/res/values
           mkdir -p android/app/src/main/res/drawable
+          mkdir -p android/app/src/main/res/mipmap-hdpi
+          mkdir -p android/app/src/main/res/mipmap-mdpi
+          mkdir -p android/app/src/main/res/mipmap-xhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
 
       - name: Create gradle.properties
         run: |
@@ -254,6 +259,39 @@ jobs:
           </layer-list>
           EOF
 
+      - name: Create simple icon placeholder
+        run: |
+          # إنشاء أيقونة بسيطة باستخدام Java
+          cat > CreateIcon.java << 'JAVA'
+          import java.awt.*;
+          import java.awt.image.*;
+          import javax.imageio.ImageIO;
+          import java.io.File;
+          
+          public class CreateIcon {
+              public static void main(String[] args) throws Exception {
+                  int size = 512;
+                  BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+                  Graphics2D g = image.createGraphics();
+                  g.setColor(new Color(0xD4AF37));
+                  g.fillRect(0, 0, size, size);
+                  g.setColor(Color.BLACK);
+                  g.setFont(new Font("Arial", Font.BOLD, size / 3));
+                  FontMetrics fm = g.getFontMetrics();
+                  String text = "F";
+                  int x = (size - fm.stringWidth(text)) / 2;
+                  int y = ((size - fm.getHeight()) / 2) + fm.getAscent();
+                  g.drawString(text, x, y);
+                  g.dispose();
+                  ImageIO.write(image, "PNG", new File("assets/icons/icon.png"));
+                  System.out.println("Icon created at assets/icons/icon.png");
+              }
+          }
+          JAVA
+          
+          mkdir -p assets/icons
+          javac CreateIcon.java && java CreateIcon || echo "Icon creation skipped"
+
       - name: Create local.properties
         run: |
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
@@ -267,12 +305,6 @@ jobs:
         run: |
           echo "SUPABASE_URL=https://ziqpohdxtermunnhlkm.supabase.co" > .env
           echo "SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppcXBvaGR4dGVtc211bm5obGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3ODQzNDcsImV4cCI6MjA4NzM2MDM0N30.ABAg5YZSrrAtBTWATJ3eRTmo4BuZVyVlrMV1HZjRWs0" >> .env
-
-      - name: Generate Custom Launcher Icons
-        run: |
-          flutter pub add --dev flutter_launcher_icons || true
-          flutter pub get
-          flutter pub run flutter_launcher_icons
 
       - name: Build APK
         run: flutter build apk --release --split-per-abi
