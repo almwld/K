@@ -294,3 +294,97 @@ class _UserTypeCard extends StatelessWidget {
     );
   }
 }
+
+// إضافة حقول تاريخ الميلاد وتاريخ الإصدار
+// أضف هذه المتغيرات في بداية class _RegisterScreenState:
+
+DateTime? _selectedBirthDate;
+DateTime? _selectedIssueDate;
+String? _selectedGender;
+
+// أضف هذه الدوال:
+Future<void> _selectBirthDate(BuildContext context) async {
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1950),
+    lastDate: DateTime.now(),
+    locale: const Locale('ar', 'YE'),
+  );
+  if (picked != null && picked != _selectedBirthDate) {
+    setState(() => _selectedBirthDate = picked);
+  }
+}
+
+Future<void> _selectIssueDate(BuildContext context) async {
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2020),
+    lastDate: DateTime.now(),
+    locale: const Locale('ar', 'YE'),
+  );
+  if (picked != null && picked != _selectedIssueDate) {
+    setState(() => _selectedIssueDate = picked);
+  }
+}
+
+// أضف هذه الحقول في مكانها المناسب داخل build:
+/*
+const SizedBox(height: 16),
+GestureDetector(
+  onTap: () => _selectBirthDate(context),
+  child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey.shade300),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Row(
+      children: [
+        const Icon(Icons.cake, color: AppTheme.goldColor),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            _selectedBirthDate == null
+                ? 'تاريخ الميلاد'
+                : '${_selectedBirthDate!.year}/${_selectedBirthDate!.month}/${_selectedBirthDate!.day}',
+            style: TextStyle(
+              color: _selectedBirthDate == null ? Colors.grey : AppTheme.getTextColor(context),
+            ),
+          ),
+        ),
+        const Icon(Icons.calendar_today, size: 18),
+      ],
+    ),
+  ),
+),
+const SizedBox(height: 16),
+GestureDetector(
+  onTap: () => _selectIssueDate(context),
+  child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey.shade300),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Row(
+      children: [
+        const Icon(Icons.assignment, color: AppTheme.goldColor),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            _selectedIssueDate == null
+                ? 'تاريخ إصدار الهوية'
+                : '${_selectedIssueDate!.year}/${_selectedIssueDate!.month}/${_selectedIssueDate!.day}',
+            style: TextStyle(
+              color: _selectedIssueDate == null ? Colors.grey : AppTheme.getTextColor(context),
+            ),
+          ),
+        ),
+        const Icon(Icons.calendar_today, size: 18),
+      ],
+    ),
+  ),
+),
+*/
