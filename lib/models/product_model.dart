@@ -17,6 +17,7 @@ class ProductModel {
   final DateTime? updatedAt;
   final String? condition;
   final String? location;
+  final String? city;
 
   ProductModel({
     required this.id,
@@ -36,7 +37,7 @@ class ProductModel {
     required this.createdAt,
     this.updatedAt,
     this.condition,
-    this.location,
+    this.location, this.city,
   });
 
   // دالة لتحويل JSON إلى كائن
@@ -64,6 +65,7 @@ class ProductModel {
           : null,
       condition: json['condition'],
       location: json['location'],
+      city: json['city'] ?? json['location'],
     );
   }
 
@@ -88,6 +90,7 @@ class ProductModel {
       'updated_at': updatedAt?.toIso8601String(),
       'condition': condition,
       'location': location,
+      'city': city,
     };
   }
 
@@ -130,7 +133,7 @@ class ProductModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       condition: condition ?? this.condition,
-      location: location ?? this.location,
+      location: location ?? this.location, this.city,
     );
   }
 
