@@ -13,6 +13,8 @@ import 'chat_screen.dart';
 import 'profile_screen.dart';
 import 'add_ad_screen.dart';
 import 'seller_products_screen.dart';
+import 'cart_screen.dart';
+import 'notifications_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -27,7 +29,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   bool _isExpanded = false;
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
-  
+
   final List<Widget> _screens = const [
     HomeScreen(),
     AllAdsScreen(),
@@ -37,13 +39,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     ChatScreen(),
     ProfileScreen(),
   ];
-  
-  // الخيارات الأربعة مع الروابط الصحيحة
+
+  // الخيارات الأربعة مع الروابط الصحيحة (مفعلة بالكامل)
   final List<Map<String, dynamic>> _quickActions = [
     {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': 0xFF4CAF50, 'screen': AddAdScreen()},
     {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': 0xFF2196F3, 'screen': SellerProductsScreen()},
-    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': 0xFFFF9800, 'screen': null},
-    {'icon': Icons.account_balance_wallet_outlined, 'label': 'استلام حوالة', 'color': 0xFF9C27B0, 'screen': null},
+    {'icon': Icons.shopping_cart_outlined, 'label': 'السلة', 'color': 0xFFFF9800, 'screen': CartScreen()},
+    {'icon': Icons.notifications_outlined, 'label': 'الإشعارات', 'color': 0xFF9C27B0, 'screen': NotificationsScreen()},
   ];
 
   @override
@@ -94,6 +96,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
   void _executeAction(Map<String, dynamic> action) {
     _toggleExpand();
+    
     if (action['screen'] != null) {
       Navigator.push(
         context,
@@ -329,10 +332,3 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 }
-
-// إضافة هذه الواردات في بداية الملف
-// import 'wallet/transfers_history_screen.dart';
-// import 'wallet/transactions_screen.dart';
-
-// في قائمة أيقونات التبويب، أضف المحفظة
-// يمكنك تعديل التبويب الخامس ليكون المحفظة بدلاً من الإعدادات
