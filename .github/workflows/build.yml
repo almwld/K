@@ -181,7 +181,7 @@ jobs:
           distributionUrl=https\://services.gradle.org/distributions/gradle-7.5-all.zip
           EOF
 
-      - name: Create AndroidManifest.xml
+      - name: Create AndroidManifest.xml (بدون أيقونة)
         run: |
           mkdir -p android/app/src/main
           cat > android/app/src/main/AndroidManifest.xml << 'EOF'
@@ -195,7 +195,6 @@ jobs:
               <application
                   android:label="Flex Yemen"
                   android:name="${applicationName}"
-                  android:icon="@mipmap/ic_launcher"
                   android:usesCleartextTraffic="true">
                   <activity
                       android:name=".MainActivity"
