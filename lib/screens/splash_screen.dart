@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:provider/provider.dart';
-import '../services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
-import 'main_navigation.dart';
 import 'login_screen.dart';
+import 'main_navigation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,56 +13,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool _isLoading = true;
-  String _loadingMessage = 'جاري التحميل...';
-  double _progress = 0.0;
-
   @override
   void initState() {
     super.initState();
-    _startLoading();
-  }
-
-  Future<void> _startLoading() async {
-    // محاكاة تحميل البيانات
-    final messages = [
-      'جاري تجهيز المتجر...',
-      'تحميل المنتجات...',
-      'تهيئة حسابك...',
-      'مرحباً بك في فلكس اليمن!',
-    ];
-    
-    for (int i = 0; i < messages.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 800));
-      if (mounted) {
-        setState(() {
-          _loadingMessage = messages[i];
-          _progress = (i + 1) / messages.length;
-        });
-      }
-    }
-    
-    // انتظار ثانيتين إضافيتين (إجمالي ~10 ثوانٍ)
-    await Future.delayed(const Duration(seconds: 2));
-    
-    if (mounted) {
-      setState(() => _isLoading = false);
-      _navigateToNext();
-    }
+    _navigateToNext();
   }
 
   Future<void> _navigateToNext() async {
-    final authService = context.read<AuthService>();
-    final isLoggedIn = authService.isLoggedIn;
-    
-    // انتظار ثانية إضافية للانتقال السلس
-    await Future.delayed(const Duration(milliseconds: 500));
-    
+    // انتظار 3 ثواني
+    await Future.delayed(const Duration(seconds: 3));
+
     if (!mounted) return;
-    
+
+    // التحقق من حالة تسجيل الدخول
+    final prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+
     if (isLoggedIn) {
-      Navigator.pushReplacementNamed(context, '/main');
+      // مستخدم مسجل دخول → الرئيسية
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainNavigation()),
+      );
     } else {
+      // مستخدم جديد → شاشة تسجيل الدخول
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -81,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // شعار متحرك
+            // الشعار
             Container(
               width: 120,
               height: 120,
@@ -100,10 +73,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.shopping_bag,
-                size: 60,
-                color: Colors.black,
+              child: const Center(
+                child: Icon(
+                  Icons.shopping_bag,
+                  size: 60,
+                  color: Colors.black,
+                ),
               ),
             ).animate().scale(
               duration: 800.ms,
@@ -149,41 +124,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
             const SizedBox(height: 60),
 
-            // شريط التقدم
-            if (_isLoading) ...[
-              Container(
-                width: 200,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(2),
-                  child: LinearProgressIndicator(
-                    value: _progress,
-                    backgroundColor: Colors.transparent,
-                    valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _loadingMessage,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppTheme.getSecondaryTextColor(context),
-                ),
-              ),
-            ],
+            // مؤشر التحميل
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
+            ).animate().fadeIn(
+              delay: 800.ms,
+              duration: 400.ms,
+            ),
 
             const SizedBox(height: 40),
 
-            // نص حقوق النشر
+            // حقوق النشر
             Text(
               '© 2024 Flex Yemen. All rights reserved.',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 color: AppTheme.getSecondaryTextColor(context).withOpacity(0.5),
               ),
             ),
