@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
-import 'login_screen.dart';
-import 'main_navigation.dart';
+import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,32 +14,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToNext();
+    _navigateToHome();
   }
 
-  Future<void> _navigateToNext() async {
-    // انتظار 3 ثواني
-    await Future.delayed(const Duration(seconds: 3));
+  Future<void> _navigateToHome() async {
+    // انتظار 2.5 ثانية للشاشة الترحيبية
+    await Future.delayed(const Duration(milliseconds: 2500));
 
     if (!mounted) return;
 
-    // التحقق من حالة تسجيل الدخول
-    final prefs = await SharedPreferences.getInstance();
-    final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
-
-    if (isLoggedIn) {
-      // مستخدم مسجل دخول → الرئيسية
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainNavigation()),
-      );
-    } else {
-      // مستخدم جديد → شاشة تسجيل الدخول
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    }
+    // الانتقال إلى الصفحة الرئيسية مباشرة
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const HomeScreen()),
+    );
   }
 
   @override
@@ -54,7 +40,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // الشعار
             Container(
               width: 120,
               height: 120,
@@ -87,7 +72,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
             const SizedBox(height: 40),
 
-            // اسم التطبيق
             Text(
               'FLEX YEMEN',
               style: TextStyle(
@@ -109,7 +93,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
             const SizedBox(height: 16),
 
-            // الوصف
             Text(
               'منصة التجارة الإلكترونية اليمنية',
               style: TextStyle(
@@ -124,7 +107,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
             const SizedBox(height: 60),
 
-            // مؤشر التحميل
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
             ).animate().fadeIn(
@@ -134,7 +116,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
             const SizedBox(height: 40),
 
-            // حقوق النشر
             Text(
               '© 2024 Flex Yemen. All rights reserved.',
               style: TextStyle(

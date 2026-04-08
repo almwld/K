@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
                 child: child!,
               );
             },
-            initialRoute: '/',
+            initialRoute: '/home',
             onGenerateRoute: _onGenerateRoute,
           );
         },

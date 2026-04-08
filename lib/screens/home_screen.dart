@@ -8,6 +8,8 @@ import 'category_products_screen.dart';
 import 'all_ads_screen.dart';
 import 'auctions_screen.dart';
 import 'garden_screen.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,74 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
     {'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800', 'title': 'خدمات منزلية', 'subtitle': 'تنظيف وصيانة', 'category': 'خدمات', 'categoryId': 'services', 'discount': 'خصم 20%', 'icon': Icons.build},
   ];
 
-  // جميع المنتجات (60+ منتج)
+  // جميع المنتجات
   final List<Map<String, dynamic>> _allProducts = [
-    // مطاعم (10)
     {'name': 'مندي يمني', 'price': '3,500', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300', 'tag': 'مطعم'},
     {'name': 'مقلقل دجاج', 'price': '2,500', 'image': 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=300', 'tag': 'مطعم'},
     {'name': 'فتة يمنية', 'price': '2,000', 'image': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=300', 'tag': 'مطعم'},
     {'name': 'شاورما عربية', 'price': '1,500', 'image': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300', 'tag': 'مطعم'},
     {'name': 'زبيدي مشوي', 'price': '4,000', 'image': 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300', 'tag': 'مطعم'},
     {'name': 'عصير طبيعي', 'price': '500', 'image': 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=300', 'tag': 'مطعم'},
-    {'name': 'كنافة', 'price': '1,000', 'image': 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=300', 'tag': 'مطعم'},
-    {'name': 'بيتزا إيطالية', 'price': '2,500', 'image': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300', 'tag': 'مطعم'},
-    {'name': 'برجر لحم', 'price': '1,800', 'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300', 'tag': 'مطعم'},
-    {'name': 'مقبلات مشكلة', 'price': '1,200', 'image': 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=300', 'tag': 'مطعم'},
-    // عقارات (10)
     {'name': 'فيلا فاخرة صنعاء', 'price': '45,000,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300', 'tag': 'عقار'},
     {'name': 'شقة مطلة على البحر', 'price': '25,000,000', 'image': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300', 'tag': 'عقار'},
-    {'name': 'أرض سكنية تعز', 'price': '12,000,000', 'image': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300', 'tag': 'عقار'},
-    {'name': 'برج تجاري المكلا', 'price': '120,000,000', 'image': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300', 'tag': 'عقار'},
-    {'name': 'منتجع سياحي سقطرى', 'price': '250,000,000', 'image': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300', 'tag': 'عقار'},
-    {'name': 'شقة 3 غرف عدن', 'price': '18,000,000', 'image': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300', 'tag': 'عقار'},
-    {'name': 'فيلا مسبح الحديدة', 'price': '35,000,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300', 'tag': 'عقار'},
-    {'name': 'أرض تجارية إب', 'price': '8,000,000', 'image': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300', 'tag': 'عقار'},
-    {'name': 'مزرعة عنب', 'price': '15,000,000', 'image': 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=300', 'tag': 'عقار'},
-    {'name': 'قصر فاخر', 'price': '300,000,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300', 'tag': 'عقار'},
-    // سيارات (10)
     {'name': 'تويوتا كامري 2024', 'price': '8,500,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300', 'tag': 'سيارة'},
     {'name': 'مرسيدس S-Class', 'price': '45,000,000', 'image': 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=300', 'tag': 'سيارة'},
-    {'name': 'بي إم دبليو X6', 'price': '38,000,000', 'image': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300', 'tag': 'سيارة'},
-    {'name': 'هونداي النترا', 'price': '5,500,000', 'image': 'https://images.unsplash.com/photo-1568605117036-5fe5e7fa0ac7?w=300', 'tag': 'سيارة'},
-    {'name': 'نيسان باترول', 'price': '25,000,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300', 'tag': 'سيارة'},
-    {'name': 'تيسلا موديل S', 'price': '60,000,000', 'image': 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=300', 'tag': 'سيارة'},
-    {'name': 'فورد موستانج', 'price': '30,000,000', 'image': 'https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?w=300', 'tag': 'سيارة'},
-    {'name': 'شيفروليه كابتيفا', 'price': '12,000,000', 'image': 'https://images.unsplash.com/photo-1568605117036-5fe5e7fa0ac7?w=300', 'tag': 'سيارة'},
-    {'name': 'هوندا سي آر في', 'price': '15,000,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300', 'tag': 'سيارة'},
-    {'name': 'كيا سبورتاج', 'price': '10,000,000', 'image': 'https://images.unsplash.com/photo-1568605117036-5fe5e7fa0ac7?w=300', 'tag': 'سيارة'},
-    // إلكترونيات (10)
     {'name': 'ماك بوك برو M3', 'price': '1,800,000', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300', 'tag': 'إلكتروني'},
     {'name': 'ايفون 15 برو', 'price': '450,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300', 'tag': 'إلكتروني'},
-    {'name': 'سامسونج اس 24', 'price': '380,000', 'image': 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300', 'tag': 'إلكتروني'},
-    {'name': 'شاشة سامسونج 65', 'price': '350,000', 'image': 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300', 'tag': 'إلكتروني'},
-    {'name': 'بلاي ستيشن 5', 'price': '250,000', 'image': 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300', 'tag': 'إلكتروني'},
-    {'name': 'سماعات ايربودز', 'price': '45,000', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=300', 'tag': 'إلكتروني'},
-    {'name': 'ايباد برو', 'price': '280,000', 'image': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300', 'tag': 'إلكتروني'},
-    {'name': 'كاميرا كانون', 'price': '120,000', 'image': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=300', 'tag': 'إلكتروني'},
-    {'name': 'سماعات سوني', 'price': '35,000', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=300', 'tag': 'إلكتروني'},
-    {'name': 'لابتوب ديل XPS', 'price': '350,000', 'image': 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=300', 'tag': 'إلكتروني'},
-    // أزياء (10)
     {'name': 'ثوب يمني فاخر', 'price': '35,000', 'image': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=300', 'tag': 'أزياء'},
-    {'name': 'معطف شتوي', 'price': '25,000', 'image': 'https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=300', 'tag': 'أزياء'},
-    {'name': 'عباية نسائية', 'price': '30,000', 'image': 'https://images.unsplash.com/photo-1583394293214-ff7b3f5ad7cc?w=300', 'tag': 'أزياء'},
-    {'name': 'حذاء رياضي', 'price': '15,000', 'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300', 'tag': 'أزياء'},
-    {'name': 'شنطة يد', 'price': '25,000', 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300', 'tag': 'أزياء'},
-    {'name': 'ساعة رجالية', 'price': '45,000', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=300', 'tag': 'أزياء'},
-    {'name': 'نظارة شمسية', 'price': '8,000', 'image': 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300', 'tag': 'أزياء'},
-    {'name': 'ربطة عنق', 'price': '3,000', 'image': 'https://images.unsplash.com/photo-1589756823695-278bc923f962?w=300', 'tag': 'أزياء'},
-    {'name': 'قميص رسمي', 'price': '12,000', 'image': 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300', 'tag': 'أزياء'},
-    {'name': 'بنطلون جينز', 'price': '10,000', 'image': 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300', 'tag': 'أزياء'},
-    // أثاث (10)
     {'name': 'كنبة زاوية', 'price': '150,000', 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300', 'tag': 'أثاث'},
-    {'name': 'طاولة طعام', 'price': '75,000', 'image': 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=300', 'tag': 'أثاث'},
-    {'name': 'سرير مفرد', 'price': '60,000', 'image': 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=300', 'tag': 'أثاث'},
-    {'name': 'خزانة ملابس', 'price': '80,000', 'image': 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=300', 'tag': 'أثاث'},
-    {'name': 'مكتب كمبيوتر', 'price': '35,000', 'image': 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=300', 'tag': 'أثاث'},
-    {'name': 'كرسي مكتب', 'price': '20,000', 'image': 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=300', 'tag': 'أثاث'},
-    {'name': 'سجادة صلاة', 'price': '5,000', 'image': 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=300', 'tag': 'أثاث'},
-    {'name': 'ستائر', 'price': '15,000', 'image': 'https://images.unsplash.com/photo-1509644056419-6e2b3f9ee1de?w=300', 'tag': 'أثاث'},
-    {'name': 'إضاءة LED', 'price': '8,000', 'image': 'https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=300', 'tag': 'أثاث'},
-    {'name': 'مرآة حائط', 'price': '12,000', 'image': 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=300', 'tag': 'أثاث'},
   ];
 
   List<Map<String, dynamic>> get _visibleProducts {
@@ -114,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    // تنظيف الكاش القديم عند بدء التطبيق
     ImageCacheService.clearOldCache();
   }
 
@@ -127,13 +76,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadMoreProducts() async {
     if (_isLoadingMore) return;
     if (_visibleProductsCount >= _allProducts.length) return;
-    
+
     setState(() {
       _isLoadingMore = true;
     });
-    
+
     await Future.delayed(const Duration(seconds: 1));
-    
+
     setState(() {
       _visibleProductsCount += 10;
       if (_visibleProductsCount > _allProducts.length) {
@@ -156,7 +105,45 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'فلكس يمن'),
+      appBar: AppBar(
+        title: const Text('فلكس يمن'),
+        backgroundColor: AppTheme.goldColor,
+        foregroundColor: Colors.black,
+        centerTitle: true,
+        elevation: 0,
+        actions: [
+          // زر تسجيل الدخول
+          TextButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+            },
+            icon: const Icon(Icons.login, size: 20, color: Colors.black),
+            label: const Text('دخول', style: TextStyle(color: Colors.black)),
+          ),
+          const SizedBox(width: 8),
+          // زر إنشاء حساب
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const RegisterScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: AppTheme.goldColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: const Text('إنشاء حساب', style: TextStyle(fontSize: 12)),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
@@ -350,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildProductCard(Map<String, dynamic> product) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return GestureDetector(
       onTap: () {},
       child: Container(
