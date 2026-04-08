@@ -1,0 +1,28 @@
+# Supabase Configuration
+[general]
+project_id = "flex-yemen"
+
+[functions]
+verify_jwt = true
+
+[functions.send-email]
+verify_jwt = false
+import_map = "import_map.json"
+
+[functions.send-notification]
+verify_jwt = true
+
+[functions.process-order]
+verify_jwt = true
+
+[auth]
+enabled = true
+site_url = "https://flexyemen.com"
+additional_redirect_urls = ["https://localhost:3000"]
+
+[storage]
+enabled = true
+file_size_limit = "50MB"
+
+[realtime]
+enabled = true
