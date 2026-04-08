@@ -20,7 +20,6 @@ import 'screens/main_navigation.dart';
 import 'screens/home_screen.dart';
 import 'screens/all_ads_screen.dart';
 import 'screens/ad_detail_screen.dart';
-import 'screens/auction_detail_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/chat_detail_screen.dart';
@@ -115,7 +114,7 @@ class MyApp extends StatelessWidget {
                 child: child!,
               );
             },
-            initialRoute: '/mode',
+            initialRoute: '/',
             onGenerateRoute: _onGenerateRoute,
           );
         },
@@ -171,45 +170,6 @@ class MyApp extends StatelessWidget {
           categoryId: categoryId,
           categoryName: categoryName,
         ),
-      );
-    }
-
-    // مسار تفاصيل المزاد
-    if (settings.name == '/auction_detail' && settings.arguments is AuctionModel) {
-      return MaterialPageRoute(
-        builder: (_) => AuctionDetailScreen(auction: settings.arguments as Map<String, dynamic>),
-      );
-    }
-
-    // مسار تتبع الطلب
-    if (settings.name == '/track_order' && settings.arguments is OrderModel) {
-      return MaterialPageRoute(
-        builder: (_) => TrackOrderScreen(order: settings.arguments as OrderModel),
-      );
-    }
-
-    // مسار نجاح الطلب
-    if (settings.name == '/order_success' && settings.arguments is OrderModel) {
-      return MaterialPageRoute(
-        builder: (_) => const OrderSuccessScreen(),
-      );
-    }
-
-    // مسار بيانات الهوية
-    if (settings.name == '/identity_info' && settings.arguments is UserModel) {
-      return MaterialPageRoute(
-        builder: (_) => IdentityInfoScreen(userData: settings.arguments as UserModel),
-      );
-    }
-
-    // مسار تفاصيل الدردشة
-    if (settings.name == '/chat_detail') {
-      final args = settings.arguments as Map<String, dynamic>?;
-      if (args == null) {
-        return MaterialPageRoute(builder: (_) => const Scaffold(body: Center(child: Text('بيانات المحادثة غير موجودة'))));
-      }
-      return MaterialPageRoute(
-        builder: (_) => ChatDetailScreen(chat: args),
       );
     }
 
