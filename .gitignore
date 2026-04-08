@@ -18,11 +18,6 @@
 .settings/
 
 # Android
-/android/app/src/main/res/drawable-*
-/android/app/src/main/res/mipmap-*
-/android/local.properties
-/android/*.iml
-/android/.gradle
 
 # iOS
 ios/Flutter/flutter_export_environment.sh
