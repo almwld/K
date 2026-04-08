@@ -178,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, '/terms'),
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TermsScreen())),
                           child: const Text(
                             'الشروط والأحكام',
                             style: TextStyle(
