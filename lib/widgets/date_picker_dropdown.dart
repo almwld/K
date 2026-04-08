@@ -26,13 +26,16 @@ class _DatePickerDropdownState extends State<DatePickerDropdown> {
   int? _selectedMonth;
   int? _selectedDay;
 
-  List<int> get _years => List.generate(100, (i) => DateTime.now().year - i);
+  List<int> get _years {
+    final currentYear = DateTime.now().year;
+    return List.generate(100, (i) => currentYear - i);
+  }
   
   List<int> get _months => List.generate(12, (i) => i + 1);
   
   List<int> get _days {
     if (_selectedYear == null || _selectedMonth == null) return [];
-    final daysInMonth = DateTime(_selectedYear!, _selectedMonth! + 1, 0).day;
+    final daysInMonth = DateTime(_selectedYear!, _selectedMonth!, 0).day;
     return List.generate(daysInMonth, (i) => i + 1);
   }
 
@@ -50,6 +53,14 @@ class _DatePickerDropdownState extends State<DatePickerDropdown> {
     }
   }
 
+  String _getMonthName(int month) {
+    const months = [
+      'يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو',
+      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+    ];
+    return months[month - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -61,7 +72,8 @@ class _DatePickerDropdownState extends State<DatePickerDropdown> {
           widget.label,
           style: TextStyle(
             fontSize: 14,
-            color: isDark ? Colors.grey[400] : Colors.grey[700],
+            fontWeight: FontWeight.w500,
+            color: isDark ? Colors.grey[300] : Colors.grey[700],
           ),
         ),
         const SizedBox(height: 8),
@@ -69,20 +81,30 @@ class _DatePickerDropdownState extends State<DatePickerDropdown> {
           decoration: BoxDecoration(
             color: isDark ? Colors.grey[800] : Colors.grey[100],
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+              width: 1,
+            ),
           ),
           child: Row(
             children: [
-              // سنة
               Expanded(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<int>(
                     value: _selectedYear,
-                    hint: const Text('سنة'),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text('سنة', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[500])),
+                    ),
                     isExpanded: true,
+                    icon: Icon(Icons.arrow_drop_down, color: isDark ? Colors.grey[400] : Colors.grey[600]),
                     items: _years.map((year) {
                       return DropdownMenuItem(
                         value: year,
-                        child: Text(year.toString()),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(year.toString()),
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -95,18 +117,24 @@ class _DatePickerDropdownState extends State<DatePickerDropdown> {
                   ),
                 ),
               ),
-              Container(width: 1, height: 30, color: Colors.grey),
-              // شهر
+              Container(width: 1, height: 30, color: isDark ? Colors.grey[700] : Colors.grey[300]),
               Expanded(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<int>(
                     value: _selectedMonth,
-                    hint: const Text('شهر'),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text('شهر', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[500])),
+                    ),
                     isExpanded: true,
+                    icon: Icon(Icons.arrow_drop_down, color: isDark ? Colors.grey[400] : Colors.grey[600]),
                     items: _months.map((month) {
                       return DropdownMenuItem(
                         value: month,
-                        child: Text(month.toString()),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(_getMonthName(month)),
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -119,18 +147,24 @@ class _DatePickerDropdownState extends State<DatePickerDropdown> {
                   ),
                 ),
               ),
-              Container(width: 1, height: 30, color: Colors.grey),
-              // يوم
+              Container(width: 1, height: 30, color: isDark ? Colors.grey[700] : Colors.grey[300]),
               Expanded(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<int>(
                     value: _selectedDay,
-                    hint: const Text('يوم'),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text('يوم', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[500])),
+                    ),
                     isExpanded: true,
+                    icon: Icon(Icons.arrow_drop_down, color: isDark ? Colors.grey[400] : Colors.grey[600]),
                     items: _days.map((day) {
                       return DropdownMenuItem(
                         value: day,
-                        child: Text(day.toString()),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(day.toString()),
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) {

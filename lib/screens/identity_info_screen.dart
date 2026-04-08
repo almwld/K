@@ -1,3 +1,4 @@
+import '../widgets/date_picker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,9 +28,15 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> with SingleTick
   String _idType = 'national_id';
   
   // معلومات إضافية
-  final _birthDateController = TextEditingController();
   final _addressController = TextEditingController();
   final _cityController = TextEditingController();
+  // تواريخ منفصلة
+  int? _birthYear;
+  int? _birthMonth;
+  int? _birthDay;
+  int? _idExpiryYear;
+  int? _idExpiryMonth;
+  int? _idExpiryDay;
   final _districtController = TextEditingController();
   final _jobTitleController = TextEditingController();
   final _companyNameController = TextEditingController();
