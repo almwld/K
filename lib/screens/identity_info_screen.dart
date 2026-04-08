@@ -80,7 +80,6 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> with SingleTick
     _idIssuerController.dispose();
     _idExpiryController.dispose();
     _nationalityController.dispose();
-    _birthDateController.dispose();
     _addressController.dispose();
     _cityController.dispose();
     _districtController.dispose();
@@ -243,7 +242,6 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> with SingleTick
       _showSnackBar('يرجى اختيار الجنسية', Colors.red);
       return;
     }
-    if (_birthDateController.text.isEmpty) {
       _showSnackBar('يرجى إدخال تاريخ الميلاد', Colors.red);
       return;
     }
@@ -467,9 +465,7 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> with SingleTick
           ),
           const SizedBox(height: 16),
           TextField(
-            controller: _birthDateController,
             readOnly: true,
-            onTap: () => _selectDate(_birthDateController),
             decoration: InputDecoration(
               labelText: 'تاريخ الميلاد',
               prefixIcon: const Icon(Icons.cake),

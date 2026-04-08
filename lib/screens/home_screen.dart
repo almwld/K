@@ -6,7 +6,6 @@ import 'category_products_screen.dart';
 import 'all_ads_screen.dart';
 import 'auctions_screen.dart';
 import 'garden_screen.dart';
-import 'mode_switch_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
@@ -83,18 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 0,
             ),
             child: const Text('إنشاء حساب', style: TextStyle(fontSize: 12)),
-          ),
-          const SizedBox(width: 8),
-          // زر PRO
-          IconButton(
-            icon: const Icon(Icons.star_border, color: Colors.black),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ModeSwitchScreen()),
-              );
-            },
-            tooltip: 'التبديل إلى PRO',
           ),
         ],
       ),
