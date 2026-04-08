@@ -33,11 +33,6 @@ jobs:
           mkdir -p android/gradle/wrapper
           mkdir -p android/app/src/main/res/values
           mkdir -p android/app/src/main/res/drawable
-          mkdir -p android/app/src/main/res/mipmap-hdpi
-          mkdir -p android/app/src/main/res/mipmap-mdpi
-          mkdir -p android/app/src/main/res/mipmap-xhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
 
       - name: Create gradle.properties
         run: |
@@ -67,7 +62,7 @@ jobs:
           }
           plugins {
               id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-              id "com.android.application" version "8.1.0" apply false
+              id "com.android.application" version "7.4.2" apply false
               id "org.jetbrains.kotlin.android" version "1.9.0" apply false
           }
           include ":app"
@@ -83,7 +78,7 @@ jobs:
                   mavenCentral()
               }
               dependencies {
-                  classpath 'com.android.tools.build:gradle:8.1.0'
+                  classpath 'com.android.tools.build:gradle:7.4.2'
                   classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
               }
           }
@@ -138,12 +133,12 @@ jobs:
               ndkVersion flutter.ndkVersion
               
               compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_17
-                  targetCompatibility JavaVersion.VERSION_17
+                  sourceCompatibility JavaVersion.VERSION_1_8
+                  targetCompatibility JavaVersion.VERSION_1_8
               }
               
               kotlinOptions {
-                  jvmTarget = '17'
+                  jvmTarget = '1.8'
               }
               
               sourceSets {
@@ -152,7 +147,7 @@ jobs:
               
               defaultConfig {
                   applicationId "com.flexyemen.flex_yemen"
-                  minSdk 23
+                  minSdk 21
                   targetSdk 34
                   versionCode flutterVersionCode.toInteger()
                   versionName flutterVersionName
@@ -183,7 +178,7 @@ jobs:
           distributionPath=wrapper/dists
           zipStoreBase=GRADLE_USER_HOME
           zipStorePath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.3-all.zip
+          distributionUrl=https\://services.gradle.org/distributions/gradle-7.5-all.zip
           EOF
 
       - name: Create AndroidManifest.xml
@@ -258,39 +253,6 @@ jobs:
               <item android:drawable="@android:color/black" />
           </layer-list>
           EOF
-
-      - name: Create simple icon placeholder
-        run: |
-          # إنشاء أيقونة بسيطة باستخدام Java
-          cat > CreateIcon.java << 'JAVA'
-          import java.awt.*;
-          import java.awt.image.*;
-          import javax.imageio.ImageIO;
-          import java.io.File;
-          
-          public class CreateIcon {
-              public static void main(String[] args) throws Exception {
-                  int size = 512;
-                  BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-                  Graphics2D g = image.createGraphics();
-                  g.setColor(new Color(0xD4AF37));
-                  g.fillRect(0, 0, size, size);
-                  g.setColor(Color.BLACK);
-                  g.setFont(new Font("Arial", Font.BOLD, size / 3));
-                  FontMetrics fm = g.getFontMetrics();
-                  String text = "F";
-                  int x = (size - fm.stringWidth(text)) / 2;
-                  int y = ((size - fm.getHeight()) / 2) + fm.getAscent();
-                  g.drawString(text, x, y);
-                  g.dispose();
-                  ImageIO.write(image, "PNG", new File("assets/icons/icon.png"));
-                  System.out.println("Icon created at assets/icons/icon.png");
-              }
-          }
-          JAVA
-          
-          mkdir -p assets/icons
-          javac CreateIcon.java && java CreateIcon || echo "Icon creation skipped"
 
       - name: Create local.properties
         run: |
