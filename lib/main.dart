@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,11 +11,6 @@ import 'services/connection_checker.dart';
 import 'services/cache/local_storage_service.dart';
 import 'services/supabase_service.dart';
 import 'theme/app_theme.dart';
-
-// Models
-import 'models/user_model.dart';
-import 'models/order_model.dart';
-import 'models/auction_model.dart';
 
 // Screens
 import 'screens/splash_screen.dart';
@@ -78,220 +72,22 @@ import 'screens/addresses_screen.dart';
 import 'screens/saved_payment_methods_screen.dart';
 import 'screens/advanced_search_screen.dart';
 
-// ============================================
-// شاشة التهيئة الأولية (تظهر فوراً)
-// ============================================
-class InitializingApp extends StatefulWidget {
-  const InitializingApp({super.key});
-
-  @override
-  State<InitializingApp> createState() => _InitializingAppState();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorageService.init();
+  
+  try {
+    await dotenv.load(fileName: ".env");
+    debugPrint('✅ .env file loaded');
+  } catch (e) {
+    debugPrint('⚠️ .env file not found: $e');
+  }
+  
+  await SupabaseService.initialize();
+  
+  runApp(const MyApp());
 }
 
-class _InitializingAppState extends State<InitializingApp> {
-  String _status = 'جاري التهيئة...';
-  String _subStatus = '';
-  double _progress = 0.0;
-  bool _hasError = false;
-  String _errorMessage = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeApp();
-  }
-
-  Future<void> _initializeApp() async {
-    // إعدادات الشاشة
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-      ),
-    );
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
-    // 1. تهيئة التخزين المحلي
-    _updateStatus('📦 تهيئة التخزين المحلي...', 0.1);
-    await LocalStorageService.init();
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // 2. تحميل المتغيرات البيئية
-    _updateStatus('⚙️ تحميل الإعدادات...', 0.2);
-    try {
-      await dotenv.load(fileName: ".env");
-      debugPrint('✅ .env file loaded');
-    } catch (e) {
-      debugPrint('⚠️ .env file not found: $e');
-    }
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // 3. تهيئة Supabase
-    _updateStatus('🔌 الاتصال بقاعدة البيانات...', 0.4);
-    try {
-      await SupabaseService.initialize();
-      debugPrint('✅ Supabase initialized');
-    } catch (e) {
-      _handleError('فشل الاتصال بقاعدة البيانات: $e');
-      return;
-    }
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    // 4. فحص الاتصال بالإنترنت
-    _updateStatus('🌐 فحص الاتصال...', 0.6);
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // 5. تهيئة الخدمات الإضافية
-    _updateStatus('🛠️ تهيئة الخدمات...', 0.8);
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // 6. اكتملت التهيئة
-    _updateStatus('✅ جاهز!', 1.0);
-    await Future.delayed(const Duration(seconds: 1));
-
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MyApp()),
-      );
-    }
-  }
-
-  void _updateStatus(String status, double progress) {
-    if (mounted) {
-      setState(() {
-        _status = status;
-        _progress = progress;
-        _subStatus = progress < 1.0 ? 'جاري التحميل...' : 'سيتم توجيهك قريباً';
-      });
-    }
-  }
-
-  void _handleError(String error) {
-    if (mounted) {
-      setState(() {
-        _hasError = true;
-        _errorMessage = error;
-      });
-    }
-  }
-
-  void _retry() {
-    setState(() {
-      _hasError = false;
-      _errorMessage = '';
-      _progress = 0.0;
-      _status = 'جاري إعادة المحاولة...';
-    });
-    _initializeApp();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: AppTheme.darkBackground,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // شعار متحرك
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppTheme.goldColor, AppTheme.goldLight],
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.shopping_bag,
-                    size: 50,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              
-              // حالة التهيئة
-              Text(
-                _status,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 8),
-              
-              // الحالة الفرعية
-              if (_subStatus.isNotEmpty)
-                Text(
-                  _subStatus,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.7),
-                  ),
-                ),
-              
-              const SizedBox(height: 30),
-              
-              // شريط التقدم
-              if (!_hasError)
-                Container(
-                  width: 250,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
-                    child: LinearProgressIndicator(
-                      value: _progress,
-                      backgroundColor: Colors.transparent,
-                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
-                    ),
-                  ),
-                ),
-              
-              // رسالة الخطأ
-              if (_hasError) ...[
-                const SizedBox(height: 20),
-                Icon(Icons.error_outline, size: 50, color: Colors.red[400]),
-                const SizedBox(height: 16),
-                Text(
-                  _errorMessage,
-                  style: const TextStyle(color: Colors.red, fontSize: 14),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _retry,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.goldColor,
-                    foregroundColor: Colors.black,
-                  ),
-                  child: const Text('إعادة المحاولة'),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ============================================
-// التطبيق الرئيسي (بعد اكتمال التهيئة)
-// ============================================
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -532,9 +328,4 @@ class MyApp extends StatelessWidget {
         ));
     }
   }
-}
-
-// نقطة الدخول الرئيسية
-void main() {
-  runApp(const InitializingApp());
 }
