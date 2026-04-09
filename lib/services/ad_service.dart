@@ -42,7 +42,8 @@ class AdService {
     String? sortBy = 'newest',
     int limit = 20,
   }) async {
-    var query = _supabase.from('ads').select('*, user:user_id(name, avatar_url)');
+    // استخدام dynamic لتجنب مشاكل الأنواع
+    dynamic query = _supabase.from('ads').select('*, user:user_id(name, avatar_url)');
 
     if (category != null && category != 'الكل') {
       query = query.eq('category', category);
@@ -52,6 +53,7 @@ class AdService {
       query = query.ilike('title', '%$search%');
     }
 
+    // إعادة تعيين query بعد كل عملية order
     switch (sortBy) {
       case 'newest':
         query = query.order('created_at', ascending: false);

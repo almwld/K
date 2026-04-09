@@ -43,11 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 150,
               height: 150,
               repeat: true,
-            ).animate().scale(
-              duration: 800.ms,
-              curve: Curves.easeOutBack,
-            ).fadeIn(duration: 600.ms),
-
+            ),
             const SizedBox(height: 30),
 
             Text(
@@ -59,16 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: isDark ? AppTheme.goldColor : AppTheme.goldDark,
                 letterSpacing: 2,
               ),
-            ).animate().fadeIn(
-              delay: 400.ms,
-              duration: 600.ms,
-            ).slideY(
-              begin: 0.3,
-              end: 0,
-              delay: 400.ms,
-              duration: 600.ms,
             ),
-
             const SizedBox(height: 16),
 
             Text(
@@ -78,18 +65,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontSize: 16,
                 color: AppTheme.getSecondaryTextColor(context),
               ),
-            ).animate().fadeIn(
-              delay: 600.ms,
-              duration: 600.ms,
             ),
-
             const SizedBox(height: 50),
 
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
-            ).animate().fadeIn(
-              delay: 800.ms,
-              duration: 400.ms,
             ),
           ],
         ),
