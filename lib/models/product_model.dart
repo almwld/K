@@ -37,7 +37,8 @@ class ProductModel {
     required this.createdAt,
     this.updatedAt,
     this.condition,
-    this.location, this.city,
+    this.location,
+    this.city,
   });
 
   // دالة لتحويل JSON إلى كائن
@@ -94,49 +95,6 @@ class ProductModel {
     };
   }
 
-  // نسخة من المنتج
-  ProductModel copyWith({
-    String? id,
-    String? title,
-    String? name,
-    String? description,
-    double? price,
-    double? oldPrice,
-    List<String>? images,
-    String? category,
-    String? sellerId,
-    String? sellerName,
-    double? rating,
-    int? reviewCount,
-    int? stock,
-    bool? isAvailable,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? condition,
-    String? location,
-  }) {
-    return ProductModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      name: name ?? this.name,
-      description: description ?? this.description,
-      price: price ?? this.price,
-      oldPrice: oldPrice ?? this.oldPrice,
-      images: images ?? this.images,
-      category: category ?? this.category,
-      sellerId: sellerId ?? this.sellerId,
-      sellerName: sellerName ?? this.sellerName,
-      rating: rating ?? this.rating,
-      reviewCount: reviewCount ?? this.reviewCount,
-      stock: stock ?? this.stock,
-      isAvailable: isAvailable ?? this.isAvailable,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      condition: condition ?? this.condition,
-      location: location ?? this.location, this.city,
-    );
-  }
-
   // دالة للحصول على سعر منسق
   String get formattedPrice {
     return '${price.toStringAsFixed(0)} ريال';
@@ -149,17 +107,9 @@ class ProductModel {
     }
     return null;
   }
-
-  // دالة للحصول على سعر الخصم المنسق
-  String? get formattedOldPrice {
-    if (oldPrice != null) {
-      return '${oldPrice!.toStringAsFixed(0)} ريال';
-    }
-    return null;
-  }
 }
 
-// عينات من المنتجات للاختبار
+// عينات من المنتجات للاختبار - باستخدام الـ constructor الصحيح
 final List<ProductModel> sampleProducts = [
   ProductModel(
     id: '1',
@@ -170,6 +120,8 @@ final List<ProductModel> sampleProducts = [
     oldPrice: 9000000,
     images: ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'],
     category: 'سيارات',
+    sellerId: 'seller1',
+    sellerName: 'معرض السيارات الحديثة',
     rating: 4.8,
     reviewCount: 45,
     stock: 5,
@@ -177,6 +129,7 @@ final List<ProductModel> sampleProducts = [
     createdAt: DateTime.now(),
     condition: 'جديد',
     location: 'صنعاء',
+    city: 'صنعاء',
   ),
   ProductModel(
     id: '2',
@@ -187,6 +140,8 @@ final List<ProductModel> sampleProducts = [
     oldPrice: 2000000,
     images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'],
     category: 'إلكترونيات',
+    sellerId: 'seller2',
+    sellerName: 'متجر التقنية',
     rating: 4.9,
     reviewCount: 120,
     stock: 10,
@@ -194,6 +149,7 @@ final List<ProductModel> sampleProducts = [
     createdAt: DateTime.now(),
     condition: 'جديد',
     location: 'صنعاء',
+    city: 'صنعاء',
   ),
   ProductModel(
     id: '3',
@@ -204,6 +160,8 @@ final List<ProductModel> sampleProducts = [
     oldPrice: 500000,
     images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400'],
     category: 'إلكترونيات',
+    sellerId: 'seller2',
+    sellerName: 'متجر التقنية',
     rating: 4.7,
     reviewCount: 89,
     stock: 15,
@@ -211,5 +169,66 @@ final List<ProductModel> sampleProducts = [
     createdAt: DateTime.now(),
     condition: 'جديد',
     location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '4',
+    title: 'فيلا فاخرة صنعاء',
+    name: 'فيلا فاخرة صنعاء',
+    description: 'فيلا فاخرة في موقع ممتاز',
+    price: 45000000,
+    oldPrice: 50000000,
+    images: ['https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'],
+    category: 'عقارات',
+    sellerId: 'seller3',
+    sellerName: 'شركة العقارات اليمنية',
+    rating: 4.6,
+    reviewCount: 12,
+    stock: 1,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '5',
+    title: 'مندي يمني',
+    name: 'مندي يمني',
+    description: 'أشهى المأكولات اليمنية',
+    price: 3500,
+    oldPrice: 4000,
+    images: ['https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'],
+    category: 'مطاعم',
+    sellerId: 'seller4',
+    sellerName: 'مطعم مندي يمني',
+    rating: 4.9,
+    reviewCount: 200,
+    stock: 100,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '6',
+    title: 'ثوب يمني فاخر',
+    name: 'ثوب يمني فاخر',
+    description: 'ثوب يمني تقليدي فاخر',
+    price: 35000,
+    oldPrice: 45000,
+    images: ['https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400'],
+    category: 'أزياء',
+    sellerId: 'seller5',
+    sellerName: 'متجر الأزياء اليمنية',
+    rating: 4.8,
+    reviewCount: 75,
+    stock: 20,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
   ),
 ];
