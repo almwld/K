@@ -1,17 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import '../theme/app_theme.dart';
+import '../widgets/loading_dialog.dart';
 import 'order_success_screen.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
 
   @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  Future<void> _processPayment() async {
+    // عرض شعار التحميل
+    LoadingDialog.show(context, message: 'جاري معالجة الدفع...');
+
+    // محاكاة عملية الدفع
+    await Future.delayed(const Duration(seconds: 2));
+
+    // إغلاق شاشة التحميل
+    LoadingDialog.hide(context);
+
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OrderSuccessScreen()),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: AppBar(
         title: const Text('تأكيد الطلب'),
-        backgroundColor: const Color(0xFFD4AF37),
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.goldColor,
+        foregroundColor: Colors.black,
         centerTitle: true,
       ),
       body: Padding(
@@ -29,16 +56,32 @@ class CheckoutScreen extends StatelessWidget {
                         children: [
                           const Text(
                             'ملخص الطلب',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           const Divider(),
                           _buildOrderItem('منتج 1', 1, 50.0),
                           _buildOrderItem('منتج 2', 2, 30.0),
                           const Divider(),
                           _buildTotalRow(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'عنوان التوصيل',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text('صنعاء، اليمن'),
+                          const Text('شارع التعاون، مبنى ١٢'),
+                          const Text('هاتف: 777777777'),
                         ],
                       ),
                     ),
@@ -51,57 +94,10 @@ class CheckoutScreen extends StatelessWidget {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: () async {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => Dialog(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark 
-                              ? Colors.grey[900] 
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Lottie.asset(
-                              'assets/animations/loading_logo.json',
-                              width: 120,
-                              height: 120,
-                              repeat: true,
-                            ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              'جاري تأكيد الطلب...',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-
-                  await Future.delayed(const Duration(seconds: 2));
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const OrderSuccessScreen(),
-                      ),
-                    );
-                  }
-                },
+                onPressed: _processPayment,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFD4AF37),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.goldColor,
+                  foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
