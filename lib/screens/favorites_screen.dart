@@ -81,7 +81,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     return Stack(
                       children: [
                         GestureDetector(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(product: product))),
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(adId: product.id))),
                           child: Container(
                             decoration: BoxDecoration(
                               color: AppTheme.getCardColor(context),
