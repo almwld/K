@@ -190,7 +190,7 @@ class MyApp extends StatelessWidget {
       case '/all_ads':
         return MaterialPageRoute(builder: (_) => const AllAdsScreen());
       case '/ad_detail':
-        return MaterialPageRoute(builder: (_) => const AdDetailScreen());
+        return MaterialPageRoute(builder: (_) => const AdDetailScreen(adId: ""));
       case '/profile':
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case '/chat':
