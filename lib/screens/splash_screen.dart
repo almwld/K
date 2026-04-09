@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lottie/lottie.dart';
 import '../theme/app_theme.dart';
-import 'home_screen.dart';
+import 'main_navigation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,15 +14,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToHome();
+    _navigateToMain();
   }
 
-  Future<void> _navigateToHome() async {
+  Future<void> _navigateToMain() async {
     await Future.delayed(const Duration(milliseconds: 3000));
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
+      MaterialPageRoute(builder: (_) => const MainNavigation()),
     );
   }
 
@@ -37,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // شعار Lottie متحرك
             Lottie.asset(
               'assets/animations/loading_logo.json',
               width: 150,
@@ -45,7 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
               repeat: true,
             ),
             const SizedBox(height: 30),
-
             Text(
               'FLEX YEMEN',
               style: TextStyle(
@@ -57,7 +54,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 16),
-
             Text(
               'منصة التجارة الإلكترونية اليمنية',
               style: TextStyle(
@@ -67,7 +63,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 50),
-
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
             ),
