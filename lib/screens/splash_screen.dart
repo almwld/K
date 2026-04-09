@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lottie/lottie.dart';
 import '../theme/app_theme.dart';
 import 'home_screen.dart';
 
@@ -18,12 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToHome() async {
-    // انتظار 2.5 ثانية للشاشة الترحيبية
-    await Future.delayed(const Duration(milliseconds: 2500));
-
+    await Future.delayed(const Duration(milliseconds: 3000));
     if (!mounted) return;
-
-    // الانتقال إلى الصفحة الرئيسية مباشرة
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -40,37 +37,18 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppTheme.goldColor, AppTheme.goldLight],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.goldColor.withOpacity(0.4),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.shopping_bag,
-                  size: 60,
-                  color: Colors.black,
-                ),
-              ),
+            // شعار Lottie متحرك
+            Lottie.asset(
+              'assets/animations/loading_logo.json',
+              width: 150,
+              height: 150,
+              repeat: true,
             ).animate().scale(
               duration: 800.ms,
               curve: Curves.easeOutBack,
             ).fadeIn(duration: 600.ms),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 30),
 
             Text(
               'FLEX YEMEN',
@@ -105,23 +83,13 @@ class _SplashScreenState extends State<SplashScreen> {
               duration: 600.ms,
             ),
 
-            const SizedBox(height: 60),
+            const SizedBox(height: 50),
 
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldColor),
             ).animate().fadeIn(
               delay: 800.ms,
               duration: 400.ms,
-            ),
-
-            const SizedBox(height: 40),
-
-            Text(
-              '© 2024 Flex Yemen. All rights reserved.',
-              style: TextStyle(
-                fontSize: 12,
-                color: AppTheme.getSecondaryTextColor(context).withOpacity(0.5),
-              ),
             ),
           ],
         ),
