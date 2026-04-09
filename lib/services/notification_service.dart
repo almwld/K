@@ -14,20 +14,8 @@ class NotificationService extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    // تحميل الإشعارات
     await loadNotifications();
-
-    // الاستماع للإشعارات الجديدة في الوقت الفعلي
-    _supabase
-        .channel('notifications')
-        .on(
-          RealtimeListenTypes.insert,
-          ChannelFilter(event: 'INSERT', schema: 'public', table: 'notifications'),
-          (payload) {
-            _addNotification(payload.newRecord);
-          },
-        )
-        .subscribe();
+    _listenForNewNotifications();
 
     _isLoading = false;
     notifyListeners();
@@ -47,9 +35,23 @@ class NotificationService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _addNotification(Map<String, dynamic> notification) {
-    _notifications.insert(0, notification);
-    notifyListeners();
+  void _listenForNewNotifications() {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return;
+
+    _supabase
+        .channel('notifications:${userId}')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.insert,
+          schema: 'public',
+          table: 'notifications',
+          callback: (payload) {
+            final newNotification = payload.newRecord;
+            _notifications.insert(0, newNotification);
+            notifyListeners();
+          },
+        )
+        .subscribe();
   }
 
   Future<void> markAsRead(String notificationId) async {
@@ -79,28 +81,5 @@ class NotificationService extends ChangeNotifier {
       notification['is_read'] = true;
     }
     notifyListeners();
-  }
-
-  Future<void> deleteNotification(String notificationId) async {
-    await _supabase.from('notifications').delete().eq('id', notificationId);
-    _notifications.removeWhere((n) => n['id'] == notificationId);
-    notifyListeners();
-  }
-
-  Future<void> sendNotification({
-    required String userId,
-    required String title,
-    required String body,
-    String type = 'general',
-    Map<String, dynamic>? data,
-  }) async {
-    await _supabase.from('notifications').insert({
-      'user_id': userId,
-      'title': title,
-      'body': body,
-      'type': type,
-      'data': data,
-      'created_at': DateTime.now().toIso8601String(),
-    });
   }
 }

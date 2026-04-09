@@ -61,42 +61,6 @@ class ChatService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> startConversation(String otherUserId, String otherUserName) async {
-    final currentUserId = _supabase.auth.currentUser?.id;
-    if (currentUserId == null) return;
-
-    _isLoading = true;
-    notifyListeners();
-
-    // التحقق من وجود محادثة سابقة
-    final existing = _conversations.firstWhere(
-      (c) => c.userId == otherUserId,
-      orElse: () => ConversationModel(
-        id: '', userId: '', userName: '', lastMessage: '', lastMessageTime: DateTime.now(), unreadCount: 0,
-      ),
-    );
-
-    if (existing.id.isNotEmpty) {
-      await openConversation(existing.id);
-      _isLoading = false;
-      notifyListeners();
-      return;
-    }
-
-    // إنشاء محادثة جديدة
-    final response = await _supabase.from('conversations').insert({
-      'user1_id': currentUserId,
-      'user2_id': otherUserId,
-    }).select();
-
-    if (response.isNotEmpty) {
-      await openConversation(response[0]['id']);
-    }
-
-    _isLoading = false;
-    notifyListeners();
-  }
-
   Future<void> openConversation(String conversationId) async {
     _currentConversationId = conversationId;
     await loadMessages();
@@ -111,7 +75,7 @@ class ChatService extends ChangeNotifier {
     final response = await _supabase
         .from('messages')
         .select()
-        .eq('conversation_id', _currentConversationId)
+        .eq('conversation_id', _currentConversationId!)
         .order('created_at', ascending: true);
 
     _messages = (response as List).map((msg) => MessageModel.fromJson(msg)).toList();
@@ -172,19 +136,9 @@ class ChatService extends ChangeNotifier {
     await _supabase
         .from('messages')
         .update({'is_read': true})
-        .eq('conversation_id', _currentConversationId)
+        .eq('conversation_id', _currentConversationId!)
         .neq('sender_id', currentUserId)
         .eq('is_read', false);
-
-    // تحديث عداد المحادثة
-    await _supabase
-        .from('conversations')
-        .update({
-          currentUserId == (await _getConversation()?['user1_id']) 
-              ? 'user1_unread_count' 
-              : 'user2_unread_count': 0
-        })
-        .eq('id', _currentConversationId);
   }
 
   void _listenForNewMessages() {
@@ -196,10 +150,11 @@ class ChatService extends ChangeNotifier {
 
     _messagesChannel = _supabase
         .channel('messages:${_currentConversationId}')
-        .on(
-          RealtimeListenTypes.insert,
-          ChannelFilter(event: 'INSERT', schema: 'public', table: 'messages'),
-          (payload) {
+        .onPostgresChanges(
+          event: PostgresChangeEvent.insert,
+          schema: 'public',
+          table: 'messages',
+          callback: (payload) {
             final newMessage = MessageModel.fromJson(payload.newRecord);
             if (newMessage.senderId != _supabase.auth.currentUser?.id) {
               _messages.add(newMessage);
@@ -217,24 +172,15 @@ class ChatService extends ChangeNotifier {
 
     _conversationsChannel = _supabase
         .channel('conversations')
-        .on(
-          RealtimeListenTypes.insert,
-          ChannelFilter(event: 'INSERT', schema: 'public', table: 'conversations'),
-          (payload) {
+        .onPostgresChanges(
+          event: PostgresChangeEvent.insert,
+          schema: 'public',
+          table: 'conversations',
+          callback: (payload) {
             loadConversations();
           },
         )
         .subscribe();
-  }
-
-  Future<Map<String, dynamic>?> _getConversation() async {
-    if (_currentConversationId == null) return null;
-    final response = await _supabase
-        .from('conversations')
-        .select()
-        .eq('id', _currentConversationId)
-        .single();
-    return response;
   }
 
   void dispose() {
