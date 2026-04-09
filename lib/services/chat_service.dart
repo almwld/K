@@ -1,150 +1,245 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/chat_model.dart';
 import '../models/message_model.dart';
+import '../models/conversation_model.dart';
 
-class ChatService {
+class ChatService extends ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
+  
+  List<ConversationModel> _conversations = [];
+  List<MessageModel> _messages = [];
+  bool _isLoading = false;
+  String? _currentConversationId;
+  RealtimeChannel? _messagesChannel;
+  RealtimeChannel? _conversationsChannel;
 
-  // إنشاء محادثة جديدة
-  Future<ChatModel?> createChat({
-    required String userId1,
-    required String userId2,
-    required String productId,
-    required String productTitle,
-    required String productImage,
-    required String user1Name,
-    required String user2Name,
-    String? user1Avatar,
-    String? user2Avatar,
-  }) async {
-    try {
-      final response = await _supabase.from('chats').insert({
-        'user1_id': userId1,
-        'user2_id': userId2,
-        'product_id': productId,
-        'product_title': productTitle,
-        'product_image': productImage,
-        'user1_name': user1Name,
-        'user2_name': user2Name,
-        'user1_avatar': user1Avatar,
-        'user2_avatar': user2Avatar,
-        'last_message': '',
-        'last_message_time': DateTime.now().toIso8601String(),
-        'created_at': DateTime.now().toIso8601String(),
-      }).select().single();
+  List<ConversationModel> get conversations => _conversations;
+  List<MessageModel> get messages => _messages;
+  bool get isLoading => _isLoading;
+  String? get currentConversationId => _currentConversationId;
 
-      return ChatModel(
-        id: response['id'],
-        user1Id: response['user1_id'],
-        user2Id: response['user2_id'],
-        user1Name: response['user1_name'],
-        user2Name: response['user2_name'],
-        user1Avatar: response['user1_avatar'],
-        user2Avatar: response['user2_avatar'],
-        productId: response['product_id'],
-        productTitle: response['product_title'],
-        productImage: response['product_image'],
-        lastMessage: response['last_message'] ?? '',
-        lastMessageTime: DateTime.parse(response['last_message_time']),
-        unreadCount: 0,
+  Future<void> init() async {
+    _isLoading = true;
+    notifyListeners();
+    
+    await loadConversations();
+    _listenForNewConversations();
+    
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> loadConversations() async {
+    final currentUserId = _supabase.auth.currentUser?.id;
+    if (currentUserId == null) return;
+
+    final response = await _supabase
+        .from('conversations')
+        .select('''
+          *,
+          user1:user1_id(id, name, avatar_url),
+          user2:user2_id(id, name, avatar_url)
+        ''')
+        .or('user1_id.eq.$currentUserId,user2_id.eq.$currentUserId')
+        .order('updated_at', ascending: false);
+
+    _conversations = (response as List).map((conv) {
+      final otherUser = conv['user1_id']['id'] == currentUserId 
+          ? conv['user2_id'] 
+          : conv['user1_id'];
+      return ConversationModel(
+        id: conv['id'],
+        userId: otherUser['id'],
+        userName: otherUser['name'] ?? 'مستخدم',
+        userAvatar: otherUser['avatar_url'],
+        lastMessage: conv['last_message'] ?? '',
+        lastMessageTime: DateTime.parse(conv['last_message_time'] ?? conv['created_at']),
+        unreadCount: conv['${currentUserId == conv['user1_id']['id'] ? 'user1_unread_count' : 'user2_unread_count'}'] ?? 0,
       );
-    } catch (e) {
-      debugPrint('Error creating chat: $e');
-      return null;
-    }
+    }).toList();
+    
+    notifyListeners();
   }
 
-  // جلب محادثات المستخدم
-  Future<List<ChatModel>> getUserChats(String userId) async {
-    try {
-      final response = await _supabase
-          .from('chats')
-          .select()
-          .or('user1_id.eq.$userId,user2_id.eq.$userId')
-          .order('last_message_time', ascending: false);
+  Future<void> startConversation(String otherUserId, String otherUserName) async {
+    final currentUserId = _supabase.auth.currentUser?.id;
+    if (currentUserId == null) return;
 
-      return response.map<ChatModel>((chat) => ChatModel(
-        id: chat['id'],
-        user1Id: chat['user1_id'],
-        user2Id: chat['user2_id'],
-        user1Name: chat['user1_name'],
-        user2Name: chat['user2_name'],
-        user1Avatar: chat['user1_avatar'],
-        user2Avatar: chat['user2_avatar'],
-        productId: chat['product_id'],
-        productTitle: chat['product_title'],
-        productImage: chat['product_image'],
-        lastMessage: chat['last_message'] ?? '',
-        lastMessageTime: DateTime.parse(chat['last_message_time']),
-        unreadCount: chat['unread_count_${userId}'] ?? 0,
-      )).toList();
-    } catch (e) {
-      debugPrint('Error getting chats: $e');
-      return [];
+    _isLoading = true;
+    notifyListeners();
+
+    // التحقق من وجود محادثة سابقة
+    final existing = _conversations.firstWhere(
+      (c) => c.userId == otherUserId,
+      orElse: () => ConversationModel(
+        id: '', userId: '', userName: '', lastMessage: '', lastMessageTime: DateTime.now(), unreadCount: 0,
+      ),
+    );
+
+    if (existing.id.isNotEmpty) {
+      await openConversation(existing.id);
+      _isLoading = false;
+      notifyListeners();
+      return;
     }
+
+    // إنشاء محادثة جديدة
+    final response = await _supabase.from('conversations').insert({
+      'user1_id': currentUserId,
+      'user2_id': otherUserId,
+    }).select();
+
+    if (response.isNotEmpty) {
+      await openConversation(response[0]['id']);
+    }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
-  // الاستماع للرسائل الجديدة (Realtime)
-  Stream<List<MessageModel>> listenToMessages(String chatId) {
-    return _supabase
+  Future<void> openConversation(String conversationId) async {
+    _currentConversationId = conversationId;
+    await loadMessages();
+    await markMessagesAsRead();
+    _listenForNewMessages();
+    notifyListeners();
+  }
+
+  Future<void> loadMessages() async {
+    if (_currentConversationId == null) return;
+
+    final response = await _supabase
         .from('messages')
-        .stream(primaryKey: ['id'])
-        .eq('chat_id', chatId)
-        .order('created_at', ascending: true)
-        .map((event) => event.map((msg) => MessageModel.fromJson(msg)).toList());
+        .select()
+        .eq('conversation_id', _currentConversationId)
+        .order('created_at', ascending: true);
+
+    _messages = (response as List).map((msg) => MessageModel.fromJson(msg)).toList();
+    MessageModel.currentUserId = _supabase.auth.currentUser?.id ?? '';
+    notifyListeners();
   }
 
-  // إرسال رسالة
-  Future<void> sendMessage({
-    required String chatId,
-    required String senderId,
-    required String message,
-    String? imageUrl,
-    String? replyToId,
-  }) async {
-    try {
-      await _supabase.from('messages').insert({
-        'chat_id': chatId,
-        'sender_id': senderId,
-        'message': message,
-        'image_url': imageUrl,
-        'reply_to_id': replyToId,
-        'created_at': DateTime.now().toIso8601String(),
-      });
+  Future<void> sendMessage(String message) async {
+    if (_currentConversationId == null || message.trim().isEmpty) return;
 
-      // تحديث آخر رسالة في المحادثة
-      await _supabase
-          .from('chats')
-          .update({
-            'last_message': message,
-            'last_message_time': DateTime.now().toIso8601String(),
-          })
-          .eq('id', chatId);
+    final currentUserId = _supabase.auth.currentUser?.id;
+    if (currentUserId == null) return;
+
+    final tempId = DateTime.now().millisecondsSinceEpoch.toString();
+    final tempMessage = MessageModel(
+      id: tempId,
+      conversationId: _currentConversationId!,
+      senderId: currentUserId,
+      message: message,
+      createdAt: DateTime.now(),
+      isSending: true,
+    );
+
+    _messages.add(tempMessage);
+    notifyListeners();
+
+    try {
+      final response = await _supabase.from('messages').insert({
+        'conversation_id': _currentConversationId,
+        'sender_id': currentUserId,
+        'message': message,
+      }).select();
+
+      if (response.isNotEmpty) {
+        final index = _messages.indexWhere((m) => m.id == tempId);
+        if (index != -1) {
+          _messages[index] = MessageModel.fromJson(response[0]);
+          _messages[index].isSending = false;
+          notifyListeners();
+        }
+      }
     } catch (e) {
+      final index = _messages.indexWhere((m) => m.id == tempId);
+      if (index != -1) {
+        _messages.removeAt(index);
+        notifyListeners();
+      }
       debugPrint('Error sending message: $e');
     }
   }
 
-  // تحديث حالة القراءة
-  Future<void> markMessagesAsRead(String chatId, String userId) async {
-    try {
-      await _supabase
-          .from('messages')
-          .update({'is_read': true})
-          .eq('chat_id', chatId)
-          .neq('sender_id', userId);
-    } catch (e) {
-      debugPrint('Error marking messages as read: $e');
-    }
+  Future<void> markMessagesAsRead() async {
+    if (_currentConversationId == null) return;
+
+    final currentUserId = _supabase.auth.currentUser?.id;
+    if (currentUserId == null) return;
+
+    await _supabase
+        .from('messages')
+        .update({'is_read': true})
+        .eq('conversation_id', _currentConversationId)
+        .neq('sender_id', currentUserId)
+        .eq('is_read', false);
+
+    // تحديث عداد المحادثة
+    await _supabase
+        .from('conversations')
+        .update({
+          currentUserId == (await _getConversation()?['user1_id']) 
+              ? 'user1_unread_count' 
+              : 'user2_unread_count': 0
+        })
+        .eq('id', _currentConversationId);
   }
 
-  // حذف رسالة
-  Future<void> deleteMessage(String messageId) async {
-    try {
-      await _supabase.from('messages').delete().eq('id', messageId);
-    } catch (e) {
-      debugPrint('Error deleting message: $e');
+  void _listenForNewMessages() {
+    if (_messagesChannel != null) {
+      _messagesChannel?.unsubscribe();
     }
+
+    if (_currentConversationId == null) return;
+
+    _messagesChannel = _supabase
+        .channel('messages:${_currentConversationId}')
+        .on(
+          RealtimeListenTypes.insert,
+          ChannelFilter(event: 'INSERT', schema: 'public', table: 'messages'),
+          (payload) {
+            final newMessage = MessageModel.fromJson(payload.newRecord);
+            if (newMessage.senderId != _supabase.auth.currentUser?.id) {
+              _messages.add(newMessage);
+              notifyListeners();
+              markMessagesAsRead();
+            }
+          },
+        )
+        .subscribe();
+  }
+
+  void _listenForNewConversations() {
+    final currentUserId = _supabase.auth.currentUser?.id;
+    if (currentUserId == null) return;
+
+    _conversationsChannel = _supabase
+        .channel('conversations')
+        .on(
+          RealtimeListenTypes.insert,
+          ChannelFilter(event: 'INSERT', schema: 'public', table: 'conversations'),
+          (payload) {
+            loadConversations();
+          },
+        )
+        .subscribe();
+  }
+
+  Future<Map<String, dynamic>?> _getConversation() async {
+    if (_currentConversationId == null) return null;
+    final response = await _supabase
+        .from('conversations')
+        .select()
+        .eq('id', _currentConversationId)
+        .single();
+    return response;
+  }
+
+  void dispose() {
+    _messagesChannel?.unsubscribe();
+    _conversationsChannel?.unsubscribe();
+    super.dispose();
   }
 }

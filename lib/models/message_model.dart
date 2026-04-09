@@ -1,47 +1,48 @@
 class MessageModel {
   final String id;
-  final String chatId;
+  final String conversationId;
   final String senderId;
   final String message;
-  final String? imageUrl;
-  final DateTime createdAt;
   final bool isRead;
-  final String? replyToId;
+  final String type;
+  final DateTime createdAt;
+  bool isSending;
 
   MessageModel({
     required this.id,
-    required this.chatId,
+    required this.conversationId,
     required this.senderId,
     required this.message,
-    this.imageUrl,
-    required this.createdAt,
     this.isRead = false,
-    this.replyToId,
+    this.type = 'text',
+    required this.createdAt,
+    this.isSending = false,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
-      id: json['id'] ?? '',
-      chatId: json['chat_id'] ?? '',
-      senderId: json['sender_id'] ?? '',
-      message: json['message'] ?? '',
-      imageUrl: json['image_url'],
-      createdAt: DateTime.parse(json['created_at']),
+      id: json['id'],
+      conversationId: json['conversation_id'],
+      senderId: json['sender_id'],
+      message: json['message'],
       isRead: json['is_read'] ?? false,
-      replyToId: json['reply_to_id'],
+      type: json['type'] ?? 'text',
+      createdAt: DateTime.parse(json['created_at']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'chat_id': chatId,
+      'conversation_id': conversationId,
       'sender_id': senderId,
       'message': message,
-      'image_url': imageUrl,
-      'created_at': createdAt.toIso8601String(),
       'is_read': isRead,
-      'reply_to_id': replyToId,
+      'type': type,
+      'created_at': createdAt.toIso8601String(),
     };
   }
+
+  bool get isMine => senderId == currentUserId;
+  static String currentUserId = '';
 }
