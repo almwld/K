@@ -1,4 +1,3 @@
-import '../chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
@@ -42,11 +41,10 @@ class _MainNavigationState extends State<MainNavigation> {
   ];
 
   void _onItemTapped(int index) {
-    if (index == 3) {  // الزر الذهبي في المنتصف (الترتيب 3)
+    if (index == 3) {
       setState(() => _isExpanded = !_isExpanded);
       return;
     }
-    // إعادة ترتيب المؤشرات لأن الزر الذهبي لا يحسب في _screens
     final int screenIndex = index > 3 ? index - 1 : index;
     setState(() {
       _currentIndex = screenIndex;
@@ -64,19 +62,33 @@ class _MainNavigationState extends State<MainNavigation> {
         backgroundColor: AppTheme.goldColor,
         foregroundColor: Colors.black,
         centerTitle: true,
+        elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.auto_awesome),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AIAssistantScreen())),
-            tooltip: 'المساعد الذكي',
+          // زر AI المساعد الذكي
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.auto_awesome, color: Colors.black),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AIAssistantScreen()),
+                );
+              },
+              tooltip: 'المساعد الذكي',
+            ),
           ),
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
             onPressed: () => Navigator.pushNamed(context, '/cart'),
             tooltip: 'السلة',
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_outlined),
+            icon: const Icon(Icons.notifications_outlined, color: Colors.black),
             onPressed: () => Navigator.pushNamed(context, '/notifications'),
             tooltip: 'الإشعارات',
           ),
@@ -94,11 +106,10 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // 7 أزرار - الزر الذهبي في المنتصف (الترتيب 4)
                 _buildNavItem('assets/icons/svg/home.svg', 'الرئيسية', 0),
                 _buildNavItem('assets/icons/svg/merchant.svg', 'المتجر', 1),
                 _buildNavItem('assets/icons/svg/location.svg', 'الخريطة', 2),
-                _buildGoldenButton(),  // الزر الذهبي في المنتصف
+                _buildGoldenButton(),
                 _buildNavItem('assets/icons/svg/wallet.svg', 'المحفظة', 4),
                 _buildNavItem('assets/icons/svg/chat.svg', 'الدردشة', 5),
                 _buildNavItem('assets/icons/svg/profile.svg', 'حسابي', 6),
@@ -111,7 +122,6 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   Widget _buildNavItem(String svgPath, String label, int index) {
-    // تحويل المؤشر لأن الزر الذهبي في المنتصف
     final int actualIndex = index > 3 ? index - 1 : index;
     final bool isSelected = _currentIndex == actualIndex;
     final Color color = isSelected ? AppTheme.goldColor : Colors.grey;
@@ -122,9 +132,17 @@ class _MainNavigationState extends State<MainNavigation> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(svgPath, width: 24, height: 24, colorFilter: ColorFilter.mode(color, BlendMode.srcIn)),
+            SvgPicture.asset(
+              svgPath,
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+            ),
             const SizedBox(height: 4),
-            Text(label, style: TextStyle(fontSize: 10, color: color)),
+            Text(
+              label,
+              style: TextStyle(fontSize: 10, color: color, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+            ),
           ],
         ),
       ),
