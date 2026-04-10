@@ -4,38 +4,24 @@ import '../theme/app_theme.dart';
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
-  final bool showBackButton;
-  final VoidCallback? onBackPressed;
-  final Widget? leading;
-  final Color? backgroundColor;
+  final bool centerTitle;
 
   const SimpleAppBar({
     super.key,
     required this.title,
     this.actions,
-    this.showBackButton = false,  // تغيير القيمة الافتراضية إلى false
-    this.onBackPressed,
-    this.leading,
-    this.backgroundColor,
+    this.centerTitle = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontFamily: 'Changa',
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      centerTitle: true,
-      elevation: 0,
-      backgroundColor: backgroundColor ?? (isDark ? AppTheme.darkSurface : AppTheme.lightSurface),
-      automaticallyImplyLeading: false,  // إخفاء زر الرجوع التلقائي
-      leading: leading,  // استخدام الـ leading المخصص فقط
+      title: Text(title),
+      backgroundColor: AppTheme.goldColor,
+      foregroundColor: Colors.black,
+      centerTitle: centerTitle,
       actions: actions,
+      elevation: 0,
     );
   }
 
