@@ -9,6 +9,9 @@ class AuthProvider extends ChangeNotifier {
   UserModel? get user => _user;
   bool get isLoading => _isLoading;
   bool get isLoggedIn => _user != null;
+  String get userName => _user?.fullName ?? 'مستخدم';
+  String get userEmail => _user?.email ?? '';
+  String? get userAvatar => _user?.avatarUrl;
 
   Future<void> signIn(String email, String password) async {
     _isLoading = true;
