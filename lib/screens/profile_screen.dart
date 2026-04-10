@@ -29,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 await authProvider.signOut();
-                if (mounted) {
+                if (context.mounted) {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
                 }
               },
