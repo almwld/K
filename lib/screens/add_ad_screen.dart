@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,7 +19,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
   final _phoneController = TextEditingController();
   
   String _selectedCategory = 'electronics';
-  List<File> _selectedImages = [];
+  List<dynamic> _selectedImages = [];
   bool _isSubmitting = false;
   final ImagePicker _picker = ImagePicker();
   
@@ -31,12 +30,13 @@ class _AddAdScreenState extends State<AddAdScreen> {
     {'id': 'cars', 'name': 'سيارات'},
     {'id': 'real_estate', 'name': 'عقارات'},
     {'id': 'services', 'name': 'خدمات'},
+    {'id': 'restaurants', 'name': 'مطاعم'},
   ];
 
   Future<void> _pickImages() async {
     final List<XFile> pickedFiles = await _picker.pickMultiImage();
     setState(() {
-      _selectedImages = pickedFiles.map((f) => File(f.path)).take(5).toList();
+      _selectedImages = pickedFiles;
     });
   }
 
@@ -59,7 +59,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
         throw Exception('يجب تسجيل الدخول أولاً');
       }
       
-      // رفع الصور إلى Supabase Storage
+      // رفع الصور
       List<String> imageUrls = [];
       for (int i = 0; i < _selectedImages.length; i++) {
         final file = _selectedImages[i];
@@ -69,7 +69,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
         imageUrls.add(imageUrl);
       }
       
-      // حفظ الإعلان في قاعدة البيانات
+      // حفظ الإعلان
       await supabase.from('ads').insert({
         'user_id': userId,
         'title': _titleController.text,

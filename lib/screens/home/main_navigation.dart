@@ -4,9 +4,9 @@ import '../../theme/app_theme.dart';
 import 'home_screen.dart';
 import '../all_ads_screen.dart';
 import '../map/interactive_map_screen.dart';
-import '../wallet/wallet_screen.dart';
+import '../wallet_screen.dart';
 import '../chat/chat_screen.dart';
-import '../profile/profile_screen.dart';
+import '../profile_screen.dart';
 import '../add_ad_screen.dart';
 import '../seller_products_screen.dart';
 import '../request_service_screen.dart';
@@ -64,23 +64,10 @@ class _MainNavigationState extends State<MainNavigation> {
         centerTitle: true,
         elevation: 0,
         actions: [
-          // زر AI المساعد الذكي
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.auto_awesome, color: Colors.black),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AIAssistantScreen()),
-                );
-              },
-              tooltip: 'المساعد الذكي',
-            ),
+          IconButton(
+            icon: const Icon(Icons.auto_awesome, color: Colors.black),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AIAssistantScreen())),
+            tooltip: 'المساعد الذكي',
           ),
           IconButton(
             icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
@@ -132,17 +119,9 @@ class _MainNavigationState extends State<MainNavigation> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(
-              svgPath,
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-            ),
+            SvgPicture.asset(svgPath, width: 24, height: 24, colorFilter: ColorFilter.mode(color, BlendMode.srcIn)),
             const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(fontSize: 10, color: color, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
-            ),
+            Text(label, style: TextStyle(fontSize: 10, color: color)),
           ],
         ),
       ),
@@ -166,8 +145,7 @@ class _MainNavigationState extends State<MainNavigation> {
                   boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10)],
                 ),
                 child: Row(
-                  children: _quickActions.asMap().entries.map((entry) {
-                    final action = entry.value;
+                  children: _quickActions.map((action) {
                     return GestureDetector(
                       onTap: () {
                         setState(() => _isExpanded = false);
