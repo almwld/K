@@ -1,50 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../services/ad_service.dart';
-import '../models/ad_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
-import 'ad_detail_screen.dart';
 
-class AllAdsScreen extends StatefulWidget {
+class AllAdsScreen extends StatelessWidget {
   const AllAdsScreen({super.key});
 
-  @override
-  State<AllAdsScreen> createState() => _AllAdsScreenState();
-}
-
-class _AllAdsScreenState extends State<AllAdsScreen> {
-  final AdService _adService = AdService();
-  List<AdModel> _ads = [];
-  bool _isLoading = true;
-  String _selectedCategory = 'الكل';
-  String _sortBy = 'newest';
-
-  final List<String> _categories = ['الكل', 'electronics', 'fashion', 'furniture', 'cars', 'real_estate', 'services'];
-  final List<Map<String, String>> _sortOptions = [
-    {'value': 'newest', 'label': 'الأحدث'},
-    {'value': 'price_low', 'label': 'السعر: من الأقل للأعلى'},
-    {'value': 'price_high', 'label': 'السعر: من الأعلى للأقل'},
-    {'value': 'popular', 'label': 'الأكثر مشاهدة'},
+  final List<Map<String, dynamic>> _ads = const [
+    {'id': '1', 'title': 'آيفون 15 برو للبيع', 'price': 450000, 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'location': 'صنعاء'},
+    {'id': '2', 'title': 'سامسونج S24 الترا', 'price': 380000, 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400', 'location': 'عدن'},
+    {'id': '3', 'title': 'فيلا فاخرة للبيع', 'price': 45000000, 'category': 'عقارات', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', 'location': 'صنعاء'},
+    {'id': '4', 'title': 'تويوتا كامري 2024', 'price': 8500000, 'category': 'سيارات', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', 'location': 'تعز'},
+    {'id': '5', 'title': 'مندي يمني', 'price': 3500, 'category': 'مطاعم', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'location': 'الحديدة'},
+    {'id': '6', 'title': 'ماك بوك برو M3', 'price': 1800000, 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', 'location': 'صنعاء'},
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadAds();
-  }
-
-  Future<void> _loadAds() async {
-    setState(() => _isLoading = true);
-    final ads = await _adService.getAds(
-      category: _selectedCategory == 'الكل' ? null : _selectedCategory,
-      sortBy: _sortBy,
-    );
-    setState(() {
-      _ads = ads;
-      _isLoading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,155 +22,92 @@ class _AllAdsScreenState extends State<AllAdsScreen> {
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'جميع الإعلانات'),
-      body: Column(
+      body: GridView.builder(
+        padding: const EdgeInsets.all(12),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+        ),
+        itemCount: _ads.length,
+        itemBuilder: (context, index) {
+          final ad = _ads[index];
+          return _buildAdCard(ad);
+        },
+      ),
+    );
+  }
+
+  Widget _buildAdCard(Map<String, dynamic> ad) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.getCardColor(context),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // فلتر التصنيفات
-          Container(
-            height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                final isSelected = _selectedCategory == category;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() => _selectedCategory = category);
-                    _loadAds();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: isSelected ? AppTheme.goldColor : (isDark ? Colors.grey[800] : Colors.grey[200]),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      category == 'الكل' ? 'الكل' : _getCategoryName(category),
-                      style: TextStyle(color: isSelected ? Colors.black : null),
-                    ),
-                  ),
-                );
-              },
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: CachedNetworkImage(
+              imageUrl: ad['image'],
+              height: 140,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                height: 140,
+                color: isDark ? Colors.grey[800] : Colors.grey[200],
+                child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
+              errorWidget: (context, url, error) => Container(
+                height: 140,
+                color: isDark ? Colors.grey[800] : Colors.grey[200],
+                child: const Icon(Icons.image_not_supported),
+              ),
             ),
           ),
-          // فلتر الترتيب
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('ترتيب حسب:'),
-                DropdownButton(
-                  value: _sortBy,
-                  items: _sortOptions.map((opt) {
-                    return DropdownMenuItem(value: opt['value'], child: Text(opt['label']!));
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() => _sortBy = value.toString());
-                    _loadAds();
-                  },
+                Text(
+                  ad['title'],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${ad['price']} ريال',
+                  style: TextStyle(
+                    color: AppTheme.goldColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on, size: 12, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        ad['location'],
+                        style: const TextStyle(fontSize: 11, color: Colors.grey),
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          // قائمة الإعلانات
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _ads.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.inbox, size: 80, color: Colors.grey),
-                            const SizedBox(height: 16),
-                            const Text('لا توجد إعلانات', style: TextStyle(fontSize: 18)),
-                          ],
-                        ),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(12),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.7,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemCount: _ads.length,
-                        itemBuilder: (context, index) {
-                          final ad = _ads[index];
-                          return _buildAdCard(ad);
-                        },
-                      ),
-          ),
         ],
       ),
     );
-  }
-
-  Widget _buildAdCard(AdModel ad) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(adId: ad.id))),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: ad.images.isNotEmpty
-                  ? CachedNetworkImage(
-                      imageUrl: ad.images[0],
-                      height: 140,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) => Container(height: 140, color: Colors.grey[300]),
-                    )
-                  : Container(height: 140, color: Colors.grey[300], child: const Icon(Icons.image, size: 40)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(ad.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  Text(ad.formattedPrice, style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
-                  if (ad.oldPrice != null)
-                    Text(ad.formattedOldPrice, style: const TextStyle(decoration: TextDecoration.lineThrough, fontSize: 12, color: Colors.grey)),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on, size: 12, color: Colors.grey),
-                      const SizedBox(width: 4),
-                      Expanded(child: Text(ad.location ?? 'اليمن', maxLines: 1, style: const TextStyle(fontSize: 11, color: Colors.grey))),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _getCategoryName(String id) {
-    switch (id) {
-      case 'electronics': return 'إلكترونيات';
-      case 'fashion': return 'أزياء';
-      case 'furniture': return 'أثاث';
-      case 'cars': return 'سيارات';
-      case 'real_estate': return 'عقارات';
-      case 'services': return 'خدمات';
-      default: return id;
-    }
   }
 }
