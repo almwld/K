@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../services/ai/minimax_service.dart';
 import '../widgets/simple_app_bar.dart';
