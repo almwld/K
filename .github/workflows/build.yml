@@ -276,3 +276,9 @@ jobs:
           name: flex-yemen-apks
           path: build/app/outputs/flutter-apk/*.apk
           retention-days: 7
+
+      - name: Generate App Icons
+        run: |
+          flutter pub add --dev flutter_launcher_icons
+          flutter pub get
+          flutter pub run flutter_launcher_icons
