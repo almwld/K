@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'providers/auth_provider.dart';
 import 'providers/theme_provider.dart';
@@ -9,7 +10,7 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // تهيئة Supabase بالمفاتيح الصحيحة
+  // تهيئة Supabase
   await Supabase.initialize(
     url: 'https://ziqpohdxtermunnhlkm.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppcXBvaGR4dGVtc211bm5obGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3ODQzNDcsImV4cCI6MjA4NzM2MDM0N30.ABAg5YZSrrAtBTWATJ3eRTmo4BuZVyVlrMV1HZjRWs0',
