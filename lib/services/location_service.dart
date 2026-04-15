@@ -1,83 +1,58 @@
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 
 class LocationService {
-  static Future<bool> requestPermission() async {
+  // التحقق من صلاحيات الموقع
+  static Future<bool> checkPermissions() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return false;
-      }
     }
-    
     if (permission == LocationPermission.deniedForever) {
       return false;
     }
+    return permission == LocationPermission.whileInUse || 
+           permission == LocationPermission.always;
+  }
+
+  // الحصول على الموقع الحالي
+  static Future<Position?> getCurrentLocation() async {
+    bool hasPermission = await checkPermissions();
+    if (!hasPermission) return null;
     
-    return true;
-  }
-
-  static Future<Position?> getCurrentPosition() async {
     try {
-      final hasPermission = await requestPermission();
-      if (!hasPermission) return null;
-      
       return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 10,
+        ),
       );
     } catch (e) {
-      debugPrint('Error getting current position: $e');
+      print('خطأ في الحصول على الموقع: $e');
       return null;
     }
   }
 
-  static Future<String?> getAddressFromPosition(Position position) async {
-    try {
-      final placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-      
-      if (placemarks.isNotEmpty) {
-        final place = placemarks.first;
-        return '${place.street}, ${place.locality}, ${place.country}';
-      }
-      return null;
-    } catch (e) {
-      debugPrint('Error getting address: $e');
-      return null;
+  // حساب المسافة بين نقطتين (كيلومترات)
+  static double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
+    const double earthRadius = 6371;
+    double dLat = _toRadians(lat2 - lat1);
+    double dLng = _toRadians(lng2 - lng1);
+    double a = (dLat / 2).sin() * (dLat / 2).sin() +
+               _toRadians(lat1).cos() * _toRadians(lat2).cos() *
+               (dLng / 2).sin() * (dLng / 2).sin();
+    double c = 2 * a.asin();
+    return earthRadius * c;
+  }
+
+  static double _toRadians(double degree) {
+    return degree * 3.14159 / 180;
+  }
+
+  // تنسيق المسافة للعرض
+  static String formatDistance(double km) {
+    if (km < 1) {
+      return '${(km * 1000).toInt()} م';
     }
-  }
-
-  static Future<String?> getCurrentAddress() async {
-    final position = await getCurrentPosition();
-    if (position == null) return null;
-    return getAddressFromPosition(position);
-  }
-
-  static double calculateDistance(
-    double startLatitude,
-    double startLongitude,
-    double endLatitude,
-    double endLongitude,
-  ) {
-    return Geolocator.distanceBetween(
-      startLatitude,
-      startLongitude,
-      endLatitude,
-      endLongitude,
-    );
-  }
-
-  static Stream<Position> getPositionStream() {
-    return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 10,
-      ),
-    );
+    return '${km.toStringAsFixed(1)} كم';
   }
 }
