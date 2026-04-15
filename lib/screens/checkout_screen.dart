@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/loading_dialog.dart';
+import '../providers/auth_provider.dart';
+import '../providers/cart_provider.dart';
+import '../services/escrow_service.dart';
 import 'order_success_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -11,15 +14,39 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  final EscrowService _escrowService = EscrowService();
+  bool _isProcessing = false;
+
   Future<void> _processPayment() async {
-    // عرض شعار التحميل
-    LoadingDialog.show(context, message: 'جاري معالجة الدفع...');
+    setState(() => _isProcessing = true);
 
-    // محاكاة عملية الدفع
-    await Future.delayed(const Duration(seconds: 2));
+    final authProvider = context.read<AuthProvider>();
+    final cartProvider = context.read<CartProvider>();
+    final buyerId = authProvider.user?.id;
+    final sellerId = cartProvider.items.first['seller_id']; // تبسيط
 
-    // إغلاق شاشة التحميل
-    LoadingDialog.hide(context);
+    if (buyerId == null) {
+      _showError('يجب تسجيل الدخول أولاً');
+      setState(() => _isProcessing = false);
+      return;
+    }
+
+    // 1. إنشاء طلب
+    final orderId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    // 2. إنشاء معاملة محتجزة
+    await _escrowService.createEscrowTransaction(
+      orderId: orderId,
+      buyerId: buyerId,
+      sellerId: sellerId,
+      amount: cartProvider.totalPrice,
+    );
+
+    // 3. خصم المبلغ من محفظة المشتري (محاكاة)
+    // await _walletService.deductBalance(buyerId, cartProvider.totalPrice);
+
+    // 4. إفراغ السلة
+    cartProvider.clearCart();
 
     if (mounted) {
       Navigator.pushReplacement(
@@ -27,10 +54,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         MaterialPageRoute(builder: (_) => const OrderSuccessScreen()),
       );
     }
+
+    setState(() => _isProcessing = false);
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -39,108 +75,80 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         title: const Text('تأكيد الطلب'),
         backgroundColor: AppTheme.goldColor,
         foregroundColor: Colors.black,
-        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'ملخص الطلب',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const Divider(),
-                          _buildOrderItem('منتج 1', 1, 50.0),
-                          _buildOrderItem('منتج 2', 2, 30.0),
-                          const Divider(),
-                          _buildTotalRow(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'عنوان التوصيل',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text('صنعاء، اليمن'),
-                          const Text('شارع التعاون، مبنى ١٢'),
-                          const Text('هاتف: 777777777'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: _processPayment,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldColor,
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'تأكيد الطلب',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOrderItem(String name, int quantity, double price) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Column(
         children: [
-          Text('$name x $quantity'),
-          Text('${(price * quantity).toStringAsFixed(2)} ر.ي'),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: cartProvider.items.length,
+              itemBuilder: (context, index) {
+                final item = cartProvider.items[index];
+                return Card(
+                  child: ListTile(
+                    title: Text(item['name']),
+                    subtitle: Text('${item['price']} ريال × ${item['quantity']}'),
+                    trailing: Text('${item['price'] * item['quantity']} ريال'),
+                  ),
+                );
+              },
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.darkSurface : Colors.white,
+              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('المجموع:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text('${cartProvider.totalPrice} ريال', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.security, size: 16, color: Colors.green),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'المبلغ محتجز لحين تأكيد استلام المنتج',
+                          style: TextStyle(fontSize: 12, color: Colors.green),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: _isProcessing ? null : _processPayment,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.goldColor,
+                      foregroundColor: Colors.black,
+                    ),
+                    child: _isProcessing
+                        ? const CircularProgressIndicator(strokeWidth: 2)
+                        : const Text('تأكيد الدفع', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTotalRow() {
-    double total = 50.0 + (2 * 30.0);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text(
-          'المجموع',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          '${total.toStringAsFixed(2)} ر.ي',
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ],
     );
   }
 }
