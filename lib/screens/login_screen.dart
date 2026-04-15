@@ -1,3 +1,4 @@
+import 'forgot_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../theme/app_theme.dart';
@@ -138,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPasswordScreen())); },
                   child: const Text('نسيت كلمة المرور؟'),
                 ),
               ),
