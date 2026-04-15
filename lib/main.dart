@@ -162,7 +162,6 @@ class FlexYemenApp extends StatelessWidget {
       case '/my_ads':
         return MaterialPageRoute(builder: (_) => const MyAdsScreen());
       case '/my_orders':
-        return MaterialPageRoute(builder: (_) => const MyOrdersScreen());
       case '/notifications':
         return MaterialPageRoute(builder: (_) => const NotificationsScreen());
       case '/order_success':
@@ -170,9 +169,7 @@ class FlexYemenApp extends StatelessWidget {
       case '/order_detail':
         return MaterialPageRoute(builder: (_) => const OrderDetailScreen());
       case '/order_tracking':
-        return MaterialPageRoute(builder: (_) => const OrderTrackingScreen());
       case '/orders':
-        return MaterialPageRoute(builder: (_) => const OrdersScreen());
       case '/payment_methods':
         return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
       case '/addresses':
@@ -196,7 +193,6 @@ class FlexYemenApp extends StatelessWidget {
       case '/reviews':
         return MaterialPageRoute(builder: (_) => const ReviewsScreen());
       case '/sanaa_services':
-        return MaterialPageRoute(builder: (_) => const SanaaServicesScreen());
       case '/saved_payment_methods':
         return MaterialPageRoute(builder: (_) => const SavedPaymentMethodsScreen());
       case '/search':
@@ -208,7 +204,6 @@ class FlexYemenApp extends StatelessWidget {
       case '/seller_analytics':
         return MaterialPageRoute(builder: (_) => const SellerAnalyticsScreen());
       case '/seller_orders':
-        return MaterialPageRoute(builder: (_) => const SellerOrdersScreen());
       case '/seller_payouts':
         return MaterialPageRoute(builder: (_) => const SellerPayoutsScreen());
       case '/seller_products':
@@ -266,31 +261,20 @@ class FlexYemenApp extends StatelessWidget {
       case '/wallet':
         return MaterialPageRoute(builder: (_) => const WalletScreen());
       case '/withdraw':
-        return MaterialPageRoute(builder: (_) => const WithdrawScreen());
       case '/deposit':
-        return MaterialPageRoute(builder: (_) => const DepositScreen());
       case '/transfer':
-        return MaterialPageRoute(builder: (_) => const TransferScreen());
       case '/transactions':
-        return MaterialPageRoute(builder: (_) => const TransactionsScreen());
       case '/bill_payment':
-        return MaterialPageRoute(builder: (_) => const BillPaymentScreen());
       case '/recharge':
-        return MaterialPageRoute(builder: (_) => const RechargeScreen());
       case '/gift_cards':
-        return MaterialPageRoute(builder: (_) => const GiftCardsScreen());
       case '/currency_exchange':
-        return MaterialPageRoute(builder: (_) => const CurrencyExchangeScreen());
       case '/qr_code':
-        return MaterialPageRoute(builder: (_) => const QrCodeScreen());
       case '/ai_assistant':
         return MaterialPageRoute(builder: (_) => const AIAssistantScreen());
       case '/map':
         return MaterialPageRoute(builder: (_) => const InteractiveMapScreen());
       case '/nearby_stores':
-        return MaterialPageRoute(builder: (_) => const NearbyStoresScreen());
       case '/professional_map':
-        return MaterialPageRoute(builder: (_) => const ProfessionalMapScreen());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesScreen());
       case '/all_categories':

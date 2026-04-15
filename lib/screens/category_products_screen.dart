@@ -163,7 +163,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                             builder: (_) => ProductDetailScreen(
                               productId: '${widget.categoryId}_$index',
                               productName: product['name'],
-                              productPrice: int.parse(product['price'].replaceAll(',', '')),
+                              productId: product['id'] ?? "", productName: product['name'] ?? "", int.parse(product['price'].replaceAll(',', '')),
                               productImage: product['image'],
                               productDescription: product['description'],
                             ),
