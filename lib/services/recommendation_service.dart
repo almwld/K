@@ -41,10 +41,8 @@ class RecommendationService {
   Future<void> trackProductView(String productId, String category, String store) async {
     _viewHistory.insert(0, productId);
     if (_viewHistory.length > 100) _viewHistory.removeLast();
-    
     _categoryViews[category] = (_categoryViews[category] ?? 0) + 1;
     _storeViews[store] = (_storeViews[store] ?? 0) + 1;
-    
     await saveUserData();
   }
 
@@ -55,194 +53,143 @@ class RecommendationService {
     await saveUserData();
   }
 
-  // 1. المنتجات الموصى بها بناءً على سجل التصفح
+  // 1. المنتجات الموصى بها
   List<MarketItem> getRecommendedFromHistory({int limit = 10}) {
-    if (_viewHistory.isEmpty) return _getPopularProducts(limit);
-    
-    final allProducts = MarketData.getAllItemsComplete();
-    final recommended = <MarketItem>[];
-    
-    final topCategories = _getTopCategories();
-    
-    for (var product in allProducts) {
-      if (topCategories.contains(product.category) && 
-          !_viewHistory.contains(product.name)) {
-        recommended.add(product);
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      if (_viewHistory.isEmpty) return allProducts.take(limit).toList();
+      
+      final recommended = <MarketItem>[];
+      for (var product in allProducts) {
+        if (!_viewHistory.contains(product.name)) {
+          recommended.add(product);
+        }
+        if (recommended.length >= limit) break;
       }
-      if (recommended.length >= limit) break;
+      return recommended;
+    } catch (e) {
+      return [];
     }
-    
-    if (recommended.length < limit) {
-      recommended.addAll(_getPopularProducts(limit - recommended.length));
-    }
-    
-    return recommended.take(limit).toList();
   }
 
-  // 2. المنتجات المشابهة لمنتج معين
+  // 2. المنتجات المشابهة
   List<MarketItem> getSimilarProducts(String productId, {int limit = 8}) {
-    final allProducts = MarketData.getAllItemsComplete();
-    final targetProduct = allProducts.firstWhere(
-      (p) => p.name == productId,
-      orElse: () => allProducts.first,
-    );
-    
-    return allProducts
-        .where((p) => p.category == targetProduct.category && p.name != productId)
-        .take(limit)
-        .toList();
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      final targetProduct = allProducts.firstWhere(
+        (p) => p.name == productId,
+        orElse: () => allProducts.first,
+      );
+      return allProducts
+          .where((p) => p.category == targetProduct.category && p.name != productId)
+          .take(limit)
+          .toList();
+    } catch (e) {
+      return [];
+    }
   }
 
-  // 3. المنتجات الرائجة حالياً
+  // 3. المنتجات الرائجة
   List<MarketItem> getTrendingProducts({int limit = 12}) {
-    final allProducts = MarketData.getAllItemsComplete();
-    
-    final sorted = List<MarketItem>.from(allProducts)
-      ..sort((a, b) {
-        final scoreA = _calculateTrendingScore(a);
-        final scoreB = _calculateTrendingScore(b);
-        return scoreB.compareTo(scoreA);
-      });
-    
-    return sorted.take(limit).toList();
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      final sorted = List<MarketItem>.from(allProducts)
+        ..sort((a, b) => b.change24h.compareTo(a.change24h));
+      return sorted.take(limit).toList();
+    } catch (e) {
+      return [];
+    }
   }
 
   // 4. منتجات قد تعجبك
   List<MarketItem> getRecommendedForYou({int limit = 15}) {
-    final allProducts = MarketData.getAllItemsComplete();
-    final scores = <MarketItem, double>{};
-    
-    for (var product in allProducts) {
-      double score = 0;
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      final recommended = <MarketItem>[];
       
-      if (_categoryViews.containsKey(product.category)) {
-        score += _categoryViews[product.category]! * 2;
+      for (var product in allProducts) {
+        if (_categoryViews.containsKey(product.category)) {
+          recommended.add(product);
+        }
+        if (recommended.length >= limit) break;
       }
       
-      if (_storeViews.containsKey(product.store)) {
-        score += _storeViews[product.store]! * 1.5;
+      if (recommended.length < limit) {
+        recommended.addAll(allProducts.take(limit - recommended.length));
       }
       
-      if (product.change24h > 2.0) score += 3;
-      
-      if (product.price >= 100 && product.price <= 5000) score += 2;
-      
-      if (_viewHistory.contains(product.name)) score *= 0.5;
-      
-      scores[product] = score;
+      return recommended;
+    } catch (e) {
+      return [];
     }
-    
-    final sorted = scores.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    
-    return sorted.map((e) => e.key).take(limit).toList();
   }
 
-  // 5. منتجات بناءً على وقت اليوم
+  // 5. منتجات حسب الوقت
   List<MarketItem> getTimeBasedRecommendations({int limit = 6}) {
-    final hour = DateTime.now().hour;
-    final allProducts = MarketData.getAllItemsComplete();
-    
-    String targetCategory;
-    if (hour >= 6 && hour < 11) {
-      targetCategory = 'مطاعم';
-    } else if (hour >= 11 && hour < 15) {
-      targetCategory = 'مطاعم';
-    } else if (hour >= 15 && hour < 19) {
-      targetCategory = 'مقاهي';
-    } else if (hour >= 19 && hour < 23) {
-      targetCategory = 'مطاعم';
-    } else {
-      targetCategory = 'مطاعم';
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      return allProducts.take(limit).toList();
+    } catch (e) {
+      return [];
     }
-    
-    return allProducts
-        .where((p) => p.category == targetCategory)
-        .take(limit)
-        .toList();
   }
 
-  // 6. منتجات بناءً على الموقع
+  // 6. منتجات حسب الموقع
   List<MarketItem> getLocationBasedRecommendations(String city, {int limit = 8}) {
-    final allProducts = MarketData.getAllItemsComplete();
-    return allProducts.take(limit).toList();
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      return allProducts.take(limit).toList();
+    } catch (e) {
+      return [];
+    }
   }
 
   // 7. منتجات الموسم
   List<MarketItem> getSeasonalRecommendations({int limit = 8}) {
-    final allProducts = MarketData.getAllItemsComplete();
-    return allProducts.take(limit).toList();
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      return allProducts.take(limit).toList();
+    } catch (e) {
+      return [];
+    }
   }
 
-  // 8. منتجات يشتريها معاً
+  // 8. منتجات تشترى معاً
   List<MarketItem> getFrequentlyBoughtTogether(String productId, {int limit = 4}) {
-    final allProducts = MarketData.getAllItemsComplete();
-    final targetProduct = allProducts.firstWhere(
-      (p) => p.name == productId,
-      orElse: () => allProducts.first,
-    );
-    
-    final relatedCategories = _getRelatedCategories(targetProduct.category);
-    
-    return allProducts
-        .where((p) => relatedCategories.contains(p.category) && p.name != productId)
-        .take(limit)
-        .toList();
-  }
-
-  // دوال مساعدة
-  List<String> _getTopCategories() {
-    final sorted = _categoryViews.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    return sorted.take(3).map((e) => e.key).toList();
-  }
-
-  List<MarketItem> _getPopularProducts(int limit) {
-    final allProducts = MarketData.getAllItemsComplete();
-    return allProducts
-        .where((p) => p.change24h > 0)
-        .take(limit)
-        .toList();
-  }
-
-  double _calculateTrendingScore(MarketItem product) {
-    double score = product.change24h.abs();
-    if (product.price > 1000) score *= 1.5;
-    if (product.isFavorite) score *= 2;
-    return score;
-  }
-
-  List<String> _getRelatedCategories(String category) {
-    const relations = {
-      'سيارات': ['قطع غيار', 'غسيل سيارات', 'خدمة سيارات'],
-      'إلكترونيات': ['إكسسوارات تصوير', 'سماعات', 'أجهزة منزلية'],
-      'أزياء': ['أحذية', 'شنط وإكسسوارات', 'عطور'],
-      'مواد غذائية': ['معلبات', 'مشروبات', 'مخبوزات'],
-      'مطاعم': ['مشروبات', 'حلويات', 'عصائر'],
-    };
-    return relations[category] ?? ['إلكترونيات', 'أزياء'];
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      final targetProduct = allProducts.firstWhere(
+        (p) => p.name == productId,
+        orElse: () => allProducts.first,
+      );
+      return allProducts
+          .where((p) => p.category == targetProduct.category && p.name != productId)
+          .take(limit)
+          .toList();
+    } catch (e) {
+      return [];
+    }
   }
 
   // اقتراحات البحث
   List<String> getSearchSuggestions(String query) {
-    if (query.isEmpty) return _getPopularSearches();
-    
-    final allProducts = MarketData.getAllItemsComplete();
-    final suggestions = <String>[];
-    
-    for (var product in allProducts) {
-      if (product.name.toLowerCase().contains(query.toLowerCase()) ||
-          product.category.toLowerCase().contains(query.toLowerCase())) {
-        suggestions.add(product.name);
-      }
-      if (suggestions.length >= 8) break;
+    if (query.isEmpty) {
+      return ['آيفون', 'تويوتا', 'مندي', 'فيلا', 'لابتوب', 'عطور', 'ذهب', 'سيارة'];
     }
     
-    return suggestions;
-  }
-
-  List<String> _getPopularSearches() {
-    return ['آيفون', 'تويوتا', 'مندي', 'فيلا', 'لابتوب', 'عطور', 'ذهب', 'سيارة'];
+    try {
+      final allProducts = MarketData.getAllItemsComplete();
+      final suggestions = <String>[];
+      for (var product in allProducts) {
+        if (product.name.toLowerCase().contains(query.toLowerCase())) {
+          suggestions.add(product.name);
+        }
+        if (suggestions.length >= 8) break;
+      }
+      return suggestions;
+    } catch (e) {
+      return ['آيفون', 'تويوتا', 'مندي'];
+    }
   }
 }
 
@@ -281,28 +228,22 @@ class SmartRecommendationEngine {
     
     return [
       PersonalizedRecommendation(
-        title: '✨ منتجات قد تعجبك',
+        title: 'منتجات قد تعجبك',
         subtitle: 'بناءً على اهتماماتك',
         items: _service.getRecommendedForYou(limit: 12),
         type: RecommendationType.forYou,
       ),
       PersonalizedRecommendation(
-        title: '🔥 رائج الآن',
+        title: 'رائج الآن',
         subtitle: 'الأكثر مبيعاً هذا الأسبوع',
         items: _service.getTrendingProducts(limit: 10),
         type: RecommendationType.trending,
       ),
       PersonalizedRecommendation(
-        title: '👀 شاهدته مؤخراً',
+        title: 'شاهدته مؤخراً',
         subtitle: 'تابع من حيث توقفت',
         items: _service.getRecommendedFromHistory(limit: 8),
         type: RecommendationType.history,
-      ),
-      PersonalizedRecommendation(
-        title: '🕐 مناسب لهذا الوقت',
-        subtitle: 'اقتراحات حسب وقت اليوم',
-        items: _service.getTimeBasedRecommendations(limit: 6),
-        type: RecommendationType.timeBased,
       ),
     ];
   }
