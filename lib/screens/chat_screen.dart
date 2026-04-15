@@ -30,7 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final response = await _supabase
         .from('profiles')
         .select('id, name, avatar_url')
-        .neq('id', _currentUserId);
+        .neq("id", _currentUserId ?? "");
     setState(() => _users = List<Map<String, dynamic>>.from(response));
   }
 
@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (_) => ChatDetailScreen(
-                    conversationId: chatService.currentConversationId ?? '',
+                    conversationId: chatService.currentConversationId ?? "" ?? '',
                     otherUserId: user['id'],
                     otherUserName: user['name'],
                   ),
