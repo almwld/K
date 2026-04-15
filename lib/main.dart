@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'screens/home/main_navigation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/splash_screen.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'providers/theme_provider.dart';
 import 'services/chat_service.dart';
-import 'services/cache/local_storage_service.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  await dotenv.load();
+  
   await Supabase.initialize(
     url: 'https://ziqpohdxtemsmunnhlkm.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppcXBvaGR4dGVtc211bm5obGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk5MjY4MjksImV4cCI6MjA1NTUwMjgyOX0.g5H3fwMXXBzV4d0eQFcUrvX6W_J0WexQIXUexPxZXsc',
   );
-  
-  await LocalStorageService().init();
   
   runApp(const FlexYemenApp());
 }

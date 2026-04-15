@@ -1,28 +1,217 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import 'home/main_navigation.dart';
+import 'login_screen.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  int _currentPage = 0;
+  final CarouselController _carouselController = CarouselController();
+
+  final List<Map<String, dynamic>> _onboardingData = [
+    {
+      'title': 'مرحباً بك في فلكس يمن',
+      'description': 'أول منصة يمنية تجمع بين التجارة الإلكترونية والمحفظة الرقمية في تطبيق واحد',
+      'icon': Icons.shopping_bag,
+      'color': 0xFFD4AF37,
+      'lottie': 'shopping',
+    },
+    {
+      'title': 'تسوق بكل سهولة',
+      'description': 'تصفح آلاف المنتجات من مختلف الفئات وأضفها إلى سلة التسوق بضغطة زر',
+      'icon': Icons.search,
+      'color': 0xFF4CAF50,
+      'lottie': 'search',
+    },
+    {
+      'title': 'محفظة رقمية متكاملة',
+      'description': 'حول الأموال، ادفع الفواتير، واشحن الرصيد بسهولة وأمان تام',
+      'icon': Icons.account_balance_wallet,
+      'color': 0xFF2196F3,
+      'lottie': 'wallet',
+    },
+    {
+      'title': 'دردشة مباشرة',
+      'description': 'تواصل مع البائعين والمشترين مباشرة عبر نظام الدردشة المدمج',
+      'icon': Icons.chat,
+      'color': 0xFF9C27B0,
+      'lottie': 'chat',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'مرحباً'),
-      body: Center(
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.waving_hand, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
-            const SizedBox(height: 16),
-            const Text('مرحباً', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text('سيتم إضافة هذه الميزة قريباً', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+            Expanded(
+              flex: 4,
+              child: CarouselSlider(
+                carouselController: _carouselController,
+                options: CarouselOptions(
+                  height: double.infinity,
+                  viewportFraction: 1.0,
+                  onPageChanged: (index, reason) => setState(() => _currentPage = index),
+                ),
+                items: _onboardingData.map((data) {
+                  return _buildOnboardingPage(data);
+                }).toList(),
+              ),
+            ),
+            _buildPageIndicator(),
+            const SizedBox(height: 20),
+            _buildButtons(),
+            const SizedBox(height: 30),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildOnboardingPage(Map<String, dynamic> data) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(data['color']).withOpacity(0.1),
+            ),
+            child: Icon(
+              data['icon'],
+              size: 100,
+              color: Color(data['color']),
+            ),
+          ),
+          const SizedBox(height: 40),
+          Text(
+            data['title'],
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            data['description'],
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPageIndicator() {
+    return SmoothPageIndicator(
+      controller: PageController(initialPage: _currentPage),
+      count: _onboardingData.length,
+      effect: WormEffect(
+        dotWidth: 10,
+        dotHeight: 10,
+        activeDotColor: AppTheme.goldColor,
+        dotColor: Colors.grey[400]!,
+      ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (_currentPage > 0)
+            TextButton(
+              onPressed: () => _carouselController.previousPage(),
+              child: const Text('السابق'),
+            )
+          else
+            const SizedBox(width: 60),
+          
+          if (_currentPage == _onboardingData.length - 1)
+            ElevatedButton(
+              onPressed: _completeOnboarding,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: const Text(
+                'ابدأ الآن',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            )
+          else
+            ElevatedButton(
+              onPressed: () => _carouselController.nextPage(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: const Text(
+                'التالي',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            ),
+          
+          if (_currentPage < _onboardingData.length - 1)
+            TextButton(
+              onPressed: _skipOnboarding,
+              child: const Text('تخطي'),
+            )
+          else
+            const SizedBox(width: 60),
+        ],
+      ),
+    );
+  }
+
+  void _skipOnboarding() async {
+    await _setOnboardingSeen();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+    );
+  }
+
+  void _completeOnboarding() async {
+    await _setOnboardingSeen();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+    );
+  }
+
+  Future<void> _setOnboardingSeen() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_seen', true);
   }
 }

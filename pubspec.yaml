@@ -81,12 +81,9 @@ flutter:
     - .env
     - assets/animations/
     - assets/images/
+    - assets/images/products/
     - assets/icons/
     - assets/icons/svg/
 
-
-
-flutter_launcher_icons:
-  android: true
-  ios: false
-  image_path: "assets/icons/icon.png"
+  # إضافة smooth_page_indicator
+  smooth_page_indicator: ^1.1.0
