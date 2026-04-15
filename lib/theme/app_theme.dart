@@ -298,3 +298,141 @@ class AppTheme {
     return Theme.of(context).scaffoldBackgroundColor;
   }
 }
+
+// ============ دوال مساعدة إضافية ============
+static Color getSecondaryTextColor(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark 
+      ? Colors.grey[400]! 
+      : Colors.grey[600]!;
+}
+
+static const LinearGradient goldGradient = LinearGradient(
+  colors: [goldColor, goldLight],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
+
+// الثيمات الإضافية
+static ThemeData get blueTheme => _buildTheme(
+  primaryColor: blueColor,
+  secondaryColor: blueDark,
+  lightColor: blueLight,
+  brightness: Brightness.light,
+  background: const Color(0xFFE3F2FD),
+  surface: Colors.white,
+  card: Colors.white,
+  textColor: Colors.black87,
+  textSecondary: Colors.grey[700]!,
+);
+
+static ThemeData get greenTheme => _buildTheme(
+  primaryColor: greenColor,
+  secondaryColor: greenDark,
+  lightColor: greenLight,
+  brightness: Brightness.light,
+  background: const Color(0xFFE8F5E9),
+  surface: Colors.white,
+  card: Colors.white,
+  textColor: Colors.black87,
+  textSecondary: Colors.grey[700]!,
+);
+
+static ThemeData get lightTheme => _buildTheme(
+  primaryColor: goldColor,
+  secondaryColor: goldDark,
+  lightColor: goldLight,
+  brightness: Brightness.light,
+  background: lightBackground,
+  surface: lightSurface,
+  card: lightCard,
+  textColor: Colors.black87,
+  textSecondary: Colors.grey[700]!,
+);
+
+static ThemeData get darkTheme => _buildTheme(
+  primaryColor: goldColor,
+  secondaryColor: goldDark,
+  lightColor: goldLight,
+  brightness: Brightness.dark,
+  background: darkBackground,
+  surface: darkSurface,
+  card: darkCard,
+  textColor: Colors.white,
+  textSecondary: Colors.grey[400]!,
+);
+
+static ThemeData _buildTheme({
+  required Color primaryColor,
+  required Color secondaryColor,
+  required Color lightColor,
+  required Brightness brightness,
+  required Color background,
+  required Color surface,
+  required Color card,
+  required Color textColor,
+  required Color textSecondary,
+}) {
+  final isDark = brightness == Brightness.dark;
+  
+  return ThemeData(
+    useMaterial3: true,
+    brightness: brightness,
+    primaryColor: primaryColor,
+    scaffoldBackgroundColor: background,
+    cardColor: card,
+    fontFamily: 'Changa',
+    
+    colorScheme: ColorScheme(
+      brightness: brightness,
+      primary: primaryColor,
+      onPrimary: isDark ? Colors.black : Colors.white,
+      secondary: secondaryColor,
+      onSecondary: isDark ? Colors.black : Colors.white,
+      error: error,
+      onError: Colors.white,
+      surface: surface,
+      onSurface: textColor,
+      background: background,
+      onBackground: textColor,
+    ),
+    
+    appBarTheme: AppBarTheme(
+      backgroundColor: primaryColor,
+      foregroundColor: isDark ? Colors.black : Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: isDark ? Colors.black : Colors.white),
+    ),
+    
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: surface,
+      selectedItemColor: primaryColor,
+      unselectedItemColor: textSecondary,
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
+    
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryColor,
+        foregroundColor: isDark ? Colors.black : Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
+    
+    cardTheme: CardTheme(
+      color: card,
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: isDark ? darkCard : Colors.grey[100],
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: primaryColor, width: 2)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    ),
+  );
+}
