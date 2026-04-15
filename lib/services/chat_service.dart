@@ -15,7 +15,6 @@ class ChatService {
   List<ChatMessage> _messages = [];
   List<ConversationModel> _conversations = [];
 
-  // ردود وهمية للدردشة
   final List<String> _botReplies = [
     'شكراً لتواصلك معنا! كيف يمكنني مساعدتك؟',
     'مرحباً! نحن سعداء بخدمتك.',
@@ -29,13 +28,14 @@ class ChatService {
 
   Stream<List<ChatMessage>> get messagesStream => _messagesController.stream;
   Stream<List<ConversationModel>> get conversationsStream => _conversationsController.stream;
+  List<ChatMessage> get messages => _messages;
 
   Future<void> init() async {
     await Future.delayed(const Duration(milliseconds: 300));
     _conversations = [
-      ConversationModel(id: '1', name: 'دعم فني', lastMessage: 'كيف يمكنني مساعدتك؟', time: 'الآن', unreadCount: 0, avatar: '🛠️'),
-      ConversationModel(id: '2', name: 'المبيعات', lastMessage: 'لدينا عرض خاص اليوم', time: 'منذ ساعة', unreadCount: 2, avatar: '🛒'),
-      ConversationModel(id: '3', name: 'خدمة العملاء', lastMessage: 'شكراً لتواصلك معنا', time: 'أمس', unreadCount: 0, avatar: '📞'),
+      ConversationModel(id: '1', name: 'دعم فني', lastMessage: 'كيف يمكنني مساعدتك؟', time: 'الآن', unreadCount: 0, avatar: '🛠️', isOnline: true),
+      ConversationModel(id: '2', name: 'المبيعات', lastMessage: 'لدينا عرض خاص اليوم', time: 'منذ ساعة', unreadCount: 2, avatar: '🛒', isOnline: true),
+      ConversationModel(id: '3', name: 'خدمة العملاء', lastMessage: 'شكراً لتواصلك معنا', time: 'أمس', unreadCount: 0, avatar: '📞', isOnline: false),
     ];
     _conversationsController.add(_conversations);
   }
@@ -44,13 +44,18 @@ class ChatService {
     return _conversations;
   }
 
+  Future<void> openConversation(String conversationId) async {
+    _messages = [
+      ChatMessage(id: '1', senderId: 'bot', content: 'مرحباً! أنا المساعد الذكي لفلكس يمن. كيف يمكنني مساعدتك اليوم؟ 😊', timestamp: DateTime.now().subtract(const Duration(minutes: 5)), isRead: true, type: MessageType.text),
+      ChatMessage(id: '2', senderId: 'user', content: 'مرحباً، أريد الاستفسار عن منتج', timestamp: DateTime.now().subtract(const Duration(minutes: 4)), isRead: true, type: MessageType.text),
+      ChatMessage(id: '3', senderId: 'bot', content: 'بالطبع! أي منتج تريد معرفة المزيد عنه؟ لدينا إلكترونيات، أزياء، عقارات، سيارات، وغيرها الكثير 🛍️', timestamp: DateTime.now().subtract(const Duration(minutes: 3)), isRead: true, type: MessageType.text),
+    ];
+    _messagesController.add(_messages);
+  }
+
   Future<List<ChatMessage>> getMessages(String conversationId) async {
     if (_messages.isEmpty) {
-      _messages = [
-        ChatMessage(id: '1', senderId: 'bot', receiverId: 'user', content: 'مرحباً! أنا المساعد الذكي لفلكس يمن. كيف يمكنني مساعدتك اليوم؟ 😊', timestamp: DateTime.now().subtract(const Duration(minutes: 5)), isRead: true, type: MessageType.text),
-        ChatMessage(id: '2', senderId: 'user', receiverId: 'bot', content: 'مرحباً، أريد الاستفسار عن منتج', timestamp: DateTime.now().subtract(const Duration(minutes: 4)), isRead: true, type: MessageType.text),
-        ChatMessage(id: '3', senderId: 'bot', receiverId: 'user', content: 'بالطبع! أي منتج تريد معرفة المزيد عنه؟ لدينا إلكترونيات، أزياء، عقارات، سيارات، وغيرها الكثير 🛍️', timestamp: DateTime.now().subtract(const Duration(minutes: 3)), isRead: true, type: MessageType.text),
-      ];
+      await openConversation(conversationId);
     }
     return _messages;
   }
@@ -59,7 +64,6 @@ class ChatService {
     final userMessage = ChatMessage(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       senderId: 'user',
-      receiverId: 'bot',
       content: content,
       timestamp: DateTime.now(),
       isRead: true,
@@ -74,7 +78,6 @@ class ChatService {
     final botMessage = ChatMessage(
       id: (DateTime.now().millisecondsSinceEpoch + 1).toString(),
       senderId: 'bot',
-      receiverId: 'user',
       content: botReply,
       timestamp: DateTime.now(),
       isRead: true,
@@ -84,7 +87,9 @@ class ChatService {
     _messagesController.add(_messages);
   }
 
-  Future<void> markAsRead(String conversationId) async {}
+  Future<void> markAsRead(String conversationId) async {
+    // Mark messages as read
+  }
 
   void dispose() {
     _messagesController.close();

@@ -1,34 +1,43 @@
 class ConversationModel {
   final String id;
-  final String userId;
-  final String userName;
-  final String? userAvatar;
+  final String name;
   final String lastMessage;
-  final DateTime lastMessageTime;
+  final String time;
   final int unreadCount;
+  final String avatar;
   final bool isOnline;
 
   ConversationModel({
     required this.id,
-    required this.userId,
-    required this.userName,
-    this.userAvatar,
+    required this.name,
     required this.lastMessage,
-    required this.lastMessageTime,
-    required this.unreadCount,
+    required this.time,
+    this.unreadCount = 0,
+    this.avatar = '👤',
     this.isOnline = false,
   });
 
-  factory ConversationModel.fromJson(Map<String, dynamic> json, String currentUserId) {
-    final otherUserId = json['user1_id'] == currentUserId ? json['user2_id'] : json['user1_id'];
+  factory ConversationModel.fromJson(Map<String, dynamic> json) {
     return ConversationModel(
-      id: json['id'],
-      userId: otherUserId,
-      userName: json['other_user_name'] ?? 'مستخدم',
-      userAvatar: json['other_user_avatar'],
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
       lastMessage: json['last_message'] ?? '',
-      lastMessageTime: DateTime.parse(json['last_message_time'] ?? json['created_at']),
-      unreadCount: json['${currentUserId == json['user1_id'] ? 'user1_unread_count' : 'user2_unread_count'}'] ?? 0,
+      time: json['time'] ?? '',
+      unreadCount: json['unread_count'] ?? 0,
+      avatar: json['avatar'] ?? '👤',
+      isOnline: json['is_online'] ?? false,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'last_message': lastMessage,
+      'time': time,
+      'unread_count': unreadCount,
+      'avatar': avatar,
+      'is_online': isOnline,
+    };
   }
 }
