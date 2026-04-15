@@ -1,124 +1,93 @@
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:async';
+import 'dart:math';
+import '../models/chat_message.dart';
+import '../models/conversation_model.dart';
 
-class ChatService extends ChangeNotifier {
-  final SupabaseClient _supabase = Supabase.instance.client;
+class ChatService {
+  static final ChatService _instance = ChatService._internal();
+  factory ChatService() => _instance;
+  ChatService._internal();
+
+  final Random _random = Random();
+  final _messagesController = StreamController<List<ChatMessage>>.broadcast();
+  final _conversationsController = StreamController<List<ConversationModel>>.broadcast();
   
-  List<Map<String, dynamic>> _conversations = [];
-  List<Map<String, dynamic>> _messages = [];
-  bool _isLoading = false;
-  String? _currentConversationId;
-  RealtimeChannel? _messagesChannel;
+  List<ChatMessage> _messages = [];
+  List<ConversationModel> _conversations = [];
 
-  List<Map<String, dynamic>> get conversations => _conversations;
-  List<Map<String, dynamic>> get messages => _messages;
-  bool get isLoading => _isLoading;
+  // ردود وهمية للدردشة
+  final List<String> _botReplies = [
+    'شكراً لتواصلك معنا! كيف يمكنني مساعدتك؟',
+    'مرحباً! نحن سعداء بخدمتك.',
+    'يمكنك تصفح منتجاتنا من الصفحة الرئيسية',
+    'هل تحتاج مساعدة في شيء محدد؟',
+    'سأقوم بالرد عليك في أقرب وقت',
+    'شكراً لاهتمامك بمنتجاتنا',
+    'نحن هنا لخدمتك على مدار الساعة',
+    'هل تريد معرفة المزيد عن منتج معين؟',
+  ];
 
-  Future<void> loadConversations() async {
-    _isLoading = true;
-    notifyListeners();
+  Stream<List<ChatMessage>> get messagesStream => _messagesController.stream;
+  Stream<List<ConversationModel>> get conversationsStream => _conversationsController.stream;
 
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) {
-      _isLoading = false;
-      notifyListeners();
-      return;
+  Future<void> init() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    _conversations = [
+      ConversationModel(id: '1', name: 'دعم فني', lastMessage: 'كيف يمكنني مساعدتك؟', time: 'الآن', unreadCount: 0, avatar: '🛠️'),
+      ConversationModel(id: '2', name: 'المبيعات', lastMessage: 'لدينا عرض خاص اليوم', time: 'منذ ساعة', unreadCount: 2, avatar: '🛒'),
+      ConversationModel(id: '3', name: 'خدمة العملاء', lastMessage: 'شكراً لتواصلك معنا', time: 'أمس', unreadCount: 0, avatar: '📞'),
+    ];
+    _conversationsController.add(_conversations);
+  }
+
+  Future<List<ConversationModel>> getConversations() async {
+    return _conversations;
+  }
+
+  Future<List<ChatMessage>> getMessages(String conversationId) async {
+    if (_messages.isEmpty) {
+      _messages = [
+        ChatMessage(id: '1', senderId: 'bot', receiverId: 'user', content: 'مرحباً! أنا المساعد الذكي لفلكس يمن. كيف يمكنني مساعدتك اليوم؟ 😊', timestamp: DateTime.now().subtract(const Duration(minutes: 5)), isRead: true, type: MessageType.text),
+        ChatMessage(id: '2', senderId: 'user', receiverId: 'bot', content: 'مرحباً، أريد الاستفسار عن منتج', timestamp: DateTime.now().subtract(const Duration(minutes: 4)), isRead: true, type: MessageType.text),
+        ChatMessage(id: '3', senderId: 'bot', receiverId: 'user', content: 'بالطبع! أي منتج تريد معرفة المزيد عنه؟ لدينا إلكترونيات، أزياء، عقارات، سيارات، وغيرها الكثير 🛍️', timestamp: DateTime.now().subtract(const Duration(minutes: 3)), isRead: true, type: MessageType.text),
+      ];
     }
-
-    final response = await _supabase
-        .from('conversations')
-        .select('''
-          *,
-          user1:user1_id(id, name, avatar_url),
-          user2:user2_id(id, name, avatar_url)
-        ''')
-        .or('user1_id.eq.$userId,user2_id.eq.$userId')
-        .order('updated_at', ascending: false);
-
-    _conversations = List<Map<String, dynamic>>.from(response);
-    _isLoading = false;
-    notifyListeners();
+    return _messages;
   }
 
-  Future<void> openConversation(String conversationId) async {
-    _currentConversationId = conversationId;
-    await _loadMessages(conversationId);
-    _listenForNewMessages(conversationId);
-    notifyListeners();
+  Future<void> sendMessage(String conversationId, String content, {MessageType type = MessageType.text}) async {
+    final userMessage = ChatMessage(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      senderId: 'user',
+      receiverId: 'bot',
+      content: content,
+      timestamp: DateTime.now(),
+      isRead: true,
+      type: type,
+    );
+    _messages.add(userMessage);
+    _messagesController.add(_messages);
+    
+    await Future.delayed(const Duration(seconds: 1));
+    
+    final botReply = _botReplies[_random.nextInt(_botReplies.length)];
+    final botMessage = ChatMessage(
+      id: (DateTime.now().millisecondsSinceEpoch + 1).toString(),
+      senderId: 'bot',
+      receiverId: 'user',
+      content: botReply,
+      timestamp: DateTime.now(),
+      isRead: true,
+      type: MessageType.text,
+    );
+    _messages.add(botMessage);
+    _messagesController.add(_messages);
   }
 
-  Future<void> _loadMessages(String conversationId) async {
-    final response = await _supabase
-        .from('messages')
-        .select()
-        .eq('conversation_id', conversationId)
-        .order('created_at', ascending: true);
-
-    _messages = List<Map<String, dynamic>>.from(response);
-    notifyListeners();
-  }
-
-  Future<void> sendMessage(String conversationId, String message) async {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return;
-
-    await _supabase.from('messages').insert({
-      'conversation_id': conversationId,
-      'sender_id': userId,
-      'message': message,
-      'created_at': DateTime.now().toIso8601String(),
-    });
-
-    await _loadMessages(conversationId);
-  }
-
-  void _listenForNewMessages(String conversationId) {
-    if (_messagesChannel != null) {
-      _messagesChannel?.unsubscribe();
-    }
-
-    _messagesChannel = _supabase
-        .channel('messages:$conversationId')
-        .onPostgresChanges(
-          event: PostgresChangeEvent.insert,
-          schema: 'public',
-          table: 'messages',
-          callback: (payload) {
-            _loadMessages(conversationId);
-          },
-        )
-        .subscribe();
-  }
-
-  Future<void> createConversation(String otherUserId) async {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return;
-
-    final existing = await _supabase
-        .from('conversations')
-        .select()
-        .or('and(user1_id.eq.$userId,user2_id.eq.$otherUserId),and(user1_id.eq.$otherUserId,user2_id.eq.$userId)')
-        .maybeSingle();
-
-    if (existing != null) {
-      await openConversation(existing['id']);
-      return;
-    }
-
-    final response = await _supabase.from('conversations').insert({
-      'user1_id': userId,
-      'user2_id': otherUserId,
-      'created_at': DateTime.now().toIso8601String(),
-      'updated_at': DateTime.now().toIso8601String(),
-    }).select();
-
-    if (response.isNotEmpty) {
-      await openConversation(response[0]['id']);
-    }
-  }
+  Future<void> markAsRead(String conversationId) async {}
 
   void dispose() {
-    _messagesChannel?.unsubscribe();
-    super.dispose();
+    _messagesController.close();
+    _conversationsController.close();
   }
 }

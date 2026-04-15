@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
-import 'about_screen.dart';
-import 'account_settings_screen.dart';
-import 'language_screen.dart';
-import 'notifications_settings_screen.dart';
-import 'security_settings_screen.dart';
-import 'payment_methods_screen.dart';
-import 'help_support_screen.dart';
+import '../appearance_screen.dart';
+import '../notifications_settings_screen.dart';
+import '../language_screen.dart';
+import '../privacy_settings_screen.dart';
+import '../security_settings_screen.dart';
+import '../help_support_screen.dart';
+import '../about_app_screen.dart';
+import '../policy/privacy_policy_screen.dart';
+import '../policy/terms_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
-
-  final List<Map<String, dynamic>> _settingsItems = const [
-    {'title': 'معلومات الحساب', 'icon': Icons.person, 'color': 0xFF4CAF50, 'route': '/account_info'},
-    {'title': 'اللغة', 'icon': Icons.language, 'color': 0xFF2196F3, 'route': '/language'},
-    {'title': 'الإشعارات', 'icon': Icons.notifications, 'color': 0xFFFF9800, 'route': '/notifications_settings'},
-    {'title': 'الأمان', 'icon': Icons.security, 'color': 0xFFE74C3C, 'route': '/security_settings'},
-    {'title': 'طرق الدفع', 'icon': Icons.credit_card, 'color': 0xFF9C27B0, 'route': '/payment_methods'},
-    {'title': 'المساعدة والدعم', 'icon': Icons.help, 'color': 0xFF00BCD4, 'route': '/help_support'},
-    {'title': 'حول التطبيق', 'icon': Icons.info, 'color': 0xFF607D8B, 'route': '/about'},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,40 +21,57 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الإعدادات'),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: _settingsItems.length,
-        itemBuilder: (context, index) {
-          final item = _settingsItems[index];
-          return Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListTile(
-              leading: Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Color(item['color']).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(item['icon'], color: Color(item['color']), size: 22),
-              ),
-              title: Text(
-                item['title'],
-                style: TextStyle(
-                  fontFamily: 'Changa',
-                  color: AppTheme.getTextColor(context),
-                ),
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => Navigator.pushNamed(context, item['route']),
-            ),
-          );
-        },
+      body: ListView(
+        children: [
+          const SizedBox(height: 16),
+          _buildSectionHeader('المظهر'),
+          _buildSettingTile(context, Icons.palette_outlined, 'المظهر', 'فاتح / داكن', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AppearanceScreen()))),
+          _buildSettingTile(context, Icons.language_outlined, 'اللغة', 'العربية', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageScreen()))),
+          
+          const SizedBox(height: 16),
+          _buildSectionHeader('الإشعارات'),
+          _buildSettingTile(context, Icons.notifications_outlined, 'إعدادات الإشعارات', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsSettingsScreen()))),
+          
+          const SizedBox(height: 16),
+          _buildSectionHeader('الخصوصية والأمان'),
+          _buildSettingTile(context, Icons.lock_outline, 'الخصوصية', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacySettingsScreen()))),
+          _buildSettingTile(context, Icons.security_outlined, 'الأمان', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SecuritySettingsScreen()))),
+          
+          const SizedBox(height: 16),
+          _buildSectionHeader('الدعم والمساعدة'),
+          _buildSettingTile(context, Icons.help_outline, 'المساعدة والدعم', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HelpSupportScreen()))),
+          _buildSettingTile(context, Icons.info_outline, 'عن التطبيق', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutAppScreen()))),
+          
+          const SizedBox(height: 16),
+          _buildSectionHeader('القانونية'),
+          _buildSettingTile(context, Icons.privacy_tip_outlined, 'سياسة الخصوصية', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()))),
+          _buildSettingTile(context, Icons.description_outlined, 'الشروط والأحكام', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TermsScreen()))),
+          
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text('الإصدار 2.0.0', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Text(title, style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)),
+    );
+  }
+
+  Widget _buildSettingTile(BuildContext context, IconData icon, String title, String subtitle, VoidCallback onTap) {
+    return ListTile(
+      onTap: onTap,
+      leading: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)), child: Icon(icon, color: AppTheme.goldColor, size: 20)),
+      title: Text(title),
+      subtitle: subtitle.isNotEmpty ? Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey[600])) : null,
+      trailing: const Icon(Icons.arrow_forward_ios, size: 14),
     );
   }
 }
