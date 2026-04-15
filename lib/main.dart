@@ -44,3 +44,6 @@ class FlexYemenApp extends StatelessWidget {
     );
   }
 }
+
+// MiniMax API Key
+const String minimaxApiKey = 'sk-api-3srQHm600IiTt7ibuFkqWMB62Y2EQHpjwRLyisrT6jZTReILYdyalX-KZnPD_nftvrmNthCmNx3gBnpZdB_0j_YqV4rg0zINGWotoyhHx9sy8vMN9Y-PHJo';

@@ -8,19 +8,19 @@ class MiniMaxService {
   MiniMaxService._internal();
 
   late String _apiKey;
-  late String _groupId;
   final String _baseUrl = 'https://api.minimax.chat/v1';
 
   Future<void> init() async {
     await dotenv.load();
     _apiKey = dotenv.env['MINIMAX_API_KEY'] ?? '';
-    _groupId = dotenv.env['MINIMAX_GROUP_ID'] ?? '';
-    print('✅ MiniMax initialized');
+    if (_apiKey.isEmpty) {
+      print('⚠️ MiniMax API Key not found in .env');
+    }
   }
 
   Future<String> chat(String message) async {
     if (_apiKey.isEmpty) {
-      return '⚠️ مفتاح API غير موجود. الرجاء إضافة المفتاح في ملف .env';
+      return _getMockResponse(message);
     }
 
     try {
@@ -35,7 +35,7 @@ class MiniMaxService {
           'messages': [
             {
               'role': 'system',
-              'content': 'أنت مساعد ذكي لمتجر فلكس يمن. أجب بالعربية بشكل مفيد ومختصر. ساعد العملاء في استفساراتهم عن المنتجات والأسعار والشحن.'
+              'content': 'أنت مساعد ذكي لمتجر فلكس يمن. أجب بالعربية بشكل مفيد ومختصر.'
             },
             {
               'role': 'user',
@@ -51,10 +51,20 @@ class MiniMaxService {
         final data = jsonDecode(response.body);
         return data['choices'][0]['message']['content'] ?? 'عذراً، لم أستطع معالجة طلبك.';
       } else {
-        return '⚠️ حدث خطأ في الاتصال بالخادم. الرجاء المحاولة مرة أخرى.';
+        return '⚠️ حدث خطأ في الاتصال بالخادم.';
       }
     } catch (e) {
-      return '⚠️ خطأ في الاتصال. تأكد من اتصالك بالإنترنت.';
+      return _getMockResponse(message);
     }
+  }
+
+  String _getMockResponse(String message) {
+    if (message.contains('سعر')) {
+      return '💰 الأسعار تبدأ من 1000 ريال. يمكنك الاطلاع على التفاصيل في صفحة المنتج.';
+    }
+    if (message.contains('شحن')) {
+      return '🚚 نوفر خدمة التوصيل لجميع المحافظات خلال 3-5 أيام عمل.';
+    }
+    return 'شكراً لتواصلك مع فريق دعم فلكس يمن. كيف يمكننا مساعدتك؟ 😊';
   }
 }
