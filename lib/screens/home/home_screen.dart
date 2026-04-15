@@ -4,13 +4,16 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shimmer_image.dart';
 import '../../providers/auth_provider.dart';
+import '../../data/market_data.dart';
+import '../../widgets/market_top_tabs.dart';
+import '../../widgets/market_grid_table.dart';
+import '../../models/market_item.dart';
 import '../product/product_detail_screen.dart';
 import '../category_products_screen.dart';
 import '../all_ads_screen.dart';
 import '../auctions_screen.dart';
 import '../login_screen.dart';
 import '../register_screen.dart';
-import '../profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +25,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentCarouselIndex = 0;
   bool _isLoading = true;
+  String _selectedMarketTab = 'اكشف';
+  String _selectedFilter = 'رائج';
+  List<MarketItem> _displayItems = [];
   
   final List<Map<String, dynamic>> _carouselItems = [
     {'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800', 'title': 'مندي يمني', 'subtitle': 'لحم ضأن مع أرز', 'discount': 'خصم 20%'},
@@ -56,7 +62,40 @@ class _HomeScreenState extends State<HomeScreen> {
         {'id': '5', 'name': 'تويوتا كامري', 'price': '8,500,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', 'tag': 'سيارة'},
         {'id': '6', 'name': 'مندي يمني', 'price': '3,500', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'tag': 'مطعم'},
       ];
+      _displayItems = MarketData.getTrending();
       _isLoading = false;
+    });
+  }
+
+  void _onMarketTabSelected(String tab) {
+    setState(() {
+      _selectedMarketTab = tab;
+      switch (tab) {
+        case 'اكشف':
+          _displayItems = MarketData.getAllItems().take(20).toList();
+          break;
+        case 'المتابعات':
+          _displayItems = MarketData.getAllItems().where((i) => i.isFavorite).toList();
+          break;
+        case 'رائج':
+          _displayItems = MarketData.getTrending();
+          break;
+        case 'الاعلانات':
+          _displayItems = MarketData.getOffers();
+          break;
+        case 'الاخبار':
+          _displayItems = MarketData.getNewArrivals();
+          break;
+        case 'الاكاديمية':
+          _displayItems = MarketData.getBestSellers();
+          break;
+      }
+    });
+  }
+
+  void _onFavoriteToggle(MarketItem item) {
+    setState(() {
+      item.isFavorite = !item.isFavorite;
     });
   }
 
@@ -68,28 +107,59 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      body: RefreshIndicator(
-        onRefresh: _loadData,
-        color: AppTheme.goldColor,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 8),
-              // أزرار الدخول والتسجيل فوق السلايدر
-              if (!isLoggedIn) _buildAuthButtons(),
-              _isLoading ? const CarouselShimmer() : _buildCarousel(),
-              const SizedBox(height: 16),
-              _buildMazadAlJanabi(),
-              const SizedBox(height: 24),
-              _buildSectionHeader('الأقسام الرئيسية'),
-              _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
-              const SizedBox(height: 24),
-              _buildSectionHeader('منتجات مميزة'),
-              _isLoading ? const ProductGridShimmer() : _buildProductsGrid(),
-            ],
+      body: Column(
+        children: [
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _loadData,
+              color: AppTheme.goldColor,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    if (!isLoggedIn) _buildAuthButtons(),
+                    _isLoading ? const CarouselShimmer() : _buildCarousel(),
+                    const SizedBox(height: 16),
+                    _buildMazadAlJanabi(),
+                    const SizedBox(height: 24),
+                    _buildSectionHeader('الأقسام الرئيسية'),
+                    _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
+                    const SizedBox(height: 24),
+                    _buildSectionHeader('منتجات مميزة'),
+                    _isLoading ? const ProductGridShimmer() : _buildProductsGrid(),
+                    const SizedBox(height: 24),
+                    _buildSectionHeader('السوق المتجدد'),
+                    const SizedBox(height: 8),
+                    Container(
+                      height: 400,
+                      margin: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : MarketGridTable(
+                                items: _displayItems,
+                                filterType: _selectedFilter,
+                                onFavoriteToggle: _onFavoriteToggle,
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          MarketTopTabs(
+            onTabSelected: _onMarketTabSelected,
+            selectedTab: _selectedMarketTab,
+          ),
+        ],
       ),
     );
   }
@@ -102,12 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: ElevatedButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen())),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldColor,
-                foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(vertical: 12), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
               child: const Text('دخول', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             ),
           ),
@@ -115,12 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: OutlinedButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterScreen())),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppTheme.goldColor,
-                side: const BorderSide(color: AppTheme.goldColor, width: 2),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
+              style: OutlinedButton.styleFrom(foregroundColor: AppTheme.goldColor, side: const BorderSide(color: AppTheme.goldColor, width: 2), padding: const EdgeInsets.symmetric(vertical: 12), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
               child: const Text('إنشاء حساب', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             ),
           ),
@@ -130,68 +190,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCategoriesShimmer() {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: 5,
-        itemBuilder: (context, index) => const CategoryShimmer(),
-      ),
-    );
+    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: 5, itemBuilder: (context, index) => const CategoryShimmer()));
   }
 
   Widget _buildCarousel() {
     return Column(
       children: [
         CarouselSlider(
-          options: CarouselOptions(
-            height: 180,
-            autoPlay: true,
-            enlargeCenterPage: true,
-            viewportFraction: 0.9,
-            onPageChanged: (index, reason) => setState(() => _currentCarouselIndex = index),
-          ),
+          options: CarouselOptions(height: 180, autoPlay: true, enlargeCenterPage: true, viewportFraction: 0.9, onPageChanged: (index, reason) => setState(() => _currentCarouselIndex = index)),
           items: _carouselItems.map((item) => Builder(
             builder: (context) => Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 5),
+              width: double.infinity, margin: const EdgeInsets.symmetric(horizontal: 5),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: Stack(
                 children: [
-                  ShimmerImage(
-                    imageUrl: item['image'],
-                    borderRadius: BorderRadius.circular(20),
-                    height: 180,
-                    width: double.infinity,
-                  ),
+                  ShimmerImage(imageUrl: item['image'], borderRadius: BorderRadius.circular(20), height: 180, width: double.infinity),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
-                      ),
-                    ),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Colors.black.withOpacity(0.7)])),
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
                         padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: AppTheme.goldColor,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(item['discount'], style: const TextStyle(color: Colors.white, fontSize: 10)),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(item['title'], style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                            Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor, borderRadius: BorderRadius.circular(12)), child: Text(item['discount'], style: const TextStyle(color: Colors.white, fontSize: 10))),
+                            const SizedBox(height: 4), Text(item['title'], style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                             Text(item['subtitle'], style: const TextStyle(color: Colors.white70, fontSize: 11)),
                           ],
                         ),
@@ -203,163 +226,46 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           )).toList(),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _carouselItems.asMap().entries.map((entry) {
-            return Container(
-              width: 8,
-              height: 8,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentCarouselIndex == entry.key ? AppTheme.goldColor : Colors.grey.withOpacity(0.5),
-              ),
-            );
-          }).toList(),
-        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: _carouselItems.asMap().entries.map((entry) => Container(width: 8, height: 8, margin: const EdgeInsets.symmetric(horizontal: 4), decoration: BoxDecoration(shape: BoxShape.circle, color: _currentCarouselIndex == entry.key ? AppTheme.goldColor : Colors.grey.withOpacity(0.5)))).toList()),
       ],
     );
   }
 
   Widget _buildMazadAlJanabi() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [AppTheme.goldColor, AppTheme.goldDark]),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('مزاد الجنابي', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                const Text('أكبر مزاد للسيوف التراثية', style: TextStyle(color: Colors.white70)),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AuctionsScreen())),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppTheme.goldColor,
-                  ),
-                  child: const Text('شارك الآن'),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.emoji_events, size: 60, color: Colors.white),
-        ],
-      ),
+    return Container(margin: const EdgeInsets.symmetric(horizontal: 16), padding: const EdgeInsets.all(16), decoration: BoxDecoration(gradient: LinearGradient(colors: [AppTheme.goldColor, AppTheme.goldDark]), borderRadius: BorderRadius.circular(15)),
+      child: Row(children: [Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text('مزاد الجنابي', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)), const Text('أكبر مزاد للسيوف التراثية', style: TextStyle(color: Colors.white70)), const SizedBox(height: 8), ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AuctionsScreen())), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldColor), child: const Text('شارك الآن'))])), const Icon(Icons.emoji_events, size: 60, color: Colors.white)]),
     );
   }
 
   Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          TextButton(
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())),
-            child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)),
-          ),
-        ],
-      ),
-    );
+    return Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())), child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)))]) );
   }
 
   Widget _buildCategories() {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: _categories.length,
-        itemBuilder: (context, index) {
-          final cat = _categories[index];
-          return GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => CategoryProductsScreen(categoryId: cat['id'], categoryName: cat['name'])),
-            ),
-            child: Container(
-              width: 80,
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Color(cat['color']).withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(cat['icon'], color: Color(cat['color']), size: 30),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(cat['name'], style: const TextStyle(fontSize: 12)),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: _categories.length, itemBuilder: (context, index) {
+      final cat = _categories[index];
+      return GestureDetector(
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CategoryProductsScreen(categoryId: cat['id'], categoryName: cat['name']))),
+        child: Container(width: 80, margin: const EdgeInsets.symmetric(horizontal: 8), child: Column(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Color(cat['color']).withOpacity(0.1), shape: BoxShape.circle), child: Icon(cat['icon'], color: Color(cat['color']), size: 30)), const SizedBox(height: 8), Text(cat['name'], style: const TextStyle(fontSize: 12))])),
+      );
+    }));
   }
 
   Widget _buildProductsGrid() {
     return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.7,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
+      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.symmetric(horizontal: 12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12),
       itemCount: _products.length,
       itemBuilder: (context, index) {
         final product = _products[index];
         return GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product['id'], productName: product['name'])),
-          ),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product['id'], productName: product['name']))),
           child: Container(
-            decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(12)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: ShimmerImage(imageUrl: product['image'], height: 130, width: double.infinity),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(product['name'], maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      const SizedBox(height: 4),
-                      Text('${product['price']} ريال', style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)),
-                      const SizedBox(height: 4),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppTheme.goldColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(product['tag'], style: TextStyle(color: AppTheme.goldColor, fontSize: 10)),
-                      ),
-                    ],
-                  ),
-                ),
+                ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(12)), child: ShimmerImage(imageUrl: product['image'], height: 130, width: double.infinity)),
+                Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product['name'], maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text('${product['price']} ريال', style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(product['tag'], style: TextStyle(color: AppTheme.goldColor, fontSize: 10)))])),
               ],
             ),
           ),
@@ -369,90 +275,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Widgets مساعدة للـ Shimmer
 class CarouselShimmer extends StatelessWidget {
   const CarouselShimmer({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 180,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(20),
-      ),
-    );
+    return Container(height: 180, margin: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(20)));
   }
 }
 
 class CategoryShimmer extends StatelessWidget {
   const CategoryShimmer({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 80,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              shape: BoxShape.circle,
-            ),
-            child: const SizedBox(width: 30, height: 30),
-          ),
-          const SizedBox(height: 8),
-          Container(height: 10, width: 60, color: Colors.grey[300]),
-        ],
-      ),
-    );
+    return Container(width: 80, margin: const EdgeInsets.symmetric(horizontal: 8), child: Column(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle), child: const SizedBox(width: 30, height: 30)), const SizedBox(height: 8), Container(height: 10, width: 60, color: Colors.grey[300])]));
   }
 }
 
 class ProductGridShimmer extends StatelessWidget {
   const ProductGridShimmer({super.key});
-
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(12),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.7,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
+      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12),
       itemCount: 6,
-      itemBuilder: (context, index) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(height: 130, color: Colors.grey[300]),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(height: 14, width: double.infinity, color: Colors.grey[300]),
-                  const SizedBox(height: 8),
-                  Container(height: 12, width: 80, color: Colors.grey[300]),
-                  const SizedBox(height: 8),
-                  Container(height: 16, width: 60, color: Colors.grey[300]),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      itemBuilder: (context, index) => Container(decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 130, color: Colors.grey[300]), Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 14, width: double.infinity, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 12, width: 80, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 16, width: 60, color: Colors.grey[300])]))])),
     );
   }
 }
