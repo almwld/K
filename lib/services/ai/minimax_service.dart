@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:math';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MiniMaxService {
@@ -7,64 +6,55 @@ class MiniMaxService {
   factory MiniMaxService() => _instance;
   MiniMaxService._internal();
 
-  late String _apiKey;
-  final String _baseUrl = 'https://api.minimax.chat/v1';
+  final Random _random = Random();
+  
+  final List<String> _greetings = [
+    'مرحباً! كيف يمكنني مساعدتك اليوم؟ 😊',
+    'أهلاً بك في فلكس يمن! كيف أقدر أخدمك؟ 🛍️',
+    'مرحباً! أنا هنا لمساعدتك في كل ما يتعلق بالتسوق 💫',
+    'أهلاً وسهلاً! ماذا تريد أن تعرف عن منتجاتنا؟ 🎯',
+  ];
+  
+  final List<String> _prices = [
+    'الأسعار تبدأ من 1000 ريال. هل تريد معرفة منتج معين؟ 💰',
+    'لدينا منتجات بأسعار تناسب جميع الميزانيات. ما الذي تبحث عنه؟ 💵',
+    'الأسعار تختلف حسب المنتج. أخبرني ماذا تريد وسأعطيك التفاصيل! 📊',
+  ];
+  
+  final List<String> _shipping = [
+    'نوفر التوصيل لجميع محافظات اليمن خلال 3-5 أيام عمل 🚚',
+    'الشحن مجاني للطلبات التي تزيد عن 10,000 ريال 📦',
+    'يمكنك تتبع طلبك عبر التطبيق بعد الشحن 🔍',
+  ];
+  
+  final List<String> _products = [
+    'لدينا آلاف المنتجات في مختلف الأقسام: إلكترونيات، أزياء، عقارات، سيارات، ومطاعم 🛒',
+    'يمكنك تصفح المنتجات من الصفحة الرئيسية أو استخدام البحث 🔎',
+    'أحدث المنتجات أضيفت اليوم! جرب قسم "منتجات مميزة" ✨',
+  ];
 
   Future<void> init() async {
     await dotenv.load();
-    _apiKey = dotenv.env['MINIMAX_API_KEY'] ?? '';
-    if (_apiKey.isEmpty) {
-      print('⚠️ MiniMax API Key not found in .env');
-    }
   }
 
   Future<String> chat(String message) async {
-    if (_apiKey.isEmpty) {
-      return _getMockResponse(message);
+    await Future.delayed(const Duration(milliseconds: 500));
+    
+    final msg = message.toLowerCase();
+    
+    if (msg.contains('سعر') || msg.contains('price') || msg.contains('كم')) {
+      return _prices[_random.nextInt(_prices.length)];
     }
-
-    try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/chat/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_apiKey',
-        },
-        body: jsonEncode({
-          'model': 'abab6.5s-chat',
-          'messages': [
-            {
-              'role': 'system',
-              'content': 'أنت مساعد ذكي لمتجر فلكس يمن. أجب بالعربية بشكل مفيد ومختصر.'
-            },
-            {
-              'role': 'user',
-              'content': message
-            }
-          ],
-          'temperature': 0.7,
-          'max_tokens': 500,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return data['choices'][0]['message']['content'] ?? 'عذراً، لم أستطع معالجة طلبك.';
-      } else {
-        return '⚠️ حدث خطأ في الاتصال بالخادم.';
-      }
-    } catch (e) {
-      return _getMockResponse(message);
+    if (msg.contains('شحن') || msg.contains('delivery') || msg.contains('توصيل')) {
+      return _shipping[_random.nextInt(_shipping.length)];
     }
-  }
-
-  String _getMockResponse(String message) {
-    if (message.contains('سعر')) {
-      return '💰 الأسعار تبدأ من 1000 ريال. يمكنك الاطلاع على التفاصيل في صفحة المنتج.';
+    if (msg.contains('منتج') || msg.contains('product') || msg.contains('متجر')) {
+      return _products[_random.nextInt(_products.length)];
     }
-    if (message.contains('شحن')) {
-      return '🚚 نوفر خدمة التوصيل لجميع المحافظات خلال 3-5 أيام عمل.';
+    if (msg.contains('مرحب') || msg.contains('اهلا') || msg.contains('hello')) {
+      return _greetings[_random.nextInt(_greetings.length)];
     }
-    return 'شكراً لتواصلك مع فريق دعم فلكس يمن. كيف يمكننا مساعدتك؟ 😊';
+    
+    return _greetings[_random.nextInt(_greetings.length)];
   }
 }
