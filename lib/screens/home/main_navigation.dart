@@ -1,3 +1,4 @@
+import '../chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
@@ -5,7 +6,6 @@ import 'home_screen.dart';
 import '../all_ads_screen.dart';
 import '../map/interactive_map_screen.dart';
 import '../wallet_screen.dart';
-import '../chat/chat_screen.dart';
 import '../profile_screen.dart';
 import '../add_ad_screen.dart';
 import '../seller_products_screen.dart';
