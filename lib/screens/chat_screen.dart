@@ -1,130 +1,303 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../services/chat_service.dart';
-import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/simple_app_bar.dart';
 import 'chat_detail_screen.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final SupabaseClient _supabase = Supabase.instance.client;
+  List<Map<String, dynamic>> _conversations = [];
+  bool _isLoading = true;
+  String? _currentUserId;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentUserId = _supabase.auth.currentUser?.id;
+    _loadConversations();
+  }
+
+  Future<void> _loadConversations() async {
+    if (_currentUserId == null) return;
+
+    final response = await _supabase
+        .from('conversations')
+        .select('''
+          *,
+          user1:profiles!conversations_user1_id_fkey(id, name, avatar_url),
+          user2:profiles!conversations_user2_id_fkey(id, name, avatar_url),
+          last_message:messages(order:created_at.desc, limit:1)
+        ''')
+        .or('user1_id.eq.$_currentUserId,user2_id.eq.$_currentUserId')
+        .order('updated_at', ascending: false);
+
+    setState(() {
+      _conversations = List<Map<String, dynamic>>.from(response);
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _startNewChat() async {
+    final users = await _supabase
+        .from('profiles')
+        .select('id, name, avatar_url')
+        .neq('id', _currentUserId);
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('اختر مستخدم للدردشة', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            ...users.map((user) => ListTile(
+              leading: CircleAvatar(
+                backgroundImage: user['avatar_url'] != null ? NetworkImage(user['avatar_url']) : null,
+                child: user['avatar_url'] == null ? Text(user['name'][0]) : null,
+              ),
+              title: Text(user['name']),
+              onTap: () async {
+                Navigator.pop(context);
+                await _createConversation(user['id']);
+              },
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _createConversation(String otherUserId) async {
+    if (_currentUserId == null) return;
+
+    final existing = await _supabase
+        .from('conversations')
+        .select()
+        .or('and(user1_id.eq.$_currentUserId,user2_id.eq.$otherUserId),and(user1_id.eq.$otherUserId,user2_id.eq.$_currentUserId)')
+        .maybeSingle();
+
+    if (existing != null) {
+      _openConversation(existing['id'], otherUserId);
+      return;
+    }
+
+    final response = await _supabase.from('conversations').insert({
+      'user1_id': _currentUserId,
+      'user2_id': otherUserId,
+      'created_at': DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+    }).select();
+
+    if (response.isNotEmpty) {
+      _openConversation(response[0]['id'], otherUserId);
+    }
+  }
+
+  void _openConversation(String conversationId, String otherUserId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChatDetailScreen(
+          conversationId: conversationId,
+          otherUserId: otherUserId,
+        ),
+      ),
+    ).then((_) => _loadConversations());
+  }
+
+  String _formatTime(String? dateTimeString) {
+    if (dateTimeString == null) return '';
+    final dateTime = DateTime.parse(dateTimeString);
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays} ي';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} س';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} د';
+    } else {
+      return 'الآن';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final chatService = Provider.of<ChatService>(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? AppTheme.darkBackground 
-          : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'المحادثات'),
-      body: chatService.isLoading
+      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      appBar: SimpleAppBar(
+        title: 'المحادثات',
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add_comment),
+            onPressed: _startNewChat,
+          ),
+        ],
+      ),
+      body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : chatService.conversations.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey),
-                      const SizedBox(height: 16),
-                      const Text('لا توجد محادثات', style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      Text('ابدأ محادثة جديدة', style: TextStyle(color: Colors.grey)),
-                    ],
-                  ),
-                )
+          : _conversations.isEmpty
+              ? _buildEmptyState()
               : ListView.builder(
                   padding: const EdgeInsets.all(16),
-                  itemCount: chatService.conversations.length,
+                  itemCount: _conversations.length,
                   itemBuilder: (context, index) {
-                    final conv = chatService.conversations[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ChatDetailScreen(conversationId: conv.id, otherUserId: conv.userId, otherUserName: conv.userName),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppTheme.getCardColor(context),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: AppTheme.goldColor.withOpacity(0.2),
-                              child: Text(
-                                conv.userName.isNotEmpty ? conv.userName[0] : '?',
-                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    conv.userName,
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    conv.lastMessage,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: conv.unreadCount > 0 ? AppTheme.goldColor : Colors.grey,
-                                      fontWeight: conv.unreadCount > 0 ? FontWeight.bold : FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  _formatTime(conv.lastMessageTime),
-                                  style: const TextStyle(fontSize: 11, color: Colors.grey),
-                                ),
-                                if (conv.unreadCount > 0)
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 4),
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: AppTheme.goldColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                                    child: Text(
-                                      '${conv.unreadCount}',
-                                      style: const TextStyle(color: Colors.black, fontSize: 10),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    final conv = _conversations[index];
+                    final otherUser = conv['user1_id'] == _currentUserId ? conv['user2'] : conv['user1'];
+                    
+                    // استخراج آخر رسالة
+                    String lastMessage = 'ابدأ المحادثة';
+                    if (conv['last_message'] != null && conv['last_message'].isNotEmpty) {
+                      lastMessage = conv['last_message'][0]['message'];
+                    }
+                    
+                    final time = _formatTime(conv['updated_at']);
+                    final unreadCount = conv['unread_count'] ?? 0;
+
+                    return _buildConversationCard(
+                      otherUser: otherUser,
+                      lastMessage: lastMessage,
+                      time: time,
+                      unreadCount: unreadCount,
+                      onTap: () => _openConversation(conv['id'], otherUser['id']),
                     );
                   },
                 ),
     );
   }
 
-  String _formatTime(DateTime time) {
-    final now = DateTime.now();
-    final diff = now.difference(time);
-    if (diff.inDays > 0) return '${diff.inDays}ي';
-    if (diff.inHours > 0) return '${diff.inHours}س';
-    if (diff.inMinutes > 0) return '${diff.inMinutes}د';
-    return 'الآن';
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey),
+          const SizedBox(height: 16),
+          const Text('لا توجد محادثات', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 8),
+          const Text('ابدأ محادثة جديدة', style: TextStyle(color: Colors.grey)),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: _startNewChat,
+            icon: const Icon(Icons.add),
+            label: const Text('محادثة جديدة'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.goldColor,
+              foregroundColor: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConversationCard({
+    required Map<String, dynamic> otherUser,
+    required String lastMessage,
+    required String time,
+    required int unreadCount,
+    required VoidCallback onTap,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppTheme.getCardColor(context),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            // صورة المستخدم
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 28,
+                  backgroundImage: otherUser['avatar_url'] != null 
+                      ? NetworkImage(otherUser['avatar_url']) 
+                      : null,
+                  child: otherUser['avatar_url'] == null 
+                      ? Text(otherUser['name'][0], style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold))
+                      : null,
+                ),
+                if (unreadCount > 0)
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$unreadCount',
+                          style: const TextStyle(color: Colors.white, fontSize: 10),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(width: 12),
+            // معلومات المحادثة
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    otherUser['name'],
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    lastMessage,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: unreadCount > 0 ? AppTheme.goldColor : Colors.grey,
+                      fontWeight: unreadCount > 0 ? FontWeight.w500 : FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // الوقت
+            Text(
+              time,
+              style: const TextStyle(fontSize: 11, color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

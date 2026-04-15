@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../services/chat_service.dart';
-import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/simple_app_bar.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final String conversationId;
   final String otherUserId;
-  final String otherUserName;
 
   const ChatDetailScreen({
     super.key,
     required this.conversationId,
     required this.otherUserId,
-    required this.otherUserName,
   });
 
   @override
@@ -21,30 +18,83 @@ class ChatDetailScreen extends StatefulWidget {
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
+  final SupabaseClient _supabase = Supabase.instance.client;
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  
+  List<Map<String, dynamic>> _messages = [];
+  Map<String, dynamic>? _otherUser;
+  bool _isLoading = true;
+  String? _currentUserId;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final chatService = Provider.of<ChatService>(context, listen: false);
-      chatService.openConversation(widget.conversationId);
+    _currentUserId = _supabase.auth.currentUser?.id;
+    _loadData();
+    _listenForNewMessages();
+  }
+
+  Future<void> _loadData() async {
+    await Future.wait([
+      _loadMessages(),
+      _loadOtherUser(),
+    ]);
+    setState(() => _isLoading = false);
+    _scrollToBottom();
+  }
+
+  Future<void> _loadMessages() async {
+    final response = await _supabase
+        .from('messages')
+        .select()
+        .eq('conversation_id', widget.conversationId)
+        .order('created_at', ascending: true);
+    
+    setState(() {
+      _messages = List<Map<String, dynamic>>.from(response);
     });
   }
 
-  @override
-  void dispose() {
-    _messageController.dispose();
-    _scrollController.dispose();
-    super.dispose();
+  Future<void> _loadOtherUser() async {
+    final response = await _supabase
+        .from('profiles')
+        .select()
+        .eq('id', widget.otherUserId)
+        .single();
+    
+    setState(() {
+      _otherUser = response;
+    });
   }
 
-  void _sendMessage() {
+  void _listenForNewMessages() {
+    _supabase
+        .channel('messages:${widget.conversationId}')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.insert,
+          schema: 'public',
+          table: 'messages',
+          callback: (payload) {
+            _loadMessages();
+            _scrollToBottom();
+          },
+        )
+        .subscribe();
+  }
+
+  Future<void> _sendMessage() async {
     if (_messageController.text.trim().isEmpty) return;
-    final chatService = Provider.of<ChatService>(context, listen: false);
-    chatService.sendMessage(widget.conversationId, _messageController.text);
+
+    await _supabase.from('messages').insert({
+      'conversation_id': widget.conversationId,
+      'sender_id': _currentUserId,
+      'message': _messageController.text,
+      'created_at': DateTime.now().toIso8601String(),
+    });
+
     _messageController.clear();
+    await _loadMessages();
     _scrollToBottom();
   }
 
@@ -63,116 +113,81 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final chatService = Provider.of<ChatService>(context);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: SimpleAppBar(title: widget.otherUserName),
+      appBar: SimpleAppBar(title: _otherUser?['name'] ?? 'محادثة'),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16),
-              itemCount: chatService.messages.length,
-              itemBuilder: (context, index) {
-                final message = chatService.messages[index];
-                final isMe = message.isMine;
-                return _buildMessageBubble(message, isMe, isDark);
-              },
-            ),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) {
+                      final message = _messages[index];
+                      final isMe = message['sender_id'] == _currentUserId;
+                      return Align(
+                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.75,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isMe ? AppTheme.goldColor : (isDark ? Colors.grey[800] : Colors.grey[200]),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Text(
+                            message['message'],
+                            style: TextStyle(
+                              color: isMe ? Colors.black : (isDark ? Colors.white : Colors.black),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
           ),
-          _buildMessageInput(isDark),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMessageBubble(dynamic message, bool isMe, bool isDark) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: isMe ? AppTheme.goldColor : (isDark ? Colors.grey[800] : Colors.grey[200]),
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20),
-            topRight: const Radius.circular(20),
-            bottomLeft: isMe ? const Radius.circular(20) : const Radius.circular(5),
-            bottomRight: isMe ? const Radius.circular(5) : const Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Text(
-              message.message,
-              style: TextStyle(color: isMe ? Colors.black : (isDark ? Colors.white : Colors.black)),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.darkSurface : Colors.white,
+              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)],
             ),
-            const SizedBox(height: 4),
-            Row(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
               children: [
-                Text(
-                  _formatTime(message.createdAt),
-                  style: TextStyle(fontSize: 10, color: isMe ? Colors.black54 : Colors.grey),
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: 'اكتب رسالة...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: isDark ? Colors.grey[800] : Colors.grey[100],
+                    ),
+                    onSubmitted: (_) => _sendMessage(),
+                  ),
                 ),
-                if (isMe && message.isSending) ...[
-                  const SizedBox(width: 4),
-                  const SizedBox(width: 12, height: 12, child: CircularProgressIndicator(strokeWidth: 2)),
-                ],
-                if (isMe && !message.isSending && message.isRead)
-                  const Icon(Icons.done_all, size: 12, color: Colors.blue),
-                if (isMe && !message.isSending && !message.isRead)
-                  const Icon(Icons.done, size: 12, color: Colors.grey),
+                const SizedBox(width: 12),
+                CircleAvatar(
+                  backgroundColor: AppTheme.goldColor,
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.black),
+                    onPressed: _sendMessage,
+                  ),
+                ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMessageInput(bool isDark) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'اكتب رسالة...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: isDark ? Colors.grey[800] : Colors.grey[100],
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              ),
-              onSubmitted: (_) => _sendMessage(),
-            ),
-          ),
-          const SizedBox(width: 12),
-          CircleAvatar(
-            backgroundColor: AppTheme.goldColor,
-            child: IconButton(
-              icon: const Icon(Icons.send, color: Colors.black),
-              onPressed: _sendMessage,
-            ),
           ),
         ],
       ),
     );
-  }
-
-  String _formatTime(DateTime time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 }
