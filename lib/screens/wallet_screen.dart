@@ -31,7 +31,6 @@ class WalletScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            // بطاقة الرصيد
             Container(
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(24),
@@ -56,7 +55,6 @@ class WalletScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // خدمات المحفظة
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: GridView.count(
@@ -71,8 +69,16 @@ class WalletScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // آخر المعاملات
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('آخر المعاملات', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), TextButton(onPressed: {}, child: Text('عرض الكل'))])),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('آخر المعاملات', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  TextButton(onPressed: () {}, child: const Text('عرض الكل')),
+                ],
+              ),
+            ),
             ListView.builder(
               shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16),
