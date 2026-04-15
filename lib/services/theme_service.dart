@@ -1,66 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// أنواع أوضاع المنصة
+enum AppThemeMode {
+  light,   // نهاري (ذهبي)
+  dark,    // ليلي
+  blue,    // أزرق
+  green,   // أخضر
+}
+
 class ThemeService {
-  static const String _colorKey = 'theme_color';
-  static const String _isDarkKey = 'is_dark_mode';
+  static const String _themeModeKey = 'app_theme_mode';
+  
+  // أسماء الأوضاع
+  static final Map<AppThemeMode, String> modeNames = {
+    AppThemeMode.light: '☀️ نهاري',
+    AppThemeMode.dark: '🌙 ليلي',
+    AppThemeMode.blue: '🔵 أزرق',
+    AppThemeMode.green: '🟢 أخضر',
+  };
+  
+  // أيقونات الأوضاع
+  static final Map<AppThemeMode, IconData> modeIcons = {
+    AppThemeMode.light: Icons.light_mode,
+    AppThemeMode.dark: Icons.dark_mode,
+    AppThemeMode.blue: Icons.water_drop,
+    AppThemeMode.green: Icons.eco,
+  };
+  
+  // الألوان الرئيسية لكل وضع
+  static final Map<AppThemeMode, Color> primaryColors = {
+    AppThemeMode.light: const Color(0xFFD4AF37),  // ذهبي
+    AppThemeMode.dark: const Color(0xFFD4AF37),   // ذهبي (في الليلي)
+    AppThemeMode.blue: const Color(0xFF2196F3),   // أزرق
+    AppThemeMode.green: const Color(0xFF4CAF50),  // أخضر
+  };
+  
+  // الألوان الثانوية
+  static final Map<AppThemeMode, Color> secondaryColors = {
+    AppThemeMode.light: const Color(0xFFB8860B),
+    AppThemeMode.dark: const Color(0xFFB8860B),
+    AppThemeMode.blue: const Color(0xFF1976D2),
+    AppThemeMode.green: const Color(0xFF388E3C),
+  };
 
-  static List<Color> get availableColors => [
-    const Color(0xFFD4AF37), // ذهبي
-    const Color(0xFF2196F3), // أزرق
-    const Color(0xFF4CAF50), // أخضر
-    const Color(0xFF00BCD4), // سماوي
-    const Color(0xFFFF9800), // برتقالي
-    const Color(0xFF9C27B0), // بنفسجي
-  ];
-
-  static List<String> get colorNames => [
-    'ذهبي',
-    'أزرق',
-    'أخضر',
-    'سماوي',
-    'برتقالي',
-    'بنفسجي',
-  ];
-
-  static Future<void> saveThemeColor(Color color) async {
+  // حفظ الوضع الحالي
+  static Future<void> saveThemeMode(AppThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_colorKey, color.value);
+    await prefs.setInt(_themeModeKey, mode.index);
   }
 
-  static Future<Color> getThemeColor() async {
+  // استرجاع الوضع الحالي
+  static Future<AppThemeMode> getThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
-    final colorValue = prefs.getInt(_colorKey);
-    if (colorValue != null) {
-      return Color(colorValue);
+    final index = prefs.getInt(_themeModeKey) ?? 0;
+    return AppThemeMode.values[index];
+  }
+
+  // الحصول على الثيم الكامل حسب الوضع
+  static ThemeData getThemeData(AppThemeMode mode) {
+    switch (mode) {
+      case AppThemeMode.light:
+        return AppTheme.lightTheme;
+      case AppThemeMode.dark:
+        return AppTheme.darkTheme;
+      case AppThemeMode.blue:
+        return AppTheme.blueTheme;
+      case AppThemeMode.green:
+        return AppTheme.greenTheme;
     }
-    return availableColors[0]; // الذهبي الافتراضي
-  }
-
-  static String getColorName(Color color) {
-    for (int i = 0; i < availableColors.length; i++) {
-      if (availableColors[i].value == color.value) {
-        return colorNames[i];
-      }
-    }
-    return 'ذهبي';
-  }
-
-  static Future<void> setDarkMode(bool isDark) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_isDarkKey, isDark);
-  }
-
-  static Future<bool> isDarkMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_isDarkKey) ?? false;
-  }
-
-  static Color getAdjustedColor(Color baseColor, bool isDark) {
-    if (isDark) {
-      // Make the color slightly lighter in dark mode for better visibility
-      return Color.lerp(baseColor, Colors.white, 0.1) ?? baseColor;
-    }
-    return baseColor;
   }
 }

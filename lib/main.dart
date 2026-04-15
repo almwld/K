@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/splash_screen.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
-import 'providers/theme_provider.dart';
+import 'providers/theme_manager.dart';
 import 'services/chat_service.dart';
-import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  await dotenv.load();
   
   await Supabase.initialize(
     url: 'https://ziqpohdxtemsmunnhlkm.supabase.co',
@@ -31,17 +27,15 @@ class FlexYemenApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeManager()),
         Provider(create: (_) => ChatService()),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
+      child: Consumer<ThemeManager>(
+        builder: (context, themeManager, child) {
           return MaterialApp(
             title: 'Flex Yemen',
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: themeProvider.themeMode,
+            theme: themeManager.currentTheme,
             home: const SplashScreen(),
           );
         },

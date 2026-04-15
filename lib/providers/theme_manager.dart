@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
-import '../services/cache/local_storage_service.dart';
+import '../services/theme_service.dart';
 
 class ThemeManager extends ChangeNotifier {
-  bool _isDarkMode = false;
-  final LocalStorageService _storage = LocalStorageService();
-
-  bool get isDarkMode => _isDarkMode;
+  AppThemeMode _currentMode = AppThemeMode.light;
+  
+  AppThemeMode get currentMode => _currentMode;
+  String get modeName => ThemeService.modeNames[_currentMode]!;
+  IconData get modeIcon => ThemeService.modeIcons[_currentMode]!;
+  Color get primaryColor => ThemeService.primaryColors[_currentMode]!;
 
   ThemeManager() {
-    _loadTheme();
+    _loadMode();
   }
 
-  Future<void> _loadTheme() async {
-    await _storage.init();
-    final savedTheme = _storage.getThemeMode();
-    _isDarkMode = savedTheme == 'dark';
+  Future<void> _loadMode() async {
+    _currentMode = await ThemeService.getThemeMode();
     notifyListeners();
   }
 
-  Future<void> toggleTheme() async {
-    _isDarkMode = !_isDarkMode;
-    await _storage.saveThemeMode(_isDarkMode ? 'dark' : 'light');
+  ThemeData get currentTheme {
+    return ThemeService.getThemeData(_currentMode);
+  }
+
+  Future<void> setThemeMode(AppThemeMode mode) async {
+    _currentMode = mode;
+    await ThemeService.saveThemeMode(mode);
     notifyListeners();
   }
 
-  Future<void> setTheme(bool isDark) async {
-    _isDarkMode = isDark;
-    await _storage.saveThemeMode(_isDarkMode ? 'dark' : 'light');
-    notifyListeners();
+  // تغيير إلى الوضع التالي
+  Future<void> cycleTheme() async {
+    final modes = AppThemeMode.values;
+    final nextIndex = (_currentMode.index + 1) % modes.length;
+    await setThemeMode(modes[nextIndex]);
   }
 }
