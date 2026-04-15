@@ -127,15 +127,31 @@ class _HomeScreenState extends State<HomeScreen> {
           items: _carouselItems.map((item) => Builder(builder: (context) => Container(
             width: double.infinity, margin: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: ShimmerImage(
-              imageUrl: item['image'],
-              borderRadius: BorderRadius.circular(20),
-              height: 180,
-              width: double.infinity,
-              errorWidget: Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.grey[300]),
-                child: const Center(child: Icon(Icons.image_not_supported)),
-              ),
+            child: Stack(
+              children: [
+                ShimmerImage(
+                  imageUrl: item['image'],
+                  borderRadius: BorderRadius.circular(20),
+                  height: 180,
+                  width: double.infinity,
+                ),
+                Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Colors.black.withOpacity(0.7)])),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor, borderRadius: BorderRadius.circular(12)), child: Text(item['discount'], style: const TextStyle(color: Colors.white, fontSize: 10))),
+                          const SizedBox(height: 4), Text(item['title'], style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(item['subtitle'], style: const TextStyle(color: Colors.white70, fontSize: 11)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ))).toList(),
         ),
@@ -179,11 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: ShimmerImage(
-                    imageUrl: product['image'],
-                    height: 130,
-                    width: double.infinity,
-                  ),
+                  child: ShimmerImage(imageUrl: product['image'], height: 130, width: double.infinity),
                 ),
                 Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product['name'], maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text('${product['price']} ريال', style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(product['tag'], style: TextStyle(color: AppTheme.goldColor, fontSize: 10)))])),
               ],

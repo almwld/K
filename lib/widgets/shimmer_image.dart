@@ -144,7 +144,7 @@ class CategoryShimmer extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
@@ -214,13 +214,13 @@ class StoreCardShimmer extends StatelessWidget {
                     highlightColor: Colors.grey[100]!,
                     child: Container(height: 14, width: 150, color: Colors.white),
                   ),
-                  const SizedBox(height": 8),
+                  const SizedBox(height: 8),
                   Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
                     child: Container(height: 12, width: 100, color: Colors.white),
                   ),
-                  const SizedBox(height": 12),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       Shimmer.fromColors(
@@ -271,7 +271,7 @@ class ProfileHeaderShimmer extends StatelessWidget {
           highlightColor: Colors.grey[100]!,
           child: Container(height: 16, width: 120, color: Colors.white),
         ),
-        const SizedBox(height": 8),
+        const SizedBox(height: 8),
         Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
