@@ -24,6 +24,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   carousel_slider: ^5.0.0
   cached_network_image: ^3.3.1
+  smooth_page_indicator: ^1.1.0
 
   # State Management
   provider: ^6.1.2
@@ -84,6 +85,3 @@ flutter:
     - assets/images/products/
     - assets/icons/
     - assets/icons/svg/
-
-  # إضافة smooth_page_indicator
-  smooth_page_indicator: ^1.1.0
