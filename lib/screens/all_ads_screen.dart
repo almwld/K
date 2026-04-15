@@ -33,13 +33,13 @@ class AllAdsScreen extends StatelessWidget {
         itemCount: _ads.length,
         itemBuilder: (context, index) {
           final ad = _ads[index];
-          return _buildAdCard(ad);
+          return _buildAdCard(context, ad);
         },
       ),
     );
   }
 
-  Widget _buildAdCard(Map<String, dynamic> ad) {
+  Widget _buildAdCard(BuildContext context, Map<String, dynamic> ad) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
