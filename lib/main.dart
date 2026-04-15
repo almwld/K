@@ -249,23 +249,14 @@ class FlexYemenApp extends StatelessWidget {
       
       // المحفظة
       case '/withdraw':
-        return MaterialPageRoute(builder: (_) => const WithdrawScreen());
       case '/deposit':
-        return MaterialPageRoute(builder: (_) => const DepositScreen());
       case '/transfer':
-        return MaterialPageRoute(builder: (_) => const TransferScreen());
       case '/transactions':
-        return MaterialPageRoute(builder: (_) => const TransactionsScreen());
       case '/bill_payment':
-        return MaterialPageRoute(builder: (_) => const BillPaymentScreen());
       case '/recharge':
-        return MaterialPageRoute(builder: (_) => const RechargeScreen());
       case '/gift_cards':
-        return MaterialPageRoute(builder: (_) => const GiftCardsScreen());
       case '/currency_exchange':
-        return MaterialPageRoute(builder: (_) => const CurrencyExchangeScreen());
       case '/qr_code':
-        return MaterialPageRoute(builder: (_) => const QrCodeScreen());
       
       // الطلبات
       case '/my_orders':
@@ -324,7 +315,6 @@ class FlexYemenApp extends StatelessWidget {
       case '/seller_reviews':
         return MaterialPageRoute(builder: (_) => const SellerReviewsScreen());
       case '/seller_dashboard':
-        return MaterialPageRoute(builder: (_) => const SellerDashboard());
       
       // الإعدادات
       case '/about':

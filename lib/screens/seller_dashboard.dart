@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 
-class OrderDetailScreen extends StatelessWidget {
-  final String? orderId;
-  const OrderDetailScreen({super.key, this.orderId});
+class SellerDashboard extends StatelessWidget {
+  const SellerDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'تفاصيل الطلب'),
-      body: Center(child: Text(orderId != null ? 'تفاصيل الطلب: $orderId' : 'تفاصيل الطلب')),
+      appBar: const SimpleAppBar(title: 'لوحة تحكم البائع'),
+      body: const Center(child: Text('لوحة تحكم البائع - قيد التطوير')),
     );
   }
 }
