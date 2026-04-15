@@ -1,102 +1,83 @@
-import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'biometric_service.dart';
 
-class AuthService extends ChangeNotifier {
-  static final AuthService _instance = AuthService._internal();
-  factory AuthService() => _instance;
-  AuthService._internal();
-
-  final SupabaseClient _supabase = Supabase.instance.client;
-  final BiometricService _biometricService = BiometricService();
-  
-  User? _currentUser;
-  bool _isLoading = false;
-  String? _errorMessage;
-
-  User? get currentUser => _currentUser;
-  bool get isLoggedIn => _currentUser != null;
-  bool get isLoading => _isLoading;
-  String? get errorMessage => _errorMessage;
-
-  Future<void> init() async {
-    _currentUser = _supabase.auth.currentUser;
-    notifyListeners();
-    
-    _supabase.auth.onAuthStateChange.listen((data) {
-      _currentUser = data.session?.user;
-      notifyListeners();
-    });
-  }
+class AuthService {
+  final SupabaseClient _client = Supabase.instance.client;
 
   // تسجيل الدخول
-  Future<bool> signIn(String email, String password) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final response = await _supabase.auth.signInWithPassword(
-        email: email.trim(),
+      final response = await _client.auth.signInWithPassword(
+        email: email,
         password: password,
       );
-
-      _currentUser = response.user;
-      await _saveUserSession(_currentUser!.id, email);
-      
-      _isLoading = false;
-      notifyListeners();
-      return true;
-      
+      return response;
     } on AuthException catch (e) {
-      _errorMessage = _getAuthErrorMessage(e.message);
-      _isLoading = false;
-      notifyListeners();
-      return false;
+      throw _handleAuthError(e);
     } catch (e) {
-      _errorMessage = 'حدث خطأ غير متوقع';
-      _isLoading = false;
-      notifyListeners();
-      return false;
+      throw 'حدث خطأ غير متوقع: ${e.toString()}';
+    }
+  }
+
+  // إنشاء حساب جديد
+  Future<AuthResponse> signUp({
+    required String email,
+    required String password,
+    Map<String, dynamic>? data,
+  }) async {
+    try {
+      final response = await _client.auth.signUp(
+        email: email,
+        password: password,
+        data: data,
+      );
+      return response;
+    } on AuthException catch (e) {
+      throw _handleAuthError(e);
+    } catch (e) {
+      throw 'حدث خطأ غير متوقع: ${e.toString()}';
     }
   }
 
   // تسجيل الخروج
   Future<void> signOut() async {
-    _isLoading = true;
-    notifyListeners();
-
-    await _supabase.auth.signOut();
-    await _clearUserSession();
-    await _biometricService.clearUserData();
-    
-    _currentUser = null;
-    _isLoading = false;
-    notifyListeners();
+    await _client.auth.signOut();
   }
 
-  Future<void> _saveUserSession(String userId, String email) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_id', userId);
-    await prefs.setString('user_email', email);
-    await prefs.setBool('is_logged_in', true);
-  }
-
-  Future<void> _clearUserSession() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('user_id');
-    await prefs.remove('user_email');
-    await prefs.setBool('is_logged_in', false);
-  }
-
-  String _getAuthErrorMessage(String message) {
-    if (message.contains('Invalid login credentials')) {
-      return 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+  // استعادة كلمة المرور
+  Future<void> resetPassword(String email) async {
+    try {
+      await _client.auth.resetPasswordForEmail(email);
+    } on AuthException catch (e) {
+      throw _handleAuthError(e);
+    } catch (e) {
+      throw 'حدث خطأ غير متوقع: ${e.toString()}';
     }
-    if (message.contains('Email not confirmed')) {
-      return 'الرجاء تأكيد بريدك الإلكتروني أولاً';
+  }
+
+  // الحصول على المستخدم الحالي
+  User? get currentUser => _client.auth.currentUser;
+
+  // التحقق من حالة تسجيل الدخول
+  Stream<AuthState> get authStateChanges => _client.auth.onAuthStateChange;
+
+  // معالجة أخطاء المصادقة
+  String _handleAuthError(AuthException e) {
+    switch (e.message) {
+      case 'Invalid login credentials':
+        return 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+      case 'Email not confirmed':
+        return 'الرجاء تأكيد البريد الإلكتروني أولاً';
+      case 'User already registered':
+        return 'البريد الإلكتروني مسجل مسبقاً';
+      case 'Password should be at least 6 characters':
+        return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+      case 'Invalid API key':
+        return 'مفتاح API غير صالح - الرجاء التحقق من إعدادات Supabase';
+      default:
+        return e.message;
     }
-    return message;
   }
 }

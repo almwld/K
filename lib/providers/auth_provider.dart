@@ -1,70 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/user_model.dart';
+import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
-  UserModel? _user;
+  final AuthService _authService = AuthService();
+  User? _user;
   bool _isLoading = false;
+  String? _error;
 
-  UserModel? get user => _user;
+  User? get user => _user;
   bool get isLoading => _isLoading;
-  bool get isLoggedIn => _user != null;
-  String get userName => _user?.fullName ?? 'مستخدم';
-  String get userEmail => _user?.email ?? '';
-  String? get userAvatar => _user?.avatarUrl;
+  String? get error => _error;
+  bool get isAuthenticated => _user != null;
 
-  Future<void> signIn(String email, String password) async {
+  AuthProvider() {
+    _initAuth();
+  }
+
+  void _initAuth() {
+    _user = _authService.currentUser;
+    _authService.authStateChanges.listen((AuthState state) {
+      _user = state.session?.user;
+      notifyListeners();
+    });
+  }
+
+  Future<bool> signIn(String email, String password) async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
 
     try {
-      final response = await Supabase.instance.client.auth.signInWithPassword(
-        email: email,
-        password: password,
-      );
-      if (response.user != null) {
-        _user = UserModel(
-          id: response.user!.id,
-          email: email,
-          fullName: response.user!.userMetadata?['name'] ?? '',
-        );
-      }
-    } catch (e) {
-      print('خطأ في تسجيل الدخول: $e');
-    } finally {
+      await _authService.signIn(email: email, password: password);
+      _user = _authService.currentUser;
       _isLoading = false;
       notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
     }
   }
 
-  Future<void> signUp(String email, String password, String name) async {
+  Future<bool> signUp(String email, String password, {String? name}) async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
 
     try {
-      final response = await Supabase.instance.client.auth.signUp(
+      await _authService.signUp(
         email: email,
         password: password,
-        data: {'name': name},
+        data: {'full_name': name ?? email.split('@')[0]},
       );
-      if (response.user != null) {
-        _user = UserModel(
-          id: response.user!.id,
-          email: email,
-          fullName: name,
-        );
-      }
-    } catch (e) {
-      print('خطأ في إنشاء الحساب: $e');
-    } finally {
       _isLoading = false;
       notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
     }
   }
 
   Future<void> signOut() async {
-    await Supabase.instance.client.auth.signOut();
+    await _authService.signOut();
     _user = null;
+    notifyListeners();
+  }
+
+  Future<bool> resetPassword(String email) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      await _authService.resetPassword(email);
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  void clearError() {
+    _error = null;
     notifyListeners();
   }
 }
