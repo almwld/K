@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
         {'id': '5', 'name': 'مزاد سيارات', 'price': 'مزايدة', 'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400', 'tag': 'مزادات'},
         {'id': '6', 'name': 'آيفون 15 برو', 'price': '4,500', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'tag': 'إلكترونيات'},
       ];
-      _displayItems = MarketData.getTrending();
+      _displayItems = MarketData.getTrendingComplete();
       _isLoading = false;
     });
   }
@@ -94,13 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedMarketTab = tab;
       switch (tab) {
         case 'اكتشف':
-          _displayItems = MarketData.getAllItems().take(25).toList();
+          _displayItems = MarketData.getAllItemsComplete().take(25).toList();
           break;
         case 'المتابعات':
-          _displayItems = MarketData.getAllItems().where((i) => i.isFavorite).toList();
+          _displayItems = MarketData.getAllItemsComplete().where((i) => i.isFavorite).toList();
           break;
         case 'رائج':
-          _displayItems = MarketData.getTrending();
+          _displayItems = MarketData.getTrendingComplete();
           break;
         case 'الاعلانات':
           _displayItems = MarketData.getOffers();
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _displayItems = MarketData.getBySection('مزادات');
           break;
         default:
-          _displayItems = MarketData.getAllItems().take(25).toList();
+          _displayItems = MarketData.getAllItemsComplete().take(25).toList();
       }
     });
   }
