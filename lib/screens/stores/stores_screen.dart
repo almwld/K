@@ -15,12 +15,19 @@ class StoresScreen extends StatefulWidget {
 
 class _StoresScreenState extends State<StoresScreen> {
   List<StoreModel> _stores = [];
-  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _stores = widget.category != null ? StoresData.getStoresByCategory(widget.category!) : StoresData.getAllStores();
+    _loadStores();
+  }
+
+  void _loadStores() {
+    if (widget.category != null) {
+      _stores = StoresData.getStoresByCategory(widget.category!);
+    } else {
+      _stores = StoresData.getAllStores();
+    }
   }
 
   @override

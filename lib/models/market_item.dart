@@ -18,6 +18,6 @@ class MarketItem {
   });
 
   bool get isPositive => change24h >= 0;
-  String get formattedPrice => '${price.toStringAsFixed(2)}';
+  String get formattedPrice => '${price.toStringAsFixed(2)} ريال';
   String get formattedChange => '${isPositive ? '+' : ''}${change24h.toStringAsFixed(1)}%';
 }
