@@ -8,19 +8,19 @@ class SellerProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'إضافة منتج'),
-      body: const Center(
+      appBar: const SimpleAppBar(title: 'إدارة المنتجات'),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.inventory, size: 80, color: AppTheme.goldColor),
-            SizedBox(height: 16),
-            Text('إضافة منتج جديد', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text('سيتم إضافة هذه الميزة قريباً'),
+            const SizedBox(height: 16),
+            const Text('إدارة المنتجات', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            const Text('سيتم إضافة هذه الميزة قريباً'),
           ],
         ),
       ),

@@ -8,19 +8,19 @@ class ReceiveTransferRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'استلام حوالة'),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.account_balance_wallet, size: 80, color: AppTheme.goldColor),
-            SizedBox(height: 16),
-            Text('استلام حوالة', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text('سيتم إضافة هذه الميزة قريباً'),
+            const SizedBox(height: 16),
+            const Text('استلام حوالة', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            const Text('سيتم إضافة هذه الميزة قريباً'),
           ],
         ),
       ),
