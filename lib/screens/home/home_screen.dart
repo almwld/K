@@ -362,3 +362,10 @@ class ProductGridShimmer extends StatelessWidget {
       MaterialPageRoute(builder: (_) => StoresScreen(category: category)),
     );
   }
+
+// إضافة ويدجت التوصيات الذكية
+import '../../widgets/smart_recommendations_widget.dart';
+
+  Widget _buildSmartRecommendations() {
+    return const SmartRecommendationsWidget(showAllSections: true);
+  }

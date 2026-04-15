@@ -269,3 +269,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
     super.dispose();
   }
 }
+
+import '../../widgets/smart_recommendations_widget.dart';
+
+  Widget _buildRecommendations() {
+    return SmartRecommendationsWidget(productId: widget.productName, showAllSections: false);
+  }
