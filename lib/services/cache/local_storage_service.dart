@@ -16,6 +16,46 @@ class LocalStorageService {
     }
   }
 
+  // ============ Theme Methods ============
+  bool get isDarkMode {
+    final mode = _prefs.getString('theme_mode') ?? 'light';
+    return mode == 'dark';
+  }
+
+  Future<void> setDarkMode(bool value) async {
+    await init();
+    await _prefs.setString('theme_mode', value ? 'dark' : 'light');
+  }
+
+  Future<bool> saveThemeMode(String mode) async {
+    await init();
+    return await _prefs.setString('theme_mode', mode);
+  }
+
+  String getThemeMode() {
+    return _prefs.getString('theme_mode') ?? 'system';
+  }
+
+  // ============ Garden Methods ============
+  int getGardenPoints() {
+    return _prefs.getInt('garden_points') ?? 0;
+  }
+
+  Future<void> setGardenPoints(int points) async {
+    await init();
+    await _prefs.setInt('garden_points', points);
+  }
+
+  int getStreakDays() {
+    return _prefs.getInt('streak_days') ?? 0;
+  }
+
+  Future<void> setStreakDays(int days) async {
+    await init();
+    await _prefs.setInt('streak_days', days);
+  }
+
+  // ============ Generic Methods ============
   Future<bool> saveData(String key, dynamic data) async {
     await init();
     final jsonString = json.encode(data);
@@ -50,17 +90,12 @@ class LocalStorageService {
     return [];
   }
 
-  Future<bool> saveThemeMode(String mode) async {
-    await init();
-    return await _prefs.setString('theme_mode', mode);
-  }
-
-  String getThemeMode() {
-    return _prefs.getString('theme_mode') ?? 'system';
-  }
-
   Future<bool> clearAll() async {
     await init();
     return await _prefs.clear();
+  }
+
+  bool hasData(String key) {
+    return _prefs.containsKey(key);
   }
 }

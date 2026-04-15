@@ -2,116 +2,114 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // الألوان الأساسية
   static const Color goldColor = Color(0xFFD4AF37);
-  static const Color goldLight = Color(0xFFF3E5AB);
-  static const Color goldDark = Color(0xFFB8860B);
+  static const Color goldDark = Color(0xFFB8960C);
+  static const Color goldLight = Color(0xFFF5D675);
   
   static const Color darkBackground = Color(0xFF121212);
   static const Color lightBackground = Color(0xFFF5F5F5);
-  static const Color darkCard = Color(0xFF1E1E1E);
-  static const Color lightCard = Colors.white;
-  static const Color darkSurface = Color(0xFF1E1E1E);
-  static const Color lightSurface = Colors.white;
-  static const Color error = Color(0xFFE74C3C);
-  static const Color success = Color(0xFF2ECC71);
-  static const Color warning = Color(0xFFF39C12);
-  static const Color info = Color(0xFF3498DB);
-  
-  static const Color darkText = Colors.white;
-  static const Color lightText = Colors.black87;
-  static const Color darkTextSecondary = Colors.white70;
-  static const Color lightTextSecondary = Colors.black54;
-  
-  static const Color darkDivider = Colors.white24;
-  static const Color lightDivider = Colors.black12;
 
-  // التدرجات
-  static LinearGradient get goldGradient {
-    return const LinearGradient(
-      colors: [goldColor, goldLight],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    );
-  }
-
-  // دوال مساعدة
-  static Color getCardColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark ? darkCard : lightCard;
-  }
-  
-  static Color getSurfaceColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark ? darkSurface : lightSurface;
-  }
-  
-  static Color getTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark ? darkText : lightText;
-  }
-  
-  static Color getSecondaryTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark ? darkTextSecondary : lightTextSecondary;
-  }
-  
-  static Color getDividerColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark ? darkDivider : lightDivider;
-  }
-  
-  static Color getBackgroundColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark ? darkBackground : lightBackground;
-  }
-
-  // الثيمات
   static ThemeData get lightTheme {
     return ThemeData(
-      useMaterial3: true,
       brightness: Brightness.light,
       primaryColor: goldColor,
       scaffoldBackgroundColor: lightBackground,
-      colorScheme: const ColorScheme.light(
-        primary: goldColor,
-        secondary: goldLight,
-        surface: lightSurface,
-        background: lightBackground,
-        error: error,
-        onPrimary: Colors.black,
-        onSecondary: Colors.white,
-        onSurface: lightText,
-        onBackground: lightText,
-      ),
-      textTheme: GoogleFonts.changaTextTheme(ThemeData.light().textTheme),
+      fontFamily: 'Changa',
       appBarTheme: const AppBarTheme(
-        backgroundColor: lightSurface,
-        foregroundColor: lightText,
+        backgroundColor: goldColor,
+        foregroundColor: Colors.black,
         elevation: 0,
         centerTitle: true,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: goldColor,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      cardTheme: CardTheme(
+        color: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: goldColor, width: 2),
+        ),
       ),
     );
   }
 
   static ThemeData get darkTheme {
     return ThemeData(
-      useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: goldColor,
       scaffoldBackgroundColor: darkBackground,
-      colorScheme: const ColorScheme.dark(
-        primary: goldColor,
-        secondary: goldLight,
-        surface: darkSurface,
-        background: darkBackground,
-        error: error,
-        onPrimary: Colors.black,
-        onSecondary: Colors.black,
-        onSurface: darkText,
-        onBackground: darkText,
-      ),
-      textTheme: GoogleFonts.changaTextTheme(ThemeData.dark().textTheme),
+      fontFamily: 'Changa',
       appBarTheme: const AppBarTheme(
-        backgroundColor: darkSurface,
+        backgroundColor: Color(0xFF1E1E1E),
         foregroundColor: goldColor,
         elevation: 0,
         centerTitle: true,
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: goldColor,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      cardTheme: CardTheme(
+        color: const Color(0xFF1E1E1E),
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFF2A2A2A),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: goldColor, width: 2),
+        ),
+      ),
     );
+  }
+
+  static Color getCardColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? const Color(0xFF1E1E1E)
+        : Colors.white;
+  }
+
+  static Color getTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black87;
+  }
+
+  static Color getSubtitleColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.grey[400]!
+        : Colors.grey[600]!;
   }
 }

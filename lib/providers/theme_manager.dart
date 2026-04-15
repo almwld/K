@@ -3,6 +3,7 @@ import '../services/cache/local_storage_service.dart';
 
 class ThemeManager extends ChangeNotifier {
   bool _isDarkMode = false;
+  final LocalStorageService _storage = LocalStorageService();
 
   bool get isDarkMode => _isDarkMode;
 
@@ -10,22 +11,22 @@ class ThemeManager extends ChangeNotifier {
     _loadTheme();
   }
 
-  void _loadTheme() {
-    _isDarkMode = LocalStorageService.isDarkMode();
+  Future<void> _loadTheme() async {
+    await _storage.init();
+    final savedTheme = _storage.getThemeMode();
+    _isDarkMode = savedTheme == 'dark';
     notifyListeners();
   }
 
   Future<void> toggleTheme() async {
     _isDarkMode = !_isDarkMode;
-    await LocalStorageService.setDarkMode(_isDarkMode);
+    await _storage.saveThemeMode(_isDarkMode ? 'dark' : 'light');
     notifyListeners();
   }
 
-  Future<void> setDarkMode(bool value) async {
-    if (_isDarkMode != value) {
-      _isDarkMode = value;
-      await LocalStorageService.setDarkMode(_isDarkMode);
-      notifyListeners();
-    }
+  Future<void> setTheme(bool isDark) async {
+    _isDarkMode = isDark;
+    await _storage.saveThemeMode(_isDarkMode ? 'dark' : 'light');
+    notifyListeners();
   }
 }
