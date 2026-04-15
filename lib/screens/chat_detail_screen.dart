@@ -43,7 +43,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
     final chatService = Provider.of<ChatService>(context, listen: false);
-    chatService.sendMessage(_messageController.text);
+    chatService.sendMessage(widget.conversationId, _messageController.text);
     _messageController.clear();
     _scrollToBottom();
   }

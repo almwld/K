@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/chat_message.dart';
 
@@ -20,7 +21,11 @@ class ChatService extends ChangeNotifier {
     notifyListeners();
 
     final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return;
+    if (userId == null) {
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
 
     final response = await _supabase
         .from('conversations')

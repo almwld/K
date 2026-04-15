@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final users = await _supabase
         .from('profiles')
         .select('id, name, avatar_url')
-        .neq('id', _currentUserId);
+        .neq("id", _currentUserId ?? "");
 
     showModalBottomSheet(
       context: context,
