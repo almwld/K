@@ -27,12 +27,9 @@ import 'screens/garden_screen.dart';
 import 'screens/identity_info_screen.dart';
 import 'screens/invite_friends_screen.dart';
 import 'screens/my_ads_screen.dart';
-import 'screens/my_orders_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/order_success_screen.dart';
 import 'screens/order_detail_screen.dart';
-import 'screens/order_tracking_screen.dart';
-import 'screens/orders_screen.dart';
 import 'screens/payment_method_screen.dart';
 import 'screens/addresses_screen.dart';
 import 'screens/profile_screen.dart';
@@ -44,12 +41,10 @@ import 'screens/report_ad_screen.dart';
 import 'screens/report_problem_screen.dart';
 import 'screens/request_service_screen.dart';
 import 'screens/reviews_screen.dart';
-import 'screens/sanaa_services_screen.dart';
 import 'screens/saved_payment_methods_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/seller/seller_dashboard.dart';
 import 'screens/seller_analytics_screen.dart';
-import 'screens/seller_orders_screen.dart';
 import 'screens/seller_payouts_screen.dart';
 import 'screens/seller_products_screen.dart';
 import 'screens/seller_profile_screen.dart';
@@ -77,19 +72,8 @@ import 'screens/two_factor_screen.dart';
 import 'screens/upload_documents_screen.dart';
 import 'screens/walkthrough_screen.dart';
 import 'screens/wallet_screen.dart';
-import 'screens/withdraw_screen.dart';
-import 'screens/deposit_screen.dart';
-import 'screens/transfer_screen.dart';
-import 'screens/transactions_screen.dart';
-import 'screens/bill_payment_screen.dart';
-import 'screens/recharge_screen.dart';
-import 'screens/gift_cards_screen.dart';
-import 'screens/currency_exchange_screen.dart';
-import 'screens/qr_code_screen.dart';
 import 'screens/ai_assistant_screen.dart';
 import 'screens/map/interactive_map_screen.dart';
-import 'screens/map/nearby_stores_screen.dart';
-import 'screens/map/professional_map_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/all_categories_screen.dart';
 import 'screens/category_products_screen.dart';
@@ -164,7 +148,7 @@ class FlexYemenApp extends StatelessWidget {
       case '/chat':
         return MaterialPageRoute(builder: (_) => const ChatScreen());
       case '/chat_detail':
-        return MaterialPageRoute(builder: (_) => const ChatDetailScreen());
+        return MaterialPageRoute(builder: (_) => const ChatDetailScreen(conversationId: "", otherUserId: "", otherUserName: ""));
       case '/favorites':
         return MaterialPageRoute(builder: (_) => const FavoritesScreen());
       case '/forgot_password':
@@ -204,7 +188,7 @@ class FlexYemenApp extends StatelessWidget {
       case '/reels':
         return MaterialPageRoute(builder: (_) => const ReelsScreen());
       case '/report_ad':
-        return MaterialPageRoute(builder: (_) => const ReportAdScreen());
+        return MaterialPageRoute(builder: (_) => const ReportAdScreen(adId: ""));
       case '/report_problem':
         return MaterialPageRoute(builder: (_) => const ReportProblemScreen());
       case '/request_service':
@@ -262,7 +246,7 @@ class FlexYemenApp extends StatelessWidget {
       case '/spending':
         return MaterialPageRoute(builder: (_) => const SpendingScreen());
       case '/store_detail':
-        return MaterialPageRoute(builder: (_) => const StoreDetailScreen());
+        return MaterialPageRoute(builder: (_) => const StoreDetailScreen(storeId: ""));
       case '/stores_nearby':
         return MaterialPageRoute(builder: (_) => const StoresNearbyScreen());
       case '/stores':
@@ -272,7 +256,7 @@ class FlexYemenApp extends StatelessWidget {
       case '/terms':
         return MaterialPageRoute(builder: (_) => const TermsScreen());
       case '/track_order':
-        return MaterialPageRoute(builder: (_) => const TrackOrderScreen());
+        return MaterialPageRoute(builder: (_) => const TrackOrderScreen(order: null));
       case '/two_factor':
         return MaterialPageRoute(builder: (_) => const TwoFactorScreen());
       case '/upload_documents':
