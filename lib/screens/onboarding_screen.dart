@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../theme/app_theme.dart';
 import 'home/main_navigation.dart';
-import 'login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -110,20 +109,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (_currentPage > 0)
-            TextButton(onPressed: () => _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease), child: const Text('السابق'))
+            TextButton(
+              onPressed: () => _pageController.previousPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              ),
+              child: const Text('السابق'),
+            )
           else
             const SizedBox(width: 60),
           
           if (_currentPage == _onboardingData.length - 1)
             ElevatedButton(
               onPressed: _completeOnboarding,
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              ),
               child: const Text('ابدأ الآن', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
             )
           else
             ElevatedButton(
-              onPressed: () => _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease),
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+              onPressed: () => _pageController.nextPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.goldColor,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              ),
               child: const Text('التالي', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
             ),
           
@@ -138,12 +154,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _skipOnboarding() async {
     await _setOnboardingSeen();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainNavigation()));
   }
 
   void _completeOnboarding() async {
     await _setOnboardingSeen();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainNavigation()));
   }
 
   Future<void> _setOnboardingSeen() async {

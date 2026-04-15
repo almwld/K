@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
 import 'onboarding_screen.dart';
 import 'home/main_navigation.dart';
-import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -46,24 +45,22 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     
     final prefs = await SharedPreferences.getInstance();
     final onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
-    final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
 
     if (!mounted) return;
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) {
-          if (!onboardingSeen) {
-            return const OnboardingScreen();
-          } else if (isLoggedIn) {
-            return const MainNavigation();
-          } else {
-            return const LoginScreen();
-          }
-        },
-      ),
-    );
+    // إذا لم يشاهد الـ onboarding، اعرضه أولاً
+    if (!onboardingSeen) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+    } else {
+      // مباشرة إلى الواجهة الرئيسية
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainNavigation()),
+      );
+    }
   }
 
   @override
