@@ -1,4 +1,6 @@
-import 'dart:math';
+import 'dart:convert';
+import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MiniMaxService {
@@ -6,55 +8,139 @@ class MiniMaxService {
   factory MiniMaxService() => _instance;
   MiniMaxService._internal();
 
-  final Random _random = Random();
-  
-  final List<String> _greetings = [
-    'مرحباً! كيف يمكنني مساعدتك اليوم؟ 😊',
-    'أهلاً بك في فلكس يمن! كيف أقدر أخدمك؟ 🛍️',
-    'مرحباً! أنا هنا لمساعدتك في كل ما يتعلق بالتسوق 💫',
-    'أهلاً وسهلاً! ماذا تريد أن تعرف عن منتجاتنا؟ 🎯',
-  ];
-  
-  final List<String> _prices = [
-    'الأسعار تبدأ من 1000 ريال. هل تريد معرفة منتج معين؟ 💰',
-    'لدينا منتجات بأسعار تناسب جميع الميزانيات. ما الذي تبحث عنه؟ 💵',
-    'الأسعار تختلف حسب المنتج. أخبرني ماذا تريد وسأعطيك التفاصيل! 📊',
-  ];
-  
-  final List<String> _shipping = [
-    'نوفر التوصيل لجميع محافظات اليمن خلال 3-5 أيام عمل 🚚',
-    'الشحن مجاني للطلبات التي تزيد عن 10,000 ريال 📦',
-    'يمكنك تتبع طلبك عبر التطبيق بعد الشحن 🔍',
-  ];
-  
-  final List<String> _products = [
-    'لدينا آلاف المنتجات في مختلف الأقسام: إلكترونيات، أزياء، عقارات، سيارات، ومطاعم 🛒',
-    'يمكنك تصفح المنتجات من الصفحة الرئيسية أو استخدام البحث 🔎',
-    'أحدث المنتجات أضيفت اليوم! جرب قسم "منتجات مميزة" ✨',
-  ];
+  static const String _baseUrl = 'https://api.minimax.chat/v1';
+  String? _apiKey;
+  String? _groupId;
+  bool _isInitialized = false;
 
   Future<void> init() async {
-    await dotenv.load();
+    if (!_isInitialized) {
+      await dotenv.load();
+      _apiKey = dotenv.env['MINIMAX_API_KEY'];
+      _groupId = dotenv.env['MINIMAX_GROUP_ID'] ?? '1871489234567890123';
+      _isInitialized = true;
+    }
   }
 
-  Future<String> chat(String message) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    
-    final msg = message.toLowerCase();
-    
-    if (msg.contains('سعر') || msg.contains('price') || msg.contains('كم')) {
-      return _prices[_random.nextInt(_prices.length)];
+  // محادثة مع المساعد الذكي
+  Future<String> chat(String message, {List<Map<String, String>>? history}) async {
+    await init();
+
+    if (_apiKey == null || _apiKey!.isEmpty) {
+      return 'عذراً، لم يتم تكوين المساعد الذكي بعد. الرجاء إضافة مفتاح API.';
     }
-    if (msg.contains('شحن') || msg.contains('delivery') || msg.contains('توصيل')) {
-      return _shipping[_random.nextInt(_shipping.length)];
+
+    try {
+      final messages = <Map<String, String>>[
+        {
+          'role': 'system',
+          'content': 'أنت مساعد ذكي لمنصة "فلكس يمن" (Flex Yemen)، وهي منصة تجارة إلكترونية ومحفظة رقمية يمنية. مهمتك مساعدة المستخدمين في التسوق، الدفع، الشحن، والاستفسارات المتعلقة بالمنصة. كن ودوداً ومفيداً، وأجب باللغة العربية الفصحى مع لمسة يمنية خفيفة. قدم إجابات مختصرة ومفيدة.'
+        },
+      ];
+
+      if (history != null && history.isNotEmpty) {
+        messages.addAll(history);
+      }
+
+      messages.add({
+        'role': 'user',
+        'content': message,
+      });
+
+      final response = await http.post(
+        Uri.parse('$_baseUrl/text/chatcompletion_v2'),
+        headers: {
+          'Authorization': 'Bearer $_apiKey',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'model': 'abab6.5s-chat',
+          'messages': messages,
+          'temperature': 0.7,
+          'max_tokens': 500,
+        }),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['reply'] != null && data['reply'].isNotEmpty) {
+          return data['reply'];
+        }
+        return 'عذراً، لم أتمكن من فهم سؤالك. هل يمكنك إعادة الصياغة؟';
+      } else if (response.statusCode == 401) {
+        return 'عذراً، مفتاح API غير صالح. الرجاء التحقق من الإعدادات.';
+      } else if (response.statusCode == 429) {
+        return 'عذراً، تم تجاوز الحد المسموح من الطلبات. الرجاء المحاولة لاحقاً.';
+      } else {
+        return 'عذراً، حدث خطأ في الاتصال بالمساعد الذكي. الرجاء المحاولة لاحقاً.';
+      }
+    } on TimeoutException {
+      return 'عذراً، استغرق الرد وقتاً طويلاً. الرجاء المحاولة مرة أخرى.';
+    } catch (e) {
+      return 'عذراً، حدث خطأ غير متوقع: ${e.toString()}';
     }
-    if (msg.contains('منتج') || msg.contains('product') || msg.contains('متجر')) {
-      return _products[_random.nextInt(_products.length)];
+  }
+
+  // محادثة متدفقة (Stream)
+  Stream<String> chatStream(String message, {List<Map<String, String>>? history}) async* {
+    await init();
+
+    if (_apiKey == null || _apiKey!.isEmpty) {
+      yield 'عذراً، لم يتم تكوين المساعد الذكي بعد.';
+      return;
     }
-    if (msg.contains('مرحب') || msg.contains('اهلا') || msg.contains('hello')) {
-      return _greetings[_random.nextInt(_greetings.length)];
+
+    try {
+      final messages = <Map<String, String>>[
+        {
+          'role': 'system',
+          'content': 'أنت مساعد ذكي لمنصة "فلكس يمن" (Flex Yemen)، منصة تجارة إلكترونية ومحفظة رقمية يمنية. أجب بالعربية بشكل مفيد وودود.'
+        },
+      ];
+
+      if (history != null && history.isNotEmpty) {
+        messages.addAll(history);
+      }
+
+      messages.add({
+        'role': 'user',
+        'content': message,
+      });
+
+      final request = http.Request('POST', Uri.parse('$_baseUrl/text/chatcompletion_v2'))
+        ..headers.addAll({
+          'Authorization': 'Bearer $_apiKey',
+          'Content-Type': 'application/json',
+        })
+        ..body = jsonEncode({
+          'model': 'abab6.5s-chat',
+          'messages': messages,
+          'temperature': 0.7,
+          'max_tokens': 500,
+          'stream': true,
+        });
+
+      final response = await request.send();
+      
+      await for (final chunk in response.stream.transform(utf8.decoder)) {
+        for (final line in chunk.split('\n')) {
+          if (line.startsWith('data: ')) {
+            final data = line.substring(6);
+            if (data != '[DONE]') {
+              try {
+                final json = jsonDecode(data);
+                if (json['delta'] != null && json['delta']['content'] != null) {
+                  yield json['delta']['content'];
+                }
+              } catch (e) {
+                // تجاهل أخطاء التحليل
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      yield 'عذراً، حدث خطأ: ${e.toString()}';
     }
-    
-    return _greetings[_random.nextInt(_greetings.length)];
   }
 }
