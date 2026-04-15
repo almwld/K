@@ -256,7 +256,7 @@ class FlexYemenApp extends StatelessWidget {
       case '/terms':
         return MaterialPageRoute(builder: (_) => const TermsScreen());
       case '/track_order':
-        return MaterialPageRoute(builder: (_) => const TrackOrderScreen(order: null));
+        return MaterialPageRoute(builder: (_) => const TrackOrderScreen());
       case '/two_factor':
         return MaterialPageRoute(builder: (_) => const TwoFactorScreen());
       case '/upload_documents':
