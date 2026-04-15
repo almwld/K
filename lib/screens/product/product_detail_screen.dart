@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/simple_app_bar.dart';
+import '../stores/store_detail_screen.dart';
+import '../../data/stores_data.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
   final String productName;
+  final String? storeName;
 
   const ProductDetailScreen({
     super.key,
     required this.productId,
     required this.productName,
+    this.storeName,
   });
 
   @override
@@ -22,7 +25,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
   int _quantity = 1;
   int _selectedImageIndex = 0;
   bool _isFavorite = false;
-  bool _isLoading = true;
 
   final List<String> _images = [
     'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800',
@@ -30,22 +32,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
     'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800',
   ];
 
-  final List<Map<String, dynamic>> _reviews = [
-    {'user': 'أحمد محمد', 'rating': 5, 'comment': 'منتج ممتاز وجودة عالية، أنصح به بشدة', 'date': 'منذ يومين'},
-    {'user': 'فاطمة علي', 'rating': 4, 'comment': 'جيد جداً لكن الشحن تأخر قليلاً', 'date': 'منذ أسبوع'},
-    {'user': 'عمر خالد', 'rating': 5, 'comment': 'سعر مناسب وجودة ممتازة، شكراً فلكس يمن', 'date': 'منذ أسبوعين'},
-  ];
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    setState(() => _isLoading = false);
   }
 
   @override
@@ -66,57 +56,31 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
           IconButton(onPressed: () {}, icon: const Icon(Icons.share, color: Colors.black)),
         ],
       ),
-      body: _isLoading ? _buildLoadingState() : _buildContent(),
-      bottomNavigationBar: _buildBottomBar(),
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return SingleChildScrollView(
-      child: Column(
+      body: Column(
         children: [
-          Container(height: 300, color: Colors.grey[300]),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(height: 24, width: 200, color: Colors.grey[300]),
-                const SizedBox(height: 12),
-                Container(height: 20, width: 150, color: Colors.grey[300]),
-                const SizedBox(height: 20),
-                Container(height: 60, width: double.infinity, color: Colors.grey[300]),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: _buildImageGallery()),
+                SliverToBoxAdapter(child: _buildProductInfo()),
+                SliverToBoxAdapter(child: _buildStoreInfo()),
+                SliverToBoxAdapter(child: _buildTabBar()),
+                SliverFillRemaining(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildDescriptionTab(),
+                      _buildSpecificationsTab(),
+                      _buildReviewsTab(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildContent() {
-    return Column(
-      children: [
-        Expanded(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(child: _buildImageGallery()),
-              SliverToBoxAdapter(child: _buildProductInfo()),
-              SliverToBoxAdapter(child: _buildTabBar()),
-              SliverFillRemaining(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildDescriptionTab(),
-                    _buildSpecificationsTab(),
-                    _buildReviewsTab(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      bottomNavigationBar: _buildBottomBar(),
     );
   }
 
@@ -176,34 +140,51 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
             ],
           ),
           const SizedBox(height: 8),
-          Row(
+          Text('450.00 ريال', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStoreInfo() {
+    if (widget.storeName == null) return const SizedBox.shrink();
+    
+    final store = StoresData.getAllStores().firstWhere(
+      (s) => s.name == widget.storeName,
+      orElse: () => StoresData.getAllStores().first,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GestureDetector(
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreDetailScreen(store: store))),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey[300]!)),
+          child: Row(
             children: [
-              const Icon(Icons.star, color: Colors.amber, size: 20),
-              const SizedBox(width: 4),
-              const Text('4.8', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(width: 4),
-              Text('(245 تقييم)', style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-              const Spacer(),
-              const Icon(Icons.location_on, color: AppTheme.goldColor, size: 18),
-              const SizedBox(width: 4),
-              Text('صنعاء', style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+              ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(store.imageUrl, width: 50, height: 50, fit: BoxFit.cover)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(store.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber, size: 14),
+                        Text(' ${store.rating}'),
+                        const SizedBox(width: 12),
+                        Icon(store.isOpen ? Icons.check_circle : Icons.cancel, color: store.isOpen ? Colors.green : Colors.red, size: 14),
+                        Text(store.isOpen ? ' مفتوح' : ' مغلق', style: TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios, size: 16),
             ],
           ),
-          const SizedBox(height: 16),
-          Text('450,000 ريال', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
-            child: const Row(
-              children: [
-                Icon(Icons.local_shipping, color: Colors.green),
-                SizedBox(width: 8),
-                Text('توصيل مجاني للطلبات فوق 10,000 ريال'),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -226,91 +207,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
   }
 
   Widget _buildDescriptionTab() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('وصف المنتج', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
-          Text('هذا المنتج من أفضل المنتجات في فئته. مصنوع من مواد عالية الجودة ويأتي مع ضمان لمدة سنة كاملة.', style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.6)),
-        ],
-      ),
+    return const Padding(
+      padding: EdgeInsets.all(16),
+      child: Text('هذا المنتج من أفضل المنتجات في فئته. مصنوع من مواد عالية الجودة ويأتي مع ضمان لمدة سنة كاملة.'),
     );
   }
 
   Widget _buildSpecificationsTab() {
-    final specs = {
-      'الماركة': 'Apple',
-      'الموديل': 'iPhone 15 Pro',
-      'اللون': 'أسود تيتانيوم',
-      'السعة': '256 جيجابايت',
-    };
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('المواصفات التقنية', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          ...specs.entries.map((entry) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                children: [
-                  SizedBox(width: 120, child: Text(entry.key, style: TextStyle(color: Colors.grey[600]))),
-                  Expanded(child: Text(entry.value, style: const TextStyle(fontWeight: FontWeight.w500))),
-                ],
-              ),
-            );
-          }),
-        ],
-      ),
+    return const Padding(
+      padding: EdgeInsets.all(16),
+      child: Text('المواصفات التقنية للمنتج...'),
     );
   }
 
   Widget _buildReviewsTab() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: _reviews.length,
-      itemBuilder: (context, index) {
-        final review = _reviews[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(radius: 20, backgroundColor: AppTheme.goldColor.withOpacity(0.2), child: Text(review['user'][0], style: const TextStyle(color: AppTheme.goldColor))),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(review['user'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                        Row(
-                          children: [
-                            ...List.generate(5, (i) => Icon(i < review['rating'] ? Icons.star : Icons.star_border, color: Colors.amber, size: 14)),
-                            const SizedBox(width: 8),
-                            Text(review['date'], style: TextStyle(color: Colors.grey[500], fontSize: 11)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text(review['comment'], style: const TextStyle(fontSize: 14)),
-            ],
-          ),
-        );
-      },
-    );
+    return const Center(child: Text('التقييمات'));
   }
 
   Widget _buildBottomBar() {
@@ -347,7 +258,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> with SingleTi
   }
 
   void _addToCart() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('تمت إضافة $_quantity قطعة إلى السلة'), backgroundColor: Colors.green, duration: const Duration(seconds: 2)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('تمت إضافة $_quantity قطعة إلى السلة'), backgroundColor: Colors.green, duration: const Duration(seconds: 2)),
+    );
   }
 
   @override

@@ -354,3 +354,11 @@ class ProductGridShimmer extends StatelessWidget {
       MaterialPageRoute(builder: (_) => StoresScreen(category: category)),
     );
   }
+
+// تحديث دالة _buildCategories للربط بصفحة المتاجر
+  void _navigateToStores(String category) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => StoresScreen(category: category)),
+    );
+  }
