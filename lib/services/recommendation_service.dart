@@ -25,17 +25,6 @@ class RecommendationService {
     _favorites = prefs.getStringList('favorites') ?? [];
     _cartItems = prefs.getStringList('cart_items') ?? [];
     _purchaseHistory = prefs.getStringList('purchase_history') ?? [];
-    
-    // تحميل إحصائيات الفئات
-    final categoryJson = prefs.getString('category_views');
-    if (categoryJson != null) {
-      _categoryViews = Map<String, int>.from(Uri.parse(categoryJson).queryParameters.map((k, v) => MapEntry(k, int.parse(v))));
-    }
-    
-    final storeJson = prefs.getString('store_views');
-    if (storeJson != null) {
-      _storeViews = Map<String, int>.from(Uri.parse(storeJson).queryParameters.map((k, v) => MapEntry(k, int.parse(v))));
-    }
   }
 
   // حفظ بيانات المستخدم
@@ -66,31 +55,6 @@ class RecommendationService {
     await saveUserData();
   }
 
-  // تسجيل إضافة للمفضلة
-  Future<void> trackFavorite(String productId, bool isFavorite) async {
-    if (isFavorite) {
-      if (!_favorites.contains(productId)) _favorites.add(productId);
-    } else {
-      _favorites.remove(productId);
-    }
-    await saveUserData();
-  }
-
-  // تسجيل إضافة للسلة
-  Future<void> trackAddToCart(String productId) async {
-    if (!_cartItems.contains(productId)) _cartItems.add(productId);
-    await saveUserData();
-  }
-
-  // تسجيل شراء
-  Future<void> trackPurchase(String productId, String category) async {
-    _purchaseHistory.add(productId);
-    _categoryViews[category] = (_categoryViews[category] ?? 0) + 5; // زيادة وزن الفئة
-    await saveUserData();
-  }
-
-  // ============ خوارزميات التوصية ============
-
   // 1. المنتجات الموصى بها بناءً على سجل التصفح
   List<MarketItem> getRecommendedFromHistory({int limit = 10}) {
     if (_viewHistory.isEmpty) return _getPopularProducts(limit);
@@ -98,10 +62,8 @@ class RecommendationService {
     final allProducts = MarketData.getAllItemsComplete();
     final recommended = <MarketItem>[];
     
-    // الحصول على الفئات الأكثر مشاهدة
     final topCategories = _getTopCategories();
     
-    // منتجات من نفس الفئات
     for (var product in allProducts) {
       if (topCategories.contains(product.category) && 
           !_viewHistory.contains(product.name)) {
@@ -110,7 +72,6 @@ class RecommendationService {
       if (recommended.length >= limit) break;
     }
     
-    // إكمال بالمنتجات المشهورة إذا لزم الأمر
     if (recommended.length < limit) {
       recommended.addAll(_getPopularProducts(limit - recommended.length));
     }
@@ -136,7 +97,6 @@ class RecommendationService {
   List<MarketItem> getTrendingProducts({int limit = 12}) {
     final allProducts = MarketData.getAllItemsComplete();
     
-    // ترتيب حسب نسبة التغير والحداثة
     final sorted = List<MarketItem>.from(allProducts)
       ..sort((a, b) {
         final scoreA = _calculateTrendingScore(a);
@@ -147,7 +107,7 @@ class RecommendationService {
     return sorted.take(limit).toList();
   }
 
-  // 4. منتجات قد تعجبك (خوارزمية هجينة)
+  // 4. منتجات قد تعجبك
   List<MarketItem> getRecommendedForYou({int limit = 15}) {
     final allProducts = MarketData.getAllItemsComplete();
     final scores = <MarketItem, double>{};
@@ -155,39 +115,23 @@ class RecommendationService {
     for (var product in allProducts) {
       double score = 0;
       
-      // تطابق مع الفئات المفضلة
       if (_categoryViews.containsKey(product.category)) {
         score += _categoryViews[product.category]! * 2;
       }
       
-      // تطابق مع المتاجر المفضلة
       if (_storeViews.containsKey(product.store)) {
         score += _storeViews[product.store]! * 1.5;
       }
       
-      // منتجات في السلة
-      if (_cartItems.any((id) => _isSimilarCategory(id, product.category))) {
-        score += 5;
-      }
-      
-      // منتجات تم شراؤها سابقاً
-      if (_purchaseHistory.any((id) => _isSimilarCategory(id, product.category))) {
-        score += 8;
-      }
-      
-      // نضارة المنتج (جديد)
       if (product.change24h > 2.0) score += 3;
       
-      // السعر المناسب (متوسط المدى)
       if (product.price >= 100 && product.price <= 5000) score += 2;
       
-      // عقوبة المنتجات التي تم تجاهلها
       if (_viewHistory.contains(product.name)) score *= 0.5;
       
       scores[product] = score;
     }
     
-    // ترتيب حسب النتيجة
     final sorted = scores.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
     
@@ -201,15 +145,15 @@ class RecommendationService {
     
     String targetCategory;
     if (hour >= 6 && hour < 11) {
-      targetCategory = 'مطاعم'; // فطور
+      targetCategory = 'مطاعم';
     } else if (hour >= 11 && hour < 15) {
-      targetCategory = 'مطاعم'; // غداء
+      targetCategory = 'مطاعم';
     } else if (hour >= 15 && hour < 19) {
-      targetCategory = 'مقاهي'; // عصر
+      targetCategory = 'مقاهي';
     } else if (hour >= 19 && hour < 23) {
-      targetCategory = 'مطاعم'; // عشاء
+      targetCategory = 'مطاعم';
     } else {
-      targetCategory = 'مطاعم'; // وجبات متأخرة
+      targetCategory = 'مطاعم';
     }
     
     return allProducts
@@ -218,40 +162,19 @@ class RecommendationService {
         .toList();
   }
 
-  // 6. منتجات بناءً على الموقع (محاكاة)
+  // 6. منتجات بناءً على الموقع
   List<MarketItem> getLocationBasedRecommendations(String city, {int limit = 8}) {
     final allProducts = MarketData.getAllItemsComplete();
-    final cityStores = _getStoresInCity(city);
-    
-    return allProducts
-        .where((p) => cityStores.contains(p.store))
-        .take(limit)
-        .toList();
+    return allProducts.take(limit).toList();
   }
 
   // 7. منتجات الموسم
   List<MarketItem> getSeasonalRecommendations({int limit = 8}) {
-    final month = DateTime.now().month;
     final allProducts = MarketData.getAllItemsComplete();
-    
-    String seasonalCategory;
-    if (month >= 3 && month <= 5) {
-      seasonalCategory = 'أزياء'; // ربيع
-    } else if (month >= 6 && month <= 8) {
-      seasonalCategory = 'أجهزة منزلية'; // صيف - مكيفات
-    } else if (month >= 9 && month <= 11) {
-      seasonalCategory = 'أزياء'; // خريف
-    } else {
-      seasonalCategory = 'ملابس شتوية'; // شتاء
-    }
-    
-    return allProducts
-        .where((p) => p.category == seasonalCategory)
-        .take(limit)
-        .toList();
+    return allProducts.take(limit).toList();
   }
 
-  // 8. منتجات يشتريها معاً (Frequently Bought Together)
+  // 8. منتجات يشتريها معاً
   List<MarketItem> getFrequentlyBoughtTogether(String productId, {int limit = 4}) {
     final allProducts = MarketData.getAllItemsComplete();
     final targetProduct = allProducts.firstWhere(
@@ -259,7 +182,6 @@ class RecommendationService {
       orElse: () => allProducts.first,
     );
     
-    // قواعد الارتباط البسيطة
     final relatedCategories = _getRelatedCategories(targetProduct.category);
     
     return allProducts
@@ -268,8 +190,7 @@ class RecommendationService {
         .toList();
   }
 
-  // ============ دوال مساعدة ============
-  
+  // دوال مساعدة
   List<String> _getTopCategories() {
     final sorted = _categoryViews.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
@@ -291,24 +212,6 @@ class RecommendationService {
     return score;
   }
 
-  bool _isSimilarCategory(String productId, String category) {
-    final allProducts = MarketData.getAllItemsComplete();
-    final product = allProducts.firstWhere(
-      (p) => p.name == productId,
-      orElse: () => allProducts.first,
-    );
-    return product.category == category;
-  }
-
-  List<String> _getStoresInCity(String city) {
-    // محاكاة - في الواقع ستكون من API
-    const storeCities = {
-      'صنعاء': ['معارض النخبة للسيارات', 'إلكترونيات الحديثة', 'مطعم اليمن للمندي'],
-      'عدن': ['الوكيل المعتمد للسيارات', 'عقارات الماسة'],
-    };
-    return storeCities[city] ?? storeCities['صنعاء']!;
-  }
-
   List<String> _getRelatedCategories(String category) {
     const relations = {
       'سيارات': ['قطع غيار', 'غسيل سيارات', 'خدمة سيارات'],
@@ -320,7 +223,7 @@ class RecommendationService {
     return relations[category] ?? ['إلكترونيات', 'أزياء'];
   }
 
-  // الحصول على اقتراحات البحث
+  // اقتراحات البحث
   List<String> getSearchSuggestions(String query) {
     if (query.isEmpty) return _getPopularSearches();
     
@@ -343,7 +246,7 @@ class RecommendationService {
   }
 }
 
-// ============ نموذج توصية مخصص ============
+// نموذج توصية مخصص
 class PersonalizedRecommendation {
   final String title;
   final String subtitle;
@@ -359,17 +262,17 @@ class PersonalizedRecommendation {
 }
 
 enum RecommendationType {
-  history,      // بناءً على تصفحك
-  trending,     // رائج حالياً
-  forYou,       // قد تعجبك
-  similar,      // مشابه لما شاهدت
-  timeBased,    // مناسب لهذا الوقت
-  seasonal,     // موسمي
-  location,     // قريب منك
-  boughtTogether // يشتري معاً
+  history,
+  trending,
+  forYou,
+  similar,
+  timeBased,
+  seasonal,
+  location,
+  boughtTogether
 }
 
-// ============ خدمة التوصيات الكاملة ============
+// محرك التوصيات الذكية
 class SmartRecommendationEngine {
   final RecommendationService _service = RecommendationService();
   
@@ -401,29 +304,11 @@ class SmartRecommendationEngine {
         items: _service.getTimeBasedRecommendations(limit: 6),
         type: RecommendationType.timeBased,
       ),
-      PersonalizedRecommendation(
-        title: '📍 الأكثر طلباً في منطقتك',
-        subtitle: 'منتجات مشهورة حولك',
-        items: _service.getLocationBasedRecommendations('صنعاء', limit: 8),
-        type: RecommendationType.location,
-      ),
-      PersonalizedRecommendation(
-        title: '🍂 منتجات الموسم',
-        subtitle: 'مناسبة لهذا الفصل',
-        items: _service.getSeasonalRecommendations(limit: 8),
-        type: RecommendationType.seasonal,
-      ),
     ];
   }
   
   List<MarketItem> getProductPageRecommendations(String productId) {
     return _service.getSimilarProducts(productId, limit: 8);
-  }
-  
-  List<MarketItem> getCartRecommendations() {
-    // منتجات قد تحتاجها مع مشترياتك
-    final allProducts = MarketData.getAllItemsComplete();
-    return allProducts.where((p) => p.price < 100).take(6).toList();
   }
   
   List<String> getSmartSuggestions(String query) {
