@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/theme_service.dart';
+import '../theme/app_theme.dart';
 
 class ThemeManager extends ChangeNotifier {
   AppThemeMode _currentMode = AppThemeMode.light;
