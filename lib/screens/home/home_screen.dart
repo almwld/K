@@ -11,7 +11,6 @@ import '../../models/market_item.dart';
 import '../product/product_detail_screen.dart';
 import '../category_products_screen.dart';
 import '../all_ads_screen.dart';
-import '../auctions_screen.dart';
 import '../login_screen.dart';
 import '../register_screen.dart';
 
@@ -25,42 +24,65 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentCarouselIndex = 0;
   bool _isLoading = true;
-  String _selectedMarketTab = 'اكشف';
+  String _selectedMarketTab = 'اكتشف';
   String _selectedFilter = 'رائج';
   List<MarketItem> _displayItems = [];
+  final ScrollController _scrollController = ScrollController();
+  bool _showAppBar = true;
+  bool _showBottomBar = true;
   
   final List<Map<String, dynamic>> _carouselItems = [
-    {'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800', 'title': 'مندي يمني', 'subtitle': 'لحم ضأن مع أرز', 'discount': 'خصم 20%'},
-    {'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800', 'title': 'عقارات فاخرة', 'subtitle': 'فلل وشقق', 'discount': 'خصم 30%'},
     {'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800', 'title': 'سيارات جديدة', 'subtitle': 'أحدث الموديلات', 'discount': 'خصم 25%'},
-    {'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'title': 'إلكترونيات', 'subtitle': 'هواتف وكومبيوترات', 'discount': 'خصم 40%'},
+    {'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800', 'title': 'عقارات فاخرة', 'subtitle': 'فلل وشقق', 'discount': 'خصم 30%'},
+    {'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'title': 'إلكترونيات', 'subtitle': 'هواتف وكمبيوترات', 'discount': 'خصم 40%'},
+    {'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800', 'title': 'مزادات حية', 'subtitle': 'سيارات وعقارات', 'discount': 'مزايدة الآن'},
   ];
 
   List<Map<String, dynamic>> _products = [];
   final List<Map<String, dynamic>> _categories = [
     {'id': 'electronics', 'name': 'إلكترونيات', 'icon': Icons.electrical_services, 'color': 0xFF9C27B0},
-    {'id': 'fashion', 'name': 'أزياء', 'icon': Icons.checkroom, 'color': 0xFFE91E63},
-    {'id': 'furniture', 'name': 'أثاث', 'icon': Icons.weekend, 'color': 0xFF795548},
     {'id': 'cars', 'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFF4CAF50},
     {'id': 'real_estate', 'name': 'عقارات', 'icon': Icons.house, 'color': 0xFF2196F3},
+    {'id': 'fashion', 'name': 'أزياء', 'icon': Icons.checkroom, 'color': 0xFFE91E63},
+    {'id': 'furniture', 'name': 'أثاث', 'icon': Icons.weekend, 'color': 0xFF795548},
+    {'id': 'restaurants', 'name': 'مطاعم', 'icon': Icons.restaurant, 'color': 0xFFFF9800},
   ];
 
   @override
   void initState() {
     super.initState();
     _loadData();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      if (_showAppBar || _showBottomBar) {
+        setState(() {
+          _showAppBar = false;
+          _showBottomBar = false;
+        });
+      }
+    } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+      if (!_showAppBar || !_showBottomBar) {
+        setState(() {
+          _showAppBar = true;
+          _showBottomBar = true;
+        });
+      }
+    }
   }
 
   Future<void> _loadData() async {
     await Future.delayed(const Duration(seconds: 2));
     setState(() {
       _products = [
-        {'id': '1', 'name': 'آيفون 15 برو', 'price': '450,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'tag': 'إلكتروني'},
-        {'id': '2', 'name': 'سامسونج S24', 'price': '380,000', 'image': 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400', 'tag': 'إلكتروني'},
-        {'id': '3', 'name': 'ماك بوك برو M3', 'price': '1,800,000', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', 'tag': 'إلكتروني'},
-        {'id': '4', 'name': 'فيلا فاخرة', 'price': '45,000,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', 'tag': 'عقار'},
-        {'id': '5', 'name': 'تويوتا كامري', 'price': '8,500,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', 'tag': 'سيارة'},
-        {'id': '6', 'name': 'مندي يمني', 'price': '3,500', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'tag': 'مطعم'},
+        {'id': '1', 'name': 'تويوتا كامري 2024', 'price': '95,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', 'tag': 'سيارات'},
+        {'id': '2', 'name': 'فيلا فاخرة', 'price': '2,500,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', 'tag': 'عقارات'},
+        {'id': '3', 'name': 'ماك بوك برو', 'price': '6,500', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', 'tag': 'إلكترونيات'},
+        {'id': '4', 'name': 'مندي لحم', 'price': '65', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'tag': 'مطاعم'},
+        {'id': '5', 'name': 'مزاد سيارات', 'price': 'مزايدة', 'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400', 'tag': 'مزادات'},
+        {'id': '6', 'name': 'آيفون 15 برو', 'price': '4,500', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'tag': 'إلكترونيات'},
       ];
       _displayItems = MarketData.getTrending();
       _isLoading = false;
@@ -71,8 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedMarketTab = tab;
       switch (tab) {
-        case 'اكشف':
-          _displayItems = MarketData.getAllItems().take(20).toList();
+        case 'اكتشف':
+          _displayItems = MarketData.getAllItems().take(25).toList();
           break;
         case 'المتابعات':
           _displayItems = MarketData.getAllItems().where((i) => i.isFavorite).toList();
@@ -86,9 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
         case 'الاخبار':
           _displayItems = MarketData.getNewArrivals();
           break;
-        case 'الاكاديمية':
-          _displayItems = MarketData.getBestSellers();
+        case 'مولات':
+          _displayItems = MarketData.getBySection('مولات');
           break;
+        case 'بقالة':
+          _displayItems = MarketData.getBySection('بقالات');
+          break;
+        case 'مزادات':
+          _displayItems = MarketData.getBySection('مزادات');
+          break;
+        default:
+          _displayItems = MarketData.getAllItems().take(25).toList();
       }
     });
   }
@@ -107,22 +137,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      appBar: _showAppBar ? AppBar(
+        title: const Text('فلكس يمن', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        backgroundColor: AppTheme.goldColor,
+        foregroundColor: Colors.black,
+        centerTitle: true,
+        elevation: 0,
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined, color: Colors.black)),
+        ],
+      ) : null,
       body: Column(
         children: [
+          if (!isLoggedIn && _showAppBar) _buildAuthButtons(),
           Expanded(
             child: RefreshIndicator(
               onRefresh: _loadData,
               color: AppTheme.goldColor,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [
-                    const SizedBox(height: 8),
-                    if (!isLoggedIn) _buildAuthButtons(),
                     _isLoading ? const CarouselShimmer() : _buildCarousel(),
                     const SizedBox(height: 16),
-                    _buildMazadAlJanabi(),
-                    const SizedBox(height: 24),
                     _buildSectionHeader('الأقسام الرئيسية'),
                     _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
                     const SizedBox(height: 24),
@@ -132,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildSectionHeader('السوق المتجدد'),
                     const SizedBox(height: 8),
                     Container(
-                      height: 400,
+                      height: 450,
                       margin: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
@@ -150,22 +189,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                       ),
                     ),
+                    const SizedBox(height: 80),
                   ],
                 ),
               ),
             ),
           ),
-          MarketTopTabs(
-            onTabSelected: _onMarketTabSelected,
-            selectedTab: _selectedMarketTab,
-          ),
+          if (_showBottomBar)
+            MarketTopTabs(
+              onTabSelected: _onMarketTabSelected,
+              selectedTab: _selectedMarketTab,
+            ),
         ],
       ),
+      bottomNavigationBar: _showBottomBar ? null : null,
     );
   }
 
   Widget _buildAuthButtons() {
-    return Padding(
+    return Container(
+      color: Theme.of(context).cardColor,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
@@ -190,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCategoriesShimmer() {
-    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: 5, itemBuilder: (context, index) => const CategoryShimmer()));
+    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: 6, itemBuilder: (context, index) => const CategoryShimmer()));
   }
 
   Widget _buildCarousel() {
@@ -231,12 +274,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMazadAlJanabi() {
-    return Container(margin: const EdgeInsets.symmetric(horizontal: 16), padding: const EdgeInsets.all(16), decoration: BoxDecoration(gradient: LinearGradient(colors: [AppTheme.goldColor, AppTheme.goldDark]), borderRadius: BorderRadius.circular(15)),
-      child: Row(children: [Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text('مزاد الجنابي', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)), const Text('أكبر مزاد للسيوف التراثية', style: TextStyle(color: Colors.white70)), const SizedBox(height: 8), ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AuctionsScreen())), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldColor), child: const Text('شارك الآن'))])), const Icon(Icons.emoji_events, size: 60, color: Colors.white)]),
-    );
-  }
-
   Widget _buildSectionHeader(String title) {
     return Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())), child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)))]) );
   }
@@ -272,6 +309,12 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
