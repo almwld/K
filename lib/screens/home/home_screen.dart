@@ -346,3 +346,11 @@ class ProductGridShimmer extends StatelessWidget {
     );
   }
 }
+
+// إضافة navigation للمتاجر
+  void _navigateToStores(String category) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => StoresScreen(category: category)),
+    );
+  }
