@@ -132,3 +132,9 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+// إضافة قسم مواقع التواصل الاجتماعي
+import '../widgets/social_media_widget.dart';
+
+// أضف هذا قبل أزرار تسجيل الخروج
+// const SocialMediaWidget(),
