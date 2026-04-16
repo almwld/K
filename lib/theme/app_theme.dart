@@ -1,254 +1,364 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class AppTheme {
-  // ============ الألوان الأساسية ============
+  // ============ الألوان الرئيسية ============
   
-  // الثيم الأزرق
-  static const Color bluePrimary = Color(0xFF2196F3);
-  static const Color blueDark = Color(0xFF1565C0);
-  static const Color blueLight = Color(0xFF64B5F6);
-  
-  // الثيم الأخضر
-  static const Color greenPrimary = Color(0xFF4CAF50);
-  static const Color greenDark = Color(0xFF2E7D32);
-  static const Color greenLight = Color(0xFF81C784);
-  
-  // الثيم الذهبي
-  static const Color goldPrimary = Color(0xFFD4AF37);
+  // الثيم الذهبي (نهاري)
+  static const Color goldColor = Color(0xFFD4AF37);
+  static const Color goldLight = Color(0xFFE5C158);
   static const Color goldDark = Color(0xFFB8860B);
-  static const Color goldLight = Color(0xFFF5D675);
+  
+  // الثيم الداكن (أزرق داكن مائل للرمادي - Dark Blue Gray)
+  static const Color darkBlueGray = Color(0xFF1A2530);
+  static const Color darkBlueGrayLight = Color(0xFF2C3E50);
+  static const Color darkBlueGrayCard = Color(0xFF243447);
+  static const Color darkBlueGrayAccent = Color(0xFF3498DB);
   
   // ألوان عامة
   static const Color success = Color(0xFF00C853);
   static const Color error = Color(0xFFFF3D00);
   static const Color warning = Color(0xFFFFA000);
   
-  // خلفيات
-  static const Color darkBackground = Color(0xFF121212);
-  static const Color darkSurface = Color(0xFF1E1E1E);
-  static const Color darkCard = Color(0xFF2C2C2C);
-  
+  // ألوان الخلفيات للوضع النهاري
   static const Color lightBackground = Color(0xFFF5F7FA);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFF8F9FA);
 
-  // للتوافق مع الكود القديم
-  static const Color goldColor = goldPrimary;
-  
-  static const LinearGradient goldGradient = LinearGradient(
-    colors: [goldPrimary, goldLight],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+  // ============================================
+  // الثيم النهاري (ذهبي + أبيض)
+  // ============================================
+  static ThemeData get lightTheme => ThemeData(
+    fontFamily: 'Cairo',
+    brightness: Brightness.light,
+    primaryColor: goldColor,
+    scaffoldBackgroundColor: lightBackground,
+    useMaterial3: true,
+    
+    colorScheme: const ColorScheme.light(
+      primary: goldColor,
+      secondary: goldLight,
+      surface: lightSurface,
+      error: error,
+    ),
+    
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+      backgroundColor: lightSurface,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: Colors.black87,
+        letterSpacing: 1.5,
+      ),
+      iconTheme: IconThemeData(color: goldColor),
+    ),
+    
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: lightSurface,
+      selectedItemColor: goldColor,
+      unselectedItemColor: Colors.grey,
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
+    
+    cardTheme: CardTheme(
+      color: lightCard,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ),
+    
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: goldColor,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        textStyle: const TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16),
+      ),
+    ),
+    
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: goldColor,
+        side: const BorderSide(color: goldColor),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      ),
+    ),
+    
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: lightCard,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: const BorderSide(color: goldColor, width: 2),
+      ),
+      hintStyle: TextStyle(
+        color: Colors.grey[500],
+        fontFamily: 'Cairo',
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+    ),
+    
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.black87,
+      ),
+      headlineMedium: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.black87,
+      ),
+      titleLarge: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Colors.black87,
+      ),
+      bodyLarge: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 16,
+        color: Colors.black87,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 14,
+        color: Colors.black54,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 12,
+        color: Colors.grey,
+      ),
+    ),
+    
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return goldColor;
+        return Colors.grey;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return goldColor.withOpacity(0.5);
+        return Colors.grey.withOpacity(0.3);
+      }),
+    ),
+    
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: goldColor,
+    ),
+    
+    tabBarTheme: const TabBarTheme(
+      labelColor: goldColor,
+      unselectedLabelColor: Colors.grey,
+      indicatorColor: goldColor,
+    ),
+    
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: goldColor,
+      foregroundColor: Colors.white,
+    ),
   );
 
-  // ============ الثيم الأزرق ============
-  static ThemeData get blueTheme {
-    return _buildTheme(
-      primaryColor: bluePrimary,
-      secondaryColor: blueDark,
-      brightness: Brightness.light,
-      background: lightBackground,
-      surface: lightSurface,
-      card: lightCard,
-      textColor: const Color(0xFF1E293B),
-      textSecondary: const Color(0xFF64748B),
-    );
-  }
-
-  // ============ الثيم الأخضر ============
-  static ThemeData get greenTheme {
-    return _buildTheme(
-      primaryColor: greenPrimary,
-      secondaryColor: greenDark,
-      brightness: Brightness.light,
-      background: const Color(0xFFE8F5E9),
-      surface: Colors.white,
-      card: const Color(0xFFF1F8E9),
-      textColor: const Color(0xFF1E293B),
-      textSecondary: const Color(0xFF64748B),
-    );
-  }
-
-  // ============ الثيم الذهبي ============
-  static ThemeData get goldTheme {
-    return _buildTheme(
-      primaryColor: goldPrimary,
-      secondaryColor: goldDark,
-      brightness: Brightness.light,
-      background: lightBackground,
-      surface: lightSurface,
-      card: lightCard,
-      textColor: const Color(0xFF1E293B),
-      textSecondary: const Color(0xFF64748B),
-    );
-  }
-
-  // ============ الثيم الداكن ============
-  static ThemeData get darkTheme {
-    return _buildTheme(
-      primaryColor: goldPrimary,
-      secondaryColor: goldDark,
-      brightness: Brightness.dark,
-      background: darkBackground,
-      surface: darkSurface,
-      card: darkCard,
-      textColor: Colors.white,
-      textSecondary: Colors.grey[400]!,
-    );
-  }
-
-  // ============ دالة بناء الثيم ============
-  static ThemeData _buildTheme({
-    required Color primaryColor,
-    required Color secondaryColor,
-    required Brightness brightness,
-    required Color background,
-    required Color surface,
-    required Color card,
-    required Color textColor,
-    required Color textSecondary,
-  }) {
-    final isDark = brightness == Brightness.dark;
+  // ============================================
+  // الثيم الداكن (أزرق داكن مائل للرمادي - Dark Blue Gray)
+  // ============================================
+  static ThemeData get darkTheme => ThemeData(
+    fontFamily: 'Cairo',
+    brightness: Brightness.dark,
+    primaryColor: darkBlueGrayAccent,
+    scaffoldBackgroundColor: darkBlueGray,
+    useMaterial3: true,
     
-    return ThemeData(
-      useMaterial3: true,
-      brightness: brightness,
-      primaryColor: primaryColor,
-      scaffoldBackgroundColor: background,
-      cardColor: card,
-      fontFamily: 'Changa',
-      
-      colorScheme: ColorScheme(
-        brightness: brightness,
-        primary: primaryColor,
-        onPrimary: isDark ? Colors.black : Colors.white,
-        secondary: secondaryColor,
-        onSecondary: isDark ? Colors.black : Colors.white,
-        error: error,
-        onError: Colors.white,
-        surface: surface,
-        onSurface: textColor,
-        background: background,
-        onBackground: textColor,
+    colorScheme: const ColorScheme.dark(
+      primary: darkBlueGrayAccent,
+      secondary: darkBlueGrayAccent,
+      surface: darkBlueGrayCard,
+      error: error,
+    ),
+    
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+        letterSpacing: 1.5,
       ),
-      
-      appBarTheme: AppBarTheme(
-        backgroundColor: surface,
-        foregroundColor: textColor,
-        elevation: 0,
-        centerTitle: true,
-        titleTextStyle: GoogleFonts.changa(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: textColor,
-        ),
-        iconTheme: IconThemeData(color: primaryColor),
+      iconTheme: IconThemeData(color: darkBlueGrayAccent),
+    ),
+    
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: darkBlueGrayCard,
+      selectedItemColor: darkBlueGrayAccent,
+      unselectedItemColor: Colors.grey,
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
+    
+    cardTheme: CardTheme(
+      color: darkBlueGrayCard,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
       ),
-      
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: surface,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: textSecondary,
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
+    ),
+    
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: darkBlueGrayAccent,
+        foregroundColor: Colors.white,
+        elevation: 4,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        textStyle: const TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16),
       ),
-      
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
-          foregroundColor: isDark ? Colors.black : Colors.white,
-          elevation: 2,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          textStyle: GoogleFonts.changa(fontWeight: FontWeight.bold),
-        ),
+    ),
+    
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: darkBlueGrayAccent,
+        side: const BorderSide(color: darkBlueGrayAccent),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
-      
-      cardTheme: CardTheme(
-        color: card,
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ),
+    
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: darkBlueGrayCard,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
       ),
-      
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: isDark ? darkCard : Colors.grey[50],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: primaryColor, width: 2),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
       ),
-      
-      textTheme: TextTheme(
-        titleLarge: GoogleFonts.changa(fontSize: 16, fontWeight: FontWeight.w600, color: textColor),
-        titleMedium: GoogleFonts.changa(fontSize: 14, fontWeight: FontWeight.w600, color: textColor),
-        bodyLarge: GoogleFonts.changa(fontSize: 16, color: textColor),
-        bodyMedium: GoogleFonts.changa(fontSize: 14, color: textColor),
-        bodySmall: GoogleFonts.changa(fontSize: 12, color: textSecondary),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: const BorderSide(color: darkBlueGrayAccent, width: 2),
       ),
-      
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: primaryColor,
-        foregroundColor: isDark ? Colors.black : Colors.white,
+      hintStyle: const TextStyle(
+        color: Colors.grey,
+        fontFamily: 'Cairo',
       ),
-      
-      progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: primaryColor,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+    ),
+    
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
       ),
-      
-      tabBarTheme: TabBarTheme(
-        labelColor: primaryColor,
-        unselectedLabelColor: textSecondary,
-        indicatorColor: primaryColor,
+      headlineMedium: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
       ),
-      
-      switchTheme: SwitchThemeData(
-        thumbColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) return primaryColor;
-          return Colors.grey;
-        }),
-        trackColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) return primaryColor.withOpacity(0.5);
-          return Colors.grey.withOpacity(0.3);
-        }),
+      titleLarge: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
       ),
-    );
-  }
+      bodyLarge: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 16,
+        color: Colors.white,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 14,
+        color: Colors.white70,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: 'Cairo',
+        fontSize: 12,
+        color: Colors.grey,
+      ),
+    ),
+    
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return darkBlueGrayAccent;
+        return Colors.grey;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return darkBlueGrayAccent.withOpacity(0.5);
+        return Colors.grey.withOpacity(0.3);
+      }),
+    ),
+    
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: darkBlueGrayAccent,
+    ),
+    
+    tabBarTheme: const TabBarTheme(
+      labelColor: darkBlueGrayAccent,
+      unselectedLabelColor: Colors.grey,
+      indicatorColor: darkBlueGrayAccent,
+    ),
+    
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: darkBlueGrayAccent,
+      foregroundColor: Colors.white,
+    ),
+  );
 
   // ============ دوال مساعدة ============
   static Color getTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
         ? Colors.white 
-        : const Color(0xFF1E293B);
+        : Colors.black87;
   }
 
   static Color getSecondaryTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? Colors.grey[400]! 
-        : const Color(0xFF64748B);
+        ? Colors.white70 
+        : Colors.black54;
   }
 
   static Color getCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? darkCard 
+        ? darkBlueGrayCard 
         : lightCard;
   }
 
   static Color getBackgroundColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? darkBackground 
+        ? darkBlueGray 
         : lightBackground;
   }
   
   static Color getSurfaceColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? darkSurface 
+        ? darkBlueGrayCard 
         : lightSurface;
   }
 }

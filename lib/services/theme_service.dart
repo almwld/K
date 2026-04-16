@@ -3,41 +3,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
 
 enum AppThemeMode {
-  blue,    // الوضع الأزرق
-  green,   // الوضع الأخضر
-  gold,    // الوضع الذهبي
-  dark,    // الوضع الداكن (ليلي)
+  light,  // نهاري (ذهبي + أبيض)
+  dark,   // ليلي (أزرق داكن مائل للرمادي)
 }
 
 class ThemeService {
   static const String _themeModeKey = 'app_theme_mode';
   
   static final Map<AppThemeMode, String> modeNames = {
-    AppThemeMode.blue: 'أزرق',
-    AppThemeMode.green: 'أخضر',
-    AppThemeMode.gold: 'ذهبي',
+    AppThemeMode.light: 'نهاري',
     AppThemeMode.dark: 'داكن',
   };
   
   static final Map<AppThemeMode, IconData> modeIcons = {
-    AppThemeMode.blue: Icons.water_drop,
-    AppThemeMode.green: Icons.eco,
-    AppThemeMode.gold: Icons.star,
+    AppThemeMode.light: Icons.light_mode,
     AppThemeMode.dark: Icons.dark_mode,
   };
   
   static final Map<AppThemeMode, Color> primaryColors = {
-    AppThemeMode.blue: const Color(0xFF2196F3),
-    AppThemeMode.green: const Color(0xFF4CAF50),
-    AppThemeMode.gold: const Color(0xFFD4AF37),
-    AppThemeMode.dark: const Color(0xFFD4AF37),
+    AppThemeMode.light: AppTheme.goldColor,
+    AppThemeMode.dark: AppTheme.darkBlueGrayAccent,
   };
   
   static final Map<AppThemeMode, String> descriptions = {
-    AppThemeMode.blue: 'منعش وحيوي - مثالي للاستخدام اليومي',
-    AppThemeMode.green: 'طبيعي ومريح للعين - مناسب للقراءة',
-    AppThemeMode.gold: 'فاخر وأنيق - يعكس هوية المنصة',
-    AppThemeMode.dark: 'مريح في الإضاءة المنخفضة - موفر للبطارية',
+    AppThemeMode.light: 'ذهبي مع أبيض - مظهر كلاسيكي أنيق',
+    AppThemeMode.dark: 'أزرق داكن مائل للرمادي - مريح للعين',
   };
 
   static Future<void> saveThemeMode(AppThemeMode mode) async {
@@ -47,18 +37,14 @@ class ThemeService {
 
   static Future<AppThemeMode> getThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
-    final index = prefs.getInt(_themeModeKey) ?? 2; // افتراضي: ذهبي
+    final index = prefs.getInt(_themeModeKey) ?? 1; // افتراضي: داكن
     return AppThemeMode.values[index];
   }
 
   static ThemeData getThemeData(AppThemeMode mode) {
     switch (mode) {
-      case AppThemeMode.blue:
-        return AppTheme.blueTheme;
-      case AppThemeMode.green:
-        return AppTheme.greenTheme;
-      case AppThemeMode.gold:
-        return AppTheme.goldTheme;
+      case AppThemeMode.light:
+        return AppTheme.lightTheme;
       case AppThemeMode.dark:
         return AppTheme.darkTheme;
     }

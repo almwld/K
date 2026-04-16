@@ -3,7 +3,7 @@ import '../services/theme_service.dart';
 import '../theme/app_theme.dart';
 
 class ThemeManager extends ChangeNotifier {
-  AppThemeMode _currentMode = AppThemeMode.gold;
+  AppThemeMode _currentMode = AppThemeMode.dark;
   
   AppThemeMode get currentMode => _currentMode;
   String get modeName => ThemeService.modeNames[_currentMode]!;
@@ -30,10 +30,10 @@ class ThemeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  // تغيير إلى الوضع التالي
-  Future<void> cycleTheme() async {
-    final modes = AppThemeMode.values;
-    final nextIndex = (_currentMode.index + 1) % modes.length;
-    await setThemeMode(modes[nextIndex]);
+  Future<void> toggleTheme() async {
+    final newMode = _currentMode == AppThemeMode.light 
+        ? AppThemeMode.dark 
+        : AppThemeMode.light;
+    await setThemeMode(newMode);
   }
 }
