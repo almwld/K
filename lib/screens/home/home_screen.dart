@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String _selectedFilter = 'رائج';
   List<MarketItem> _displayItems = [];
   List<MarketItem> _featuredProducts = [];
-  List<MarketItem> _categories = [];
   final ScrollController _scrollController = ScrollController();
   bool _showAppBar = true;
   bool _showBottomBar = true;
@@ -38,6 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
     {'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800', 'title': 'عقارات فاخرة', 'subtitle': 'فلل وشقق', 'discount': 'خصم 30%'},
     {'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'title': 'إلكترونيات', 'subtitle': 'هواتف وكمبيوترات', 'discount': 'خصم 40%'},
     {'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800', 'title': 'مزادات حية', 'subtitle': 'سيارات وعقارات', 'discount': 'مزايدة الآن'},
+  ];
+
+  final List<Map<String, dynamic>> _categories = [
+    {'id': 'إلكترونيات', 'name': 'إلكترونيات', 'icon': Icons.electrical_services, 'color': 0xFF9C27B0},
+    {'id': 'سيارات', 'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFF4CAF50},
+    {'id': 'عقارات', 'name': 'عقارات', 'icon': Icons.house, 'color': 0xFF2196F3},
+    {'id': 'أزياء', 'name': 'أزياء', 'icon': Icons.checkroom, 'color': 0xFFE91E63},
+    {'id': 'مطاعم', 'name': 'مطاعم', 'icon': Icons.restaurant, 'color': 0xFFFF9800},
+    {'id': 'أثاث', 'name': 'أثاث', 'icon': Icons.weekend, 'color': 0xFF795548},
   ];
 
   @override
@@ -50,30 +58,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onScroll() {
     if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
       if (_showAppBar || _showBottomBar) {
-        setState(() {
-          _showAppBar = false;
-          _showBottomBar = false;
-        });
+        setState(() { _showAppBar = false; _showBottomBar = false; });
       }
     } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
       if (!_showAppBar || !_showBottomBar) {
-        setState(() {
-          _showAppBar = true;
-          _showBottomBar = true;
-        });
+        setState(() { _showAppBar = true; _showBottomBar = true; });
       }
     }
   }
 
   Future<void> _loadData() async {
-    // محاكاة تحميل البيانات
-    await Future.delayed(const Duration(seconds: 2));
-    
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
-      // استخدام MarketData الحقيقية
       _featuredProducts = MarketData.getTrending().take(6).toList();
       _displayItems = MarketData.getTrending();
-      _categories = MarketData.getAllItems().take(6).toList();
       _isLoading = false;
     });
   }
@@ -85,9 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
         case 'اكتشف':
           _displayItems = MarketData.getAllItems().take(25).toList();
           break;
-        case 'المتابعات':
-          _displayItems = MarketData.getAllItems().where((i) => i.isFavorite).toList();
-          break;
         case 'رائج':
           _displayItems = MarketData.getTrending();
           break;
@@ -97,15 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
         case 'الاخبار':
           _displayItems = MarketData.getNewArrivals();
           break;
-        case 'مولات':
-          _displayItems = MarketData.getBySection('مولات');
-          break;
-        case 'بقالة':
-          _displayItems = MarketData.getBySection('بقالات');
-          break;
-        case 'مزادات':
-          _displayItems = MarketData.getBySection('مزادات');
-          break;
         default:
           _displayItems = MarketData.getAllItems().take(25).toList();
       }
@@ -113,9 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onFavoriteToggle(MarketItem item) {
-    setState(() {
-      item.isFavorite = !item.isFavorite;
-    });
+    setState(() => item.isFavorite = !item.isFavorite);
   }
 
   @override
@@ -154,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         _isLoading ? const CarouselShimmer() : _buildCarousel(),
                         const SizedBox(height: 16),
                         _buildSectionHeader('الأقسام الرئيسية'),
-                        _isLoading ? _buildCategoriesShimmer() : _buildCategoriesFromData(),
+                        _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
                         const SizedBox(height: 24),
                         _buildSectionHeader('منتجات مميزة'),
                         _isLoading ? const ProductGridShimmer() : _buildFeaturedProductsGrid(),
@@ -270,18 +254,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())), child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)))]) );
   }
 
-  Widget _buildCategoriesFromData() {
-    final categories = [
-      {'id': 'electronics', 'name': 'إلكترونيات', 'icon': Icons.electrical_services, 'color': 0xFF9C27B0},
-      {'id': 'cars', 'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFF4CAF50},
-      {'id': 'real_estate', 'name': 'عقارات', 'icon': Icons.house, 'color': 0xFF2196F3},
-      {'id': 'fashion', 'name': 'أزياء', 'icon': Icons.checkroom, 'color': 0xFFE91E63},
-      {'id': 'furniture', 'name': 'أثاث', 'icon': Icons.weekend, 'color': 0xFF795548},
-      {'id': 'restaurants', 'name': 'مطاعم', 'icon': Icons.restaurant, 'color': 0xFFFF9800},
-    ];
-    
-    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: categories.length, itemBuilder: (context, index) {
-      final cat = categories[index];
+  Widget _buildCategories() {
+    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: _categories.length, itemBuilder: (context, index) {
+      final cat = _categories[index];
       return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CategoryProductsScreen(categoryId: cat['id'], categoryName: cat['name']))),
         child: Container(width: 80, margin: const EdgeInsets.symmetric(horizontal: 8), child: Column(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Color(cat['color']).withOpacity(0.1), shape: BoxShape.circle), child: Icon(cat['icon'], color: Color(cat['color']), size: 30)), const SizedBox(height: 8), Text(cat['name'], style: const TextStyle(fontSize: 12))])),
@@ -290,14 +265,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFeaturedProductsGrid() {
-    if (_featuredProducts.isEmpty) {
-      return const SizedBox(height: 200, child: Center(child: Text('لا توجد منتجات مميزة')));
-    }
+    if (_featuredProducts.isEmpty) return const SizedBox(height: 200, child: Center(child: Text('لا توجد منتجات')));
     
     return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.symmetric(horizontal: 12),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12),
       itemCount: _featuredProducts.length,
       itemBuilder: (context, index) {
@@ -328,28 +299,17 @@ class _HomeScreenState extends State<HomeScreen> {
 class CarouselShimmer extends StatelessWidget {
   const CarouselShimmer({super.key});
   @override
-  Widget build(BuildContext context) {
-    return Container(height: 180, margin: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(20)));
-  }
+  Widget build(BuildContext context) => Container(height: 180, margin: const EdgeInsets.symmetric(horizontal: 16), decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(20)));
 }
 
 class CategoryShimmer extends StatelessWidget {
   const CategoryShimmer({super.key});
   @override
-  Widget build(BuildContext context) {
-    return Container(width: 80, margin: const EdgeInsets.symmetric(horizontal: 8), child: Column(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle), child: const SizedBox(width: 30, height: 30)), const SizedBox(height: 8), Container(height: 10, width: 60, color: Colors.grey[300])]));
-  }
+  Widget build(BuildContext context) => Container(width: 80, margin: const EdgeInsets.symmetric(horizontal: 8), child: Column(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle), child: const SizedBox(width: 30, height: 30)), const SizedBox(height: 8), Container(height: 10, width: 60, color: Colors.grey[300])]));
 }
 
 class ProductGridShimmer extends StatelessWidget {
   const ProductGridShimmer({super.key});
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.all(12),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12),
-      itemCount: 6,
-      itemBuilder: (context, index) => Container(decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 130, color: Colors.grey[300]), Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 14, width: double.infinity, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 12, width: 80, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 16, width: 60, color: Colors.grey[300])]))])),
-    );
-  }
+  Widget build(BuildContext context) => GridView.builder(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.all(12), gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12), itemCount: 6, itemBuilder: (context, index) => Container(decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 130, color: Colors.grey[300]), Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 14, width: double.infinity, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 12, width: 80, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 16, width: 60, color: Colors.grey[300])]))]));
 }
