@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
-import '../models/product_model.dart';
-import 'ad_detail_screen.dart';
+import '../widgets/shimmer_image.dart';
+import 'product/product_detail_screen.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -12,63 +12,62 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  List<ProductModel> _favorites = [];
   bool _isLoading = true;
-  
+  List<Map<String, dynamic>> _favorites = [];
+
   @override
   void initState() {
     super.initState();
     _loadFavorites();
   }
-  
-  void _loadFavorites() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _favorites = sampleProducts.take(4).toList();
-        _isLoading = false;
-      });
+
+  Future<void> _loadFavorites() async {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      _favorites = [
+        {'id': '1', 'name': 'آيفون 15 برو', 'price': '4,500', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'category': 'إلكترونيات', 'store': 'إلكترونيات الحديثة'},
+        {'id': '2', 'name': 'تويوتا كامري 2024', 'price': '95,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', 'category': 'سيارات', 'store': 'معارض النخبة'},
+        {'id': '3', 'name': 'فيلا فاخرة', 'price': '2,500,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', 'category': 'عقارات', 'store': 'عقارات الماسة'},
+        {'id': '4', 'name': 'ثوب سعودي', 'price': '350', 'image': 'https://images.unsplash.com/photo-1593032465175-4810b1975170?w=400', 'category': 'أزياء', 'store': 'الأصيل للأزياء'},
+        {'id': '5', 'name': 'مندي لحم', 'price': '75', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'category': 'مطاعم', 'store': 'مطعم اليمن'},
+      ];
+      _isLoading = false;
     });
   }
-  
-  void _removeFavorite(int index) {
+
+  void _removeFavorite(String id) {
     setState(() {
-      _favorites.removeAt(index);
+      _favorites.removeWhere((item) => item['id'] == id);
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم الإزالة من المفضلة'), backgroundColor: Colors.red),
+      const SnackBar(content: Text('تمت إزالة المنتج من المفضلة'), backgroundColor: Colors.orange),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المفضلة'),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.goldColor))
           : _favorites.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.favorite_border, size: 100, color: AppTheme.goldColor.withOpacity(0.5)),
+                      Icon(Icons.favorite_border, size: 80, color: Colors.grey[400]),
                       const SizedBox(height: 16),
-                      const Text('لا توجد منتجات في المفضلة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('لا توجد منتجات في المفضلة', style: TextStyle(fontSize: 18, color: Colors.grey[600])),
                       const SizedBox(height: 8),
-                      Text('أضف منتجاتك المفضلة هنا', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: () => Navigator.pushNamed(context, '/all_ads'),
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
-                        child: const Text('تصفح المنتجات'),
-                      ),
+                      Text('أضف منتجاتك المفضلة من خلال التصفح', style: TextStyle(fontSize: 14, color: Colors.grey[500])),
                     ],
                   ),
                 )
               : GridView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.75,
@@ -78,54 +77,101 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   itemCount: _favorites.length,
                   itemBuilder: (context, index) {
                     final product = _favorites[index];
-                    return Stack(
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailScreen(adId: product.id))),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppTheme.getCardColor(context),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                                  child: Image.network(product.images.first, height: 120, width: double.infinity, fit: BoxFit.cover),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(product.title, maxLines: 1, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                      const SizedBox(height: 4),
-                                      Text('${product.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor)),
-                                      const SizedBox(height: 4),
-                                      Row(children: [const Icon(Icons.star, size: 12, color: Colors.amber), const SizedBox(width: 2), Text('${product.rating}')]),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 8, right: 8,
-                          child: GestureDetector(
-                            onTap: () => _removeFavorite(index),
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                              child: const Icon(Icons.close, color: Colors.white, size: 16),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
+                    return _buildFavoriteCard(product);
                   },
                 ),
+    );
+  }
+
+  Widget _buildFavoriteCard(Map<String, dynamic> product) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ProductDetailScreen(
+              productId: product['id'],
+              productName: product['name'],
+              storeName: product['store'],
+            ),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: ShimmerImage(
+                    imageUrl: product['image'],
+                    height: 130,
+                    width: double.infinity,
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () => _removeFavorite(product['id']),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)],
+                      ),
+                      child: const Icon(Icons.favorite, color: Colors.red, size: 18),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product['name'],
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    product['price'],
+                    style: TextStyle(
+                      color: AppTheme.goldColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: AppTheme.goldColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      product['category'],
+                      style: TextStyle(color: AppTheme.goldColor, fontSize: 10),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
