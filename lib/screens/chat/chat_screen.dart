@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../services/chat_service.dart';
-import '../../models/conversation_model.dart';
+import '../../models/chat_model.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 import 'chat_detail_screen.dart';
@@ -13,26 +14,26 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final ChatService _chatService = ChatService();
+  late ChatService _chatService;
   List<ConversationModel> _conversations = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadConversations();
+    _chatService = context.read<ChatService>();
+    _initializeChat();
   }
 
-  Future<void> _loadConversations() async {
-    await _chatService.init();
-    setState(() {
-      _conversations = [
-        ConversationModel(id: '1', name: 'الدعم الفني', lastMessage: 'كيف يمكنني مساعدتك؟', time: 'الآن', unreadCount: 0, avatar: '🛠️', isOnline: true),
-        ConversationModel(id: '2', name: 'فريق المبيعات', lastMessage: 'لدينا عرض خاص اليوم على الإلكترونيات', time: 'منذ ساعة', unreadCount: 2, avatar: '🛒', isOnline: true),
-        ConversationModel(id: '3', name: 'خدمة العملاء', lastMessage: 'شكراً لتواصلك مع فلكس يمن', time: 'أمس', unreadCount: 0, avatar: '📞', isOnline: false),
-        ConversationModel(id: '4', name: 'المساعد الذكي', lastMessage: 'مرحباً! أنا هنا لمساعدتك', time: 'منذ يومين', unreadCount: 0, avatar: '🤖', isOnline: true),
-      ];
-      _isLoading = false;
+  Future<void> _initializeChat() async {
+    await _chatService.initialize();
+    _chatService.conversationsStream.listen((conversations) {
+      if (mounted) {
+        setState(() {
+          _conversations = conversations;
+          _isLoading = false;
+        });
+      }
     });
   }
 
@@ -46,49 +47,154 @@ class _ChatScreenState extends State<ChatScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: AppTheme.goldColor))
           : _conversations.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
-                      const SizedBox(height: 16),
-                      Text('لا توجد محادثات', style: TextStyle(fontSize: 18, color: Colors.grey[600])),
-                      const SizedBox(height: 8),
-                      TextButton(onPressed: _loadConversations, child: const Text('تحديث')),
-                    ],
-                  ),
-                )
+              ? _buildEmptyState()
               : ListView.builder(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(12),
                   itemCount: _conversations.length,
                   itemBuilder: (context, index) {
-                    final conv = _conversations[index];
-                    return _buildConversationTile(conv);
+                    return _buildConversationCard(_conversations[index]);
                   },
                 ),
     );
   }
 
-  Widget _buildConversationTile(ConversationModel conv) {
-    return ListTile(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ChatDetailScreen(conversationId: conv.id, userName: conv.name))),
-      leading: Stack(
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(backgroundColor: AppTheme.goldColor.withOpacity(0.2), radius: 25, child: Text(conv.avatar, style: const TextStyle(fontSize: 20))),
-          if (conv.isOnline)
-            Positioned(bottom: 0, right: 0, child: Container(width: 12, height: 12, decoration: BoxDecoration(color: Colors.green, shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)))),
+          Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
+          const SizedBox(height: 16),
+          Text(
+            'لا توجد محادثات',
+            style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'ابدأ محادثة مع تاجر من خلال صفحة المنتج',
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+          ),
         ],
       ),
-      title: Row(
-        children: [
-          Expanded(child: Text(conv.name, style: const TextStyle(fontWeight: FontWeight.bold))),
-          Text(conv.time, style: TextStyle(fontSize: 11, color: Colors.grey[500])),
-        ],
-      ),
-      subtitle: Text(conv.lastMessage, maxLines: 1, overflow: TextOverflow.ellipsis),
-      trailing: conv.unreadCount > 0
-          ? Container(padding: const EdgeInsets.all(6), decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle), child: Text('${conv.unreadCount}', style: const TextStyle(color: Colors.white, fontSize: 12)))
-          : null,
     );
+  }
+
+  Widget _buildConversationCard(ConversationModel conversation) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ChatDetailScreen(conversation: conversation),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            // صورة المنتج أو الأفاتار
+            Stack(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        conversation.productImage ?? conversation.merchantAvatar,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                if (conversation.unreadCount > 0)
+                  Positioned(
+                    top: -5,
+                    right: -5,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '${conversation.unreadCount}',
+                        style: const TextStyle(color: Colors.white, fontSize: 10),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          conversation.merchantName,
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                      ),
+                      Text(
+                        _formatTime(conversation.lastMessageTime),
+                        style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  if (conversation.productName != null)
+                    Text(
+                      conversation.productName!,
+                      style: TextStyle(fontSize: 12, color: AppTheme.goldColor),
+                    ),
+                  const SizedBox(height: 4),
+                  Text(
+                    conversation.lastMessage,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: conversation.unreadCount > 0 ? Colors.black87 : Colors.grey[600],
+                      fontWeight: conversation.unreadCount > 0 ? FontWeight.w500 : FontWeight.normal,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatTime(DateTime time) {
+    final now = DateTime.now();
+    final difference = now.difference(time);
+    
+    if (difference.inDays > 0) {
+      return '${difference.inDays} يوم';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} ساعة';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} دقيقة';
+    } else {
+      return 'الآن';
+    }
   }
 }

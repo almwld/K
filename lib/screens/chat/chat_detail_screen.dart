@@ -1,60 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../services/chat_service.dart';
-import '../../models/chat_message.dart';
+import '../../models/chat_model.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  final String conversationId;
-  final String userName;
+  final ConversationModel conversation;
 
-  const ChatDetailScreen({super.key, required this.conversationId, required this.userName});
+  const ChatDetailScreen({super.key, required this.conversation});
 
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
-  final ChatService _chatService = ChatService();
+  late ChatService _chatService;
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  List<ChatMessage> _messages = [];
+  List<MessageModel> _messages = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _chatService = context.read<ChatService>();
     _loadMessages();
-    _chatService.messagesStream.listen((messages) {
-      setState(() {
-        _messages = messages;
-        _isLoading = false;
-      });
-      _scrollToBottom();
-    });
   }
 
   Future<void> _loadMessages() async {
-    final messages = await _chatService.getMessages(widget.conversationId);
-    setState(() {
-      _messages = messages;
-      _isLoading = false;
+    await _chatService.loadMessages(widget.conversation.id);
+    _chatService.messagesStream.listen((messages) {
+      if (mounted) {
+        setState(() {
+          _messages = messages;
+          _isLoading = false;
+        });
+        _scrollToBottom();
+      }
     });
-    _scrollToBottom();
   }
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
 
-  void _sendMessage() {
-    if (_messageController.text.trim().isEmpty) return;
-    _chatService.sendMessage(widget.conversationId, _messageController.text.trim());
+  Future<void> _sendMessage() async {
+    final content = _messageController.text.trim();
+    if (content.isEmpty) return;
+
     _messageController.clear();
+
+    await _chatService.sendMessage(
+      conversationId: widget.conversation.id,
+      content: content,
+      receiverId: widget.conversation.merchantId,
+    );
+
+    _scrollToBottom();
   }
 
   @override
@@ -63,9 +74,59 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: SimpleAppBar(title: widget.userName, actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.call, color: AppTheme.goldColor)), IconButton(onPressed: () {}, icon: const Icon(Icons.videocam, color: AppTheme.goldColor))]),
+      appBar: SimpleAppBar(
+        title: widget.conversation.merchantName,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.call, color: AppTheme.goldColor),
+          ),
+        ],
+      ),
       body: Column(
         children: [
+          // معلومات المنتج (إذا وجد)
+          if (widget.conversation.productName != null)
+            Container(
+              margin: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      widget.conversation.productImage!,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.conversation.productName!,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'محادثة بخصوص هذا المنتج',
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          
+          // قائمة الرسائل
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator(color: AppTheme.goldColor))
@@ -75,18 +136,63 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     itemCount: _messages.length,
                     itemBuilder: (context, index) {
                       final message = _messages[index];
-                      final isMe = message.senderId == 'user';
+                      final isMe = message.senderId == widget.conversation.customerId;
                       return _buildMessageBubble(message, isMe);
                     },
                   ),
           ),
-          _buildMessageInput(),
+          
+          // حقل الإدخال
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 5,
+                  offset: const Offset(0, -2),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: 'اكتب رسالتك...',
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    ),
+                    maxLines: null,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.goldColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    onPressed: _sendMessage,
+                    icon: const Icon(Icons.send, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildMessageBubble(ChatMessage message, bool isMe) {
+  Widget _buildMessageBubble(MessageModel message, bool isMe) {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -101,33 +207,50 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             bottomRight: Radius.circular(isMe ? 5 : 20),
           ),
         ),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.75,
+        ),
         child: Column(
           crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Text(message.content, style: TextStyle(color: isMe ? Colors.white : Colors.black87)),
+            if (!isMe)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  message.senderName,
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                ),
+              ),
+            Text(
+              message.content,
+              style: TextStyle(
+                color: isMe ? Colors.white : Colors.black87,
+                fontSize: 14,
+              ),
+            ),
             const SizedBox(height: 4),
-            Text(_formatTime(message.timestamp), style: TextStyle(fontSize: 10, color: isMe ? Colors.white70 : Colors.grey[600])),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _formatTime(message.timestamp),
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: isMe ? Colors.white70 : Colors.grey[600],
+                  ),
+                ),
+                if (isMe) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    message.isRead ? Icons.done_all : Icons.done,
+                    size: 14,
+                    color: message.isRead ? Colors.blue : Colors.white70,
+                  ),
+                ],
+              ],
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildMessageInput() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Theme.of(context).cardColor, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5, offset: const Offset(0, -2))]),
-      child: Row(
-        children: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.attach_file, color: AppTheme.goldColor)),
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(hintText: 'اكتب رسالتك...', filled: true, fillColor: Colors.grey[100], border: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide.none), contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10)),
-            ),
-          ),
-          IconButton(onPressed: _sendMessage, icon: Container(padding: const EdgeInsets.all(8), decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle), child: const Icon(Icons.send, color: Colors.white, size: 18))),
-        ],
       ),
     );
   }
