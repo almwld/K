@@ -16,9 +16,9 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
   final MiniMaxService _aiService = MiniMaxService();
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final List<Map<String, dynamic>> _messages = [];
+  final List<ChatMessage> _messages = [];
   bool _isLoading = false;
-  List<Map<String, String>> _conversationHistory = [];
+  bool _isTyping = false;
 
   @override
   void initState() {
@@ -28,11 +28,11 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
   }
 
   void _addWelcomeMessage() {
-    _messages.add({
-      'content': 'مرحباً بك! أنا المساعد الذكي لمنصة فلكس يمن. كيف يمكنني مساعدتك اليوم؟ 😊',
-      'isUser': false,
-      'timestamp': DateTime.now(),
-    });
+    _messages.add(ChatMessage(
+      content: 'مرحباً بك! أنا المساعد الذكي لمنصة فلكس يمن. كيف يمكنني مساعدتك اليوم؟\n\nيمكنك سؤالي عن:\n• المنتجات والأسعار\n• تتبع الطلبات\n• طرق الدفع والتوصيل\n• سياسة الاسترجاع',
+      isUser: false,
+      timestamp: DateTime.now(),
+    ));
   }
 
   void _scrollToBottom() {
@@ -52,45 +52,46 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     if (message.isEmpty) return;
 
     setState(() {
-      _messages.add({
-        'content': message,
-        'isUser': true,
-        'timestamp': DateTime.now(),
-      });
-      _isLoading = true;
+      _messages.add(ChatMessage(
+        content: message,
+        isUser: true,
+        timestamp: DateTime.now(),
+      ));
+      _isTyping = true;
     });
 
     _messageController.clear();
     _scrollToBottom();
 
-    // تحديث سجل المحادثة
-    _conversationHistory.add({'role': 'user', 'content': message});
-
     try {
-      final response = await _aiService.chat(message, history: _conversationHistory);
+      final response = await _aiService.chat(message);
       
       setState(() {
-        _messages.add({
-          'content': response,
-          'isUser': false,
-          'timestamp': DateTime.now(),
-        });
-        _isLoading = false;
+        _isTyping = false;
+        _messages.add(ChatMessage(
+          content: response,
+          isUser: false,
+          timestamp: DateTime.now(),
+        ));
       });
-
-      _conversationHistory.add({'role': 'assistant', 'content': response});
+      
       _scrollToBottom();
     } catch (e) {
       setState(() {
-        _messages.add({
-          'content': 'عذراً، حدث خطأ في الاتصال. الرجاء المحاولة مرة أخرى.',
-          'isUser': false,
-          'timestamp': DateTime.now(),
-        });
-        _isLoading = false;
+        _isTyping = false;
+        _messages.add(ChatMessage(
+          content: 'عذراً، حدث خطأ في الاتصال. الرجاء المحاولة مرة أخرى.',
+          isUser: false,
+          timestamp: DateTime.now(),
+        ));
       });
       _scrollToBottom();
     }
+  }
+
+  void _useSuggestion(String suggestion) {
+    _messageController.text = suggestion;
+    _sendMessage();
   }
 
   @override
@@ -105,7 +106,13 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
         backgroundColor: themeManager.primaryColor,
         actions: [
           IconButton(
-            onPressed: _clearChat,
+            onPressed: () {
+              _aiService.clearHistory();
+              setState(() {
+                _messages.clear();
+                _addWelcomeMessage();
+              });
+            },
             icon: const Icon(Icons.refresh),
             tooltip: 'محادثة جديدة',
           ),
@@ -114,23 +121,23 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return _buildMessageBubble(
-                  message['content'],
-                  message['isUser'],
-                  themeManager.primaryColor,
-                );
-              },
-            ),
+            child: _messages.isEmpty
+                ? _buildSuggestions(themeManager.primaryColor)
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) {
+                      return _buildMessageBubble(
+                        _messages[index],
+                        themeManager.primaryColor,
+                      );
+                    },
+                  ),
           ),
-          if (_isLoading)
+          if (_isTyping)
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
                   const SizedBox(width: 16),
@@ -156,30 +163,97 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     );
   }
 
-  Widget _buildMessageBubble(String content, bool isUser, Color primaryColor) {
+  Widget _buildSuggestions(Color primaryColor) {
+    final suggestions = _aiService.getSuggestedQuestions();
+    
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: primaryColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.chat,
+                color: primaryColor,
+                size: 40,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'كيف يمكنني مساعدتك؟',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height": 8),
+            Text(
+              'اختر أحد الأسئلة الشائعة أو اكتب سؤالك',
+              style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            ...suggestions.map((suggestion) {
+              return Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: OutlinedButton(
+                  onPressed: () => _useSuggestion(suggestion),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    side: BorderSide(color: primaryColor.withOpacity(0.5)),
+                  ),
+                  child: Text(suggestion, style: TextStyle(color: primaryColor)),
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(ChatMessage message, Color primaryColor) {
     return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isUser ? primaryColor : Colors.grey[300],
+          color: message.isUser ? primaryColor : Colors.grey[300],
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(20),
             topRight: const Radius.circular(20),
-            bottomLeft: Radius.circular(isUser ? 20 : 5),
-            bottomRight: Radius.circular(isUser ? 5 : 20),
+            bottomLeft: Radius.circular(message.isUser ? 20 : 5),
+            bottomRight: Radius.circular(message.isUser ? 5 : 20),
           ),
         ),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
-        child: Text(
-          content,
-          style: TextStyle(
-            color: isUser ? Colors.white : Colors.black87,
-            fontSize: 14,
-          ),
+        child: Column(
+          crossAxisAlignment: message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.content,
+              style: TextStyle(
+                color: message.isUser ? Colors.white : Colors.black87,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _formatTime(message.timestamp),
+              style: TextStyle(
+                fontSize: 10,
+                color: message.isUser ? Colors.white70 : Colors.grey[600],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -211,10 +285,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                   borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
               maxLines: null,
               textInputAction: TextInputAction.send,
@@ -228,7 +299,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              onPressed: _isLoading ? null : _sendMessage,
+              onPressed: _isTyping ? null : _sendMessage,
               icon: const Icon(Icons.send, color: Colors.white),
             ),
           ),
@@ -237,12 +308,8 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     );
   }
 
-  void _clearChat() {
-    setState(() {
-      _messages.clear();
-      _conversationHistory.clear();
-      _addWelcomeMessage();
-    });
+  String _formatTime(DateTime time) {
+    return '${time.hour}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -251,4 +318,16 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     _scrollController.dispose();
     super.dispose();
   }
+}
+
+class ChatMessage {
+  final String content;
+  final bool isUser;
+  final DateTime timestamp;
+
+  ChatMessage({
+    required this.content,
+    required this.isUser,
+    required this.timestamp,
+  });
 }
