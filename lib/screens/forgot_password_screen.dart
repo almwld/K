@@ -99,7 +99,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height": 12),
+                    const SizedBox(height: 12),
                     Text(
                       _isSent 
                           ? 'تم إرسال رابط إعادة التعيين إلى رقمك'
