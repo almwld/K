@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/splash_screen.dart';
+import 'screens/home/main_navigation.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'providers/theme_manager.dart';
@@ -12,6 +14,15 @@ import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // تثبيت اتجاه التطبيق عمودي فقط
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  
+  // إخفاء شريط التنقل السفلي (للحصول على تجربة ملء الشاشة)
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   
   await dotenv.load();
   
@@ -51,10 +62,24 @@ class FlexYemenApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flex Yemen',
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,      // الوضع النهاري
-            darkTheme: AppTheme.darkTheme,   // الوضع الداكن (الكحلي)
-            themeMode: themeManager.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            home: const SplashScreen(),
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeManager.themeMode, // يدعم system
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const SplashScreen(),
+              '/home': (context) => const MainNavigation(),
+            },
+            // منع تكبير الخط من تخريب التصميم
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: const TextScaler.linear(1.0),
+                  boldText: false,
+                ),
+                child: child!,
+              );
+            },
           );
         },
       ),

@@ -288,3 +288,63 @@ class AppTheme {
         : lightSurface;
   }
 }
+
+// ============ تحسينات إضافية للثيم ============
+
+// إضافة تأثيرات حركية للكروت
+class AnimatedCard extends StatefulWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final double elevation;
+  final Color? color;
+  
+  const AnimatedCard({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.elevation = 4,
+    this.color,
+  });
+
+  @override
+  State<AnimatedCard> createState() => _AnimatedCardState();
+}
+
+class _AnimatedCardState extends State<AnimatedCard> {
+  bool _isPressed = false;
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _isPressed ? 0.98 : (_isHovered ? 1.02 : 1.0),
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeInOut,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: widget.color ?? AppTheme.getCardColor(context),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(_isHovered ? 0.2 : 0.1),
+                  blurRadius: _isHovered ? 12 : 8,
+                  offset: Offset(0, _isHovered ? 6 : 4),
+                ),
+              ],
+            ),
+            child: widget.child,
+          ),
+        ),
+      ),
+    );
+  }
+}
