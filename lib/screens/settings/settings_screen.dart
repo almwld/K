@@ -81,3 +81,11 @@ class SettingsScreen extends StatelessWidget {
 
 // أضف هذا في نهاية Column قبل SizedBox الأخير
 // const SocialMediaWidget(),
+
+// إضافة في قائمة الإعدادات
+  void _openThemeSelection(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ThemeSelectionScreen()),
+    );
+  }

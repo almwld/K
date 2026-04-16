@@ -14,26 +14,28 @@ class ThemeSelectionScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: const SimpleAppBar(title: 'اختر مظهر المنصة'),
-      body: GridView.builder(
+      body: ListView(
         padding: const EdgeInsets.all(20),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 1.1,
-        ),
-        itemCount: modes.length,
-        itemBuilder: (context, index) {
-          final mode = modes[index];
-          final isSelected = themeManager.currentMode == mode;
-          
-          return _buildThemeCard(
-            context: context,
-            mode: mode,
-            isSelected: isSelected,
-            onTap: () => themeManager.setThemeMode(mode),
-          );
-        },
+        children: [
+          Text(
+            'اختر المظهر الذي يناسبك',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          ...modes.map((mode) {
+            final isSelected = themeManager.currentMode == mode;
+            return _buildThemeCard(
+              context: context,
+              mode: mode,
+              isSelected: isSelected,
+              onTap: () => themeManager.setThemeMode(mode),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -48,25 +50,25 @@ class ThemeSelectionScreen extends StatelessWidget {
     
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? primaryColor : Colors.transparent,
-            width: 3,
+            width: isSelected ? 3 : 1,
           ),
           boxShadow: isSelected ? [
             BoxShadow(
-              color: primaryColor.withOpacity(0.3),
+              color: primaryColor.withOpacity(0.2),
               blurRadius: 15,
               spreadRadius: 2,
             ),
           ] : null,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
           children: [
             Container(
               width: 60,
@@ -85,23 +87,37 @@ class ThemeSelectionScreen extends StatelessWidget {
                 size: 30,
               ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              ThemeService.modeNames[mode]!,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? primaryColor : null,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ThemeService.modeNames[mode]!,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    ThemeService.descriptions[mode]!,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
               ),
             ),
             if (isSelected)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Icon(
-                  Icons.check_circle,
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
                   color: primaryColor,
-                  size: 20,
+                  shape: BoxShape.circle,
                 ),
+                child: const Icon(Icons.check, color: Colors.white, size: 18),
               ),
           ],
         ),
