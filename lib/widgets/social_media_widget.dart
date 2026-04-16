@@ -156,7 +156,7 @@ class SocialMediaWidget extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'تنبيه: لا تتعامل مع أي حسابات غير مذكورة في هذه القائمة لضمان أمان محفظتك',
+                    'تنبيه: لا تتعامل مع أي حسابات غير مذكورة في هذه القائمة للحفاظ على أمان حسابك بمنصتنا',
                     style: TextStyle(
                       fontSize: 11,
                       color: isDark ? Colors.grey[400] : Colors.grey[700],
