@@ -142,7 +142,7 @@ class NotificationService {
       title: message.notification?.title ?? 'إشعار جديد',
       body: message.notification?.body ?? '',
       type: message.data['type'] ?? 'general',
-      data: message.data,
+      data: Map<String, String>.from(message.data),
       createdAt: DateTime.now(),
       isRead: false,
     );
@@ -420,7 +420,7 @@ class NotificationModel {
   final String title;
   final String body;
   final String type;
-  final Map<String, String> data;
+  final Map<String, dynamic> data;
   final DateTime createdAt;
   bool isRead;
 
