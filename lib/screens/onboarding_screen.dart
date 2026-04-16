@@ -18,19 +18,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, dynamic>> _onboardingData = [
     {
       'title': 'مرحباً بك في فلكس يمن',
-      'description': 'أول منصة يمنية تجمع بين التجارة الإلكترونية والمحفظة الرقمية في تطبيق واحد',
+      'description': 'أول منصة يمنية تجمع بين التجارة الإلكترونية والمحفظة الرقمية',
       'icon': Icons.shopping_bag,
       'color': 0xFFD4AF37,
     },
     {
       'title': 'تسوق بكل سهولة',
-      'description': 'تصفح آلاف المنتجات من مختلف الفئات وأضفها إلى سلة التسوق بضغطة زر',
+      'description': 'تصفح آلاف المنتجات من مختلف الفئات وأضفها إلى سلة التسوق',
       'icon': Icons.search,
       'color': 0xFF4CAF50,
     },
     {
       'title': 'محفظة رقمية متكاملة',
-      'description': 'حول الأموال، ادفع الفواتير، واشحن الرصيد بسهولة وأمان تام',
+      'description': 'حول الأموال، ادفع الفواتير، واشحن الرصيد بسهولة وأمان',
       'icon': Icons.account_balance_wallet,
       'color': 0xFF2196F3,
     },

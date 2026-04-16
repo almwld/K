@@ -48,14 +48,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     if (!mounted) return;
 
-    // إذا لم يشاهد الـ onboarding، اعرضه أولاً
+    // إذا لم يشاهد الـ onboarding من قبل، اعرضه أولاً
     if (!onboardingSeen) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const OnboardingScreen()),
       );
     } else {
-      // مباشرة إلى الواجهة الرئيسية
+      // إذا شاهده من قبل، اذهب مباشرة للواجهة الرئيسية
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const MainNavigation()),
