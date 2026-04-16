@@ -25,7 +25,10 @@ class _AdminSecretButtonState extends State<AdminSecretButton> {
     
     if (_tapCount >= 5) {
       _tapCount = 0;
-      Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminSecretScreen()));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const AdminSecretScreen()),
+      );
     }
   }
 

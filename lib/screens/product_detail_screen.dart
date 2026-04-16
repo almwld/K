@@ -18,7 +18,7 @@ class ProductDetailScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: SimpleAppBar(title: productName ?? 'تفاصيل المنتج'),
       body: Center(
         child: Column(

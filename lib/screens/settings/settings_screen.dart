@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الإعدادات'),
       body: ListView(
         children: [

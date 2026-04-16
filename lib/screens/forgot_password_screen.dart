@@ -60,7 +60,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: AppBar(
         title: const Text('نسيت كلمة المرور'),
         backgroundColor: Colors.transparent,
@@ -132,7 +132,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                      fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
