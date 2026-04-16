@@ -251,8 +251,8 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        labelText: 'رقم الجوال',
-                        hintText: 'مثال: 777123456',
+                        labelText: 'رقم الجوال أو البريد الإلكتروني',
+                        hintText: 'سجل رقمك أو بريدك الإلكتروني',
                         prefixIcon: const Icon(Icons.phone, color: AppTheme.goldColor),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),

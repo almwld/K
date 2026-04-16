@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import 'register_screen.dart';
@@ -15,12 +17,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
   
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  String _userType = 'customer'; // 'customer' or 'merchant'
+  String _userType = 'customer';
   
   late TabController _tabController;
 
@@ -37,10 +39,28 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _identifierController.dispose();
     _passwordController.dispose();
     _tabController.dispose();
     super.dispose();
+  }
+
+  bool _isPhoneNumber(String input) {
+    return RegExp(r'^[0-9]{9,15}$').hasMatch(input);
+  }
+
+  bool _isEmail(String input) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
+  }
+
+  String? _validateIdentifier(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'الرجاء إدخال رقم الجوال أو البريد الإلكتروني';
+    }
+    if (!_isPhoneNumber(value) && !_isEmail(value)) {
+      return 'الرجاء إدخال رقم جوال صحيح أو بريد إلكتروني صحيح';
+    }
+    return null;
   }
 
   Future<void> _handleLogin() async {
@@ -50,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
     final authProvider = context.read<AuthProvider>();
     final success = await authProvider.signIn(
-      _phoneController.text.trim(),
+      _identifierController.text.trim(),
       _passwordController.text,
     );
 
@@ -70,6 +90,20 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+
+  Future<void> _openWhatsApp() async {
+    const url = 'https://wa.me/967777777777';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    }
+  }
+
+  Future<void> _callTollFree() async {
+    const url = 'tel:8001234567';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     }
   }
 
@@ -134,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               
               const SizedBox(height: 40),
               
-              // User Type Tabs (Customer / Merchant)
+              // User Type Tabs
               Container(
                 decoration: BoxDecoration(
                   color: isDark ? AppTheme.darkCard : Colors.grey[100],
@@ -170,14 +204,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Phone Number Field
+                    // Phone/Email Field
                     TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
+                      controller: _identifierController,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        labelText: 'رقم الجوال',
-                        hintText: 'مثال: 777123456',
-                        prefixIcon: const Icon(Icons.phone, color: AppTheme.goldColor),
+                        labelText: 'رقم الجوال أو البريد الإلكتروني',
+                        hintText: 'سجل رقمك أو بريدك الإلكتروني',
+                        prefixIcon: const Icon(Icons.person_outline, color: AppTheme.goldColor),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide.none,
@@ -185,15 +219,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         filled: true,
                         fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال رقم الجوال';
-                        }
-                        if (value.length < 9) {
-                          return 'رقم الجوال غير صحيح';
-                        }
-                        return null;
-                      },
+                      validator: _validateIdentifier,
                     ),
                     
                     const SizedBox(height: 16),
@@ -204,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'كلمة المرور',
-                        prefixIcon: const Icon(Icons.lock, color: AppTheme.goldColor),
+                        prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.goldColor),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -314,26 +340,49 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 ),
               ),
               
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
               
-              // Footer
-              Center(
-                child: Column(
+              // Footer with SVG Icons
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(color: Colors.grey[300]!),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      'الرقم المجاني: 800-123-4567',
-                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    // WhatsApp
+                    _buildFooterItem(
+                      iconPath: 'assets/icons/svg/whatsapp.svg',
+                      label: 'واتساب',
+                      onTap: _openWhatsApp,
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('نقاط الخدمة', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
-                        const SizedBox(width: 16),
-                        Container(width: 4, height: 4, decoration: BoxDecoration(color: Colors.grey[400], shape: BoxShape.circle)),
-                        const SizedBox(width: 16),
-                        Text('خدمة العملاء', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
-                      ],
+                    
+                    // Service Points
+                    _buildFooterItem(
+                      iconPath: 'assets/icons/svg/service_points.svg',
+                      label: 'نقاط الخدمة',
+                      onTap: () {
+                        // Navigate to service points
+                      },
+                    ),
+                    
+                    // Toll Free
+                    _buildFooterItem(
+                      iconPath: 'assets/icons/svg/toll_free.svg',
+                      label: '800 123 4567',
+                      onTap: _callTollFree,
+                    ),
+                    
+                    // Email
+                    _buildFooterItem(
+                      iconPath: 'assets/icons/svg/email.svg',
+                      label: 'الدعم الفني',
+                      onTap: () {
+                        // Open email
+                      },
                     ),
                   ],
                 ),
@@ -341,6 +390,34 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFooterItem({
+    required String iconPath,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            iconPath,
+            width: 28,
+            height: 28,
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
       ),
     );
   }
