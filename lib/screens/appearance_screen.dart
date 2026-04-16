@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_manager.dart';
-import '../services/theme_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
-import 'theme_selection_screen.dart';
 
 class AppearanceScreen extends StatelessWidget {
   const AppearanceScreen({super.key});
@@ -11,78 +10,112 @@ class AppearanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeManager = context.watch<ThemeManager>();
-    
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المظهر'),
       body: ListView(
         children: [
           const SizedBox(height: 16),
           
-          // اختيار الثيم
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: themeManager.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(themeManager.modeIcon, color: themeManager.primaryColor),
+          // اختيار الوضع
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.getCardColor(context),
+              borderRadius: BorderRadius.circular(20),
             ),
-            title: const Text('مظهر المنصة'),
-            subtitle: Text(themeManager.modeName),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ThemeSelectionScreen()),
-              );
-            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'اختر مظهر التطبيق',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                
+                // نهاري
+                RadioListTile<int>(
+                  value: 0,
+                  groupValue: themeManager.isLightMode ? 0 : (themeManager.isDarkMode ? 1 : 2),
+                  onChanged: (value) => themeManager.setThemeModeIndex(0),
+                  title: const Text('الوضع النهاري'),
+                  subtitle: const Text('ذهبي مع أبيض - مظهر كلاسيكي'),
+                  secondary: const Icon(Icons.light_mode, color: AppTheme.goldColor),
+                ),
+                
+                // داكن
+                RadioListTile<int>(
+                  value: 1,
+                  groupValue: themeManager.isLightMode ? 0 : (themeManager.isDarkMode ? 1 : 2),
+                  onChanged: (value) => themeManager.setThemeModeIndex(1),
+                  title: const Text('الوضع الداكن'),
+                  subtitle: const Text('كحلي داكن - مريح للعين'),
+                  secondary: const Icon(Icons.dark_mode, color: AppTheme.navyGold),
+                ),
+                
+                // النظام
+                RadioListTile<int>(
+                  value: 2,
+                  groupValue: themeManager.isLightMode ? 0 : (themeManager.isDarkMode ? 1 : 2),
+                  onChanged: (value) => themeManager.setThemeModeIndex(2),
+                  title: const Text('وضع النظام'),
+                  subtitle: const Text('يتغير تلقائياً حسب إعدادات الجهاز'),
+                  secondary: Icon(Icons.settings_suggest, color: Colors.grey[600]),
+                ),
+              ],
+            ),
           ),
           
-          const Divider(),
+          const SizedBox(height: 20),
           
-          // الوضع الداكن (تبديل سريع)
-          SwitchListTile(
-            secondary: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: themeManager.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.dark_mode, color: Colors.grey),
+          // معاينة سريعة
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.getCardColor(context),
+              borderRadius: BorderRadius.circular(20),
             ),
-            title: const Text('الوضع الداكن'),
-            subtitle: Text(themeManager.isDarkMode ? 'مفعل' : 'غير مفعل'),
-            value: themeManager.isDarkMode,
-            onChanged: (_) {
-              // التبديل بين الداكن والذهبي
-              if (themeManager.isDarkMode) {
-                themeManager.setThemeMode(AppThemeMode.gold);
-              } else {
-                themeManager.setThemeMode(AppThemeMode.dark);
-              }
-            },
-            activeColor: themeManager.primaryColor,
-          ),
-          
-          const Divider(),
-          
-          // خيارات أخرى
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: themeManager.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.text_fields, color: Colors.grey),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'معاينة',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildPreviewButton('أساسي', AppTheme.getCardColor(context)),
+                    _buildPreviewButton('ذهبي', AppTheme.goldColor),
+                    _buildPreviewButton('أزرق', AppTheme.navyAccent),
+                  ],
+                ),
+              ],
             ),
-            title: const Text('حجم الخط'),
-            subtitle: const Text('متوسط'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {},
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPreviewButton(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color == AppTheme.goldColor ? Colors.white : Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
