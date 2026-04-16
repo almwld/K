@@ -95,3 +95,15 @@ flutter:
     - assets/images/products/
     - assets/icons/
     - assets/icons/svg/
+
+  # Firebase & Notifications
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.10
+  firebase_analytics: ^10.8.0
+  flutter_local_notifications: ^16.3.2
+
+  # Firebase & Notifications
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.10
+  firebase_analytics: ^10.8.0
+  flutter_local_notifications: ^16.3.2
