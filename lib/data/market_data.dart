@@ -1,90 +1,358 @@
 import '../models/market_item.dart';
 
 class MarketData {
-  // ========== جميع المنتجات (640+) ==========
-  static List<MarketItem> getAllItems() {
-    return [
-      // إلكترونيات (50 منتج)
-      MarketItem(category: 'إلكترونيات', name: 'آيفون 15 برو ماكس', imageUrl: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', price: 5200, change24h: 2.5, store: 'إلكترونيات الحديثة'),
-      MarketItem(category: 'إلكترونيات', name: 'سامسونج S24 الترا', imageUrl: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400', price: 4800, change24h: 1.8, store: 'سامسونج'),
-      MarketItem(category: 'إلكترونيات', name: 'ماك بوك برو M3', imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', price: 7200, change24h: 1.5, store: 'أبل ستور'),
-      MarketItem(category: 'إلكترونيات', name: 'آيباد برو 12.9', imageUrl: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400', price: 4200, change24h: 0.8, store: 'أبل ستور'),
-      MarketItem(category: 'إلكترونيات', name: 'سامسونج تاب S9', imageUrl: 'https://images.unsplash.com/photo-1585790050230-5dd28404ccb0?w=400', price: 3200, change24h: -0.5, store: 'سامسونج'),
-      MarketItem(category: 'إلكترونيات', name: 'ساعة أبل الترا 2', imageUrl: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=400', price: 3100, change24h: 1.2, store: 'أبل ستور'),
-      MarketItem(category: 'إلكترونيات', name: 'سماعات AirPods Pro', imageUrl: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400', price: 950, change24h: 0.5, store: 'أبل ستور'),
-      MarketItem(category: 'إلكترونيات', name: 'بلايستيشن 5', imageUrl: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400', price: 2200, change24h: 3.0, store: 'جرير'),
-      MarketItem(category: 'إلكترونيات', name: 'إكس بوكس سيريس X', imageUrl: 'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=400', price: 2100, change24h: 2.5, store: 'جرير'),
-      MarketItem(category: 'إلكترونيات', name: 'نينتندو سويتش', imageUrl: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400', price: 1300, change24h: 1.0, store: 'جرير'),
-      
-      // سيارات (50 منتج)
-      MarketItem(category: 'سيارات', name: 'تويوتا كامري 2024', imageUrl: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', price: 95000, change24h: 1.5, store: 'معارض النخبة'),
-      MarketItem(category: 'سيارات', name: 'هيونداي سوناتا', imageUrl: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400', price: 85000, change24h: 1.0, store: 'الوكيل المعتمد'),
-      MarketItem(category: 'سيارات', name: 'نيسان باترول', imageUrl: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400', price: 185000, change24h: 2.0, store: 'معارض النخبة'),
-      MarketItem(category: 'سيارات', name: 'لكزس LX600', imageUrl: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400', price: 380000, change24h: 3.5, store: 'معارض النخبة'),
-      MarketItem(category: 'سيارات', name: 'مرسيدس S-Class', imageUrl: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400', price: 450000, change24h: 2.8, store: 'الوكيل المعتمد'),
-      MarketItem(category: 'سيارات', name: 'بي ام دبليو X7', imageUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400', price: 420000, change24h: 2.2, store: 'بي ام دبليو'),
-      MarketItem(category: 'سيارات', name: 'أودي Q8', imageUrl: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=400', price: 350000, change24h: 1.8, store: 'أودي'),
-      MarketItem(category: 'سيارات', name: 'رنج روفر', imageUrl: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400', price: 480000, change24h: 4.0, store: 'لاند روفر'),
-      MarketItem(category: 'سيارات', name: 'بورش كايين', imageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400', price: 520000, change24h: 3.2, store: 'بورش'),
-      MarketItem(category: 'سيارات', name: 'لكزس ES', imageUrl: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400', price: 220000, change24h: 1.5, store: 'لكزس'),
-      
-      // عقارات (50 منتج)
-      MarketItem(category: 'عقارات', name: 'فيلا فاخرة', imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', price: 2500000, change24h: 5.0, store: 'عقارات الماسة'),
-      MarketItem(category: 'عقارات', name: 'شقة مفروشة', imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400', price: 2500, change24h: 1.0, store: 'تأجير شهري'),
-      MarketItem(category: 'عقارات', name: 'مكتب تجاري', imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400', price: 850000, change24h: 3.0, store: 'مكتب الأفق'),
-      MarketItem(category: 'عقارات', name: 'أرض سكنية', imageUrl: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400', price: 450000, change24h: 4.0, store: 'مكتب الأراضي'),
-      MarketItem(category: 'عقارات', name: 'بنتهاوس', imageUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400', price: 3800000, change24h: 6.0, store: 'عقارات الماسة'),
-      MarketItem(category: 'عقارات', name: 'استراحة', imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400', price: 1200000, change24h: 2.5, store: 'مكتب الأفق'),
-      MarketItem(category: 'عقارات', name: 'دور أرضي', imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400', price: 650000, change24h: 2.0, store: 'مكتب الأفق'),
-      MarketItem(category: 'عقارات', name: 'مزرعة', imageUrl: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400', price: 1800000, change24h: 3.5, store: 'مكتب الأراضي'),
-      MarketItem(category: 'عقارات', name: 'محل تجاري', imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400', price: 550000, change24h: 1.8, store: 'مكتب الأفق'),
-      MarketItem(category: 'عقارات', name: 'شقة للبيع', imageUrl: 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=400', price: 480000, change24h: 1.5, store: 'عقارات الماسة'),
-      
-      // أزياء (40 منتج)
-      MarketItem(category: 'أزياء', name: 'ثوب سعودي', imageUrl: 'https://images.unsplash.com/photo-1593032465175-4810b1975170?w=400', price: 350, change24h: 1.5, store: 'الأصيل للأزياء'),
-      MarketItem(category: 'أزياء', name: 'شماغ أحمر', imageUrl: 'https://images.unsplash.com/photo-1593032465175-4810b1975170?w=400', price: 120, change24h: 0.8, store: 'الأصيل للأزياء'),
-      MarketItem(category: 'أزياء', name: 'عباية سوداء', imageUrl: 'https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400', price: 450, change24h: 2.0, store: 'زهرة الموضة'),
-      MarketItem(category: 'أزياء', name: 'فستان سهرة', imageUrl: 'https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400', price: 650, change24h: 3.0, store: 'زهرة الموضة'),
-      MarketItem(category: 'أزياء', name: 'حذاء رياضي', imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400', price: 380, change24h: 2.5, store: 'نايكي'),
-      MarketItem(category: 'أزياء', name: 'شنطة يد', imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400', price: 550, change24h: 2.8, store: 'لويس فيتون'),
-      MarketItem(category: 'أزياء', name: 'ساعة يد', imageUrl: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400', price: 850, change24h: 3.5, store: 'كاسيو'),
-      MarketItem(category: 'أزياء', name: 'نظارة شمسية', imageUrl: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400', price: 280, change24h: 1.2, store: 'راي بان'),
-      MarketItem(category: 'أزياء', name: 'حزام جلد', imageUrl: 'https://images.unsplash.com/photo-1553062407-b9b8e1b3b0c3?w=400', price: 180, change24h: 0.8, store: 'غوتشي'),
-      MarketItem(category: 'أزياء', name: 'عطر رجالي', imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400', price: 380, change24h: 2.5, store: 'ديور'),
-      
-      // مطاعم (30 منتج)
-      MarketItem(category: 'مطاعم', name: 'مندي لحم', imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', price: 75, change24h: 2.5, store: 'مطعم اليمن'),
-      MarketItem(category: 'مطاعم', name: 'مضغوط دجاج', imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', price: 55, change24h: 1.8, store: 'مطعم اليمن'),
-      MarketItem(category: 'مطاعم', name: 'زربيان', imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', price: 65, change24h: 3.0, store: 'مطعم اليمن'),
-      MarketItem(category: 'مطاعم', name: 'برجر لحم', imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', price: 35, change24h: 1.5, store: 'برجر كنج'),
-      MarketItem(category: 'مطاعم', name: 'بيتزا', imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', price: 55, change24h: 2.0, store: 'بيتزا هت'),
-      MarketItem(category: 'مطاعم', name: 'شاورما', imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', price: 20, change24h: 0.8, store: 'الشاورمجي'),
-      MarketItem(category: 'مطاعم', name: 'كنافة', imageUrl: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400', price: 45, change24h: 2.5, store: 'حلويات الشام'),
-      MarketItem(category: 'مطاعم', name: 'قهوة عربية', imageUrl: 'https://images.unsplash.com/photo-1587734195342-5f9040bb4c46?w=400', price: 18, change24h: 1.0, store: 'مقهى التراث'),
-      MarketItem(category: 'مطاعم', name: 'عصير طازج', imageUrl: 'https://images.unsplash.com/photo-1600271886742-f49cdc7d7d67?w=400', price: 15, change24h: 0.5, store: 'عصائر الفواكه'),
-      MarketItem(category: 'مطاعم', name: 'كبسة', imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', price: 60, change24h: 2.2, store: 'مطعم الخليج'),
+  // قواعد صور متنوعة من مصادر مختلفة
+  static String _getImage(String type, int index) {
+    // استخدام مصادر متعددة للصور
+    const unsplash = 'https://images.unsplash.com/';
+    const pexels = 'https://images.pexels.com/photos/';
+    const pixabay = 'https://cdn.pixabay.com/photo/';
+    const placeholder = 'https://picsum.photos/';
+    
+    final images = [
+      '${unsplash}photo-1511707171634-5f897ff02aa9?w=400', // هاتف
+      '${unsplash}photo-1598327105666-5b89351aff97?w=400', // هاتف 2
+      '${unsplash}photo-1517336714731-489689fd1ca8?w=400', // لابتوب
+      '${unsplash}photo-1611186871348-b1ce696e52c9?w=400', // لابتوب 2
+      '${unsplash}photo-1585790050230-5dd28404ccb0?w=400', // تابلت
+      '${unsplash}photo-1544244015-0df4b3ffc6b0?w=400', // تابلت 2
+      '${unsplash}photo-1593359677879-a4bb92f829d1?w=400', // تلفزيون
+      '${unsplash}photo-1571175443880-49e1d25b2bc5?w=400', // ثلاجة
+      '${unsplash}photo-1626806787461-102c1bfaaea1?w=400', // غسالة
+      '${unsplash}photo-1583394838336-acd977736f90?w=400', // سماعات
+      '${unsplash}photo-1606811841689-23dfddce3e95?w=400', // بلايستيشن
+      '${unsplash}photo-1621259182978-fbf93132d53d?w=400', // إكس بوكس
+      '${unsplash}photo-1578303512597-81e6cc155b3e?w=400', // نينتندو
+      '${unsplash}photo-1516035069371-29a1b244cc32?w=400', // كاميرا
+      '${unsplash}photo-1621007947382-bb3c3994e3fb?w=400', // سيارة
+      '${unsplash}photo-1580273916550-e323be2ae537?w=400', // سيارة 2
+      '${unsplash}photo-1533473359331-0135ef1b58bf?w=400', // سيارة 3
+      '${unsplash}photo-1606664515524-ed2f786a0bd6?w=400', // سيارة 4
+      '${unsplash}photo-1618843479313-40f8afb4b4d8?w=400', // سيارة 5
+      '${unsplash}photo-1555215695-3004980ad54e?w=400', // سيارة 6
+      '${unsplash}photo-1560518883-ce09059eeffa?w=400', // فيلا
+      '${unsplash}photo-1522708323590-d24dbb6b0267?w=400', // شقة
+      '${unsplash}photo-1497366216548-37526070297c?w=400', // مكتب
+      '${unsplash}photo-1500382017468-9049fed747ef?w=400', // أرض
+      '${unsplash}photo-1593032465175-4810b1975170?w=400', // ثوب
+      '${unsplash}photo-1591369822096-ffd140ec948f?w=400', // عباية
+      '${unsplash}photo-1542291026-7eec264c27ff?w=400', // حذاء
+      '${unsplash}photo-1584917865442-de89df76afd3?w=400', // شنطة
+      '${unsplash}photo-1523170335258-f5ed11844a49?w=400', // ساعة
+      '${unsplash}photo-1541643600914-78b084683601?w=400', // عطر
+      '${unsplash}photo-1504674900247-0877df9cc836?w=400', // مندي
+      '${unsplash}photo-1568901346375-23c9450c58cd?w=400', // برجر
+      '${unsplash}photo-1587734195342-5f9040bb4c46?w=400', // قهوة
+      '${unsplash}photo-1587314168485-3236d6710814?w=400', // حلويات
+      '${unsplash}photo-1600271886742-f49cdc7d7d67?w=400', // عصير
+      '${placeholder}400/400?random=$index',
     ];
+    return images[index % images.length];
   }
-  
+
+  static List<MarketItem> getAllItems() {
+    final List<MarketItem> items = [];
+    
+    // ============================================
+    // إلكترونيات (50 منتج)
+    // ============================================
+    final electronics = [
+      'آيفون 15 برو ماكس', 'آيفون 15 برو', 'آيفون 15', 'آيفون 14 برو ماكس', 'آيفون 14',
+      'سامسونج S24 الترا', 'سامسونج S24 بلس', 'سامسونج S24', 'سامسونج S23 الترا', 'سامسونج S23',
+      'شاومي 14 برو', 'شاومي 14', 'شاومي 13T', 'هواوي P60 برو', 'هواوي ميت 60',
+      'جوجل بكسل 8 برو', 'جوجل بكسل 8', 'ون بلس 12', 'أوبو فايند X7', 'فيفو X100',
+      'ماك بوك برو 16', 'ماك بوك برو 14', 'ماك بوك إير 15', 'ماك بوك إير 13', 'ديل XPS 15',
+      'لينوفو ثينك باد', 'HP سبيكتر', 'آسوس ROG', 'مايكروسوفت سيرفس', 'إيسر سويفت',
+      'آيباد برو 12.9', 'آيباد برو 11', 'آيباد إير', 'آيباد ميني', 'سامسونج تاب S9',
+      'تلفزيون سامسونج 65', 'تلفزيون LG OLED', 'تلفزيون سوني 55', 'تلفزيون TCL 50', 'شاشة هايسنس 43',
+      'ثلاجة سامسونج', 'غسالة LG', 'مكيف سبليت', 'فرن كهربائي', 'مكنسة دايسون',
+      'سماعات أبل', 'سماعات سوني', 'سماعات JBL', 'سماعات بوز', 'سماعات مارشال',
+    ];
+    for (int i = 0; i < electronics.length; i++) {
+      items.add(MarketItem(
+        category: 'إلكترونيات',
+        name: electronics[i],
+        imageUrl: _getImage('electronics', i),
+        price: 1000 + (i * 500).toDouble(),
+        change24h: (i % 5 - 2).toDouble() + (i % 3) * 0.5,
+        store: i % 3 == 0 ? 'إلكترونيات الحديثة' : (i % 3 == 1 ? 'سامسونج' : 'جرير'),
+      ));
+    }
+
+    // ============================================
+    // سيارات (50 منتج)
+    // ============================================
+    final cars = [
+      'تويوتا كامري 2024', 'تويوتا كورولا 2024', 'تويوتا راف فور', 'تويوتا لاند كروزر', 'تويوتا هايلكس',
+      'هيونداي سوناتا', 'هيونداي النترا', 'هيونداي توسان', 'هيونداي سانتافي', 'هيونداي باليسيد',
+      'نيسان باترول', 'نيسان ألتيما', 'نيسان صني', 'نيسان كيكس', 'نيسان إكس تريل',
+      'لكزس LX600', 'لكزس ES350', 'لكزس RX350', 'لكزس GX460', 'لكزس LS500',
+      'مرسيدس S-Class', 'مرسيدس E-Class', 'مرسيدس C-Class', 'مرسيدس GLE', 'مرسيدس G-Class',
+      'بي ام دبليو X7', 'بي ام دبليو X5', 'بي ام دبليو الفئة السابعة', 'بي ام دبليو الفئة الخامسة', 'بي ام دبليو الفئة الثالثة',
+      'أودي Q8', 'أودي A8', 'أودي A6', 'أودي Q5', 'أودي e-tron',
+      'رنج روفر', 'رنج روفر سبورت', 'رنج روفر إيفوك', 'لاند روفر ديفندر', 'لاند روفر ديسكفري',
+      'بورش كايين', 'بورش ماكان', 'بورش باناميرا', 'بورش 911', 'بورش تايكان',
+      'كيا سبورتاج', 'كيا سورينتو', 'كيا K5', 'كيا K8', 'كيا EV6',
+    ];
+    for (int i = 0; i < cars.length; i++) {
+      items.add(MarketItem(
+        category: 'سيارات',
+        name: cars[i],
+        imageUrl: _getImage('cars', i + 50),
+        price: 50000 + (i * 15000).toDouble(),
+        change24h: (i % 6 - 2).toDouble() + (i % 4) * 0.8,
+        store: i % 3 == 0 ? 'معارض النخبة' : (i % 3 == 1 ? 'الوكيل المعتمد' : 'حراج السيارات'),
+      ));
+    }
+
+    // ============================================
+    // عقارات (40 منتج)
+    // ============================================
+    final realestate = [
+      'فيلا فاخرة بحمام سباحة', 'فيلا دورين', 'فيلا صغيرة', 'فيلا مودرن', 'فيلا كلاسيك',
+      'شقة مفروشة', 'شقة 3 غرف', 'شقة 4 غرف', 'شقة دوبلكس', 'بنتهاوس فاخر',
+      'بيت شعبي', 'دور أرضي', 'بيت مستقل', 'بيت تراثي', 'عمارة سكنية',
+      'مكتب تجاري', 'مكتب صغير', 'برج مكاتب', 'مكتب افتراضي', 'مساحة عمل مشتركة',
+      'أرض سكنية', 'أرض تجارية', 'أرض زراعية', 'أرض استثمارية', 'مزرعة',
+      'محل تجاري', 'مستودع', 'معرض سيارات', 'مطعم للإيجار', 'كافيه للبيع',
+      'استراحة', 'شاليه', 'منتجع', 'فندق', 'موتيل',
+      'عمارة تجارية', 'مجمع سكني', 'برج سكني', 'مدينة سكنية', 'مول تجاري',
+    ];
+    for (int i = 0; i < realestate.length; i++) {
+      items.add(MarketItem(
+        category: 'عقارات',
+        name: realestate[i],
+        imageUrl: _getImage('realestate', i + 100),
+        price: 200000 + (i * 50000).toDouble(),
+        change24h: (i % 5 - 1).toDouble() + (i % 3) * 1.2,
+        store: i % 3 == 0 ? 'عقارات الماسة' : (i % 3 == 1 ? 'مكتب الأفق' : 'مكتب الأراضي'),
+      ));
+    }
+
+    // ============================================
+    // أزياء وموضة (50 منتج)
+    // ============================================
+    final fashion = [
+      'ثوب سعودي', 'ثوب كويتي', 'ثوب إماراتي', 'ثوب قطري', 'ثوب عماني',
+      'شماغ أحمر', 'شماغ أبيض', 'شماغ كشميري', 'غترة', 'عقال',
+      'عباية سوداء', 'عباية ملونة', 'عباية مطرزة', 'عباية كتف', 'عباية كم',
+      'فستان سهرة', 'فستان زفاف', 'فستان كوكتيل', 'فستان صيفي', 'فستان شتوي',
+      'بلوزة قطن', 'بلوزة حرير', 'بلوزة دانتيل', 'تنورة طويلة', 'تنورة قصيرة',
+      'طقم ولادي', 'طقم بناتي', 'بيجامة أطفال', 'فستان طفلة', 'بدلة أطفال',
+      'حذاء رياضي', 'حذاء كلاسيك', 'صندل صيفي', 'جزمة شتوية', 'شبشب منزلي',
+      'شنطة يد', 'شنطة كتف', 'شنطة ظهر', 'محفظة جلد', 'محفظة رجالية',
+      'ساعة رجالية', 'ساعة نسائية', 'ساعة ذكية', 'ساعة كلاسيك', 'ساعة رياضية',
+      'نظارة شمسية', 'نظارة طبية', 'حزام جلد', 'ربطة عنق', 'أزرار أكمام',
+    ];
+    for (int i = 0; i < fashion.length; i++) {
+      items.add(MarketItem(
+        category: 'أزياء',
+        name: fashion[i],
+        imageUrl: _getImage('fashion', i + 150),
+        price: 50 + (i * 30).toDouble(),
+        change24h: (i % 4 - 1).toDouble() + (i % 5) * 0.5,
+        store: i % 3 == 0 ? 'الأصيل للأزياء' : (i % 3 == 1 ? 'زهرة الموضة' : 'عالم الأزياء'),
+      ));
+    }
+
+    // ============================================
+    // مطاعم ومقاهي (40 منتج)
+    // ============================================
+    final restaurants = [
+      'مندي لحم', 'مندي دجاج', 'مضغوط لحم', 'مضغوط دجاج', 'زربيان',
+      'كبسة لحم', 'كبسة دجاج', 'برياني', 'مقلوبة', 'منسف',
+      'برجر لحم', 'برجر دجاج', 'تشيز برجر', 'دبل برجر', 'فيليه برجر',
+      'بيتزا مارغريتا', 'بيتزا بيبروني', 'بيتزا خضار', 'بيتزا دجاج', 'بيتزا لحوم',
+      'شاورما لحم', 'شاورما دجاج', 'شاورما عربي', 'شاورما صاج', 'شاورما صاروخ',
+      'فلافل', 'حمص', 'متبل', 'تبولة', 'فتوش',
+      'كنافة', 'بقلاوة', 'أم علي', 'كيك الشوكولاتة', 'تشيز كيك',
+      'قهوة عربية', 'قهوة تركية', 'شاي عدني', 'كابتشينو', 'لاتيه',
+      'عصير برتقال', 'عصير مانجو', 'عصير فراولة', 'كوكتيل', 'ليمونادة',
+    ];
+    for (int i = 0; i < restaurants.length; i++) {
+      items.add(MarketItem(
+        category: 'مطاعم',
+        name: restaurants[i],
+        imageUrl: _getImage('restaurants', i + 200),
+        price: 15 + (i * 5).toDouble(),
+        change24h: (i % 3).toDouble() + (i % 4) * 0.3,
+        store: i % 3 == 0 ? 'مطعم اليمن' : (i % 3 == 1 ? 'برجر كنج' : 'مطعم الخليج'),
+      ));
+    }
+
+    // ============================================
+    // مواد غذائية (50 منتج)
+    // ============================================
+    final groceries = [
+      'طماطم', 'خيار', 'بصل', 'بطاطس', 'جزر',
+      'تفاح', 'موز', 'برتقال', 'عنب', 'فراولة',
+      'صدر دجاج', 'فخذ دجاج', 'لحم عجل', 'لحم غنم', 'لحم مفروم',
+      'حليب طازج', 'حليب مبخر', 'جبن شيدر', 'جبن موزاريلا', 'بيض',
+      'أرز بسمتي', 'أرز مصري', 'سكر', 'عدس', 'فاصوليا',
+      'تونة', 'فول مدمس', 'حمص', 'معكرونة', 'اسباجيتي',
+      'فلفل أسود', 'كمون', 'كركم', 'قرفة', 'زنجبيل',
+      'كوكاكولا', 'بيبسي', 'سفن أب', 'ميرندا', 'عصير برتقال',
+      'كيت كات', 'أوريو', 'جالاكسي', 'سنيكرز', 'بسكويت دايجستف',
+      'خبز عربي', 'كرواسون', 'دونات', 'باتيه', 'كعك',
+    ];
+    for (int i = 0; i < groceries.length; i++) {
+      items.add(MarketItem(
+        category: 'مواد غذائية',
+        name: groceries[i],
+        imageUrl: _getImage('groceries', i + 250),
+        price: 5 + (i * 2).toDouble(),
+        change24h: (i % 3 - 1).toDouble() * 0.5,
+        store: i % 3 == 0 ? 'أسواق المزرعة' : (i % 3 == 1 ? 'بقالة العمدة' : 'التموينات'),
+      ));
+    }
+
+    // ============================================
+    // أثاث ومفروشات (30 منتج)
+    // ============================================
+    final furniture = [
+      'كنبة زاوية', 'كنبة سرير', 'طاولة طعام', 'سرير مزدوج', 'سرير فردي',
+      'خزانة ملابس', 'مكتب دراسة', 'كرسي مكتب', 'طاولة اجتماعات', 'خزانة ملفات',
+      'رف كتب', 'ستاند شاشة', 'لوحة جدارية', 'ساعة حائط', 'مرآة كبيرة',
+      'مزهرية زجاج', 'شمعة معطرة', 'ستارة غرفة', 'سجادة صلاة', 'مفرش سرير',
+      'مخدة نوم', 'لحاف شتوي', 'غطاء صيفي', 'شرشف سرير', 'بطانية',
+      'طاولة قهوة', 'طاولة تلفزيون', 'كونسول', 'دولاب مطبخ', 'جزامة',
+    ];
+    for (int i = 0; i < furniture.length; i++) {
+      items.add(MarketItem(
+        category: 'أثاث',
+        name: furniture[i],
+        imageUrl: _getImage('furniture', i + 300),
+        price: 200 + (i * 80).toDouble(),
+        change24h: (i % 4 - 1).toDouble() + (i % 3) * 0.8,
+        store: i % 3 == 0 ? 'أثاث المنزل' : (i % 3 == 1 ? 'أثاث المكاتب' : 'ديكورات منزلية'),
+      ));
+    }
+
+    // ============================================
+    // صحة وجمال (40 منتج)
+    // ============================================
+    final health = [
+      'بنادول', 'فيتامين سي', 'فيتامين د', 'أوميغا 3', 'ملتي فيتامين',
+      'جهاز ضغط', 'جهاز سكر', 'ميزان حرارة', 'كرسي متحرك', 'عكاز طبي',
+      'شامبو', 'بلسم', 'صابون', 'معجون أسنان', 'مزيل عرق',
+      'كريم مرطب', 'واقي شمس', 'غسول وجه', 'مقشر', 'تونر',
+      'زيت شعر', 'صبغة شعر', 'سيروم شعر', 'فرشاة شعر', 'مجفف شعر',
+      'عطر رجالي', 'عطر نسائي', 'عطر عود', 'بخور', 'معطر جو',
+      'أحمر شفاه', 'كريم أساس', 'ماسكارا', 'ظلال عيون', 'بودرة وجه',
+      'مقص أظافر', 'مبرد أظافر', 'فرشاة أسنان', 'خيط أسنان', 'غسول فم',
+    ];
+    for (int i = 0; i < health.length; i++) {
+      items.add(MarketItem(
+        category: 'صحة وجمال',
+        name: health[i],
+        imageUrl: _getImage('health', i + 350),
+        price: 20 + (i * 15).toDouble(),
+        change24h: (i % 3).toDouble() * 0.5,
+        store: i % 3 == 0 ? 'صيدلية النهدي' : (i % 3 == 1 ? 'عطور الشرق' : 'ماك'),
+      ));
+    }
+
+    // ============================================
+    // خدمات (20 منتج)
+    // ============================================
+    final services = [
+      'سباكة', 'كهرباء', 'تكييف', 'دهانات', 'نقل أثاث',
+      'تصميم مواقع', 'تطبيقات جوال', 'تسويق إلكتروني', 'تصميم جرافيك', 'كتابة محتوى',
+      'غسيل سيارات', 'تلميع سيارات', 'صيانة دورية', 'فحص كمبيوتر', 'توضيب مكينة',
+      'تنظيف منازل', 'تنظيف مكاتب', 'تنظيف واجهات', 'مكافحة حشرات', 'تعقيم',
+    ];
+    for (int i = 0; i < services.length; i++) {
+      items.add(MarketItem(
+        category: 'خدمات',
+        name: services[i],
+        imageUrl: _getImage('services', i + 400),
+        price: 100 + (i * 50).toDouble(),
+        change24h: (i % 4 - 2).toDouble() * 0.5,
+        store: 'خدماتي',
+      ));
+    }
+
+    // ============================================
+    // مزادات (10 منتج)
+    // ============================================
+    final auctions = [
+      'مزاد سيارات', 'مزاد عقارات', 'مزاد إلكترونيات', 'مزاد أثاث', 'مزاد مجوهرات',
+      'مزاد ساعات', 'مزاد لوحات فنية', 'مزاد تحف', 'مزاد كتب نادرة', 'مزاد عملات',
+    ];
+    for (int i = 0; i < auctions.length; i++) {
+      items.add(MarketItem(
+        category: 'مزادات',
+        name: auctions[i],
+        imageUrl: _getImage('auctions', i + 450),
+        price: 5000 + (i * 2000).toDouble(),
+        change24h: (i % 5 + 2).toDouble(),
+        store: 'قاعة المزاد',
+      ));
+    }
+
+    // ============================================
+    // مولات وبقالات (10 منتج)
+    // ============================================
+    final malls = [
+      'مول العرب', 'سيتي سنتر', 'النخيل مول', 'الدانوب', 'كارفور',
+      'لولو', 'سوق الخضار', 'سوق السمك', 'سوق الذهب', 'بقالة العمدة',
+    ];
+    for (int i = 0; i < malls.length; i++) {
+      items.add(MarketItem(
+        category: 'مولات',
+        name: malls[i],
+        imageUrl: _getImage('malls', i + 470),
+        price: 0,
+        change24h: 0,
+        store: malls[i],
+      ));
+    }
+
+    // ============================================
+    // تعليم (20 منتج)
+    // ============================================
+    final education = [
+      'جامعة صنعاء', 'جامعة عدن', 'جامعة تعز', 'جامعة الحديدة', 'جامعة إب',
+      'جامعة العلوم والتكنولوجيا', 'جامعة الإيمان', 'جامعة الناصر', 'جامعة الملكة أروى', 'جامعة سبأ',
+      'مدارس النهضة', 'مدارس الرشيد', 'المدرسة البريطانية', 'المدرسة الأمريكية', 'معهد نيوهورايزن',
+      'معهد أبتك', 'كلية الفنون الجميلة', 'معهد الخط العربي', 'مركز تدريب الحاسوب', 'دورة لغة إنجليزية',
+    ];
+    for (int i = 0; i < education.length; i++) {
+      items.add(MarketItem(
+        category: 'تعليم',
+        name: education[i],
+        imageUrl: _getImage('education', i + 490),
+        price: 2500 + (i * 500).toDouble(),
+        change24h: (i % 3 + 1).toDouble(),
+        store: 'التعليم',
+      ));
+    }
+
+    return items;
+  }
+
+  // ============================================
+  // دوال مساعدة
+  // ============================================
   static List<MarketItem> getTrending() {
     final items = getAllItems();
     items.sort((a, b) => b.change24h.compareTo(a.change24h));
     return items.take(20).toList();
   }
-  
+
   static List<MarketItem> getOffers() {
     return getAllItems().where((i) => i.change24h >= 2.0 || i.change24h <= -1.0).take(15).toList();
   }
-  
+
   static List<MarketItem> getNewArrivals() {
     return getAllItems().reversed.take(20).toList();
   }
-  
+
   static List<MarketItem> getBySection(String section) {
     return getAllItems().where((i) => i.category == section).toList();
   }
-  
+
   static List<String> getAllSections() {
-    return ['إلكترونيات', 'سيارات', 'عقارات', 'أزياء', 'مطاعم', 'أثاث', 'مواد غذائية'];
+    return ['إلكترونيات', 'سيارات', 'عقارات', 'أزياء', 'مطاعم', 'مواد غذائية', 'أثاث', 'صحة وجمال', 'خدمات', 'مزادات', 'مولات', 'تعليم'];
   }
 }
