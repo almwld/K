@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
 import 'onboarding_screen.dart';
 import 'home/main_navigation.dart';
+import 'admin/admin_main_screen.dart';
+import '../services/admin_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,30 +17,21 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
-    _setupAnimations();
-    _navigateToNextScreen();
-  }
-
-  void _setupAnimations() {
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 2500),
     );
-
+    
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: const Interval(0.0, 0.5, curve: Curves.easeIn)),
+      CurvedAnimation(parent: _animationController, curve: const Interval(0.5, 1.0, curve: Curves.easeOut)),
     );
-
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: const Interval(0.0, 0.5, curve: Curves.easeOut)),
-    );
-
+    
     _animationController.forward();
+    _navigateToNextScreen();
   }
 
   Future<void> _navigateToNextScreen() async {
@@ -45,22 +39,30 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     
     final prefs = await SharedPreferences.getInstance();
     final onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
+    
+    // التحقق من صلاحيات المشرف (بأي طريقة)
+    final adminService = AdminService();
+    final canAccessAdmin = await adminService.canAccessAdminPanel();
 
     if (!mounted) return;
 
-    // إذا لم يشاهد الـ onboarding من قبل، اعرضه أولاً
-    if (!onboardingSeen) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
-      );
-    } else {
-      // إذا شاهده من قبل، اذهب مباشرة للواجهة الرئيسية
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainNavigation()),
-      );
-    }
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          if (!onboardingSeen) {
+            return const OnboardingScreen();
+          } else if (canAccessAdmin) {
+            return const AdminMainScreen();
+          } else {
+            return const MainNavigation();
+          }
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
   }
 
   @override
@@ -68,62 +70,33 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkBackground : Colors.white,
       body: Center(
-        child: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return Opacity(
-              opacity: _fadeAnimation.value,
-              child: Transform.scale(
-                scale: _scaleAnimation.value,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.goldColor.withOpacity(0.1),
-                      ),
-                      child: const Icon(
-                        Icons.shopping_bag,
-                        size: 80,
-                        color: AppTheme.goldColor,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Flex Yemen',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.goldColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'منصة التجارة الإلكترونية اليمنية',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    const SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: CircularProgressIndicator(
-                        color: AppTheme.goldColor,
-                        strokeWidth: 3,
-                      ),
-                    ),
-                  ],
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 200,
+                height: 200,
+                child: Lottie.network(
+                  'https://assets10.lottiefiles.com/packages/lf20_kkflmtur.json',
+                  fit: BoxFit.contain,
                 ),
               ),
-            );
-          },
+              const SizedBox(height: 20),
+              const Text(
+                'Flex Yemen',
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: AppTheme.goldColor, letterSpacing: 2),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'منصة التجارة الإلكترونية اليمنية',
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              ),
+            ],
+          ),
         ),
       ),
     );

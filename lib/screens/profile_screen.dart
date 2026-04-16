@@ -138,3 +138,6 @@ class ProfileScreen extends StatelessWidget {
 
 // أضف هذا قبل أزرار تسجيل الخروج
 // const SocialMediaWidget(),
+
+// استيراد الـ widget
+import '../widgets/admin_secret_button.dart';

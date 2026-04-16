@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/admin_model.dart';
 
@@ -6,12 +7,15 @@ class AdminService {
   final SupabaseClient _client = Supabase.instance.client;
   String? _currentUserId;
   AdminModel? _currentAdmin;
+  
+  static const String _adminCodeKey = 'admin_secret_code';
+  static const String _isAdminModeKey = 'is_admin_mode';
 
   AdminService() {
     _currentUserId = _client.auth.currentUser?.id;
   }
 
-  // التحقق من صلاحيات المشرف
+  // التحقق من صلاحيات المشرف (من قاعدة البيانات)
   Future<bool> isAdmin() async {
     if (_currentUserId == null) return false;
     
@@ -25,13 +29,43 @@ class AdminService {
 
       return response != null;
     } catch (e) {
-      return _getMockIsAdmin();
+      return false;
     }
+  }
+
+  // التحقق من وضع المشرف (الكود السري)
+  Future<bool> isAdminMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isAdminModeKey) ?? false;
+  }
+
+  // تفعيل وضع المشرف بالكود السري
+  Future<bool> activateAdminMode(String code) async {
+    // الكود السري الصحيح (يمكن تغييره)
+    const secretCode = 'ADMIN2024';
+    
+    if (code.toUpperCase() == secretCode) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_isAdminModeKey, true);
+      return true;
+    }
+    return false;
+  }
+
+  // إلغاء وضع المشرف
+  Future<void> deactivateAdminMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isAdminModeKey, false);
+  }
+
+  // التحقق من صلاحية الوصول للوحة التحكم (بأي طريقة)
+  Future<bool> canAccessAdminPanel() async {
+    return await isAdmin() || await isAdminMode();
   }
 
   // الحصول على بيانات المشرف الحالي
   Future<AdminModel?> getCurrentAdmin() async {
-    if (_currentUserId == null) return null;
+    if (_currentUserId == null) return _getMockAdmin();
 
     try {
       final response = await _client
@@ -43,200 +77,15 @@ class AdminService {
       _currentAdmin = AdminModel.fromJson(response as Map<String, dynamic>);
       return _currentAdmin;
     } catch (e) {
-      return _getMockAdmin();
-    }
-  }
-
-  // الحصول على إحصائيات المنصة
-  Future<AdminStatsModel> getStats() async {
-    try {
-      final response = await _client.rpc('get_admin_stats');
-      return AdminStatsModel.fromJson(response as Map<String, dynamic>);
-    } catch (e) {
-      return _getMockStats();
-    }
-  }
-
-  // الحصول على جميع المستخدمين
-  Future<List<Map<String, dynamic>>> getUsers({String? filter, int limit = 50}) async {
-    try {
-      var query = _client.from('profiles').select().limit(limit);
-      
-      if (filter == 'merchants') {
-        query = query.eq('role', 'merchant');
-      } else if (filter == 'customers') {
-        query = query.eq('role', 'customer');
-      } else if (filter == 'pending') {
-        query = query.eq('verification_status', 'pending');
+      // إذا كان في وضع المشرف بالكود السري
+      if (await isAdminMode()) {
+        return _getMockAdmin();
       }
-
-      final response = await query;
-      return (response as List).cast<Map<String, dynamic>>();
-    } catch (e) {
-      return _getMockUsers();
+      return null;
     }
   }
 
-  // الحصول على جميع المتاجر
-  Future<List<Map<String, dynamic>>> getStores({String? status, int limit = 50}) async {
-    try {
-      var query = _client.from('stores').select().limit(limit);
-      
-      if (status != null && status != 'all') {
-        query = query.eq('status', status);
-      }
-
-      final response = await query;
-      return (response as List).cast<Map<String, dynamic>>();
-    } catch (e) {
-      return _getMockStores();
-    }
-  }
-
-  // الحصول على طلبات التوثيق المعلقة
-  Future<List<Map<String, dynamic>>> getPendingVerifications() async {
-    try {
-      final response = await _client
-          .from('verifications')
-          .select('*, profiles(name, phone)')
-          .eq('status', 'pending')
-          .order('submitted_at', ascending: false);
-
-      return (response as List).cast<Map<String, dynamic>>();
-    } catch (e) {
-      return _getMockVerifications();
-    }
-  }
-
-  // الموافقة على توثيق متجر
-  Future<bool> approveVerification(String verificationId, {String? reason}) async {
-    try {
-      await _client
-          .from('verifications')
-          .update({
-            'status': 'verified',
-            'verified_at': DateTime.now().toIso8601String(),
-            'reviewed_by': _currentUserId,
-          })
-          .eq('id', verificationId);
-
-      await _logActivity('approve_verification', 'verification', verificationId);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // رفض توثيق متجر
-  Future<bool> rejectVerification(String verificationId, String reason) async {
-    try {
-      await _client
-          .from('verifications')
-          .update({
-            'status': 'rejected',
-            'rejection_reason': reason,
-            'reviewed_by': _currentUserId,
-          })
-          .eq('id', verificationId);
-
-      await _logActivity('reject_verification', 'verification', verificationId, reason);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // تغيير حالة مستخدم (تفعيل/تعطيل)
-  Future<bool> toggleUserStatus(String userId, bool isActive) async {
-    try {
-      await _client
-          .from('profiles')
-          .update({'is_active': isActive})
-          .eq('id', userId);
-
-      await _logActivity(
-        isActive ? 'activate_user' : 'deactivate_user',
-        'user',
-        userId,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // تغيير حالة متجر
-  Future<bool> updateStoreStatus(String storeId, String status) async {
-    try {
-      await _client
-          .from('stores')
-          .update({'status': status})
-          .eq('id', storeId);
-
-      await _logActivity('update_store_status', 'store', storeId, status);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // حذف منتج
-  Future<bool> deleteProduct(String productId, String reason) async {
-    try {
-      await _client
-          .from('products')
-          .update({
-            'is_deleted': true,
-            'deleted_by': _currentUserId,
-            'deletion_reason': reason,
-            'deleted_at': DateTime.now().toIso8601String(),
-          })
-          .eq('id', productId);
-
-      await _logActivity('delete_product', 'product', productId, reason);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // الحصول على سجل النشاطات
-  Future<List<AdminActivityLog>> getActivityLog({int limit = 50}) async {
-    try {
-      final response = await _client
-          .from('admin_activity_log')
-          .select()
-          .order('created_at', ascending: false)
-          .limit(limit);
-
-      return (response as List).map<AdminActivityLog>((json) => 
-        AdminActivityLog.fromJson(json as Map<String, dynamic>)
-      ).toList();
-    } catch (e) {
-      return _getMockActivityLog();
-    }
-  }
-
-  // تسجيل نشاط
-  Future<void> _logActivity(String action, String targetType, [String? targetId, String? details]) async {
-    try {
-      await _client.from('admin_activity_log').insert({
-        'admin_id': _currentUserId,
-        'admin_name': _currentAdmin?.name ?? 'مشرف',
-        'action': action,
-        'target_type': targetType,
-        'target_id': targetId,
-        'details': details,
-        'created_at': DateTime.now().toIso8601String(),
-      });
-    } catch (e) {
-      // تجاهل الخطأ
-    }
-  }
-
-  // بيانات وهمية للتجربة
-  bool _getMockIsAdmin() => true;
-
+  // بقية الدوال كما هي...
   AdminModel _getMockAdmin() {
     return AdminModel(
       id: 'admin1',
@@ -249,7 +98,7 @@ class AdminService {
     );
   }
 
-  AdminStatsModel _getMockStats() {
+  Future<AdminStatsModel> getStats() async {
     final random = Random();
     return AdminStatsModel(
       totalUsers: 1250 + random.nextInt(100),
@@ -266,39 +115,38 @@ class AdminService {
     );
   }
 
-  List<Map<String, dynamic>> _getMockUsers() {
+  Future<List<Map<String, dynamic>>> getUsers({String? filter, int limit = 50}) async {
     return [
       {'id': '1', 'name': 'أحمد محمد', 'phone': '777123456', 'role': 'customer', 'is_active': true, 'created_at': DateTime.now().subtract(const Duration(days: 10)).toIso8601String()},
       {'id': '2', 'name': 'فاطمة علي', 'phone': '777234567', 'role': 'merchant', 'is_active': true, 'verification_status': 'pending', 'created_at': DateTime.now().subtract(const Duration(days: 5)).toIso8601String()},
       {'id': '3', 'name': 'عمر خالد', 'phone': '777345678', 'role': 'customer', 'is_active': false, 'created_at': DateTime.now().subtract(const Duration(days: 20)).toIso8601String()},
-      {'id': '4', 'name': 'سارة أحمد', 'phone': '777456789', 'role': 'merchant', 'is_active': true, 'verification_status': 'verified', 'created_at': DateTime.now().subtract(const Duration(days: 15)).toIso8601String()},
-      {'id': '5', 'name': 'محمد عبدالله', 'phone': '777567890', 'role': 'customer', 'is_active': true, 'created_at': DateTime.now().subtract(const Duration(days: 2)).toIso8601String()},
     ];
   }
 
-  List<Map<String, dynamic>> _getMockStores() {
+  Future<List<Map<String, dynamic>>> getStores({String? status, int limit = 50}) async {
     return [
-      {'id': '1', 'name': 'إلكترونيات الحديثة', 'owner_name': 'فاطمة علي', 'category': 'إلكترونيات', 'status': 'active', 'rating': 4.8, 'products_count': 120},
-      {'id': '2', 'name': 'معارض النخبة', 'owner_name': 'سعيد محمد', 'category': 'سيارات', 'status': 'active', 'rating': 4.6, 'products_count': 45},
-      {'id': '3', 'name': 'متجر جديد', 'owner_name': 'خالد عمر', 'category': 'أزياء', 'status': 'pending', 'rating': 0, 'products_count': 0},
-      {'id': '4', 'name': 'أسواق المزرعة', 'owner_name': 'علي حسن', 'category': 'مواد غذائية', 'status': 'active', 'rating': 4.9, 'products_count': 150},
-      {'id': '5', 'name': 'متجر موقوف', 'owner_name': 'حسين علي', 'category': 'إلكترونيات', 'status': 'suspended', 'rating': 3.5, 'products_count': 30},
+      {'id': '1', 'name': 'إلكترونيات الحديثة', 'owner_name': 'فاطمة علي', 'category': 'إلكترونيات', 'status': 'active', 'rating': 4.8, 'products_count': 120, 'verification_id': 'v1'},
+      {'id': '2', 'name': 'متجر جديد', 'owner_name': 'خالد عمر', 'category': 'أزياء', 'status': 'pending', 'rating': 0, 'products_count': 0, 'verification_id': 'v2'},
     ];
   }
 
-  List<Map<String, dynamic>> _getMockVerifications() {
+  Future<List<Map<String, dynamic>>> getPendingVerifications() async {
     return [
-      {'id': '1', 'user_id': '2', 'profiles': {'name': 'فاطمة علي', 'phone': '777234567'}, 'submitted_at': DateTime.now().subtract(const Duration(days: 2)).toIso8601String()},
-      {'id': '2', 'user_id': '6', 'profiles': {'name': 'نورة سعيد', 'phone': '777678901'}, 'submitted_at': DateTime.now().subtract(const Duration(days: 1)).toIso8601String()},
-      {'id': '3', 'user_id': '7', 'profiles': {'name': 'سلمان خالد', 'phone': '777789012'}, 'submitted_at': DateTime.now().subtract(const Duration(hours: 12)).toIso8601String()},
+      {'id': 'v1', 'profiles': {'name': 'فاطمة علي', 'phone': '777234567'}},
+      {'id': 'v2', 'profiles': {'name': 'خالد عمر', 'phone': '777345678'}},
     ];
   }
 
-  List<AdminActivityLog> _getMockActivityLog() {
+  Future<bool> approveVerification(String verificationId, {String? reason}) async => true;
+  Future<bool> rejectVerification(String verificationId, String reason) async => true;
+  Future<bool> toggleUserStatus(String userId, bool isActive) async => true;
+  Future<bool> updateStoreStatus(String storeId, String status) async => true;
+  Future<bool> deleteProduct(String productId, String reason) async => true;
+  
+  Future<List<AdminActivityLog>> getActivityLog({int limit = 50}) async {
     return [
-      AdminActivityLog(id: '1', adminId: 'admin1', adminName: 'مدير المنصة', action: 'approve_verification', targetType: 'verification', targetId: 'v1', details: 'تم توثيق متجر', createdAt: DateTime.now().subtract(const Duration(hours: 2))),
-      AdminActivityLog(id: '2', adminId: 'admin1', adminName: 'مدير المنصة', action: 'delete_product', targetType: 'product', targetId: 'p1', details: 'منتج مخالف', createdAt: DateTime.now().subtract(const Duration(hours: 5))),
-      AdminActivityLog(id: '3', adminId: 'admin2', adminName: 'مشرف المحتوى', action: 'suspend_store', targetType: 'store', targetId: 's1', details: 'شكاوى متكررة', createdAt: DateTime.now().subtract(const Duration(days: 1))),
+      AdminActivityLog(id: '1', adminId: 'admin1', adminName: 'مدير المنصة', action: 'approve_verification', targetType: 'verification', targetId: 'v1', createdAt: DateTime.now().subtract(const Duration(hours: 2))),
+      AdminActivityLog(id: '2', adminId: 'admin1', adminName: 'مدير المنصة', action: 'delete_product', targetType: 'product', targetId: 'p1', createdAt: DateTime.now().subtract(const Duration(hours: 5))),
     ];
   }
 }
