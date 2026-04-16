@@ -1,53 +1,56 @@
 import '../models/market_item.dart';
 
 class MarketData {
-  // قواعد صور متنوعة من مصادر مختلفة
+  // قواعد صور متنوعة من 4 مصادر مختلفة
   static String _getImage(String type, int index) {
-    // استخدام مصادر متعددة للصور
-    const unsplash = 'https://images.unsplash.com/';
-    const pexels = 'https://images.pexels.com/photos/';
-    const pixabay = 'https://cdn.pixabay.com/photo/';
-    const placeholder = 'https://picsum.photos/';
-    
-    final images = [
-      '${unsplash}photo-1511707171634-5f897ff02aa9?w=400', // هاتف
-      '${unsplash}photo-1598327105666-5b89351aff97?w=400', // هاتف 2
-      '${unsplash}photo-1517336714731-489689fd1ca8?w=400', // لابتوب
-      '${unsplash}photo-1611186871348-b1ce696e52c9?w=400', // لابتوب 2
-      '${unsplash}photo-1585790050230-5dd28404ccb0?w=400', // تابلت
-      '${unsplash}photo-1544244015-0df4b3ffc6b0?w=400', // تابلت 2
-      '${unsplash}photo-1593359677879-a4bb92f829d1?w=400', // تلفزيون
-      '${unsplash}photo-1571175443880-49e1d25b2bc5?w=400', // ثلاجة
-      '${unsplash}photo-1626806787461-102c1bfaaea1?w=400', // غسالة
-      '${unsplash}photo-1583394838336-acd977736f90?w=400', // سماعات
-      '${unsplash}photo-1606811841689-23dfddce3e95?w=400', // بلايستيشن
-      '${unsplash}photo-1621259182978-fbf93132d53d?w=400', // إكس بوكس
-      '${unsplash}photo-1578303512597-81e6cc155b3e?w=400', // نينتندو
-      '${unsplash}photo-1516035069371-29a1b244cc32?w=400', // كاميرا
-      '${unsplash}photo-1621007947382-bb3c3994e3fb?w=400', // سيارة
-      '${unsplash}photo-1580273916550-e323be2ae537?w=400', // سيارة 2
-      '${unsplash}photo-1533473359331-0135ef1b58bf?w=400', // سيارة 3
-      '${unsplash}photo-1606664515524-ed2f786a0bd6?w=400', // سيارة 4
-      '${unsplash}photo-1618843479313-40f8afb4b4d8?w=400', // سيارة 5
-      '${unsplash}photo-1555215695-3004980ad54e?w=400', // سيارة 6
-      '${unsplash}photo-1560518883-ce09059eeffa?w=400', // فيلا
-      '${unsplash}photo-1522708323590-d24dbb6b0267?w=400', // شقة
-      '${unsplash}photo-1497366216548-37526070297c?w=400', // مكتب
-      '${unsplash}photo-1500382017468-9049fed747ef?w=400', // أرض
-      '${unsplash}photo-1593032465175-4810b1975170?w=400', // ثوب
-      '${unsplash}photo-1591369822096-ffd140ec948f?w=400', // عباية
-      '${unsplash}photo-1542291026-7eec264c27ff?w=400', // حذاء
-      '${unsplash}photo-1584917865442-de89df76afd3?w=400', // شنطة
-      '${unsplash}photo-1523170335258-f5ed11844a49?w=400', // ساعة
-      '${unsplash}photo-1541643600914-78b084683601?w=400', // عطر
-      '${unsplash}photo-1504674900247-0877df9cc836?w=400', // مندي
-      '${unsplash}photo-1568901346375-23c9450c58cd?w=400', // برجر
-      '${unsplash}photo-1587734195342-5f9040bb4c46?w=400', // قهوة
-      '${unsplash}photo-1587314168485-3236d6710814?w=400', // حلويات
-      '${unsplash}photo-1600271886742-f49cdc7d7d67?w=400', // عصير
-      '${placeholder}400/400?random=$index',
+    // Pexels - صور متنوعة عالية الجودة
+    const pexelsImages = [
+      'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/205316/pexels-photo-205316.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/1201996/pexels-photo-1201996.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/341523/pexels-photo-341523.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/3685532/pexels-photo-3685532.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'https://images.pexels.com/photos/459653/pexels-photo-459653.jpeg?auto=compress&cs=tinysrgb&w=400',
     ];
-    return images[index % images.length];
+    
+    // Pixabay - صور مجانية متنوعة
+    const pixabayImages = [
+      'https://cdn.pixabay.com/photo/2016/11/29/09/32/auto-1868726_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/08/06/09/11/people-2591140_1280.jpg',
+      'https://cdn.pixabay.com/photo/2016/03/27/07/32/light-1282314_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_1280.jpg',
+      'https://cdn.pixabay.com/photo/2018/05/02/09/29/auto-3368094_1280.jpg',
+      'https://cdn.pixabay.com/photo/2015/03/26/10/28/restaurant-691397_1280.jpg',
+      'https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/07/28/14/29/macarons-2548827_1280.jpg',
+      'https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg',
+      'https://cdn.pixabay.com/photo/2016/11/29/12/54/cafe-1869656_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/03/13/17/26/ecommerce-2140603_1280.jpg',
+      'https://cdn.pixabay.com/photo/2018/01/11/21/27/desk-3076954_1280.jpg',
+      'https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg',
+      'https://cdn.pixabay.com/photo/2017/05/02/15/30/streets-2278471_1280.jpg',
+      'https://cdn.pixabay.com/photo/2018/07/14/15/27/coffee-3537801_1280.jpg',
+    ];
+    
+    // اختيار مصدر الصورة بناءً على index
+    if (index % 4 == 0) {
+      return pexelsImages[index % pexelsImages.length];
+    } else if (index % 4 == 1) {
+      return pixabayImages[index % pixabayImages.length];
+    } else if (index % 4 == 2) {
+      return 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400';
+    } else {
+      return 'https://picsum.photos/400/400?random=$index';
+    }
   }
 
   static List<MarketItem> getAllItems() {
@@ -98,7 +101,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'سيارات',
         name: cars[i],
-        imageUrl: _getImage('cars', i + 50),
+        imageUrl: _getImage('cars', i + 100),
         price: 50000 + (i * 15000).toDouble(),
         change24h: (i % 6 - 2).toDouble() + (i % 4) * 0.8,
         store: i % 3 == 0 ? 'معارض النخبة' : (i % 3 == 1 ? 'الوكيل المعتمد' : 'حراج السيارات'),
@@ -122,7 +125,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'عقارات',
         name: realestate[i],
-        imageUrl: _getImage('realestate', i + 100),
+        imageUrl: _getImage('realestate', i + 200),
         price: 200000 + (i * 50000).toDouble(),
         change24h: (i % 5 - 1).toDouble() + (i % 3) * 1.2,
         store: i % 3 == 0 ? 'عقارات الماسة' : (i % 3 == 1 ? 'مكتب الأفق' : 'مكتب الأراضي'),
@@ -148,7 +151,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'أزياء',
         name: fashion[i],
-        imageUrl: _getImage('fashion', i + 150),
+        imageUrl: _getImage('fashion', i + 300),
         price: 50 + (i * 30).toDouble(),
         change24h: (i % 4 - 1).toDouble() + (i % 5) * 0.5,
         store: i % 3 == 0 ? 'الأصيل للأزياء' : (i % 3 == 1 ? 'زهرة الموضة' : 'عالم الأزياء'),
@@ -173,7 +176,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'مطاعم',
         name: restaurants[i],
-        imageUrl: _getImage('restaurants', i + 200),
+        imageUrl: _getImage('restaurants', i + 400),
         price: 15 + (i * 5).toDouble(),
         change24h: (i % 3).toDouble() + (i % 4) * 0.3,
         store: i % 3 == 0 ? 'مطعم اليمن' : (i % 3 == 1 ? 'برجر كنج' : 'مطعم الخليج'),
@@ -199,7 +202,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'مواد غذائية',
         name: groceries[i],
-        imageUrl: _getImage('groceries', i + 250),
+        imageUrl: _getImage('groceries', i + 500),
         price: 5 + (i * 2).toDouble(),
         change24h: (i % 3 - 1).toDouble() * 0.5,
         store: i % 3 == 0 ? 'أسواق المزرعة' : (i % 3 == 1 ? 'بقالة العمدة' : 'التموينات'),
@@ -221,7 +224,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'أثاث',
         name: furniture[i],
-        imageUrl: _getImage('furniture', i + 300),
+        imageUrl: _getImage('furniture', i + 600),
         price: 200 + (i * 80).toDouble(),
         change24h: (i % 4 - 1).toDouble() + (i % 3) * 0.8,
         store: i % 3 == 0 ? 'أثاث المنزل' : (i % 3 == 1 ? 'أثاث المكاتب' : 'ديكورات منزلية'),
@@ -245,7 +248,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'صحة وجمال',
         name: health[i],
-        imageUrl: _getImage('health', i + 350),
+        imageUrl: _getImage('health', i + 700),
         price: 20 + (i * 15).toDouble(),
         change24h: (i % 3).toDouble() * 0.5,
         store: i % 3 == 0 ? 'صيدلية النهدي' : (i % 3 == 1 ? 'عطور الشرق' : 'ماك'),
@@ -265,7 +268,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'خدمات',
         name: services[i],
-        imageUrl: _getImage('services', i + 400),
+        imageUrl: _getImage('services', i + 800),
         price: 100 + (i * 50).toDouble(),
         change24h: (i % 4 - 2).toDouble() * 0.5,
         store: 'خدماتي',
@@ -283,7 +286,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'مزادات',
         name: auctions[i],
-        imageUrl: _getImage('auctions', i + 450),
+        imageUrl: _getImage('auctions', i + 900),
         price: 5000 + (i * 2000).toDouble(),
         change24h: (i % 5 + 2).toDouble(),
         store: 'قاعة المزاد',
@@ -301,7 +304,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'مولات',
         name: malls[i],
-        imageUrl: _getImage('malls', i + 470),
+        imageUrl: _getImage('malls', i + 950),
         price: 0,
         change24h: 0,
         store: malls[i],
@@ -321,7 +324,7 @@ class MarketData {
       items.add(MarketItem(
         category: 'تعليم',
         name: education[i],
-        imageUrl: _getImage('education', i + 490),
+        imageUrl: _getImage('education', i + 980),
         price: 2500 + (i * 500).toDouble(),
         change24h: (i % 3 + 1).toDouble(),
         store: 'التعليم',
