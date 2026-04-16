@@ -1,3 +1,4 @@
+import '../widgets/social_media_widget.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
@@ -134,7 +135,6 @@ class ProfileScreen extends StatelessWidget {
 }
 
 // إضافة قسم مواقع التواصل الاجتماعي
-import '../widgets/social_media_widget.dart';
 
 // أضف هذا قبل أزرار تسجيل الخروج
 // const SocialMediaWidget(),

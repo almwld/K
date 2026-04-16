@@ -1,3 +1,4 @@
+import '../../widgets/social_media_widget.dart';
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
@@ -77,7 +78,6 @@ class SettingsScreen extends StatelessWidget {
 }
 
 // إضافة قسم مواقع التواصل الاجتماعي
-import '../../widgets/social_media_widget.dart';
 
 // أضف هذا في نهاية Column قبل SizedBox الأخير
 // const SocialMediaWidget(),
