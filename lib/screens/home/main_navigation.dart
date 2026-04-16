@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
@@ -22,18 +23,30 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   bool _isExpanded = false;
-  late AnimationController _rotationController;
-  late Animation<double> _rotationAnimation;
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _fadeAnimation;
 
   // الترتيب: الرئيسية(0) | المتجر(1) | الدردشة(2) | الذهبي(3) | الخريطة(4) | المحفظة(5) | حسابي(6)
   final List<Widget> _screens = const [
-    HomeScreen(),           // 0 - الرئيسية
-    StoresScreen(),         // 1 - المتجر (تم ربطه بصفحة المتاجر)
-    ChatScreen(),           // 2 - الدردشة
-    SizedBox(),             // 3 - الزر الذهبي
-    InteractiveMapScreen(), // 4 - الخريطة
-    WalletScreen(),         // 5 - المحفظة
-    ProfileScreen(),        // 6 - حسابي
+    HomeScreen(),
+    StoresScreen(),
+    ChatScreen(),
+    SizedBox(),
+    InteractiveMapScreen(),
+    WalletScreen(),
+    ProfileScreen(),
+  ];
+
+  // بيانات الأيقونات مع مسارات SVG
+  final List<Map<String, String>> _navItems = const [
+    {'label': 'الرئيسية', 'icon': 'home.svg'},
+    {'label': 'المتجر', 'icon': 'merchant.svg'},
+    {'label': 'الدردشة', 'icon': 'chat.svg'},
+    {'label': '', 'icon': ''}, // الزر الذهبي
+    {'label': 'الخريطة', 'icon': 'location.svg'},
+    {'label': 'المحفظة', 'icon': 'wallet.svg'},
+    {'label': 'حسابي', 'icon': 'profile.svg'},
   ];
 
   final List<Map<String, dynamic>> _quickActions = const [
@@ -44,13 +57,21 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _rotationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
-    _rotationAnimation = Tween<double>(begin: 0, end: 0.125).animate(CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut));
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
   }
 
   @override
   void dispose() {
-    _rotationController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -66,13 +87,17 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   void _toggleExpand() {
     setState(() {
       _isExpanded = !_isExpanded;
-      _isExpanded ? _rotationController.forward() : _rotationController.reverse();
+      if (_isExpanded) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
     });
   }
 
-  void _executeAction(Map<String, dynamic> action) {
+  void _executeAction(Widget screen) {
     _toggleExpand();
-    Navigator.push(context, MaterialPageRoute(builder: (_) => action['screen'] as Widget));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 
   @override
@@ -84,86 +109,129 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       body: Stack(
         children: [
           IndexedStack(index: _currentIndex, children: _screens),
+          
           if (_isExpanded)
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: _toggleExpand,
-                child: Container(
-                  color: Colors.black.withOpacity(0.3),
-                  child: Center(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                      decoration: BoxDecoration(
-                        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text('اختر الإجراء', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: _quickActions.map((action) => _buildActionButton(action, themeManager.primaryColor)).toList(),
-                          ),
-                        ],
-                      ),
+            GestureDetector(
+              onTap: _toggleExpand,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                color: Colors.black.withOpacity(_isExpanded ? 0.5 : 0.0),
+              ),
+            ),
+          
+          if (_isExpanded)
+            Positioned(
+              bottom: 90,
+              left: 20,
+              right: 20,
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: isDark ? AppTheme.darkSurface : Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: themeManager.primaryColor.withOpacity(0.3),
+                          blurRadius: 30,
+                          spreadRadius: 5,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
                     ),
-                  ).animate().scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 200.ms, curve: Curves.elasticOut),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'اختر الإجراء',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: _quickActions.map((action) {
+                            return _buildActionButton(action, themeManager.primaryColor);
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavBar(isDark, themeManager.primaryColor),
-    );
-  }
-
-  Widget _buildBottomNavBar(bool isDark, Color primaryColor) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -2))],
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(Icons.home_outlined, Icons.home, 'الرئيسية', 0, primaryColor),
-              _buildNavItem(Icons.store_outlined, Icons.store, 'المتجر', 1, primaryColor),
-              _buildNavItem(Icons.chat_bubble_outline, Icons.chat_bubble, 'الدردشة', 2, primaryColor),
-              _buildGoldenButton(primaryColor),
-              _buildNavItem(Icons.map_outlined, Icons.map, 'الخريطة', 4, primaryColor),
-              _buildNavItem(Icons.account_balance_wallet_outlined, Icons.account_balance_wallet, 'المحفظة', 5, primaryColor),
-              _buildNavItem(Icons.person_outline, Icons.person, 'حسابي', 6, primaryColor),
-            ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: isDark ? AppTheme.darkSurface : Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(0, themeManager.primaryColor),
+                _buildNavItem(1, themeManager.primaryColor),
+                _buildNavItem(2, themeManager.primaryColor),
+                _buildGoldenButton(themeManager.primaryColor),
+                _buildNavItem(4, themeManager.primaryColor),
+                _buildNavItem(5, themeManager.primaryColor),
+                _buildNavItem(6, themeManager.primaryColor),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, IconData activeIcon, String label, int index, Color primaryColor) {
+  Widget _buildNavItem(int index, Color primaryColor) {
     final isSelected = _currentIndex == index;
     final color = isSelected ? primaryColor : Colors.grey;
+    final item = _navItems[index];
 
     return Expanded(
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () => _onItemTapped(index),
-          borderRadius: BorderRadius.circular(8),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+          borderRadius: BorderRadius.circular(12),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+            decoration: BoxDecoration(
+              color: isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(isSelected ? activeIcon : icon, color: color, size: 24),
-                const SizedBox(height: 2),
-                Text(label, style: TextStyle(fontSize: 10, color: color, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
+                SvgPicture.asset(
+                  'assets/icons/svg/${item['icon']}',
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  item['label']!,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: color,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
               ],
             ),
           ),
@@ -177,24 +245,35 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       child: GestureDetector(
         onTap: _toggleExpand,
         child: Container(
-          margin: const EdgeInsets.only(bottom: 15),
-          child: AnimatedBuilder(
-            animation: _rotationAnimation,
-            builder: (context, child) {
-              return Transform.rotate(
-                angle: _rotationAnimation.value * 3.14159 * 2,
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(colors: [primaryColor, primaryColor.withOpacity(0.7)]),
-                    boxShadow: [BoxShadow(color: primaryColor.withOpacity(0.4), blurRadius: 15, spreadRadius: 2)],
-                  ),
-                  child: Icon(_isExpanded ? Icons.close : Icons.add, color: Colors.white, size: 30),
+          margin: const EdgeInsets.only(bottom: 20),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [primaryColor, primaryColor.withOpacity(0.7)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: primaryColor.withOpacity(0.4),
+                  blurRadius: 20,
+                  spreadRadius: 2,
                 ),
-              );
-            },
+              ],
+            ),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Icon(
+                _isExpanded ? Icons.close : Icons.add,
+                key: ValueKey(_isExpanded),
+                color: Colors.white,
+                size: 28,
+              ),
+            ),
           ),
         ),
       ),
@@ -204,16 +283,40 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   Widget _buildActionButton(Map<String, dynamic> action, Color primaryColor) {
     final color = Color(action['color'] as int);
     return GestureDetector(
-      onTap: () => _executeAction(action),
-      child: Container(
-        width: 100,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: color, width: 1.5)),
+      onTap: () => _executeAction(action['screen'] as Widget),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 110,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [color.withOpacity(0.1), color.withOpacity(0.05)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color.withOpacity(0.3), width: 1.5),
+        ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(action['icon'] as IconData, color: color, size: 40),
-            const SizedBox(height: 8),
-            Text(action['label'] as String, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14)),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(action['icon'] as IconData, color: color, size: 28),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              action['label'] as String,
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
           ],
         ),
       ),
