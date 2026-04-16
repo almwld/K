@@ -16,185 +16,49 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   late ChatService _chatService;
   List<ConversationModel> _conversations = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _chatService = context.read<ChatService>();
-    _initializeChat();
-  }
-
-  Future<void> _initializeChat() async {
-    await _chatService.initialize();
+    _chatService.initialize();
     _chatService.conversationsStream.listen((conversations) {
-      if (mounted) {
-        setState(() {
-          _conversations = conversations;
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() => _conversations = conversations);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const SimpleAppBar(title: 'المحادثات'),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.goldColor))
-          : _conversations.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: _conversations.length,
-                  itemBuilder: (context, index) {
-                    return _buildConversationCard(_conversations[index]);
-                  },
-                ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
-          const SizedBox(height: 16),
-          Text(
-            'لا توجد محادثات',
-            style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'ابدأ محادثة مع تاجر من خلال صفحة المنتج',
-            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildConversationCard(ConversationModel conversation) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ChatDetailScreen(conversation: conversation),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            // صورة المنتج أو الأفاتار
-            Stack(
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        conversation.productImage ?? conversation.merchantAvatar,
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                if (conversation.unreadCount > 0)
-                  Positioned(
-                    top: -5,
-                    right: -5,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        '${conversation.unreadCount}',
-                        style: const TextStyle(color: Colors.white, fontSize: 10),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(width: 12),
-            Expanded(
+      body: _conversations.isEmpty
+          ? Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          conversation.merchantName,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                      ),
-                      Text(
-                        _formatTime(conversation.lastMessageTime),
-                        style: TextStyle(fontSize: 11, color: Colors.grey[500]),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  if (conversation.productName != null)
-                    Text(
-                      conversation.productName!,
-                      style: TextStyle(fontSize: 12, color: AppTheme.goldColor),
-                    ),
-                  const SizedBox(height: 4),
-                  Text(
-                    conversation.lastMessage,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: conversation.unreadCount > 0 ? Colors.black87 : Colors.grey[600],
-                      fontWeight: conversation.unreadCount > 0 ? FontWeight.w500 : FontWeight.normal,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
+                  Text('لا توجد محادثات', style: TextStyle(fontSize: 18, color: Colors.grey[600])),
                 ],
               ),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: _conversations.length,
+              itemBuilder: (context, index) {
+                final conv = _conversations[index];
+                return ListTile(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ChatDetailScreen(conversation: conv))),
+                  leading: CircleAvatar(backgroundImage: NetworkImage(conv.merchantAvatar)),
+                  title: Text(conv.merchantName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(conv.lastMessage, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  trailing: conv.unreadCount > 0
+                      ? CircleAvatar(radius: 12, backgroundColor: Colors.red, child: Text('${conv.unreadCount}', style: const TextStyle(color: Colors.white, fontSize: 10)))
+                      : null,
+                );
+              },
             ),
-          ],
-        ),
-      ),
     );
-  }
-
-  String _formatTime(DateTime time) {
-    final now = DateTime.now();
-    final difference = now.difference(time);
-    
-    if (difference.inDays > 0) {
-      return '${difference.inDays} يوم';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours} ساعة';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} دقيقة';
-    } else {
-      return 'الآن';
-    }
   }
 }
