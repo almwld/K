@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import '../providers/auth_provider.dart';
 import 'login_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -12,31 +12,46 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _phoneController = TextEditingController();
   bool _isLoading = false;
   bool _isSent = false;
 
-  Future<void> _resetPassword() async {
-    if (_emailController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('الرجاء إدخال البريد الإلكتروني')),
-      );
-      return;
-    }
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleResetPassword() async {
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    try {
-      await Supabase.instance.client.auth.resetPasswordForEmail(
-        _emailController.text.trim(),
-      );
-      setState(() => _isSent = true);
-    } catch (e) {
+    final authProvider = context.read<AuthProvider>();
+    final success = await authProvider.resetPassword(_phoneController.text.trim());
+
+    setState(() {
+      _isLoading = false;
+      if (success) _isSent = true;
+    });
+
+    if (!mounted) return;
+
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('حدث خطأ: $e'), backgroundColor: Colors.red),
+        const SnackBar(
+          content: Text('تم إرسال رابط إعادة تعيين كلمة المرور'),
+          backgroundColor: Colors.green,
+        ),
       );
-    } finally {
-      setState(() => _isLoading = false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(authProvider.error ?? 'فشل إرسال رابط إعادة التعيين'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -46,56 +61,121 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'نسيت كلمة المرور'),
+      appBar: AppBar(
+        title: const Text('نسيت كلمة المرور'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: AppTheme.goldColor,
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-              const Icon(Icons.lock_reset, size: 60, color: AppTheme.goldColor),
-              const SizedBox(height: 20),
-              const Text(
-                'استعادة كلمة المرور',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              
+              Center(
+                child: Column(
+                  children: [
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: AppTheme.goldColor.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.lock_reset,
+                        color: AppTheme.goldColor,
+                        size: 40,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'إعادة تعيين كلمة المرور',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height": 12),
+                    Text(
+                      _isSent 
+                          ? 'تم إرسال رابط إعادة التعيين إلى رقمك'
+                          : 'أدخل رقم الجوال المسجل وسنرسل لك رابط إعادة تعيين كلمة المرور',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                'أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور',
-                style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
-              ),
-              const SizedBox(height: 32),
+              
+              const SizedBox(height: 40),
+              
               if (!_isSent) ...[
-                TextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'البريد الإلكتروني',
-                    prefixIcon: Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelText: 'رقم الجوال',
+                      hintText: 'مثال: 777123456',
+                      prefixIcon: const Icon(Icons.phone, color: AppTheme.goldColor),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'الرجاء إدخال رقم الجوال';
+                      }
+                      if (value.length < 9) {
+                        return 'رقم الجوال غير صحيح';
+                      }
+                      return null;
+                    },
                   ),
                 ),
+                
                 const SizedBox(height: 24),
+                
                 SizedBox(
                   width: double.infinity,
-                  height: 50,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _resetPassword,
+                    onPressed: _isLoading ? null : _handleResetPassword,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.goldColor,
-                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     child: _isLoading
                         ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                              strokeWidth: 2,
+                            ),
                           )
-                        : const Text('إرسال رابط إعادة التعيين'),
+                        : const Text(
+                            'إرسال رابط إعادة التعيين',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
                   ),
                 ),
               ] else ...[
@@ -103,40 +183,59 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.green.withOpacity(0.3)),
                   ),
                   child: Column(
                     children: [
-                      const Icon(Icons.check_circle, size: 50, color: Colors.green),
+                      const Icon(Icons.check_circle, color: Colors.green, size: 50),
                       const SizedBox(height: 16),
-                      const Text(
-                        'تم إرسال رابط إعادة التعيين',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      Text(
+                        'تم إرسال رابط إعادة التعيين إلى ${_phoneController.text}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'تم إرسال رابط إعادة تعيين كلمة المرور إلى ${_emailController.text}',
+                        'يرجى التحقق من رسائلك واتباع التعليمات',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
-                      ),
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => const LoginScreen()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.goldColor,
-                          foregroundColor: Colors.black,
-                        ),
-                        child: const Text('العودة لتسجيل الدخول'),
+                        style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
                   ),
                 ),
+                
+                const SizedBox(height: 24),
+                
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      side: BorderSide(color: AppTheme.goldColor),
+                    ),
+                    child: Text(
+                      'العودة لتسجيل الدخول',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.goldColor,
+                      ),
+                    ),
+                  ),
+                ),
               ],
+              
+              const SizedBox(height: 20),
             ],
           ),
         ),
