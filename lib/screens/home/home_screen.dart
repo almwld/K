@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
         {'id': '5', 'name': 'مزاد سيارات', 'price': 'مزايدة', 'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400', 'tag': 'مزادات'},
         {'id': '6', 'name': 'آيفون 15 برو', 'price': '4,500', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'tag': 'إلكترونيات'},
       ];
-      _displayItems = MarketData.getTrendingComplete();
+      _displayItems = MarketData.getTrending();
       _isLoading = false;
     });
   }
@@ -94,13 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedMarketTab = tab;
       switch (tab) {
         case 'اكتشف':
-          _displayItems = MarketData.getAllItemsComplete().take(25).toList();
+          _displayItems = MarketData.getAllItems().take(25).toList();
           break;
         case 'المتابعات':
-          _displayItems = MarketData.getAllItemsComplete().where((i) => i.isFavorite).toList();
+          _displayItems = MarketData.getAllItems().where((i) => i.isFavorite).toList();
           break;
         case 'رائج':
-          _displayItems = MarketData.getTrendingComplete();
+          _displayItems = MarketData.getTrending();
           break;
         case 'الاعلانات':
           _displayItems = MarketData.getOffers();
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _displayItems = MarketData.getBySection('مزادات');
           break;
         default:
-          _displayItems = MarketData.getAllItemsComplete().take(25).toList();
+          _displayItems = MarketData.getAllItems().take(25).toList();
       }
     });
   }
@@ -132,77 +132,82 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final authProvider = context.watch<AuthProvider>();
-    final isLoggedIn = authProvider.isAuthenticated;
-
-    return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: _showAppBar ? AppBar(
-        title: const Text('فلكس يمن', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        backgroundColor: AppTheme.goldColor,
-        foregroundColor: Colors.black,
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined, color: Colors.black)),
-        ],
-      ) : null,
-      body: Column(
-        children: [
-          if (!isLoggedIn && _showAppBar) _buildAuthButtons(),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _loadData,
-              color: AppTheme.goldColor,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    _isLoading ? const CarouselShimmer() : _buildCarousel(),
-                    const SizedBox(height: 16),
-                    _buildSectionHeader('الأقسام الرئيسية'),
-                    _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
-                    const SizedBox(height: 24),
-                    _buildSectionHeader('منتجات مميزة'),
-                    _isLoading ? const ProductGridShimmer() : _buildProductsGrid(),
-                    const SizedBox(height: 24),
-                    _buildSectionHeader('السوق المتجدد'),
-                    const SizedBox(height: 8),
-                    Container(
-                      height: 450,
-                      margin: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: _isLoading
-                            ? const Center(child: CircularProgressIndicator())
-                            : MarketGridTable(
-                                items: _displayItems,
-                                filterType: _selectedFilter,
-                                onFavoriteToggle: _onFavoriteToggle,
-                              ),
-                      ),
+    
+    // استخدام Consumer للاستماع لتغيرات AuthProvider
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        final isLoggedIn = authProvider.isAuthenticated;
+        
+        return Scaffold(
+          backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+          appBar: _showAppBar ? AppBar(
+            title: const Text('فلكس يمن', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+            backgroundColor: AppTheme.goldColor,
+            foregroundColor: Colors.black,
+            centerTitle: true,
+            elevation: 0,
+            actions: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined, color: Colors.black)),
+            ],
+          ) : null,
+          body: Column(
+            children: [
+              // أزرار الدخول والتسجيل - تظهر فقط إذا لم يكن مسجلاً
+              if (!isLoggedIn && _showAppBar) _buildAuthButtons(),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: _loadData,
+                  color: AppTheme.goldColor,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        _isLoading ? const CarouselShimmer() : _buildCarousel(),
+                        const SizedBox(height: 16),
+                        _buildSectionHeader('الأقسام الرئيسية'),
+                        _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
+                        const SizedBox(height: 24),
+                        _buildSectionHeader('منتجات مميزة'),
+                        _isLoading ? const ProductGridShimmer() : _buildProductsGrid(),
+                        const SizedBox(height: 24),
+                        _buildSectionHeader('السوق المتجدد'),
+                        const SizedBox(height: 8),
+                        Container(
+                          height: 450,
+                          margin: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: _isLoading
+                                ? const Center(child: CircularProgressIndicator())
+                                : MarketGridTable(
+                                    items: _displayItems,
+                                    filterType: _selectedFilter,
+                                    onFavoriteToggle: _onFavoriteToggle,
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(height: 80),
+                      ],
                     ),
-                    const SizedBox(height: 80),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              if (_showBottomBar)
+                MarketTopTabs(
+                  onTabSelected: _onMarketTabSelected,
+                  selectedTab: _selectedMarketTab,
+                ),
+            ],
           ),
-          if (_showBottomBar)
-            MarketTopTabs(
-              onTabSelected: _onMarketTabSelected,
-              selectedTab: _selectedMarketTab,
-            ),
-        ],
-      ),
-      bottomNavigationBar: _showBottomBar ? null : null,
+        );
+      },
     );
   }
 
@@ -346,26 +351,3 @@ class ProductGridShimmer extends StatelessWidget {
     );
   }
 }
-
-// إضافة navigation للمتاجر
-  void _navigateToStores(String category) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => StoresScreen(category: category)),
-    );
-  }
-
-// تحديث دالة _buildCategories للربط بصفحة المتاجر
-  void _navigateToStores(String category) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => StoresScreen(category: category)),
-    );
-  }
-
-// إضافة ويدجت التوصيات الذكية
-import '../../widgets/smart_recommendations_widget.dart';
-
-  Widget _buildSmartRecommendations() {
-    return const SmartRecommendationsWidget(showAllSections: true);
-  }
