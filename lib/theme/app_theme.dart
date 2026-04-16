@@ -348,3 +348,16 @@ class _AnimatedCardState extends State<AnimatedCard> {
     );
   }
 }
+
+// ============ متغيرات للتوافق مع الكود القديم ============
+static const Color darkBackground = navyPrimary;
+static const Color lightBackground = Color(0xFFF8FAFC);
+static const Color goldLight = Color(0xFFE5C158);
+static const Color goldDark = Color(0xFFB8860B);
+static const Color darkBlueGrayAccent = navyAccent;
+
+static const LinearGradient goldGradient = LinearGradient(
+  colors: [goldColor, goldLight],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
