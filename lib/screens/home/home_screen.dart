@@ -27,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String _selectedMarketTab = 'اكتشف';
   String _selectedFilter = 'رائج';
   List<MarketItem> _displayItems = [];
+  List<MarketItem> _featuredProducts = [];
+  List<MarketItem> _categories = [];
   final ScrollController _scrollController = ScrollController();
   bool _showAppBar = true;
   bool _showBottomBar = true;
@@ -36,16 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     {'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800', 'title': 'عقارات فاخرة', 'subtitle': 'فلل وشقق', 'discount': 'خصم 30%'},
     {'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'title': 'إلكترونيات', 'subtitle': 'هواتف وكمبيوترات', 'discount': 'خصم 40%'},
     {'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800', 'title': 'مزادات حية', 'subtitle': 'سيارات وعقارات', 'discount': 'مزايدة الآن'},
-  ];
-
-  List<Map<String, dynamic>> _products = [];
-  final List<Map<String, dynamic>> _categories = [
-    {'id': 'electronics', 'name': 'إلكترونيات', 'icon': Icons.electrical_services, 'color': 0xFF9C27B0},
-    {'id': 'cars', 'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFF4CAF50},
-    {'id': 'real_estate', 'name': 'عقارات', 'icon': Icons.house, 'color': 0xFF2196F3},
-    {'id': 'fashion', 'name': 'أزياء', 'icon': Icons.checkroom, 'color': 0xFFE91E63},
-    {'id': 'furniture', 'name': 'أثاث', 'icon': Icons.weekend, 'color': 0xFF795548},
-    {'id': 'restaurants', 'name': 'مطاعم', 'icon': Icons.restaurant, 'color': 0xFFFF9800},
   ];
 
   @override
@@ -74,17 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadData() async {
+    // محاكاة تحميل البيانات
     await Future.delayed(const Duration(seconds: 2));
+    
     setState(() {
-      _products = [
-        {'id': '1', 'name': 'تويوتا كامري 2024', 'price': '95,000', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400', 'tag': 'سيارات'},
-        {'id': '2', 'name': 'فيلا فاخرة', 'price': '2,500,000', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', 'tag': 'عقارات'},
-        {'id': '3', 'name': 'ماك بوك برو', 'price': '6,500', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', 'tag': 'إلكترونيات'},
-        {'id': '4', 'name': 'مندي لحم', 'price': '65', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'tag': 'مطاعم'},
-        {'id': '5', 'name': 'مزاد سيارات', 'price': 'مزايدة', 'image': 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400', 'tag': 'مزادات'},
-        {'id': '6', 'name': 'آيفون 15 برو', 'price': '4,500', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'tag': 'إلكترونيات'},
-      ];
+      // استخدام MarketData الحقيقية
+      _featuredProducts = MarketData.getTrending().take(6).toList();
       _displayItems = MarketData.getTrending();
+      _categories = MarketData.getAllItems().take(6).toList();
       _isLoading = false;
     });
   }
@@ -133,7 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    // استخدام Consumer للاستماع لتغيرات AuthProvider
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         final isLoggedIn = authProvider.isAuthenticated;
@@ -153,7 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ) : null,
           body: Column(
             children: [
-              // أزرار الدخول والتسجيل - تظهر فقط إذا لم يكن مسجلاً
               if (!isLoggedIn && _showAppBar) _buildAuthButtons(),
               Expanded(
                 child: RefreshIndicator(
@@ -167,10 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         _isLoading ? const CarouselShimmer() : _buildCarousel(),
                         const SizedBox(height: 16),
                         _buildSectionHeader('الأقسام الرئيسية'),
-                        _isLoading ? _buildCategoriesShimmer() : _buildCategories(),
+                        _isLoading ? _buildCategoriesShimmer() : _buildCategoriesFromData(),
                         const SizedBox(height: 24),
                         _buildSectionHeader('منتجات مميزة'),
-                        _isLoading ? const ProductGridShimmer() : _buildProductsGrid(),
+                        _isLoading ? const ProductGridShimmer() : _buildFeaturedProductsGrid(),
                         const SizedBox(height: 24),
                         _buildSectionHeader('السوق المتجدد'),
                         const SizedBox(height: 8),
@@ -283,9 +270,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())), child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)))]) );
   }
 
-  Widget _buildCategories() {
-    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: _categories.length, itemBuilder: (context, index) {
-      final cat = _categories[index];
+  Widget _buildCategoriesFromData() {
+    final categories = [
+      {'id': 'electronics', 'name': 'إلكترونيات', 'icon': Icons.electrical_services, 'color': 0xFF9C27B0},
+      {'id': 'cars', 'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFF4CAF50},
+      {'id': 'real_estate', 'name': 'عقارات', 'icon': Icons.house, 'color': 0xFF2196F3},
+      {'id': 'fashion', 'name': 'أزياء', 'icon': Icons.checkroom, 'color': 0xFFE91E63},
+      {'id': 'furniture', 'name': 'أثاث', 'icon': Icons.weekend, 'color': 0xFF795548},
+      {'id': 'restaurants', 'name': 'مطاعم', 'icon': Icons.restaurant, 'color': 0xFFFF9800},
+    ];
+    
+    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: categories.length, itemBuilder: (context, index) {
+      final cat = categories[index];
       return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CategoryProductsScreen(categoryId: cat['id'], categoryName: cat['name']))),
         child: Container(width: 80, margin: const EdgeInsets.symmetric(horizontal: 8), child: Column(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Color(cat['color']).withOpacity(0.1), shape: BoxShape.circle), child: Icon(cat['icon'], color: Color(cat['color']), size: 30)), const SizedBox(height: 8), Text(cat['name'], style: const TextStyle(fontSize: 12))])),
@@ -293,21 +289,27 @@ class _HomeScreenState extends State<HomeScreen> {
     }));
   }
 
-  Widget _buildProductsGrid() {
+  Widget _buildFeaturedProductsGrid() {
+    if (_featuredProducts.isEmpty) {
+      return const SizedBox(height: 200, child: Center(child: Text('لا توجد منتجات مميزة')));
+    }
+    
     return GridView.builder(
-      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.symmetric(horizontal: 12),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12),
-      itemCount: _products.length,
+      itemCount: _featuredProducts.length,
       itemBuilder: (context, index) {
-        final product = _products[index];
+        final product = _featuredProducts[index];
         return GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product['id'], productName: product['name']))),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product.name, productName: product.name, storeName: product.store))),
           child: Container(
             decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(12)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(12)), child: ShimmerImage(imageUrl: product['image'], height: 130, width: double.infinity)),
-                Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product['name'], maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text('${product['price']} ريال', style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(product['tag'], style: TextStyle(color: AppTheme.goldColor, fontSize: 10)))])),
+                ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(12)), child: ShimmerImage(imageUrl: product.imageUrl, height: 130, width: double.infinity)),
+                Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product.name, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text(product.formattedPrice, style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 4), Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(product.category, style: TextStyle(color: AppTheme.goldColor, fontSize: 10)))])),
               ],
             ),
           ),
