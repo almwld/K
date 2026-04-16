@@ -9,21 +9,23 @@ class AppTheme {
   static const Color goldLight = Color(0xFFE5C158);
   static const Color goldDark = Color(0xFFB8860B);
   
-  // الثيم الداكن (أزرق داكن مائل للرمادي - Dark Blue Gray)
-  static const Color darkBlueGray = Color(0xFF1A2530);
-  static const Color darkBlueGrayLight = Color(0xFF2C3E50);
-  static const Color darkBlueGrayCard = Color(0xFF243447);
-  static const Color darkBlueGrayAccent = Color(0xFF3498DB);
+  // الثيم الداكن - كحلي / أزرق ليلي (Navy Blue / Midnight Blue)
+  static const Color navyPrimary = Color(0xFF1A2A44);        // الكحلي الأساسي
+  static const Color navyLight = Color(0xFF2A3A5C);          // كحلي فاتح
+  static const Color navyDark = Color(0xFF0F1A2E);           // كحلي غامق
+  static const Color navyAccent = Color(0xFF3B82F6);         // أزرق فاتح للتحديد
+  static const Color navyGold = Color(0xFFD4AF37);           // لمسات ذهبية
   
   // ألوان عامة
-  static const Color success = Color(0xFF00C853);
-  static const Color error = Color(0xFFFF3D00);
-  static const Color warning = Color(0xFFFFA000);
+  static const Color success = Color(0xFF10B981);
+  static const Color error = Color(0xFFEF4444);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color info = Color(0xFF3B82F6);
   
   // ألوان الخلفيات للوضع النهاري
-  static const Color lightBackground = Color(0xFFF5F7FA);
+  static const Color lightBackground = Color(0xFFF8FAFC);
   static const Color lightSurface = Color(0xFFFFFFFF);
-  static const Color lightCard = Color(0xFFF8F9FA);
+  static const Color lightCard = Color(0xFFF1F5F9);
 
   // ============================================
   // الثيم النهاري (ذهبي + أبيض)
@@ -51,7 +53,7 @@ class AppTheme {
         fontFamily: 'Cairo',
         fontSize: 22,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: Color(0xFF1E293B),
         letterSpacing: 1.5,
       ),
       iconTheme: IconThemeData(color: goldColor),
@@ -60,7 +62,7 @@ class AppTheme {
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: lightSurface,
       selectedItemColor: goldColor,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Color(0xFF94A3B8),
       type: BottomNavigationBarType.fixed,
       elevation: 8,
     ),
@@ -108,47 +110,20 @@ class AppTheme {
         borderRadius: BorderRadius.circular(30),
         borderSide: const BorderSide(color: goldColor, width: 2),
       ),
-      hintStyle: TextStyle(
-        color: Colors.grey[500],
+      hintStyle: const TextStyle(
+        color: Color(0xFF94A3B8),
         fontFamily: 'Cairo',
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
     ),
     
     textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
-      ),
-      headlineMedium: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
-      ),
-      titleLarge: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: Colors.black87,
-      ),
-      bodyLarge: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 16,
-        color: Colors.black87,
-      ),
-      bodyMedium: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 14,
-        color: Colors.black54,
-      ),
-      labelSmall: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 12,
-        color: Colors.grey,
-      ),
+      headlineLarge: TextStyle(fontFamily: 'Cairo', fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
+      headlineMedium: TextStyle(fontFamily: 'Cairo', fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
+      titleLarge: TextStyle(fontFamily: 'Cairo', fontSize: 18, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
+      bodyLarge: TextStyle(fontFamily: 'Cairo', fontSize: 16, color: Color(0xFF1E293B)),
+      bodyMedium: TextStyle(fontFamily: 'Cairo', fontSize: 14, color: Color(0xFF475569)),
+      labelSmall: TextStyle(fontFamily: 'Cairo', fontSize: 12, color: Color(0xFF94A3B8)),
     ),
     
     switchTheme: SwitchThemeData(
@@ -162,36 +137,25 @@ class AppTheme {
       }),
     ),
     
-    progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: goldColor,
-    ),
-    
-    tabBarTheme: const TabBarTheme(
-      labelColor: goldColor,
-      unselectedLabelColor: Colors.grey,
-      indicatorColor: goldColor,
-    ),
-    
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: goldColor,
-      foregroundColor: Colors.white,
-    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(color: goldColor),
+    tabBarTheme: const TabBarTheme(labelColor: goldColor, unselectedLabelColor: Color(0xFF94A3B8), indicatorColor: goldColor),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: goldColor, foregroundColor: Colors.white),
   );
 
   // ============================================
-  // الثيم الداكن (أزرق داكن مائل للرمادي - Dark Blue Gray)
+  // الثيم الداكن (كحلي - Navy Blue / Midnight Blue)
   // ============================================
   static ThemeData get darkTheme => ThemeData(
     fontFamily: 'Cairo',
     brightness: Brightness.dark,
-    primaryColor: darkBlueGrayAccent,
-    scaffoldBackgroundColor: darkBlueGray,
+    primaryColor: navyGold,
+    scaffoldBackgroundColor: navyPrimary,
     useMaterial3: true,
     
     colorScheme: const ColorScheme.dark(
-      primary: darkBlueGrayAccent,
-      secondary: darkBlueGrayAccent,
-      surface: darkBlueGrayCard,
+      primary: navyGold,
+      secondary: navyAccent,
+      surface: navyLight,
       error: error,
     ),
     
@@ -207,19 +171,19 @@ class AppTheme {
         color: Colors.white,
         letterSpacing: 1.5,
       ),
-      iconTheme: IconThemeData(color: darkBlueGrayAccent),
+      iconTheme: IconThemeData(color: navyGold),
     ),
     
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: darkBlueGrayCard,
-      selectedItemColor: darkBlueGrayAccent,
-      unselectedItemColor: Colors.grey,
+      backgroundColor: navyDark,
+      selectedItemColor: navyGold,
+      unselectedItemColor: Color(0xFF64748B),
       type: BottomNavigationBarType.fixed,
       elevation: 8,
     ),
     
     cardTheme: CardTheme(
-      color: darkBlueGrayCard,
+      color: navyLight,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -228,8 +192,8 @@ class AppTheme {
     
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: darkBlueGrayAccent,
-        foregroundColor: Colors.white,
+        backgroundColor: navyGold,
+        foregroundColor: navyPrimary,
         elevation: 4,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -239,8 +203,8 @@ class AppTheme {
     
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: darkBlueGrayAccent,
-        side: const BorderSide(color: darkBlueGrayAccent),
+        foregroundColor: navyGold,
+        side: const BorderSide(color: navyGold),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
@@ -248,7 +212,7 @@ class AppTheme {
     
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: darkBlueGrayCard,
+      fillColor: navyLight,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide.none,
@@ -259,106 +223,68 @@ class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: const BorderSide(color: darkBlueGrayAccent, width: 2),
+        borderSide: const BorderSide(color: navyGold, width: 2),
       ),
       hintStyle: const TextStyle(
-        color: Colors.grey,
+        color: Color(0xFF64748B),
         fontFamily: 'Cairo',
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
     ),
     
     textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-      headlineMedium: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-      titleLarge: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-      bodyLarge: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 16,
-        color: Colors.white,
-      ),
-      bodyMedium: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 14,
-        color: Colors.white70,
-      ),
-      labelSmall: TextStyle(
-        fontFamily: 'Cairo',
-        fontSize: 12,
-        color: Colors.grey,
-      ),
+      headlineLarge: TextStyle(fontFamily: 'Cairo', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+      headlineMedium: TextStyle(fontFamily: 'Cairo', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+      titleLarge: TextStyle(fontFamily: 'Cairo', fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+      bodyLarge: TextStyle(fontFamily: 'Cairo', fontSize: 16, color: Colors.white),
+      bodyMedium: TextStyle(fontFamily: 'Cairo', fontSize: 14, color: Color(0xFFCBD5E1)),
+      labelSmall: TextStyle(fontFamily: 'Cairo', fontSize: 12, color: Color(0xFF64748B)),
     ),
     
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return darkBlueGrayAccent;
+        if (states.contains(WidgetState.selected)) return navyGold;
         return Colors.grey;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return darkBlueGrayAccent.withOpacity(0.5);
+        if (states.contains(WidgetState.selected)) return navyGold.withOpacity(0.5);
         return Colors.grey.withOpacity(0.3);
       }),
     ),
     
-    progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: darkBlueGrayAccent,
-    ),
-    
-    tabBarTheme: const TabBarTheme(
-      labelColor: darkBlueGrayAccent,
-      unselectedLabelColor: Colors.grey,
-      indicatorColor: darkBlueGrayAccent,
-    ),
-    
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: darkBlueGrayAccent,
-      foregroundColor: Colors.white,
-    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(color: navyGold),
+    tabBarTheme: const TabBarTheme(labelColor: navyGold, unselectedLabelColor: Color(0xFF64748B), indicatorColor: navyGold),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: navyGold, foregroundColor: navyPrimary),
   );
 
   // ============ دوال مساعدة ============
   static Color getTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
         ? Colors.white 
-        : Colors.black87;
+        : const Color(0xFF1E293B);
   }
 
   static Color getSecondaryTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? Colors.white70 
-        : Colors.black54;
+        ? const Color(0xFFCBD5E1) 
+        : const Color(0xFF475569);
   }
 
   static Color getCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? darkBlueGrayCard 
+        ? navyLight 
         : lightCard;
   }
 
   static Color getBackgroundColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? darkBlueGray 
+        ? navyPrimary 
         : lightBackground;
   }
   
   static Color getSurfaceColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? darkBlueGrayCard 
+        ? navyDark 
         : lightSurface;
   }
 }
