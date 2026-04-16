@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final AuthService _authService = AuthService();
+  final SupabaseClient _client = Supabase.instance.client;
   User? _user;
   bool _isLoading = false;
   String? _error;
@@ -18,54 +17,102 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void _initAuth() {
-    _user = _authService.currentUser;
-    _authService.authStateChanges.listen((AuthState state) {
+    _user = _client.auth.currentUser;
+    _client.auth.onAuthStateChange.listen((AuthState state) {
       _user = state.session?.user;
       notifyListeners();
     });
   }
 
-  Future<bool> signIn(String phone, String password) async {
+  // تنسيق المعرف (جوال أو بريد)
+  String _formatIdentifier(String input) {
+    // إزالة المسافات
+    input = input.trim();
+    
+    // التحقق إذا كان رقم جوال
+    final isPhone = RegExp(r'^[0-9]{9,15}$').hasMatch(input);
+    if (isPhone) {
+      return '$input@flexyemen.com';
+    }
+    
+    // إذا كان بريد إلكتروني، تأكد من صحته
+    final isEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
+    if (isEmail) {
+      return input;
+    }
+    
+    // إذا لم يكن أي منهما، استخدمه كما هو
+    return input;
+  }
+
+  Future<bool> signIn(String identifier, String password) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      // Format phone as email for Supabase (phone@flexyemen.com)
-      final email = '$phone@flexyemen.com';
-      await _authService.signIn(email: email, password: password);
-      _user = _authService.currentUser;
+      final email = _formatIdentifier(identifier);
+      print('محاولة تسجيل الدخول: $email');
+      
+      final response = await _client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      
+      _user = response.user;
       _isLoading = false;
       notifyListeners();
+      
+      print('✅ تم تسجيل الدخول بنجاح: ${_user?.email}');
       return true;
+    } on AuthException catch (e) {
+      print('❌ AuthException: ${e.message}');
+      _error = _handleAuthError(e.message);
+      _isLoading = false;
+      notifyListeners();
+      return false;
     } catch (e) {
-      _error = _handleError(e.toString());
+      print('❌ خطأ غير متوقع: $e');
+      _error = 'حدث خطأ في الاتصال. الرجاء المحاولة لاحقاً.';
       _isLoading = false;
       notifyListeners();
       return false;
     }
   }
 
-  Future<bool> signUp(String phone, String password, {String? name}) async {
+  Future<bool> signUp(String identifier, String password, {String? name}) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final email = '$phone@flexyemen.com';
-      await _authService.signUp(
+      final email = _formatIdentifier(identifier);
+      print('محاولة إنشاء حساب: $email');
+      
+      final response = await _client.auth.signUp(
         email: email,
         password: password,
         data: {
           'full_name': name ?? 'مستخدم فلكس يمن',
-          'phone': phone,
+          'phone': identifier,
         },
       );
+      
+      _user = response.user;
       _isLoading = false;
       notifyListeners();
+      
+      print('✅ تم إنشاء الحساب بنجاح');
       return true;
+    } on AuthException catch (e) {
+      print('❌ AuthException: ${e.message}');
+      _error = _handleAuthError(e.message);
+      _isLoading = false;
+      notifyListeners();
+      return false;
     } catch (e) {
-      _error = _handleError(e.toString());
+      print('❌ خطأ غير متوقع: $e');
+      _error = 'حدث خطأ في الاتصال. الرجاء المحاولة لاحقاً.';
       _isLoading = false;
       notifyListeners();
       return false;
@@ -73,47 +120,52 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut() async {
-    await _authService.signOut();
-    _user = null;
-    notifyListeners();
+    try {
+      await _client.auth.signOut();
+      _user = null;
+      notifyListeners();
+    } catch (e) {
+      print('❌ خطأ في تسجيل الخروج: $e');
+    }
   }
 
-  Future<bool> resetPassword(String phone) async {
+  Future<bool> resetPassword(String identifier) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final email = '$phone@flexyemen.com';
-      await _authService.resetPassword(email);
+      final email = _formatIdentifier(identifier);
+      await _client.auth.resetPasswordForEmail(email);
       _isLoading = false;
       notifyListeners();
       return true;
     } catch (e) {
-      _error = _handleError(e.toString());
+      print('❌ خطأ في استعادة كلمة المرور: $e');
+      _error = 'حدث خطأ في استعادة كلمة المرور';
       _isLoading = false;
       notifyListeners();
       return false;
     }
   }
 
-  String _handleError(String error) {
+  String _handleAuthError(String error) {
     if (error.contains('Invalid login credentials')) {
-      return 'رقم الجوال أو كلمة المرور غير صحيحة';
+      return 'رقم الجوال/البريد أو كلمة المرور غير صحيحة';
     }
     if (error.contains('Email not confirmed')) {
-      return 'الرجاء تأكيد رقم الجوال أولاً';
+      return 'الرجاء تأكيد الحساب أولاً';
     }
     if (error.contains('User already registered')) {
-      return 'رقم الجوال مسجل مسبقاً';
+      return 'هذا الحساب مسجل مسبقاً';
     }
     if (error.contains('Password should be at least 6 characters')) {
       return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
     }
     if (error.contains('Invalid API key')) {
-      return 'خطأ في الاتصال بالخادم - الرجاء المحاولة لاحقاً';
+      return 'خطأ في المفتاح - الرجاء التحقق من الإعدادات';
     }
-    return error;
+    return 'حدث خطأ: $error';
   }
 
   void clearError() {
