@@ -102,3 +102,6 @@ flutter:
     - assets/images/products/
     - assets/icons/
     - assets/icons/svg/
+
+  # Push Notifications
+  onesignal_flutter: ^5.0.0
