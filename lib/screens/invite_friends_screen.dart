@@ -49,7 +49,7 @@ class InviteFriendsScreen extends StatelessWidget {
                     onPressed: () => _shareInvite(context),
                     icon: const Icon(Icons.share),
                     label: const Text('مشاركة'),
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                   ),
                 ],
               ),

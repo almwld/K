@@ -54,7 +54,7 @@ class _ReportAdScreenState extends State<ReportAdScreen> {
               value: reason,
               groupValue: _selectedReason,
               onChanged: (value) => setState(() => _selectedReason = value.toString()),
-              activeColor: AppTheme.goldColor,
+              activeColor: AppTheme.goldPrimary,
             )),
             const SizedBox(height: 16),
             TextField(

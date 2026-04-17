@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الإعدادات'),
       body: ListView(
         children: [
@@ -63,14 +63,14 @@ class SettingsScreen extends StatelessWidget {
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Text(title, style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)),
+      child: Text(title, style: TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
     );
   }
 
   Widget _buildSettingTile(BuildContext context, IconData icon, String title, String subtitle, VoidCallback onTap) {
     return ListTile(
       onTap: onTap,
-      leading: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)), child: Icon(icon, color: AppTheme.goldColor, size: 20)),
+      leading: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(10)), child: Icon(icon, color: AppTheme.goldPrimary, size: 20)),
       title: Text(title),
       subtitle: subtitle.isNotEmpty ? Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey[600])) : null,
       trailing: const Icon(Icons.arrow_forward_ios, size: 14),

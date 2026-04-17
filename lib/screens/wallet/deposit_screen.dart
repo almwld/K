@@ -19,7 +19,7 @@ class DepositScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إيداع'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

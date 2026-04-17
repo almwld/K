@@ -118,7 +118,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                 const SnackBar(content: Text('تم إرسال البلاغ بنجاح'), backgroundColor: Colors.green),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary),
             child: const Text('إرسال'),
           ),
         ],
@@ -142,8 +142,8 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                   Container(
                     color: AppTheme.getCardColor(context),
                     child: TabBar(
-                      indicatorColor: AppTheme.goldColor,
-                      labelColor: AppTheme.goldColor,
+                      indicatorColor: AppTheme.goldPrimary,
+                      labelColor: AppTheme.goldPrimary,
                       unselectedLabelColor: AppTheme.getSecondaryTextColor(context),
                       tabs: const [
                         Tab(text: 'المستخدمون المحظورون', icon: Icon(Icons.block)),
@@ -160,7 +160,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.block, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                                    Icon(Icons.block, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                                     const SizedBox(height: 16),
                                     const Text('لا توجد مستخدمين محظورين', style: TextStyle(fontSize: 18)),
                                     const SizedBox(height: 8),
@@ -170,7 +170,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                                       onPressed: _blockUser,
                                       icon: const Icon(Icons.block),
                                       label: const Text('حظر مستخدم'),
-                                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                                     ),
                                   ],
                                 ),
@@ -190,8 +190,8 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                                     child: Row(
                                       children: [
                                         CircleAvatar(
-                                          backgroundColor: AppTheme.goldColor.withOpacity(0.2),
-                                          child: Text(user['name'][0], style: const TextStyle(color: AppTheme.goldColor)),
+                                          backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
+                                          child: Text(user['name'][0], style: const TextStyle(color: AppTheme.goldPrimary)),
                                         ),
                                         const SizedBox(width: 12),
                                         Expanded(
@@ -222,7 +222,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.report_off, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                                    Icon(Icons.report_off, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                                     const SizedBox(height: 16),
                                     const Text('لا توجد بلاغات سابقة', style: TextStyle(fontSize: 18)),
                                     const SizedBox(height: 8),
@@ -232,7 +232,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                                       onPressed: _reportUser,
                                       icon: const Icon(Icons.report),
                                       label: const Text('إبلاغ عن مستخدم'),
-                                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                                     ),
                                   ],
                                 ),
@@ -249,7 +249,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
                                     decoration: BoxDecoration(
                                       color: AppTheme.getCardColor(context),
                                       borderRadius: BorderRadius.circular(16),
-                                      border: isCompleted ? null : Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
+                                      border: isCompleted ? null : Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
                                     ),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,7 +294,7 @@ class _PrivacyBlockScreenState extends State<PrivacyBlockScreen> {
       floatingActionButton: _blockedUsers.isEmpty && _reportedIssues.isEmpty
           ? FloatingActionButton(
               onPressed: _blockUser,
-              backgroundColor: AppTheme.goldColor,
+              backgroundColor: AppTheme.goldPrimary,
               child: const Icon(Icons.block, color: Colors.black),
             )
           : null,

@@ -15,7 +15,7 @@ class PaymentMethodsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.settings, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+            Icon(Icons.settings, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('طرق الدفع', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

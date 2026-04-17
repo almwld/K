@@ -88,9 +88,9 @@ class _SellerReportsScreenState extends State<SellerReportsScreen> with SingleTi
         // bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          labelColor: AppTheme.goldColor,
+          labelColor: AppTheme.goldPrimary,
           unselectedLabelColor: Colors.grey,
-          indicatorColor: AppTheme.goldColor,
+          indicatorColor: AppTheme.goldPrimary,
           tabs: const [
             Tab(text: 'الملخص'),
             Tab(text: 'المبيعات'),
@@ -169,7 +169,7 @@ class _SellerReportsScreenState extends State<SellerReportsScreen> with SingleTi
                       barGroups: _dailySales.asMap().entries.map((entry) {
                         return BarChartGroupData(
                           x: entry.key,
-                          barRods: [BarChartRodData(toY: entry.value.sales, color: AppTheme.goldColor, width: 20, borderRadius: BorderRadius.circular(4))],
+                          barRods: [BarChartRodData(toY: entry.value.sales, color: AppTheme.goldPrimary, width: 20, borderRadius: BorderRadius.circular(4))],
                         );
                       }).toList(),
                       titlesData: FlTitlesData(
@@ -277,7 +277,7 @@ Widget _buildStatCard(String title, String value, IconData icon, Color color, [S
           decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
           child: Row(
             children: [
-              Container(width: 50, height: 50, decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)), child: Center(child: Text(sale.day, style: const TextStyle(fontWeight: FontWeight.bold)))),
+              Container(width: 50, height: 50, decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)), child: Center(child: Text(sale.day, style: const TextStyle(fontWeight: FontWeight.bold)))),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -288,7 +288,7 @@ Widget _buildStatCard(String title, String value, IconData icon, Color color, [S
                   ],
                 ),
               ),
-              Text('${sale.sales.toInt()} ريال', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.goldColor)),
+              Text('${sale.sales.toInt()} ريال', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.goldPrimary)),
             ],
           ),
         );
@@ -329,7 +329,7 @@ Widget _buildStatCard(String title, String value, IconData icon, Color color, [S
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('${product.revenue.toInt()} ريال', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
+                  Text('${product.revenue.toInt()} ريال', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldPrimary)),
                   const SizedBox(height: 4),
                   Row(
                     children: [
@@ -385,7 +385,7 @@ Widget _buildStatCard(String title, String value, IconData icon, Color color, [S
                 ),
               ),
               const SizedBox(width: 12),
-              Text('${order.amount.toInt()} ريال', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.goldColor)),
+              Text('${order.amount.toInt()} ريال', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.goldPrimary)),
             ],
           ),
         );
@@ -428,7 +428,7 @@ Widget _buildStatCard(String title, String value, IconData icon, Color color, [S
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Row(
                       children: [
-                        Container(width: 30, height: 30, decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Center(child: Text('${entry.key + 1}', style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)))),
+                        Container(width: 30, height: 30, decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Center(child: Text('${entry.key + 1}', style: TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold)))),
                         const SizedBox(width: 12),
                         Expanded(child: Text(entry.value, style: const TextStyle(fontWeight: FontWeight.w500))),
                         Icon(Icons.location_on, color: Colors.grey[400], size: 18),

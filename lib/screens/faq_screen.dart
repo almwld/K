@@ -91,9 +91,9 @@ class _FaqScreenState extends State<FaqScreen> {
                     margin: const EdgeInsets.only(right: 8),
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppTheme.goldColor : Colors.transparent,
+                      color: isSelected ? AppTheme.goldPrimary : Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: isSelected ? AppTheme.goldColor : AppTheme.getDividerColor(context)),
+                      border: Border.all(color: isSelected ? AppTheme.goldPrimary : AppTheme.getDividerColor(context)),
                     ),
                     child: Text(category, style: TextStyle(color: isSelected ? Colors.black : AppTheme.getTextColor(context))),
                   ),
@@ -109,7 +109,7 @@ class _FaqScreenState extends State<FaqScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.search_off, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                        Icon(Icons.search_off, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                         const SizedBox(height: 16),
                         const Text('لا توجد نتائج', style: TextStyle(fontSize: 18)),
                       ],
@@ -124,8 +124,8 @@ class _FaqScreenState extends State<FaqScreen> {
                         margin: const EdgeInsets.only(bottom: 12),
                         child: ExpansionTile(
                           leading: CircleAvatar(
-                            backgroundColor: AppTheme.goldColor.withOpacity(0.1),
-                            child: Text('${index + 1}', style: const TextStyle(color: AppTheme.goldColor)),
+                            backgroundColor: AppTheme.goldPrimary.withOpacity(0.1),
+                            child: Text('${index + 1}', style: const TextStyle(color: AppTheme.goldPrimary)),
                           ),
                           title: Text(faq['question'], style: const TextStyle(fontWeight: FontWeight.bold)),
                           children: [

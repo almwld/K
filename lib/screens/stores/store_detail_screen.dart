@@ -9,7 +9,7 @@ class StoreDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(store.name), backgroundColor: AppTheme.goldColor),
+      appBar: AppBar(title: Text(store.name), backgroundColor: AppTheme.goldPrimary),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

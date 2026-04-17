@@ -15,7 +15,7 @@ class WalkthroughScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.tour, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+            Icon(Icons.tour, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('دليل الاستخدام', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

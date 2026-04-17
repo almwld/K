@@ -41,12 +41,12 @@ class _WheelsInvestmentsScreenState extends State<WheelsInvestmentsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('${it['price']} ر.ي', style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
+                    Text('${it['price']} ر.ي', style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold)),
                     Text(it['chance'], style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
                     const SizedBox(height: 6),
                     ElevatedButton(
                       onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم المشاركة'))),
-                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                       child: const Text('شارك'),
                     ),
                   ],

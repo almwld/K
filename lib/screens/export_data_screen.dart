@@ -76,12 +76,12 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.1),
+                color: AppTheme.goldPrimary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline, color: AppTheme.goldColor),
+                  const Icon(Icons.info_outline, color: AppTheme.goldPrimary),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -110,21 +110,21 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                     subtitle: const Text('جميع منتجاتك وإعلاناتك'),
                     value: _exportProducts,
                     onChanged: (v) => setState(() => _exportProducts = v!),
-                    activeColor: AppTheme.goldColor,
+                    activeColor: AppTheme.goldPrimary,
                   ),
                   CheckboxListTile(
                     title: const Text('الطلبات'),
                     subtitle: const Text('جميع طلباتك السابقة'),
                     value: _exportOrders,
                     onChanged: (v) => setState(() => _exportOrders = v!),
-                    activeColor: AppTheme.goldColor,
+                    activeColor: AppTheme.goldPrimary,
                   ),
                   CheckboxListTile(
                     title: const Text('الملف الشخصي'),
                     subtitle: const Text('معلومات حسابك الشخصية'),
                     value: _exportProfile,
                     onChanged: (v) => setState(() => _exportProfile = v!),
-                    activeColor: AppTheme.goldColor,
+                    activeColor: AppTheme.goldPrimary,
                   ),
                 ],
               ),

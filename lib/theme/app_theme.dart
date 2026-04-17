@@ -399,3 +399,9 @@ class AppTheme {
   static Color getBackgroundColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? darkBackground : lightBackground;
   static Color getSurfaceColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? darkSurface : lightSurface;
 }
+
+// ============ متغيرات للتوافق مع الكود القديم ============
+static const Color goldColor = goldPrimary;
+static const Color navyPrimary = darkSurface;
+static const Color navyCard = darkCard;
+static const Color navyGold = goldPrimary;

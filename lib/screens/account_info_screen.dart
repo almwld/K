@@ -63,15 +63,15 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundColor: AppTheme.goldColor.withOpacity(0.2),
-                      child: const Icon(Icons.person, size: 50, color: AppTheme.goldColor),
+                      backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
+                      child: const Icon(Icons.person, size: 50, color: AppTheme.goldPrimary),
                     ),
                     if (_isEditing)
                       Positioned(
                         bottom: 0, right: 0,
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
+                          decoration: const BoxDecoration(color: AppTheme.goldPrimary, shape: BoxShape.circle),
                           child: const Icon(Icons.camera_alt, size: 16, color: Colors.black),
                         ),
                       ),

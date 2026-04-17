@@ -110,7 +110,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                   ElevatedButton(
                     onPressed: _performSearch,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.goldColor,
+                      backgroundColor: AppTheme.goldPrimary,
                       foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -158,7 +158,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                     min: 0,
                     max: 10000000,
                     divisions: 100,
-                    activeColor: AppTheme.goldColor,
+                    activeColor: AppTheme.goldPrimary,
                     onChanged: (values) => setState(() => _priceRange = values),
                   ),
                   const SizedBox(height: 16),
@@ -214,7 +214,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                           onPressed: _performSearch,
                           icon: const Icon(Icons.search),
                           label: const Text('بحث'),
-                          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                         ),
                       ),
                     ],
@@ -239,7 +239,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                     ? Center(
                         child: Column(
                           children: [
-                            Icon(Icons.search_off, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                            Icon(Icons.search_off, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                             const SizedBox(height: 16),
                             const Text('لا توجد نتائج', style: TextStyle(fontSize: 18)),
                             const SizedBox(height: 8),
@@ -275,8 +275,8 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                                           height: 120,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
-                                          placeholder: (_, __) => Container(height: 120, color: AppTheme.goldColor.withOpacity(0.1)),
-                                          errorWidget: (_, __, ___) => Container(height: 120, color: AppTheme.goldColor.withOpacity(0.1), child: const Icon(Icons.image)),
+                                          placeholder: (_, __) => Container(height: 120, color: AppTheme.goldPrimary.withOpacity(0.1)),
+                                          errorWidget: (_, __, ___) => Container(height: 120, color: AppTheme.goldPrimary.withOpacity(0.1), child: const Icon(Icons.image)),
                                         ),
                                       ),
                                       Padding(
@@ -286,7 +286,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                                           children: [
                                             Text(product.title, maxLines: 1, style: const TextStyle(fontWeight: FontWeight.bold)),
                                             const SizedBox(height: 4),
-                                            Text('${product.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold)),
+                                            Text('${product.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold)),
                                             Row(children: [const Icon(Icons.star, size: 10, color: Colors.amber), const SizedBox(width: 2), Text('${product.rating}', style: const TextStyle(fontSize: 10))]),
                                           ],
                                         ),

@@ -109,7 +109,7 @@ class _NearbyStoresScreenState extends State<NearbyStoresScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     decoration: BoxDecoration(
                       gradient: isSelected
-                          ? LinearGradient(colors: [AppTheme.goldColor, AppTheme.goldDark])
+                          ? LinearGradient(colors: [AppTheme.goldPrimary, AppTheme.goldDark])
                           : null,
                       color: isSelected ? null : (isDark ? Colors.grey[800] : Colors.grey[200]),
                       borderRadius: BorderRadius.circular(25),
@@ -307,7 +307,7 @@ class _NearbyStoresScreenState extends State<NearbyStoresScreen> {
                     icon: const Icon(Icons.directions),
                     label: const Text('الاتجاهات'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.goldColor,
+                      backgroundColor: AppTheme.goldPrimary,
                       foregroundColor: Colors.black,
                     ),
                   ),
@@ -319,7 +319,7 @@ class _NearbyStoresScreenState extends State<NearbyStoresScreen> {
                     icon: const Icon(Icons.phone),
                     label: const Text('اتصال'),
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppTheme.goldColor),
+                      side: const BorderSide(color: AppTheme.goldPrimary),
                     ),
                   ),
                 ),

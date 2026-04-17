@@ -60,7 +60,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                     decoration: BoxDecoration(
-                      color: isUser ? AppTheme.goldColor : AppTheme.getCardColor(context),
+                      color: isUser ? AppTheme.goldPrimary : AppTheme.getCardColor(context),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -97,7 +97,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  decoration: BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: AppTheme.goldPrimary, shape: BoxShape.circle),
                   child: IconButton(
                     icon: const Icon(Icons.send, color: Colors.black),
                     onPressed: _sendMessage,

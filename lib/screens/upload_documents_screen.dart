@@ -37,7 +37,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
               onPressed: _pickDocument,
               icon: const Icon(Icons.upload_file),
               label: const Text('رفع مستند'),
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
             ),
             const SizedBox(height: 12),
             Expanded(

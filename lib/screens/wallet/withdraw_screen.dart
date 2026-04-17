@@ -40,7 +40,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? AppTheme.navyPrimary : AppTheme.lightBackground,
+          ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'سحب الأموال'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

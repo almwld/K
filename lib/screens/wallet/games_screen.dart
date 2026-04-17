@@ -17,7 +17,7 @@ class GamesScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'ألعاب وشحن'),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),

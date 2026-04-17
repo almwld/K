@@ -19,7 +19,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.productName), backgroundColor: AppTheme.goldColor),
+      appBar: AppBar(title: Text(widget.productName), backgroundColor: AppTheme.goldPrimary),
       body: Column(
         children: [
           Expanded(
@@ -32,7 +32,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   const SizedBox(height: 16),
                   Text(widget.productName, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text('السعر: 450.00 ريال', style: TextStyle(fontSize: 20, color: AppTheme.goldColor)),
+                  Text('السعر: 450.00 ريال', style: TextStyle(fontSize: 20, color: AppTheme.goldPrimary)),
                   const SizedBox(height: 16),
                   const Text('الوصف', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
@@ -60,7 +60,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, padding: const EdgeInsets.symmetric(vertical: 16)),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, padding: const EdgeInsets.symmetric(vertical: 16)),
                     child: const Text('أضف إلى السلة', style: TextStyle(color: Colors.black)),
                   ),
                 ),

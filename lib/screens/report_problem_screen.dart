@@ -108,7 +108,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                 subtitle: const Text('سيساعدنا ذلك في فهم المشكلة بشكل أفضل'),
                 value: _includeScreenshot,
                 onChanged: (v) => setState(() => _includeScreenshot = v),
-                activeColor: AppTheme.goldColor,
+                activeColor: AppTheme.goldPrimary,
               ),
               
               if (_includeScreenshot) ...[
@@ -120,7 +120,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                     decoration: BoxDecoration(
                       color: AppTheme.getCardColor(context),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppTheme.goldColor.withOpacity(0.3)),
+                      border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
                     ),
                     child: const Center(
                       child: Column(
@@ -149,12 +149,12 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldColor.withOpacity(0.1),
+                  color: AppTheme.goldPrimary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info_outline, color: AppTheme.goldColor),
+                    const Icon(Icons.info_outline, color: AppTheme.goldPrimary),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(

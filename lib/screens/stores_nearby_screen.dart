@@ -30,7 +30,7 @@ class StoresNearbyScreen extends StatelessWidget {
             subtitle: Text(s['distance']!),
             trailing: ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
               child: const Text('عرض'),
             ),
           );

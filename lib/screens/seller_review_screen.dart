@@ -65,7 +65,7 @@ class _SellerReviewScreenState extends State<SellerReviewScreen> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: AppTheme.goldColor.withOpacity(0.2),
+                    backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
                     child: Text(widget.seller?['name']?[0] ?? 'ب', style: const TextStyle(fontSize: 24)),
                   ),
                   const SizedBox(width: 12),

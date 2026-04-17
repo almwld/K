@@ -33,7 +33,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: AppBar(
         title: const Text('إضافة إعلان جديد', style: TextStyle(color: Colors.black)),
-        backgroundColor: AppTheme.goldColor,
+        backgroundColor: AppTheme.goldPrimary,
         foregroundColor: Colors.black,
         centerTitle: true,
         elevation: 0,
@@ -98,9 +98,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppTheme.goldColor, width: 2, style: BorderStyle.solid),
+                    border: Border.all(color: AppTheme.goldPrimary, width: 2, style: BorderStyle.solid),
                   ),
-                  child: const Icon(Icons.add_photo_alternate, size: 40, color: AppTheme.goldColor),
+                  child: const Icon(Icons.add_photo_alternate, size: 40, color: AppTheme.goldPrimary),
                 ),
               ),
               ..._images.map((image) => Padding(
@@ -143,9 +143,9 @@ class _AddAdScreenState extends State<AddAdScreen> {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        prefixIcon: Icon(icon, color: AppTheme.goldColor),
+        prefixIcon: Icon(icon, color: AppTheme.goldPrimary),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppTheme.goldColor, width: 2)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppTheme.goldPrimary, width: 2)),
       ),
       maxLines: maxLines,
       keyboardType: keyboardType,
@@ -158,7 +158,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
       value: value,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: AppTheme.goldColor),
+        prefixIcon: Icon(icon, color: AppTheme.goldPrimary),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
       items: items.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
@@ -173,7 +173,7 @@ class _AddAdScreenState extends State<AddAdScreen> {
       child: ElevatedButton(
         onPressed: _isLoading ? null : _submitAd,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.goldColor,
+          backgroundColor: AppTheme.goldPrimary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),

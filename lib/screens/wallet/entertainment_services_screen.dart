@@ -67,7 +67,7 @@ class _EntertainmentServicesScreenState extends State<EntertainmentServicesScree
     final filtered = _filteredServices;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'خدمات ترفيهية'),
       body: Column(
         children: [

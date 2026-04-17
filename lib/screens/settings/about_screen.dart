@@ -20,11 +20,11 @@ class AboutScreen extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: AppTheme.goldColor,
+                color: AppTheme.goldPrimary,
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.goldColor.withOpacity(0.4),
+                    color: AppTheme.goldPrimary.withOpacity(0.4),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -44,12 +44,12 @@ class AboutScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.2),
+                color: AppTheme.goldPrimary.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Text(
                 'الإصدار 1.0.0',
-                style: TextStyle(color: AppTheme.goldColor),
+                style: TextStyle(color: AppTheme.goldPrimary),
               ),
             ),
             const SizedBox(height: 32),
@@ -77,7 +77,7 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildInfoTile(IconData icon, String title, String value) {
     return ListTile(
-      leading: Icon(icon, color: AppTheme.goldColor),
+      leading: Icon(icon, color: AppTheme.goldPrimary),
       title: Text(title),
       subtitle: Text(value),
       onTap: () {},

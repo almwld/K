@@ -57,7 +57,7 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
     final total = amount + fee;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'دفع المشتريات'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

@@ -16,44 +16,21 @@ class ThemeSelectionScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          const Text(
-            'اختر المظهر الذي يناسبك',
-            style: TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          
-          // الوضع النهاري
-          _buildThemeCard(
-            context: context,
-            title: 'الوضع النهاري',
-            subtitle: 'ذهبي مع أبيض - مظهر كلاسيكي',
-            icon: Icons.light_mode,
-            color: AppTheme.goldColor,
-            isSelected: themeManager.isLightMode,
-            onTap: () => themeManager.setThemeModeIndex(0),
-          ),
-          
-          // الوضع الداكن
           _buildThemeCard(
             context: context,
             title: 'الوضع الداكن',
-            subtitle: 'كحلي داكن - مريح للعين',
+            subtitle: 'مظهر فاخر مع لمسات ذهبية',
             icon: Icons.dark_mode,
-            color: AppTheme.navyGold,
             isSelected: themeManager.isDarkMode,
             onTap: () => themeManager.setThemeModeIndex(1),
           ),
-          
-          // وضع النظام
           _buildThemeCard(
             context: context,
-            title: 'وضع النظام',
-            subtitle: 'يتغير تلقائياً حسب إعدادات الجهاز',
-            icon: Icons.settings_suggest,
-            color: Colors.grey,
-            isSelected: themeManager.isDarkMode == false && themeManager.isLightMode == false,
-            onTap: () => themeManager.setThemeModeIndex(2),
+            title: 'الوضع النهاري',
+            subtitle: 'مظهر كلاسيكي أنيق',
+            icon: Icons.light_mode,
+            isSelected: themeManager.isLightMode,
+            onTap: () => themeManager.setThemeModeIndex(0),
           ),
         ],
       ),
@@ -65,7 +42,6 @@ class ThemeSelectionScreen extends StatelessWidget {
     required String title,
     required String subtitle,
     required IconData icon,
-    required Color color,
     required bool isSelected,
     required VoidCallback onTap,
   }) {
@@ -78,7 +54,7 @@ class ThemeSelectionScreen extends StatelessWidget {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? color : Colors.transparent,
+            color: isSelected ? AppTheme.goldPrimary : Colors.transparent,
             width: 2,
           ),
         ),
@@ -88,10 +64,10 @@ class ThemeSelectionScreen extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: AppTheme.goldPrimary.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: color),
+              child: Icon(icon, color: AppTheme.goldPrimary),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -103,7 +79,7 @@ class ThemeSelectionScreen extends StatelessWidget {
                 ],
               ),
             ),
-            if (isSelected) Icon(Icons.check_circle, color: color),
+            if (isSelected) Icon(Icons.check_circle, color: AppTheme.goldPrimary),
           ],
         ),
       ),

@@ -33,7 +33,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'استلام طلب تحويل'),
       body: DefaultTabController(
         length: 2,

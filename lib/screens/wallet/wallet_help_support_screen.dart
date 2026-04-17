@@ -52,7 +52,7 @@ class _WalletHelpSupportScreenState extends State<WalletHelpSupportScreen> {
     final filtered = _filteredFaqs;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المساعدة والدعم'),
       body: Column(
         children: [

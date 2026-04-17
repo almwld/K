@@ -11,7 +11,7 @@ class GoldenFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: AppTheme.goldColor,
+      backgroundColor: AppTheme.goldPrimary,
       child: const Icon(Icons.add, color: Colors.black, size: 30),
       onPressed: () => _showGoldenMenu(context),
     );
@@ -59,10 +59,10 @@ class GoldenFloatingButton extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: AppTheme.goldColor.withOpacity(0.1),
+              color: AppTheme.goldPrimary.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppTheme.goldColor, size: 28),
+            child: Icon(icon, color: AppTheme.goldPrimary, size: 28),
           ),
           const SizedBox(height: 8),
           Text(label, style: const TextStyle(fontSize: 12)),

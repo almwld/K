@@ -55,7 +55,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.people_outline, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                      Icon(Icons.people_outline, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                       const SizedBox(height: 16),
                       const Text('لا تتابع أي بائع', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
@@ -63,7 +63,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () => Navigator.pushNamed(context, '/all_ads'),
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                         child: const Text('تصفح البائعين'),
                       ),
                     ],
@@ -85,7 +85,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                         children: [
                           CircleAvatar(
                             radius: 30,
-                            backgroundColor: AppTheme.goldColor.withOpacity(0.2),
+                            backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
                             child: Text(seller['name'][0], style: const TextStyle(fontSize: 20)),
                           ),
                           const SizedBox(width: 12),
@@ -102,7 +102,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                           OutlinedButton(
                             onPressed: () => _unfollow(index),
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: AppTheme.goldColor),
+                              side: const BorderSide(color: AppTheme.goldPrimary),
                             ),
                             child: const Text('إلغاء المتابعة'),
                           ),

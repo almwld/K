@@ -15,7 +15,7 @@ class BiometricAuthScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.fingerprint, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+            Icon(Icons.fingerprint, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('المصادقة البيومترية', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

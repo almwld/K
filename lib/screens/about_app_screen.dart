@@ -10,7 +10,7 @@ class AboutAppScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'حول التطبيق'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -33,7 +33,7 @@ class AboutAppScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'الإصدار 2.0.0',
-              style: TextStyle(color: AppTheme.goldColor),
+              style: TextStyle(color: AppTheme.goldPrimary),
             ),
             const SizedBox(height: 24),
             
@@ -139,10 +139,10 @@ class AboutAppScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppTheme.goldColor.withOpacity(0.1),
+              color: AppTheme.goldPrimary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(icon, color: AppTheme.goldColor, size: 20),
+            child: Icon(icon, color: AppTheme.goldPrimary, size: 20),
           ),
           const SizedBox(width: 12),
           Expanded(

@@ -53,7 +53,7 @@ class _GardenScreenState extends State<GardenScreen> {
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'حديقة النقاط'),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.goldColor))
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.goldPrimary))
           : SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -108,10 +108,10 @@ class _GardenScreenState extends State<GardenScreen> {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: AppTheme.goldColor.withOpacity(0.1),
+            color: AppTheme.goldPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: AppTheme.goldColor),
+          child: Icon(icon, color: AppTheme.goldPrimary),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle),

@@ -87,13 +87,13 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: AppTheme.goldColor.withOpacity(0.1),
+                    color: AppTheme.goldPrimary.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.verified_user,
                     size: 40,
-                    color: AppTheme.goldColor,
+                    color: AppTheme.goldPrimary,
                   ),
                 ),
               ),

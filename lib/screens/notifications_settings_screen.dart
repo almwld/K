@@ -26,7 +26,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إعدادات الإشعارات'),
       body: ListView(
         children: [
@@ -56,7 +56,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldColor,
+                backgroundColor: AppTheme.goldPrimary,
                 foregroundColor: Colors.black,
                 minimumSize: const Size(double.infinity, 50),
               ),
@@ -71,7 +71,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
   Widget _buildSection(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-      child: Text(title, style: const TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 14)),
+      child: Text(title, style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
     );
   }
   
@@ -81,7 +81,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
       subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
       value: value,
       onChanged: onChanged,
-      activeColor: AppTheme.goldColor,
+      activeColor: AppTheme.goldPrimary,
     );
   }
 }

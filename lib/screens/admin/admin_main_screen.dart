@@ -21,7 +21,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Scaffold(
       body: Row(
         children: [
-          Container(width: 80, color: AppTheme.navyGold, child: Column(children: [
+          Container(width: 80, color: AppTheme.goldPrimary, child: Column(children: [
             const SizedBox(height: 40), const Icon(Icons.admin_panel_settings, color: Colors.white, size: 40), const SizedBox(height: 30),
             _buildNavItem(Icons.dashboard, 'الرئيسية', 0), _buildNavItem(Icons.people, 'المستخدمين', 1), _buildNavItem(Icons.store, 'المتاجر', 2), _buildNavItem(Icons.settings, 'الإعدادات', 3),
             const Spacer(), IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.logout, color: Colors.white)), const SizedBox(height: 20),

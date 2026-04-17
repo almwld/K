@@ -16,7 +16,7 @@ class ShareProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.share, size: 80, color: AppTheme.goldColor),
+            const Icon(Icons.share, size: 80, color: AppTheme.goldPrimary),
             const SizedBox(height: 16),
             const Text(
               'مشاركة الملف الشخصي',
@@ -35,7 +35,7 @@ class ShareProfileScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               label: const Text('العودة'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldColor,
+                backgroundColor: AppTheme.goldPrimary,
                 foregroundColor: Colors.black,
               ),
             ),

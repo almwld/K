@@ -28,12 +28,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('لوحة التحكم'), backgroundColor: AppTheme.navyGold),
+      appBar: AppBar(title: const Text('لوحة التحكم'), backgroundColor: AppTheme.goldPrimary),
       body: _isLoading ? const Center(child: CircularProgressIndicator()) : Padding(padding: const EdgeInsets.all(16), child: GridView.count(crossAxisCount: 2, children: [_buildStatCard('المستخدمين', '${_stats?.totalUsers ?? 0}', Icons.people), _buildStatCard('المتاجر', '${_stats?.totalStores ?? 0}', Icons.store), _buildStatCard('الطلبات', '${_stats?.totalOrders ?? 0}', Icons.shopping_bag), _buildStatCard('المبيعات', '${_stats?.totalSales.toInt() ?? 0} ريال', Icons.monetization_on)])),
     );
   }
 
   Widget _buildStatCard(String title, String value, IconData icon) {
-    return Card(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, size: 40, color: AppTheme.navyGold), const SizedBox(height: 8), Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), Text(title, style: TextStyle(color: Colors.grey[600]))]));
+    return Card(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, size: 40, color: AppTheme.goldPrimary), const SizedBox(height: 8), Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), Text(title, style: TextStyle(color: Colors.grey[600]))]));
   }
 }

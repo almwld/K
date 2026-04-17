@@ -22,15 +22,15 @@ class AccountSettingsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundColor: AppTheme.goldColor.withOpacity(0.2),
-                    child: const Icon(Icons.person, size: 50, color: AppTheme.goldColor),
+                    backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
+                    child: const Icon(Icons.person, size: 50, color: AppTheme.goldPrimary),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: CircleAvatar(
                       radius: 16,
-                      backgroundColor: AppTheme.goldColor,
+                      backgroundColor: AppTheme.goldPrimary,
                       child: const Icon(Icons.camera_alt, size: 16, color: Colors.black),
                     ),
                   ),
@@ -58,7 +58,7 @@ class AccountSettingsScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldColor,
+                  backgroundColor: AppTheme.goldPrimary,
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -83,7 +83,7 @@ class AccountSettingsScreen extends StatelessWidget {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppTheme.goldColor, width: 2),
+            borderSide: const BorderSide(color: AppTheme.goldPrimary, width: 2),
           ),
         ),
       ),

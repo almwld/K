@@ -25,13 +25,13 @@ class VoiceVisualizer extends StatelessWidget {
           gradient: LinearGradient(
             colors: isListening
                 ? [Colors.red, Colors.red.withOpacity(0.7)]
-                : [AppTheme.goldColor, AppTheme.goldLight],
+                : [AppTheme.goldPrimary, AppTheme.goldLight],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           boxShadow: [
             BoxShadow(
-              color: (isListening ? Colors.red : AppTheme.goldColor).withOpacity(0.5),
+              color: (isListening ? Colors.red : AppTheme.goldPrimary).withOpacity(0.5),
               blurRadius: 20,
               spreadRadius: 5,
             ),

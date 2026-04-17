@@ -17,7 +17,7 @@ class DisclaimerScreen extends StatelessWidget {
           children: [
             Text(
               'LEGAL DISCLAIMER AND LIMITATION OF LIABILITY',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.goldColor),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
             ),
             Text(
               'Last Updated: April 16, 2026',
@@ -121,23 +121,23 @@ class DisclaimerScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.1),
+                color: AppTheme.goldPrimary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppTheme.goldColor, width: 2),
+                border: Border.all(color: AppTheme.goldPrimary, width: 2),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.warning_amber_rounded, color: AppTheme.goldColor, size: 28),
+                      Icon(Icons.warning_amber_rounded, color: AppTheme.goldPrimary, size: 28),
                       const SizedBox(width: 12),
                       Text(
                         'BINDING ACKNOWLEDGMENT',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.goldColor,
+                          color: AppTheme.goldPrimary,
                         ),
                       ),
                     ],

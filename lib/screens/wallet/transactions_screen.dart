@@ -35,7 +35,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     final filtered = _filteredTransactions;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'سجل المعاملات'),
       body: Column(
         children: [

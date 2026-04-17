@@ -17,7 +17,7 @@ class FeeScheduleScreen extends StatelessWidget {
           children: [
             Text(
               'FLEX YEMEN FEE SCHEDULE',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.goldColor),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
             ),
             Text(
               'Effective Date: April 16, 2026',
@@ -160,7 +160,7 @@ class FeeScheduleScreen extends StatelessWidget {
                 children: [
                   Text(
                     'ACKNOWLEDGMENT',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldColor),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -188,7 +188,7 @@ class FeeScheduleScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.goldColor.withOpacity(0.1),
+              color: AppTheme.goldPrimary.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(11)),
             ),
             child: Row(

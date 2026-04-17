@@ -18,7 +18,7 @@ class TraditionalFoodScreen extends StatelessWidget {
             Icon(
               Icons.category,
               size: 80,
-              color: AppTheme.goldColor.withOpacity(0.5),
+              color: AppTheme.goldPrimary.withOpacity(0.5),
             ),
             const SizedBox(height: 16),
             Text(

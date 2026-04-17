@@ -8,7 +8,7 @@ class FlexTransfersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'فلكس حوالات'),
       body: const Center(child: Text('فلكس حوالات - قيد التطوير')),
     );

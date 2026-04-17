@@ -27,7 +27,7 @@ class ReelsScreen extends StatelessWidget {
             decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(12)),
             child: Stack(
               children: [
-                const Center(child: Icon(Icons.play_circle_outline, size: 80, color: AppTheme.goldColor)),
+                const Center(child: Icon(Icons.play_circle_outline, size: 80, color: AppTheme.goldPrimary)),
                 Positioned(
                   left: 12,
                   bottom: 12,

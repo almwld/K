@@ -54,7 +54,7 @@ class _ProfilePictureStatusScreenState extends State<ProfilePictureStatusScreen>
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _addStatus,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                     child: const Text('نشر الحالة'),
                   ),
                 ),

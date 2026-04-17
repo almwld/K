@@ -83,10 +83,10 @@ class HelpSupportScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppTheme.goldColor.withOpacity(0.2),
+            color: AppTheme.goldPrimary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, color: AppTheme.goldColor),
+          child: Icon(icon, color: AppTheme.goldPrimary),
         ),
         title: Text(title),
         subtitle: Text(subtitle),

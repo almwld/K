@@ -40,7 +40,7 @@ class OSMmapScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldColor,
+                  color: AppTheme.goldPrimary,
                   shape: BoxShape.circle,
                   boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 5)],
                 ),

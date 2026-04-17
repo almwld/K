@@ -27,7 +27,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('إدارة المستخدمين'), backgroundColor: AppTheme.navyGold),
+      appBar: AppBar(title: const Text('إدارة المستخدمين'), backgroundColor: AppTheme.goldPrimary),
       body: _isLoading ? const Center(child: CircularProgressIndicator()) : ListView.builder(itemCount: _users.length, itemBuilder: (context, index) => ListTile(leading: const CircleAvatar(child: Icon(Icons.person)), title: Text(_users[index]['name'] ?? ''), subtitle: Text(_users[index]['phone'] ?? ''))),
     );
   }

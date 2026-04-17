@@ -47,7 +47,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.notifications_none, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                      Icon(Icons.notifications_none, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                       const SizedBox(height: 16),
                       const Text('لا توجد إشعارات', style: TextStyle(fontSize: 18)),
                     ],
@@ -64,7 +64,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                       decoration: BoxDecoration(
                         color: AppTheme.getCardColor(context),
                         borderRadius: BorderRadius.circular(16),
-                        border: notification['read'] ? null : Border.all(color: AppTheme.goldColor, width: 1),
+                        border: notification['read'] ? null : Border.all(color: AppTheme.goldPrimary, width: 1),
                       ),
                       child: Row(
                         children: [
@@ -92,7 +92,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                           if (!notification['read'])
                             Container(
                               width: 8, height: 8,
-                              decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
+                              decoration: const BoxDecoration(color: AppTheme.goldPrimary, shape: BoxShape.circle),
                             ),
                         ],
                       ),

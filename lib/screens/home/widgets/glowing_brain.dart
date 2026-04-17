@@ -24,8 +24,8 @@ class GlowingBrain extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                AppTheme.goldColor.withOpacity(0.8),
-                AppTheme.goldColor.withOpacity(0.3),
+                AppTheme.goldPrimary.withOpacity(0.8),
+                AppTheme.goldPrimary.withOpacity(0.3),
                 Colors.transparent,
               ],
               stops: const [0.3, 0.6, 1.0],
@@ -41,7 +41,7 @@ class GlowingBrain extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.psychology,
-                color: AppTheme.goldColor,
+                color: AppTheme.goldPrimary,
                 size: 40,
               ),
             ),

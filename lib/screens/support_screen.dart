@@ -146,10 +146,10 @@ class SupportScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.1),
+                color: AppTheme.goldPrimary.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: AppTheme.goldColor, size: 22),
+              child: Icon(icon, color: AppTheme.goldPrimary, size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(

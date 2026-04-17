@@ -34,7 +34,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2),
+              backgroundColor: isSelected ? AppTheme.goldPrimary : Colors.grey.withOpacity(0.2),
               child: Text(
                 lang['native']![0],
                 style: TextStyle(
@@ -46,7 +46,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             title: Text(lang['name']!),
             subtitle: Text(lang['native']!),
             trailing: isSelected
-                ? const Icon(Icons.check_circle, color: AppTheme.goldColor)
+                ? const Icon(Icons.check_circle, color: AppTheme.goldPrimary)
                 : null,
             onTap: () {
               setState(() => _selectedLanguage = lang['code']!);

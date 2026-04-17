@@ -21,7 +21,7 @@ class HelpSupportScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المساعدة والدعم'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -33,7 +33,7 @@ class HelpSupportScreen extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [AppTheme.goldColor, AppTheme.goldLight],
+                  colors: [AppTheme.goldPrimary, AppTheme.goldLight],
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -81,10 +81,10 @@ class HelpSupportScreen extends StatelessWidget {
                   leading: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.goldColor.withOpacity(0.1),
+                      color: AppTheme.goldPrimary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(option['icon'] as IconData, color: AppTheme.goldColor),
+                    child: Icon(option['icon'] as IconData, color: AppTheme.goldPrimary),
                   ),
                   title: Text(option['title'] as String),
                   subtitle: Text(option['subtitle'] as String),

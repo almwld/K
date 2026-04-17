@@ -69,7 +69,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: _submit,
-                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                       child: Text(_isLogin ? 'دخول' : 'تسجيل'),
                     ),
                     const SizedBox(height: 8),

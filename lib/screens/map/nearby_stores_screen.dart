@@ -50,7 +50,7 @@ class _NearbyStoresScreenState extends State<NearbyStoresScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(30)),
       child: const TextField(
-        decoration: InputDecoration(hintText: 'ابحث عن متجر...', prefixIcon: Icon(Icons.search, color: AppTheme.goldColor), border: InputBorder.none),
+        decoration: InputDecoration(hintText: 'ابحث عن متجر...', prefixIcon: Icon(Icons.search, color: AppTheme.goldPrimary), border: InputBorder.none),
       ),
     );
   }
@@ -87,7 +87,7 @@ class _NearbyStoresScreenState extends State<NearbyStoresScreen> {
                         const SizedBox(width: 4),
                         Text('${store['rating']}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                         const SizedBox(width: 16),
-                        const Icon(Icons.location_on, color: AppTheme.goldColor, size: 16),
+                        const Icon(Icons.location_on, color: AppTheme.goldPrimary, size: 16),
                         const SizedBox(width: 4),
                         Text(store['distance'], style: TextStyle(color: Colors.grey[600], fontSize: 12)),
                       ],

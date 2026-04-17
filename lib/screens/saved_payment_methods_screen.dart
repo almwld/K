@@ -102,7 +102,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                     icon: const Icon(Icons.add),
                     label: const Text('إضافة بطاقة جديدة'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.goldColor,
+                      backgroundColor: AppTheme.goldPrimary,
                       foregroundColor: Colors.black,
                       minimumSize: const Size(double.infinity, 50),
                     ),
@@ -204,7 +204,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: _addPaymentMethod,
-                                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                                     child: const Text('حفظ'),
                                   ),
                                 ),
@@ -224,7 +224,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.credit_card_off, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+                              Icon(Icons.credit_card_off, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
                               const SizedBox(height: 16),
                               const Text('لا توجد طرق دفع محفوظة', style: TextStyle(fontSize: 18)),
                               const SizedBox(height: 8),
@@ -243,7 +243,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                               decoration: BoxDecoration(
                                 color: AppTheme.getCardColor(context),
                                 borderRadius: BorderRadius.circular(16),
-                                border: method['isDefault'] ? Border.all(color: AppTheme.goldColor, width: 2) : null,
+                                border: method['isDefault'] ? Border.all(color: AppTheme.goldPrimary, width: 2) : null,
                               ),
                               child: Row(
                                 children: [
@@ -275,10 +275,10 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                                                 margin: const EdgeInsets.only(left: 8),
                                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                                 decoration: BoxDecoration(
-                                                  color: AppTheme.goldColor.withOpacity(0.2),
+                                                  color: AppTheme.goldPrimary.withOpacity(0.2),
                                                   borderRadius: BorderRadius.circular(8),
                                                 ),
-                                                child: const Text('افتراضي', style: TextStyle(fontSize: 10, color: AppTheme.goldColor)),
+                                                child: const Text('افتراضي', style: TextStyle(fontSize: 10, color: AppTheme.goldPrimary)),
                                               ),
                                           ],
                                         ),
@@ -318,15 +318,15 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? AppTheme.goldPrimary.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.3)),
+          border: Border.all(color: isSelected ? AppTheme.goldPrimary : Colors.grey.withOpacity(0.3)),
         ),
         child: Column(
           children: [
-            Icon(icon, color: isSelected ? AppTheme.goldColor : Colors.grey),
+            Icon(icon, color: isSelected ? AppTheme.goldPrimary : Colors.grey),
             const SizedBox(height: 4),
-            Text(label, style: TextStyle(color: isSelected ? AppTheme.goldColor : Colors.grey)),
+            Text(label, style: TextStyle(color: isSelected ? AppTheme.goldPrimary : Colors.grey)),
           ],
         ),
       ),

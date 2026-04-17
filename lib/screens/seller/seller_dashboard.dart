@@ -125,7 +125,7 @@ class SellerDashboard extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [AppTheme.goldColor, AppTheme.goldLight],
+                          colors: [AppTheme.goldPrimary, AppTheme.goldLight],
                         ),
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -168,7 +168,7 @@ class SellerDashboard extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/seller_orders'),
-                child: const Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)),
+                child: const Text('عرض الكل', style: TextStyle(color: AppTheme.goldPrimary)),
               ),
             ],
           ),
@@ -191,10 +191,10 @@ class SellerDashboard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.goldColor.withOpacity(0.1),
+                      color: AppTheme.goldPrimary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.shopping_bag, color: AppTheme.goldColor),
+                    child: const Icon(Icons.shopping_bag, color: AppTheme.goldPrimary),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -225,7 +225,7 @@ class SellerDashboard extends StatelessWidget {
                         '${order['amount']} ر.ي',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.goldColor,
+                          color: AppTheme.goldPrimary,
                         ),
                       ),
                       Container(

@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.goldColor.withOpacity(0.3),
+                            color: AppTheme.goldPrimary.withOpacity(0.3),
                             blurRadius: 20,
                             spreadRadius: 2,
                           ),
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.goldColor,
+                        color: AppTheme.goldPrimary,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -181,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     gradient: AppTheme.goldGradient,
                     boxShadow: [
                       BoxShadow(
-                        color: AppTheme.goldColor.withOpacity(0.3),
+                        color: AppTheme.goldPrimary.withOpacity(0.3),
                         blurRadius: 10,
                       ),
                     ],
@@ -211,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       decoration: InputDecoration(
                         labelText: 'رقم الجوال أو البريد الإلكتروني',
                         hintText: 'سجل رقمك أو بريدك الإلكتروني',
-                        prefixIcon: const Icon(Icons.person_outline, color: AppTheme.goldColor),
+                        prefixIcon: const Icon(Icons.person_outline, color: AppTheme.goldPrimary),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide.none,
@@ -230,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'كلمة المرور',
-                        prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.goldColor),
+                        prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.goldPrimary),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -270,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         },
                         child: Text(
                           'نسيت كلمة المرور؟',
-                          style: TextStyle(color: AppTheme.goldColor),
+                          style: TextStyle(color: AppTheme.goldPrimary),
                         ),
                       ),
                     ),
@@ -283,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _handleLogin,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.goldColor,
+                          backgroundColor: AppTheme.goldPrimary,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -329,7 +329,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           child: Text(
                             'إنشاء حساب جديد',
                             style: TextStyle(
-                              color: AppTheme.goldColor,
+                              color: AppTheme.goldPrimary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

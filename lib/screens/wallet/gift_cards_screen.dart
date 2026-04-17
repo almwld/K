@@ -38,7 +38,7 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
     final filtered = _filteredCards;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'بطاقات الهدايا'),
       body: Column(
         children: [

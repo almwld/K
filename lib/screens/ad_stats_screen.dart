@@ -15,7 +15,7 @@ class AdStatsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.bar_chart, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+            Icon(Icons.bar_chart, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('إحصائيات الإعلان', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

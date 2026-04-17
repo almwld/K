@@ -50,7 +50,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
       child: Text(
         title,
         style: const TextStyle(
-          color: AppTheme.goldColor,
+          color: AppTheme.goldPrimary,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
@@ -64,7 +64,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
       subtitle: Text(subtitle, style: TextStyle(color: AppTheme.darkTextSecondary)),
       value: value,
       onChanged: onChanged,
-      activeColor: AppTheme.goldColor,
+      activeColor: AppTheme.goldPrimary,
     );
   }
 }

@@ -15,7 +15,7 @@ class SearchScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+            Icon(Icons.search, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('البحث', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

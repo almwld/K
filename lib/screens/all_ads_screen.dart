@@ -84,7 +84,7 @@ class AllAdsScreen extends StatelessWidget {
                 Text(
                   '${ad['price']} ريال',
                   style: TextStyle(
-                    color: AppTheme.goldColor,
+                    color: AppTheme.goldPrimary,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),

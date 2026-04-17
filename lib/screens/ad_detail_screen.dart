@@ -30,7 +30,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(widget.ad['title'] ?? 'تفاصيل الإعلان'),
-        backgroundColor: AppTheme.goldColor,
+        backgroundColor: AppTheme.goldPrimary,
         foregroundColor: Colors.black,
         actions: [
           IconButton(
@@ -64,7 +64,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: _currentImageIndex == entry.key ? AppTheme.goldColor : Colors.grey[400],
+                          color: _currentImageIndex == entry.key ? AppTheme.goldPrimary : Colors.grey[400],
                         ),
                       );
                     }).toList(),
@@ -75,7 +75,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
                   right: 10,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(color: AppTheme.goldColor, borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: AppTheme.goldPrimary, borderRadius: BorderRadius.circular(20)),
                     child: Text('${widget.ad['price']} ريال', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                   ),
                 ),
@@ -131,7 +131,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
                           onPressed: _chatWithSeller,
                           icon: const Icon(Icons.chat, size: 18),
                           label: const Text('محادثة'),
-                          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+                          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary),
                         ),
                       ],
                     ),
@@ -191,7 +191,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
                   onPressed: _chatWithSeller,
                   icon: const Icon(Icons.chat),
                   label: const Text('محادثة'),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, padding: const EdgeInsets.symmetric(vertical: 14), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, padding: const EdgeInsets.symmetric(vertical: 14), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                 ),
               ),
             ],

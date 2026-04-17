@@ -6,7 +6,7 @@ class AdminSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('الإعدادات'), backgroundColor: AppTheme.navyGold),
+      appBar: AppBar(title: const Text('الإعدادات'), backgroundColor: AppTheme.goldPrimary),
       body: ListView(children: [ListTile(leading: const Icon(Icons.palette), title: const Text('المظهر'), onTap: () {}), ListTile(leading: const Icon(Icons.notifications), title: const Text('الإشعارات'), onTap: () {})]),
     );
   }

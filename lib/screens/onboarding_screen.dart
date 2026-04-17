@@ -65,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               effect: WormEffect(
                 dotWidth: 10,
                 dotHeight: 10,
-                activeDotColor: AppTheme.goldColor,
+                activeDotColor: AppTheme.goldPrimary,
                 dotColor: Colors.grey[400]!,
               ),
             ),
@@ -123,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ElevatedButton(
               onPressed: _completeOnboarding,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldColor,
+                backgroundColor: AppTheme.goldPrimary,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
@@ -136,7 +136,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 curve: Curves.ease,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldColor,
+                backgroundColor: AppTheme.goldPrimary,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),

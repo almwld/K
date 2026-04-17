@@ -60,12 +60,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
       appBar: AppBar(
         title: const Text('نسيت كلمة المرور'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: AppTheme.goldColor,
+        foregroundColor: AppTheme.goldPrimary,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -82,12 +82,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppTheme.goldColor.withOpacity(0.1),
+                        color: AppTheme.goldPrimary.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.lock_reset,
-                        color: AppTheme.goldColor,
+                        color: AppTheme.goldPrimary,
                         size: 40,
                       ),
                     ),
@@ -126,7 +126,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     decoration: InputDecoration(
                       labelText: 'رقم الجوال',
                       hintText: 'مثال: 777123456',
-                      prefixIcon: const Icon(Icons.phone, color: AppTheme.goldColor),
+                      prefixIcon: const Icon(Icons.phone, color: AppTheme.goldPrimary),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide.none,
@@ -153,7 +153,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _handleResetPassword,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.goldColor,
+                      backgroundColor: AppTheme.goldPrimary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -221,14 +221,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      side: BorderSide(color: AppTheme.goldColor),
+                      side: BorderSide(color: AppTheme.goldPrimary),
                     ),
                     child: Text(
                       'العودة لتسجيل الدخول',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.goldColor,
+                        color: AppTheme.goldPrimary,
                       ),
                     ),
                   ),

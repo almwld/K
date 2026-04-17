@@ -37,12 +37,12 @@ class SecuritySettingsScreen extends StatelessWidget {
           
           _buildSection('المصادقة الثنائية'),
           SwitchListTile(
-            secondary: const Icon(Icons.security, color: AppTheme.goldColor),
+            secondary: const Icon(Icons.security, color: AppTheme.goldPrimary),
             title: const Text('تفعيل 2FA'),
             subtitle: const Text('حماية إضافية للحساب'),
             value: false,
             onChanged: (v) {},
-            activeColor: AppTheme.goldColor,
+            activeColor: AppTheme.goldPrimary,
           ),
         ],
       ),
@@ -55,7 +55,7 @@ class SecuritySettingsScreen extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(
-          color: AppTheme.goldColor,
+          color: AppTheme.goldPrimary,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
@@ -65,7 +65,7 @@ class SecuritySettingsScreen extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, IconData icon, String title, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: AppTheme.goldColor),
+      leading: Icon(icon, color: AppTheme.goldPrimary),
       title: Text(title),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,

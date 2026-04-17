@@ -22,7 +22,7 @@ class TermsScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.goldColor,
+                color: AppTheme.goldPrimary,
               ),
             ),
             const SizedBox(height: 16),
@@ -84,7 +84,7 @@ class TermsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.1),
+                color: AppTheme.goldPrimary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -93,7 +93,7 @@ class TermsScreen extends StatelessWidget {
                     'للتواصل والدعم',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.goldColor,
+                      color: AppTheme.goldPrimary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -136,7 +136,7 @@ class TermsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: AppTheme.goldColor,
+              color: AppTheme.goldPrimary,
             ),
           ),
           const SizedBox(height: 8),

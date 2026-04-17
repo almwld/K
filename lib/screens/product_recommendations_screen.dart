@@ -29,17 +29,17 @@ class ProductRecommendationsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: Center(child: Icon(Icons.image, size: 48, color: AppTheme.goldColor))),
+                Expanded(child: Center(child: Icon(Icons.image, size: 48, color: AppTheme.goldPrimary))),
                 const SizedBox(height: 8),
                 Text(r['title'], style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
-                Text('${r['price']} ر.ي', style: const TextStyle(color: AppTheme.goldColor)),
+                Text('${r['price']} ر.ي', style: const TextStyle(color: AppTheme.goldPrimary)),
                 const SizedBox(height: 6),
                 Row(children: [Icon(Icons.star, size: 14, color: Colors.amber), const SizedBox(width: 4), Text('${r['rating']}')]),
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () => Navigator.pushNamed(context, '/ad_detail'),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, foregroundColor: Colors.black),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
                   child: const Text('��رض'),
                 ),
               ],

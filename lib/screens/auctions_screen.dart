@@ -148,7 +148,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
                   _selectedCategory = selected ? category : 'الكل';
                 });
               },
-              selectedColor: AppTheme.goldColor,
+              selectedColor: AppTheme.goldPrimary,
               labelStyle: TextStyle(
                 color: isSelected ? Colors.white : null,
               ),
@@ -168,10 +168,10 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
       ),
       child: TabBar(
         controller: _tabController,
-        labelColor: AppTheme.goldColor,
+        labelColor: AppTheme.goldPrimary,
         unselectedLabelColor: AppTheme.getSecondaryTextColor(context),
         indicator: BoxDecoration(
-          color: AppTheme.goldColor.withOpacity(0.1),
+          color: AppTheme.goldPrimary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         tabs: const [
@@ -347,7 +347,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
               _tabController.animateTo(0);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldColor,
+              backgroundColor: AppTheme.goldPrimary,
             ),
             child: const Text('استكشف المزادات'),
           ),
@@ -376,7 +376,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
       case 'جديد':
         return Colors.green;
       default:
-        return AppTheme.goldColor;
+        return AppTheme.goldPrimary;
     }
   }
 }

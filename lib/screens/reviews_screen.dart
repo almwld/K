@@ -63,7 +63,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           children: [
                             Text(
                               _averageRating.toStringAsFixed(1),
-                              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: AppTheme.goldColor),
+                              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
                             ),
                             const SizedBox(height: 8),
                             Row(
@@ -87,13 +87,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           child: ElevatedButton.icon(
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('سيتم إضافة ميزة إضافة مراجعة قريباً'), backgroundColor: AppTheme.goldColor),
+                                const SnackBar(content: Text('سيتم إضافة ميزة إضافة مراجعة قريباً'), backgroundColor: AppTheme.goldPrimary),
                               );
                             },
                             icon: const Icon(Icons.rate_review),
                             label: const Text('أضف تقييمك'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.goldColor,
+                              backgroundColor: AppTheme.goldPrimary,
                               foregroundColor: Colors.black,
                             ),
                           ),
@@ -124,7 +124,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 20,
-                                  backgroundColor: AppTheme.goldColor.withOpacity(0.2),
+                                  backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
                                   child: Text(review['user'][0], style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(width: 12),
