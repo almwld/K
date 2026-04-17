@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 enum ReportPeriod { today, week, month, quarter, year, custom }
 
 class SalesSummaryModel {

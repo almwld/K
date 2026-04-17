@@ -148,7 +148,7 @@ class _SellerReportsScreenState extends State<SellerReportsScreen> with SingleTi
             ],
           ),
           
-          const SizedBox(height": 20),
+          const SizedBox(height: 20),
           
           // رسم بياني للمبيعات
           Container(

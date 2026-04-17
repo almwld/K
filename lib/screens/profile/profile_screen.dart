@@ -12,10 +12,8 @@ import '../my_ads_screen.dart';
 import '../addresses_screen.dart';
 import '../wallet/wallet_screen.dart';
 import '../login_screen.dart';
-import '../verification/verification_screen.dart';
 import '../auctions_screen.dart';
 import '../advanced_search_screen.dart';
-import '../smart_search_screen.dart';
 import '../seller/seller_reports_screen.dart';
 import '../admin/admin_main_screen.dart';
 
@@ -35,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: const SimpleAppBar(title: 'حسابي'),
       body: SingleChildScrollView(
         child: Column(
-          children": [
+          children: [
             const SizedBox(height: 20),
             _buildProfileHeader(authProvider, themeManager),
             const SizedBox(height: 24),
@@ -133,12 +131,10 @@ class ProfileScreen extends StatelessWidget {
       {'icon': Icons.campaign_outlined, 'title': 'إعلاناتي', 'screen': const MyAdsScreen()},
       {'icon': Icons.location_on_outlined, 'title': 'العناوين', 'screen': const AddressesScreen()},
       {'icon': Icons.account_balance_wallet_outlined, 'title': 'المحفظة', 'screen': const WalletScreen()},
-      {'icon': Icons.verified_user_outlined, 'title': 'توثيق الحساب', 'screen': const VerificationScreen()},
       
       // الميزات الإضافية
       {'icon': Icons.gavel, 'title': 'المزادات', 'screen': const AuctionsScreen()},
       {'icon': Icons.search, 'title': 'البحث المتقدم', 'screen': const AdvancedSearchScreen()},
-      {'icon': Icons.psychology, 'title': 'البحث الذكي', 'screen': const SmartSearchScreen()},
     ];
 
     // إضافة تقارير البائع للتجار

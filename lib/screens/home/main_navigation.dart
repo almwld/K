@@ -68,7 +68,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
               bottom: 120, left: 30, right: 30,
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-                decoration: BoxDecoration(color: AppTheme.surface, borderRadius: BorderRadius.circular(30), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 20)]),
+                decoration: BoxDecoration(color: AppTheme.darkSurface, borderRadius: BorderRadius.circular(30), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 20)]),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                   _buildActionButton(Icons.campaign_outlined, 'إضافة إعلان', () { _toggleExpand(); Navigator.push(context, MaterialPageRoute(builder: (_) => const AddAdScreen())); }),
                   _buildActionButton(Icons.handyman_outlined, 'طلب خدمة', () { _toggleExpand(); Navigator.push(context, MaterialPageRoute(builder: (_) => const RequestServiceScreen())); }),
@@ -78,7 +78,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: AppTheme.bottomBar, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)]),
+        decoration: BoxDecoration(color: AppTheme.darkSurface, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)]),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

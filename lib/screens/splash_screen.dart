@@ -133,11 +133,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         width: 28,
                         height: 28,
                         decoration: BoxDecoration(
-                          color: _inverted ? AppTheme.goldPrimary : Colors.black,
+                          color: _inverted ? AppTheme.goldColor : Colors.black,
                           shape: BoxShape.circle,
                           boxShadow: _inverted ? [
                             BoxShadow(
-                              color: AppTheme.goldPrimary.withOpacity(0.5),
+                              color: AppTheme.goldColor.withOpacity(0.5),
                               blurRadius: 20,
                               spreadRadius: 5,
                             ),
@@ -210,17 +210,17 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       width: 55,
       height: 110,
       decoration: BoxDecoration(
-        color: _inverted ? Colors.black : AppTheme.goldPrimary,
+        color: _inverted ? Colors.black : AppTheme.goldColor,
         borderRadius: isLeft 
             ? const BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20))
             : const BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
         border: Border.all(
-          color: _inverted ? AppTheme.goldPrimary : Colors.transparent,
+          color: _inverted ? AppTheme.goldColor : Colors.transparent,
           width: 1.5,
         ),
         boxShadow: _inverted ? [
           BoxShadow(
-            color: AppTheme.goldPrimary.withOpacity(0.3),
+            color: AppTheme.goldColor.withOpacity(0.3),
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -231,7 +231,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           width: 15,
           height: 3,
           decoration: BoxDecoration(
-            color: _inverted ? AppTheme.goldPrimary : Colors.black.withOpacity(0.3),
+            color: _inverted ? AppTheme.goldColor : Colors.black.withOpacity(0.3),
             borderRadius: BorderRadius.circular(2),
           ),
         ),

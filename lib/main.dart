@@ -64,7 +64,7 @@ class FlexYemenApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: themeManager.themeMode, // يدعم system
+            themeMode: themeManager.isDarkMode ? ThemeMode.dark : ThemeMode.light, // يدعم system
             initialRoute: '/',
             routes: {
               '/': (context) => const SplashScreen(),
