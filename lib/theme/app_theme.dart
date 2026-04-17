@@ -405,3 +405,9 @@ static const Color goldColor = goldPrimary;
 static const Color navyPrimary = darkSurface;
 static const Color navyCard = darkCard;
 static const Color navyGold = goldPrimary;
+
+// ============ متغيرات للتوافق مع الكود القديم ============
+static const Color goldColor = goldPrimary;
+static const Color navyPrimary = darkSurface;
+static const Color navyCard = darkCard;
+static const Color navyGold = goldPrimary;
