@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/theme_manager.dart';
-import '../home_screen.dart';
+import 'home/home_screen.dart';
 import '../stores/stores_screen.dart';
 import '../chat/chat_screen.dart';
 import '../map/interactive_map_screen.dart';
 import '../wallet/wallet_screen.dart';
-import '../profile_screen.dart';
+import 'profile/profile_screen.dart';
 import '../add_ad_screen.dart';
 import '../request_service_screen.dart';
 
