@@ -25,13 +25,13 @@ class _MainNavigationState extends State<MainNavigation> {
 
   // الشاشات: الرئيسية | المتجر | الدردشة | (زر+) | الخريطة | المحفظة | حسابي
   final List<Widget> _screens = const [
-    HomeScreen(),
-    StoresScreen(),
-    ChatScreen(),
-    SizedBox(),
-    InteractiveMapScreen(),
-    WalletScreen(),
-    ProfileScreen(),
+    HomeScreen(),           // 0
+    StoresScreen(),         // 1
+    ChatScreen(),           // 2 - الدردشة
+    SizedBox(),             // 3 - الزر الأزرق
+    InteractiveMapScreen(), // 4
+    WalletScreen(),         // 5
+    ProfileScreen(),        // 6
   ];
 
   @override
