@@ -19,6 +19,7 @@ class AppTheme {
   // متغيرات للتوافق
   static const Color darkBackground = navyPrimary;
   static const Color darkCard = navyCard;
+  static const Color darkSurface = navyCard;
   static const Color lightBackground = Color(0xFFF8FAFC);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFF1F5F9);
@@ -80,12 +81,3 @@ class AppTheme {
   static Color getBackgroundColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? navyPrimary : lightBackground;
   static Color getSurfaceColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? navyDark : lightSurface;
 }
-
-// متغيرات إضافية
-
-// متغيرات إضافية
-
-// متغيرات إضافية
-
-// متغيرات إضافية للتوافق
-static const Color darkSurface = Color(0xFF223A5E);
