@@ -195,7 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   child: Transform.scale(
                     scale: _scaleAnimation.value,
                     child: Column(
-                      children": [
+                      children: [
                         Text(
                           'Flex Yemen',
                           style: TextStyle(

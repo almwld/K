@@ -80,3 +80,6 @@ class AppTheme {
   static Color getBackgroundColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? navyPrimary : lightBackground;
   static Color getSurfaceColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? navyDark : lightSurface;
 }
+
+// متغيرات إضافية
+static const Color darkSurface = navyCard;
