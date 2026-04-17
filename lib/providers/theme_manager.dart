@@ -3,72 +3,41 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
 
 class ThemeManager extends ChangeNotifier {
-  static const String _themeModeKey = 'theme_mode_index';
-  int _themeModeIndex = 1; // افتراضي: داكن
-  
-  ThemeMode get themeMode {
-    switch (_themeModeIndex) {
-      case 0: return ThemeMode.light;
-      case 1: return ThemeMode.dark;
-      default: return ThemeMode.system;
-    }
-  }
-  
-  bool get isDarkMode => _themeModeIndex == 1;
-  bool get isLightMode => _themeModeIndex == 0;
-  bool get isSystemMode => _themeModeIndex == 2;
-  
-  String get modeName {
-    switch (_themeModeIndex) {
-      case 0: return 'نهاري';
-      case 1: return 'داكن';
-      default: return 'النظام';
-    }
-  }
-  
-  IconData get modeIcon {
-    switch (_themeModeIndex) {
-      case 0: return Icons.light_mode;
-      case 1: return Icons.dark_mode;
-      default: return Icons.settings_suggest;
-    }
-  }
+  static const String _themeKey = 'is_dark_mode';
+  bool _isDarkMode = true;
+
+  bool get isDarkMode => _isDarkMode;
 
   ThemeManager() {
-    _loadThemeMode();
+    _loadTheme();
   }
 
-  Future<void> _loadThemeMode() async {
+  Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    _themeModeIndex = prefs.getInt(_themeModeKey) ?? 1;
-    notifyListeners();
-  }
-
-  Future<void> setThemeModeIndex(int index) async {
-    _themeModeIndex = index;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_themeModeKey, index);
+    _isDarkMode = prefs.getBool(_themeKey) ?? true;
     notifyListeners();
   }
 
   Future<void> toggleTheme() async {
-    if (_themeModeIndex == 0) {
-      await setThemeModeIndex(1);
-    } else if (_themeModeIndex == 1) {
-      await setThemeModeIndex(0);
-    } else {
-      await setThemeModeIndex(1);
-    }
+    _isDarkMode = !_isDarkMode;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, _isDarkMode);
+    notifyListeners();
   }
 
-  Color get primaryColor {
-    switch (_themeModeIndex) {
-      case 0: return AppTheme.goldColor;
-      case 1: return AppTheme.navyGold;
-      default: 
-        return WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark 
-            ? AppTheme.navyGold 
-            : AppTheme.goldColor;
-    }
+  Future<void> setDarkMode(bool value) async {
+    _isDarkMode = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, _isDarkMode);
+    notifyListeners();
   }
+
+  ThemeData get currentTheme => _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+  
+  // للتوافق مع الكود القديم
+  void setThemeModeIndex(int index) => setDarkMode(index == 1);
+  bool get isLightMode => !_isDarkMode;
+  String get modeName => _isDarkMode ? 'داكن' : 'نهاري';
+  IconData get modeIcon => _isDarkMode ? Icons.dark_mode : Icons.light_mode;
+  Color get primaryColor => _isDarkMode ? AppTheme.goldColor : AppTheme.goldDark;
 }
