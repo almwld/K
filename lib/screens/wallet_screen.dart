@@ -35,9 +35,9 @@ class WalletScreen extends StatelessWidget {
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [AppTheme.goldColor, AppTheme.goldDark]),
+                gradient: LinearGradient(colors: [AppTheme.goldAccent, AppTheme.goldDark]),
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [BoxShadow(color: AppTheme.goldColor.withOpacity(0.3), blurRadius: 20)],
+                boxShadow: [BoxShadow(color: AppTheme.goldAccent.withOpacity(0.3), blurRadius: 20)],
               ),
               child: Column(
                 children: [
@@ -47,9 +47,9 @@ class WalletScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Expanded(child: ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.add), label: const Text('إيداع'), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldColor))),
+                      Expanded(child: ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.add), label: const Text('إيداع'), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldAccent))),
                       const SizedBox(width: 12),
-                      Expanded(child: ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.remove), label: const Text('سحب'), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldColor))),
+                      Expanded(child: ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.remove), label: const Text('سحب'), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldAccent))),
                     ],
                   ),
                 ],

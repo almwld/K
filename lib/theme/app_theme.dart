@@ -253,3 +253,7 @@ class AppTheme {
   static Color getBackgroundColor(BuildContext context) => background;
   static Color getSurfaceColor(BuildContext context) => surface;
 }
+
+// ============ متغيرات للتوافق مع الكود القديم ============
+static const Color goldDark = goldAccent;
+static const Color goldLight = Color(0xFFFBBF24);

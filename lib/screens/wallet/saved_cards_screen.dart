@@ -60,7 +60,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                             const SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () => setState(() => _isAddingCard = true),
-                              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+                              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
                               child: const Text('إضافة بطاقة جديدة'),
                             ),
                           ],
@@ -80,7 +80,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
       floatingActionButton: _savedCards.isNotEmpty
           ? FloatingActionButton(
               onPressed: () => setState(() => _isAddingCard = true),
-              backgroundColor: AppTheme.goldColor,
+              backgroundColor: AppTheme.goldAccent,
               child: const Icon(Icons.add),
             )
           : null,
@@ -271,7 +271,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                     child: OutlinedButton(
                       onPressed: () => setState(() => _isAddingCard = false),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppTheme.goldColor),
+                        side: BorderSide(color: AppTheme.goldAccent),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       child: const Text('إلغاء'),
@@ -282,7 +282,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
                     child: ElevatedButton(
                       onPressed: _addCard,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.goldColor,
+                        backgroundColor: AppTheme.goldAccent,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       child: const Text('إضافة'),

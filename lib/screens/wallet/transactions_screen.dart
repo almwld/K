@@ -86,7 +86,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   _selectedFilter = selected ? filter : 'الكل';
                 });
               },
-              selectedColor: AppTheme.goldColor,
+              selectedColor: AppTheme.goldAccent,
               labelStyle: TextStyle(color: isSelected ? Colors.white : null),
             ),
           );

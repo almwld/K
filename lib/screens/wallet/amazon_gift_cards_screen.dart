@@ -15,7 +15,7 @@ class AmazonGiftCardsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shopping_cart, size: 80, color: AppTheme.goldColor.withOpacity(0.5)),
+            Icon(Icons.shopping_cart, size: 80, color: AppTheme.goldAccent.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('أمازون', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

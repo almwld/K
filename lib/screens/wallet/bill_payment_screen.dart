@@ -101,23 +101,23 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
+                    color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2),
+                      color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2),
                       width: isSelected ? 2 : 1,
                     ),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(category['icon'], color: isSelected ? AppTheme.goldColor : Color(category['color']), size: 28),
+                      Icon(category['icon'], color: isSelected ? AppTheme.goldAccent : Color(category['color']), size: 28),
                       const SizedBox(height: 4),
                       Text(
                         category['name'],
                         style: TextStyle(
                           fontSize: 12,
-                          color: isSelected ? AppTheme.goldColor : null,
+                          color: isSelected ? AppTheme.goldAccent : null,
                         ),
                       ),
                     ],
@@ -150,7 +150,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               value: provider['code'],
               child: Row(
                 children: [
-                  Icon(provider['icon'], size: 20, color: AppTheme.goldColor),
+                  Icon(provider['icon'], size: 20, color: AppTheme.goldAccent),
                   const SizedBox(width: 8),
                   Text(provider['name']),
                 ],
@@ -203,7 +203,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
                 ? () => _processPayment(provider)
                 : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldColor,
+              backgroundColor: AppTheme.goldAccent,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -240,7 +240,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               Navigator.pop(context);
               _showSuccessDialog(category);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
             child: const Text('تأكيد'),
           ),
         ],

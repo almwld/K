@@ -87,13 +87,13 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
               onTap: () => setState(() => _selectedService = service['id']),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
+                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
+                  border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(service['icon'], color: isSelected ? AppTheme.goldColor : Color(service['color']), size: 32),
+                    Icon(service['icon'], color: isSelected ? AppTheme.goldAccent : Color(service['color']), size: 32),
                     const SizedBox(height: 8),
                     Text(service['name'], style: TextStyle(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
                     Text('رسوم: ${service['fee']}%', style: TextStyle(fontSize: 10, color: Colors.grey[600])),
@@ -136,7 +136,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
             padding: const EdgeInsets.only(top: 12),
             child: Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: AppTheme.goldAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Text('سعر الصرف: 1 ${_countries.firstWhere((c) => c['name'] == _selectedCountry)['currency']} = ${_exchangeRate} ر.ي'), const Icon(Icons.trending_up, color: Colors.green)]),
             ),
@@ -167,7 +167,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
             padding: const EdgeInsets.only(top: 12),
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: AppTheme.goldColor.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: AppTheme.goldAccent.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
               child: Column(
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('المبلغ المحول:'), Text('$amount ر.ي', style: const TextStyle(fontWeight: FontWeight.bold))]),
@@ -176,7 +176,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
                   const SizedBox(height: 8),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('رسوم التحويل (${service['fee']}%):'), Text('$fee ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange))]),
                   const Divider(),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)), Text('$total ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldColor))]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)), Text('$total ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldAccent))]),
                 ],
               ),
             ),
@@ -186,7 +186,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: (_receiverNameController.text.isNotEmpty && _selectedCountry.isNotEmpty && amount > 0) ? () => _processTransfer(service, amount, fee, total) : null,
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             child: const Text('تأكيد التحويل', style: TextStyle(fontSize: 18)),
           ),
         ),
@@ -218,7 +218,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
               Navigator.pop(context);
               _showSuccessDialog(service, country, amount);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
             child: const Text('تأكيد'),
           ),
         ],

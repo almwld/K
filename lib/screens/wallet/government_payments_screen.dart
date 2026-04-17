@@ -67,17 +67,17 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
               onTap: () => setState(() => _selectedService = service['id']),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
+                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2),
+                    color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(service['icon'], color: isSelected ? AppTheme.goldColor : Color(service['color']), size: 28),
+                    Icon(service['icon'], color: isSelected ? AppTheme.goldAccent : Color(service['color']), size: 28),
                     const SizedBox(height: 8),
                     Text(service['name'], style: TextStyle(fontSize: 12, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
                   ],
@@ -126,7 +126,7 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
                 ? () => _processPayment(service)
                 : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldColor,
+              backgroundColor: AppTheme.goldAccent,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -162,7 +162,7 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
               Navigator.pop(context);
               _showSuccessDialog(service);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
             child: const Text('تأكيد'),
           ),
         ],

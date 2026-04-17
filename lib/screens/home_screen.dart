@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: AppBar(
         title: const Text('فلكس يمن', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: AppTheme.goldColor,
+        backgroundColor: AppTheme.goldAccent,
         foregroundColor: Colors.black,
         centerTitle: true,
         elevation: 0,
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
-              foregroundColor: AppTheme.goldColor,
+              foregroundColor: AppTheme.goldAccent,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [AppTheme.goldColor.withOpacity(0.1), Colors.transparent],
+                  colors: [AppTheme.goldAccent.withOpacity(0.1), Colors.transparent],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.goldColor,
+                  color: AppTheme.goldAccent,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: AppTheme.goldColor,
+                                  color: AppTheme.goldAccent,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _currentCarouselIndex == entry.key
-                    ? AppTheme.goldColor
+                    ? AppTheme.goldAccent
                     : Colors.grey.withOpacity(0.5),
               ),
             );
@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.goldColor, AppTheme.goldDark],
+          colors: [AppTheme.goldAccent, AppTheme.goldDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -285,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: AppTheme.goldColor,
+                    foregroundColor: AppTheme.goldAccent,
                   ),
                   child: const Text('شارك الآن'),
                 ),
@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (_) => const AllAdsScreen()),
                 );
               },
-              child: Text(seeAll, style: TextStyle(color: AppTheme.goldColor)),
+              child: Text(seeAll, style: TextStyle(color: AppTheme.goldAccent)),
             ),
         ],
       ),
@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(category['icon'], size: 30, color: AppTheme.goldColor),
+                  Icon(category['icon'], size: 30, color: AppTheme.goldAccent),
                   const SizedBox(height: 8),
                   Text(
                     category['name'],
@@ -490,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       '${product['price']} ريال',
                       style: TextStyle(
-                        color: AppTheme.goldColor,
+                        color: AppTheme.goldAccent,
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
@@ -499,13 +499,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: AppTheme.goldColor.withOpacity(0.1),
+                        color: AppTheme.goldAccent.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         product['tag'],
                         style: TextStyle(
-                          color: AppTheme.goldColor,
+                          color: AppTheme.goldAccent,
                           fontSize: 10,
                         ),
                       ),

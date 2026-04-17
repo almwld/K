@@ -75,9 +75,9 @@ class _RechargeCreditScreenState extends State<RechargeCreditScreen> {
               onTap: () => setState(() => _selectedOperator = operator['id']),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
+                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
+                  border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -114,9 +114,9 @@ class _RechargeCreditScreenState extends State<RechargeCreditScreen> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
+                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
+                  border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -152,7 +152,7 @@ class _RechargeCreditScreenState extends State<RechargeCreditScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: (_phoneController.text.length >= 9) ? () => _processRecharge(amount, operator) : null,
-        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
         child: Text('شحن ${operator['name']} بـ ${amount['value']} ر.ي', style: const TextStyle(fontSize: 16)),
       ),
     );
@@ -176,7 +176,7 @@ class _RechargeCreditScreenState extends State<RechargeCreditScreen> {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(amount, operator); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor), child: const Text('تأكيد')),
+          ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(amount, operator); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent), child: const Text('تأكيد')),
         ],
       ),
     );

@@ -46,13 +46,13 @@ class AppsScreen extends StatelessWidget {
               errorWidget: (_, __, ___) => Icon(Icons.apps, color: Color(app['color']), size: 40))),
           const SizedBox(height: 12),
           Text(app['name'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-          Text(app['value'], style: TextStyle(color: AppTheme.goldColor, fontWeight: FontWeight.bold, fontSize: 12)),
+          Text(app['value'], style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.bold, fontSize: 12)),
           Text('${app['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(height: 8),
           Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: Color(app['color']).withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
             child: Text(app['category'], style: TextStyle(color: Color(app['color']), fontSize: 10))),
           const SizedBox(height: 8),
-          ElevatedButton(onPressed: () => _buyApp(context, app), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+          ElevatedButton(onPressed: () => _buyApp(context, app), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             child: const Text('شراء', style: TextStyle(fontSize: 12))),
         ],
       ),
@@ -66,7 +66,7 @@ class AppsScreen extends StatelessWidget {
         children: [const Icon(Icons.check_circle, size: 60, color: Colors.green), const SizedBox(height: 16),
           Text('شراء ${app['name']} - ${app['value']}'), Text('السعر: ${app['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold))]),
       actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-        ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(context, app); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor), child: const Text('تأكيد'))]));
+        ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(context, app); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent), child: const Text('تأكيد'))]));
   }
 
   void _showSuccessDialog(BuildContext context, Map<String, dynamic> app) {

@@ -273,7 +273,7 @@ class _WalletScreenState extends State<WalletScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 color: _currentCarouselIndex == entry.key
-                    ? AppTheme.goldColor
+                    ? AppTheme.goldAccent
                     : Colors.grey.withOpacity(0.4),
               ),
             );
@@ -441,7 +441,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     MaterialPageRoute(builder: (_) => const TransactionsScreen()),
                   );
                 },
-                child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldColor)),
+                child: Text('عرض الكل', style: TextStyle(color: AppTheme.goldAccent)),
               ),
             ],
           ),

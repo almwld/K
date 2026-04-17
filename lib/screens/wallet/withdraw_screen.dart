@@ -26,7 +26,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   
   final List<Map<String, dynamic>> _withdrawMethods = [
     {'id': 'bank', 'name': 'حساب بنكي', 'icon': Icons.account_balance, 'color': 0xFF1B5E20, 'fee': '0', 'min': '5000', 'max': '500000', 'time': '24 ساعة'},
-    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldColor, 'fee': '0', 'min': '1000', 'max': '100000', 'time': 'فوري'},
+    {'id': 'wallet', 'name': 'محفظة إلكترونية', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldAccent, 'fee': '0', 'min': '1000', 'max': '100000', 'time': 'فوري'},
     {'id': 'cash', 'name': 'سحب نقدي', 'icon': Icons.money, 'color': 0xFF4CAF50, 'fee': '0', 'min': '1000', 'max': '50000', 'time': 'فوري'},
   ];
 
@@ -63,7 +63,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.goldColor, AppTheme.goldDark],
+          colors: [AppTheme.goldAccent, AppTheme.goldDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -117,23 +117,23 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : AppTheme.getCardColor(context),
+                    color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isSelected ? AppTheme.goldColor : Colors.grey.withOpacity(0.2),
+                      color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2),
                       width: isSelected ? 2 : 1,
                     ),
                   ),
                   child: Column(
                     children: [
-                      Icon(method['icon'], color: isSelected ? AppTheme.goldColor : Color(method['color']), size: 28),
+                      Icon(method['icon'], color: isSelected ? AppTheme.goldAccent : Color(method['color']), size: 28),
                       const SizedBox(height: 4),
                       Text(
                         method['name'],
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected ? AppTheme.goldColor : null,
+                          color: isSelected ? AppTheme.goldAccent : null,
                         ),
                       ),
                     ],
@@ -211,7 +211,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.goldColor.withOpacity(0.1),
+            color: AppTheme.goldAccent.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -236,7 +236,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('$total ر.ي', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldColor)),
+                  Text('$total ر.ي', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldAccent)),
                 ],
               ),
             ],
@@ -264,7 +264,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           child: ElevatedButton(
             onPressed: isValid ? () => _processWithdraw(method) : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldColor,
+              backgroundColor: AppTheme.goldAccent,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -303,7 +303,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               Navigator.pop(context);
               _showSuccessDialog(method);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
             child: const Text('تأكيد'),
           ),
         ],

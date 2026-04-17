@@ -41,8 +41,8 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
           children: [
             TabBar(
               tabs: [Tab(text: 'طلبات مستلمة'), Tab(text: 'استلام برمز')],
-              labelColor: AppTheme.goldColor,
-              indicatorColor: AppTheme.goldColor,
+              labelColor: AppTheme.goldAccent,
+              indicatorColor: AppTheme.goldAccent,
             ),
             Expanded(
               child: TabBarView(
@@ -76,7 +76,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldColor.withOpacity(0.1),
+                  color: AppTheme.goldAccent.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.request_page, color: Colors.orange),
@@ -100,7 +100,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
                   if (request['status'] == 'pending')
                     ElevatedButton(
                       onPressed: () => _acceptRequest(request),
-                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
                       child: const Text('استلام', style: TextStyle(fontSize: 12)),
                     ),
                 ],
@@ -173,7 +173,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
             child: ElevatedButton(
               onPressed: (_selectedWallet.isNotEmpty && _codeController.text.isNotEmpty && _amountController.text.isNotEmpty) ? () => _receiveByCode() : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldColor,
+                backgroundColor: AppTheme.goldAccent,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -207,7 +207,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
               Navigator.pop(context);
               _showSuccessDialog(request['amount']);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
             child: const Text('تأكيد'),
           ),
         ],
@@ -238,7 +238,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
               Navigator.pop(context);
               _showSuccessDialog(amount);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldColor),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
             child: const Text('تأكيد'),
           ),
         ],

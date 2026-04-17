@@ -143,7 +143,7 @@ class _WalletSettingsScreenState extends State<WalletSettingsScreen> {
             label: const Text('تغيير PIN code'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
-              foregroundColor: AppTheme.goldColor,
+              foregroundColor: AppTheme.goldAccent,
               elevation: 0,
             ),
           ),
@@ -162,7 +162,7 @@ class _WalletSettingsScreenState extends State<WalletSettingsScreen> {
           setting['value'] = value;
         });
       },
-      activeColor: AppTheme.goldColor,
+      activeColor: AppTheme.goldAccent,
       contentPadding: EdgeInsets.zero,
     );
   }
@@ -173,7 +173,7 @@ class _WalletSettingsScreenState extends State<WalletSettingsScreen> {
       subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
       value: value,
       onChanged: onChanged,
-      activeColor: AppTheme.goldColor,
+      activeColor: AppTheme.goldAccent,
       contentPadding: EdgeInsets.zero,
     );
   }
