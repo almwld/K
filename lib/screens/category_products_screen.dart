@@ -1,26 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
-import 'product_detail_screen.dart';
+import '../widgets/shimmer_image.dart';
+import '../data/market_data.dart';
+import '../models/market_item.dart';
+import 'product/product_detail_screen.dart';
 
-class CategoryProductsScreen extends StatelessWidget {
+class CategoryProductsScreen extends StatefulWidget {
   final String categoryId;
   final String categoryName;
 
-  const CategoryProductsScreen({
-    super.key,
-    required this.categoryId,
-    required this.categoryName,
-  });
+  const CategoryProductsScreen({super.key, required this.categoryId, required this.categoryName});
 
-  // منتجات تجريبية
-  final List<Map<String, dynamic>> _products = const [
-    {'id': '1', 'name': 'آيفون 15 برو', 'price': '450,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'rating': 4.8},
-    {'id': '2', 'name': 'سامسونج S24', 'price': '380,000', 'image': 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400', 'rating': 4.7},
-    {'id': '3', 'name': 'ماك بوك برو M3', 'price': '1,800,000', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400', 'rating': 4.9},
-    {'id': '4', 'name': 'ايباد برو', 'price': '280,000', 'image': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400', 'rating': 4.6},
-  ];
+  @override
+  State<CategoryProductsScreen> createState() => _CategoryProductsScreenState();
+}
+
+class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
+  bool _isLoading = true;
+  List<MarketItem> _products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    setState(() {
+      _products = MarketData.getBySection(widget.categoryName);
+      if (_products.isEmpty) {
+        _products = MarketData.getTrending().take(10).toList();
+      }
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,97 +43,29 @@ class CategoryProductsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      appBar: SimpleAppBar(title: categoryName),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.7,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ),
-        itemCount: _products.length,
-        itemBuilder: (context, index) {
-          final product = _products[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ProductDetailScreen(
-                    productId: product['id'],
-                    productName: product['name'],
-                  ),
+      appBar: SimpleAppBar(title: widget.categoryName),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _products.isEmpty
+              ? Center(child: Text('لا توجد منتجات في هذا القسم', style: TextStyle(color: Colors.grey[600])))
+              : GridView.builder(
+                  padding: const EdgeInsets.all(12),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 12, mainAxisSpacing: 12),
+                  itemCount: _products.length,
+                  itemBuilder: (context, index) {
+                    final product = _products[index];
+                    return GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product.name, productName: product.name, storeName: product.store))),
+                      child: Container(
+                        decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)]),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(16)), child: ShimmerImage(imageUrl: product.imageUrl, height: 130, width: double.infinity)),
+                          Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product.name, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text(product.formattedPrice, style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold, fontSize: 14))])),
+                        ]),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                    child: CachedNetworkImage(
-                      imageUrl: product['image'],
-                      height: 140,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) => Container(
-                        height: 140,
-                        color: isDark ? Colors.grey[800] : Colors.grey[200],
-                        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                      ),
-                      errorWidget: (_, __, ___) => Container(
-                        height: 140,
-                        color: isDark ? Colors.grey[800] : Colors.grey[200],
-                        child: const Icon(Icons.image_not_supported),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product['name'],
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${product['price']} ريال',
-                          style: TextStyle(
-                            color: AppTheme.goldColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            const Icon(Icons.star, size: 12, color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text(
-                              product['rating'].toString(),
-                              style: const TextStyle(fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
     );
   }
 }

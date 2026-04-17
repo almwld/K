@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
             const Icon(Icons.person, size: 80, color: AppTheme.goldColor),
             const SizedBox(height: 16),
             Text(
-              authProvider.user?.fullName ?? 'مستخدم',
+              authProvider.user?.userMetadata?['full_name'] ?? 'مستخدم',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
