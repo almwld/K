@@ -8,10 +8,15 @@ class AppTheme {
   static const Color goldDark = Color(0xFFB8860B);
   static const Color goldAccent = Color(0xFFFFD700);
   
-  // متغيرات للتوافق - يجب أن تكون موجودة
+  // متغيرات للتوافق
   static const Color goldColor = goldPrimary;
   static const Color primaryBlue = Color(0xFF3B82F6);
   static const Color priceColor = Color(0xFF1E40AF);
+  
+  // ألوان النصوص
+  static const Color textPrimary = Color(0xFFFFFFFF);
+  static const Color textSecondary = Color(0xFFB0B0B0);
+  static const Color textMuted = Color(0xFF808080);
   
   // Dark Theme Colors
   static const Color darkBackground = Color(0xFF0A0A0A);
@@ -72,12 +77,6 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: darkElevated,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: goldPrimary, width: 2)),
-      ),
     );
   }
 
@@ -110,21 +109,9 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: lightElevated,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: goldDark, width: 2)),
-      ),
     );
   }
 
   static Color getTextColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? Colors.white : const Color(0xFF1A1A1A);
-  static Color getSecondaryTextColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF666666);
   static Color getCardColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? darkCard : lightCard;
 }
-
-// متغيرات النصوص للتوافق
-static const Color textPrimary = Color(0xFFFFFFFF);
-static const Color textSecondary = Color(0xFFB0B0B0);
-static const Color textMuted = Color(0xFF808080);
