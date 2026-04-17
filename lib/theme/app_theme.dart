@@ -82,10 +82,10 @@ class AppTheme {
 }
 
 // متغيرات إضافية
-static const Color darkSurface = navyCard;
 
 // متغيرات إضافية
-static const Color darkSurface = navyCard;
 
 // متغيرات إضافية
-static const Color darkSurface = navyCard;
+
+// متغيرات إضافية للتوافق
+static const Color darkSurface = Color(0xFF223A5E);
