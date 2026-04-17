@@ -123,3 +123,8 @@ class AppTheme {
   static Color getSecondaryTextColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF666666);
   static Color getCardColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? darkCard : lightCard;
 }
+
+// متغيرات النصوص للتوافق
+static const Color textPrimary = Color(0xFFFFFFFF);
+static const Color textSecondary = Color(0xFFB0B0B0);
+static const Color textMuted = Color(0xFF808080);
