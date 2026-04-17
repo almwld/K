@@ -7,6 +7,7 @@ class ThemeManager extends ChangeNotifier {
   bool _isDarkMode = true;
 
   bool get isDarkMode => _isDarkMode;
+  bool get isLightMode => !_isDarkMode;
 
   ThemeManager() {
     _loadTheme();
@@ -25,8 +26,8 @@ class ThemeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setDarkMode(bool value) async {
-    _isDarkMode = value;
+  Future<void> setThemeModeIndex(int index) async {
+    _isDarkMode = index == 1;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_themeKey, _isDarkMode);
     notifyListeners();
@@ -34,10 +35,5 @@ class ThemeManager extends ChangeNotifier {
 
   ThemeData get currentTheme => _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
   
-  // للتوافق مع الكود القديم
-  void setThemeModeIndex(int index) => setDarkMode(index == 1);
-  bool get isLightMode => !_isDarkMode;
-  String get modeName => _isDarkMode ? 'داكن' : 'نهاري';
-  IconData get modeIcon => _isDarkMode ? Icons.dark_mode : Icons.light_mode;
-  Color get primaryColor => _isDarkMode ? AppTheme.goldColor : AppTheme.goldDark;
+  Color get primaryColor => _isDarkMode ? AppTheme.goldPrimary : AppTheme.goldDark;
 }
