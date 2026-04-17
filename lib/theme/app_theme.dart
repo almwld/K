@@ -134,3 +134,22 @@ class AppTheme {
         ? darkSurface 
         : lightSurface;
   }
+
+  // دوال مساعدة إضافية
+  static Color getSecondaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? Colors.white70 
+        : const Color(0xFF666666);
+  }
+  
+  static Color getBackgroundColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? darkBackground 
+        : lightBackground;
+  }
+  
+  static Color getSurfaceColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? darkSurface 
+        : lightSurface;
+  }
