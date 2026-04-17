@@ -114,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -165,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
               // User Type Tabs (Customer / Merchant)
               Container(
                 decoration: BoxDecoration(
-                  color: isDark ? AppTheme.darkCard : Colors.grey[100],
+                  color: isDark ? AppTheme.navyCard : Colors.grey[100],
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TabBar(
@@ -234,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -259,7 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -294,7 +294,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -328,7 +328,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
