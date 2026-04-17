@@ -227,7 +227,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
     
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ChatDetailScreen(conversation: conversation)),
+      MaterialPageRoute(builder: (_) => ChatDetailScreen(userName: conversation.merchantName, userId: conversation.merchantId)),
     );
   }
 

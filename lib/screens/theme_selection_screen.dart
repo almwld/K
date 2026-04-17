@@ -52,7 +52,7 @@ class ThemeSelectionScreen extends StatelessWidget {
             subtitle: 'يتغير تلقائياً حسب إعدادات الجهاز',
             icon: Icons.settings_suggest,
             color: Colors.grey,
-            isSelected: themeManager.isSystemMode,
+            isSelected: themeManager.isDarkMode == false && themeManager.isLightMode == false,
             onTap: () => themeManager.setThemeModeIndex(2),
           ),
         ],

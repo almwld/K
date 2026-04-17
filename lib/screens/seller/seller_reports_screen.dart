@@ -58,6 +58,7 @@ class _SellerReportsScreenState extends State<SellerReportsScreen> with SingleTi
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SimpleAppBar(
+      // 
         title: 'تقارير المبيعات',
         actions: [
           PopupMenuButton<ReportPeriod>(
@@ -84,7 +85,7 @@ class _SellerReportsScreenState extends State<SellerReportsScreen> with SingleTi
           ),
           IconButton(onPressed: _exportReport, icon: const Icon(Icons.download)),
         ],
-        bottom: TabBar(
+        // bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
           labelColor: AppTheme.goldColor,
