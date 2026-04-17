@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/seller_report_model.dart';
 
@@ -18,7 +19,7 @@ class SellerReportService {
       final response = await _client
           .from('seller_reports')
           .select()
-          .eq('seller_id', _currentUserId)
+          .eq('seller_id', _currentUserId!)
           .eq('period', period.name)
           .single();
 
@@ -36,7 +37,7 @@ class SellerReportService {
       final response = await _client
           .from('daily_sales')
           .select()
-          .eq('seller_id', _currentUserId)
+          .eq('seller_id', _currentUserId!)
           .order('date', ascending: false)
           .limit(days);
 
@@ -56,7 +57,7 @@ class SellerReportService {
       final response = await _client
           .from('top_products')
           .select()
-          .eq('seller_id', _currentUserId)
+          .eq('seller_id', _currentUserId!)
           .order('revenue', ascending: false)
           .limit(limit);
 
@@ -76,7 +77,7 @@ class SellerReportService {
       final response = await _client
           .from('category_sales')
           .select()
-          .eq('seller_id', _currentUserId)
+          .eq('seller_id', _currentUserId!)
           .order('sales', ascending: false);
 
       return (response as List).map<CategorySalesModel>((json) => 
@@ -95,7 +96,7 @@ class SellerReportService {
       final response = await _client
           .from('orders')
           .select()
-          .eq('seller_id', _currentUserId)
+          .eq('seller_id', _currentUserId!)
           .order('created_at', ascending: false)
           .limit(limit);
 
@@ -115,7 +116,7 @@ class SellerReportService {
       final response = await _client
           .from('customer_insights')
           .select()
-          .eq('seller_id', _currentUserId)
+          .eq('seller_id', _currentUserId!)
           .single();
 
       return CustomerInsightModel.fromJson(response as Map<String, dynamic>);
@@ -126,7 +127,6 @@ class SellerReportService {
 
   // تصدير التقرير
   Future<String?> exportReport({required ReportPeriod period, required String format}) async {
-    // محاكاة تصدير التقرير
     await Future.delayed(const Duration(seconds: 2));
     return 'تقرير_المبيعات_${period.name}.$format';
   }
@@ -179,11 +179,11 @@ class SellerReportService {
 
   List<CategorySalesModel> _getMockCategorySales() {
     return [
-      CategorySalesModel(category: 'هواتف ذكية', sales: 416400, percentage: 45, color: Color(0xFF2196F3)),
-      CategorySalesModel(category: 'لابتوبات', sales: 235200, percentage: 25, color: Color(0xFF4CAF50)),
-      CategorySalesModel(category: 'أجهزة لوحية', sales: 120800, percentage: 13, color: Color(0xFFFF9800)),
-      CategorySalesModel(category: 'سماعات', sales: 98500, percentage: 10, color: Color(0xFF9C27B0)),
-      CategorySalesModel(category: 'إكسسوارات', sales: 65400, percentage: 7, color: Color(0xFFE91E63)),
+      CategorySalesModel(category: 'هواتف ذكية', sales: 416400, percentage: 45, color: const Color(0xFF2196F3)),
+      CategorySalesModel(category: 'لابتوبات', sales: 235200, percentage: 25, color: const Color(0xFF4CAF50)),
+      CategorySalesModel(category: 'أجهزة لوحية', sales: 120800, percentage: 13, color: const Color(0xFFFF9800)),
+      CategorySalesModel(category: 'سماعات', sales: 98500, percentage: 10, color: const Color(0xFF9C27B0)),
+      CategorySalesModel(category: 'إكسسوارات', sales: 65400, percentage: 7, color: const Color(0xFFE91E63)),
     ];
   }
 
