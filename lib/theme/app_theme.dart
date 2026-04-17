@@ -411,3 +411,20 @@ static const Color goldColor = goldPrimary;
 static const Color navyPrimary = darkSurface;
 static const Color navyCard = darkCard;
 static const Color navyGold = goldPrimary;
+
+// ============ جميع متغيرات التوافق ============
+static const Color goldColor = goldPrimary;
+static const Color primaryBlue = Color(0xFF3B82F6);
+static const Color priceColor = Color(0xFF1E40AF);
+static const Color navyGold = goldPrimary;
+static const Color navyPrimary = darkBackground;
+static const Color navyCard = darkCard;
+static const Color darkCardLegacy = darkCard;
+static const Color lightCardLegacy = lightCard;
+static const Color goldGradientStart = goldPrimary;
+static const Color goldGradientEnd = goldLight;
+static const LinearGradient legacyGoldGradient = goldGradient;
+
+// دوال مساعدة إضافية
+static Color get primaryColor => goldPrimary;
+static Color get accentColor => goldAccent;
