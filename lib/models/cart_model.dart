@@ -25,7 +25,7 @@ class CartItem {
 
   double get finalPrice => discountPrice ?? price;
   double get totalPrice => finalPrice * quantity;
-  double get savings => discountPrice != null ? (price - discountPrice) * quantity : 0;
+  double get savings => discountPrice != null ? (price - discountPrice!) * quantity : 0.0;
 
   Map<String, dynamic> toJson() => {
     'id': id, 'product_id': productId, 'product_name': productName, 'product_image': productImage,
@@ -34,9 +34,9 @@ class CartItem {
   };
 
   factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
-    id: json['id'], productId: json['product_id'], productName: json['product_name'],
-    productImage: json['product_image'], storeId: json['store_id'], storeName: json['store_name'],
-    price: json['price'].toDouble(), quantity: json['quantity'] ?? 1,
+    id: json['id'] ?? '', productId: json['product_id'] ?? '', productName: json['product_name'] ?? '',
+    productImage: json['product_image'] ?? '', storeId: json['store_id'] ?? '', storeName: json['store_name'] ?? '',
+    price: (json['price'] ?? 0).toDouble(), quantity: json['quantity'] ?? 1,
     discountPrice: json['discount_price']?.toDouble(), variant: json['variant']
   );
 }
@@ -50,9 +50,9 @@ class CartSummary {
   final Map<String, List<CartItem>> itemsByStore;
 
   CartSummary({required this.items})
-    : subtotal = items.fold(0, (sum, item) => sum + (item.price * item.quantity)),
-      discount = items.fold(0, (sum, item) => sum + item.savings),
-      total = items.fold(0, (sum, item) => sum + item.totalPrice),
+    : subtotal = items.fold(0.0, (sum, item) => sum + (item.price * item.quantity)),
+      discount = items.fold(0.0, (sum, item) => sum + item.savings),
+      total = items.fold(0.0, (sum, item) => sum + item.totalPrice),
       totalItems = items.fold(0, (sum, item) => sum + item.quantity),
       itemsByStore = _groupByStore(items);
 

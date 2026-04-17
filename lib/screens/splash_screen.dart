@@ -32,17 +32,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 2800),
     );
 
-    // حركة الكرة - تسقط من الأعلى
     _ballPosition = Tween<double>(begin: -120, end: 0).animate(
       CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.45, curve: Curves.easeIn)),
     );
 
-    // حركة إغلاق البوابة
     _gateGap = Tween<double>(begin: 60, end: 0).animate(
       CurvedAnimation(parent: _controller, curve: const Interval(0.35, 0.65, curve: Curves.elasticOut)),
     );
 
-    // ظهور النص
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: const Interval(0.6, 0.9, curve: Curves.easeOut)),
     );
@@ -51,9 +48,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       CurvedAnimation(parent: _controller, curve: const Interval(0.6, 0.9, curve: Curves.elasticOut)),
     );
 
-    // الاستماع لتغيير حالة العكس
     _controller.addListener(() {
-      // عند منتصف الحركة - عكس الألوان
       if (_controller.value > 0.4 && !_inverted) {
         setState(() => _inverted = true);
       }
@@ -62,7 +57,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       }
     });
 
-    // بدء الحركة والتنقل
     _controller.forward().then((_) {
       setState(() => _showSuccess = true);
       Future.delayed(const Duration(milliseconds: 500), () {
@@ -98,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
-        transitionDuration: const Duration(milliseconds": 400),
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
@@ -109,25 +103,22 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       backgroundColor: Colors.black,
       body: Center(
         child: ColorFiltered(
-          // منطق عكس الألوان برمجياً - ماتريكس احترافي
           colorFilter: _inverted 
               ? const ColorFilter.matrix([
-                  -1, 0, 0, 0, 255,  // Red inverted
-                  0, -1, 0, 0, 255,  // Green inverted
-                  0, 0, -1, 0, 255,  // Blue inverted
-                  0, 0, 0, 1, 0,     // Alpha unchanged
+                  -1, 0, 0, 0, 255,
+                  0, -1, 0, 0, 255,
+                  0, 0, -1, 0, 255,
+                  0, 0, 0, 1, 0,
                 ])
               : const ColorFilter.mode(Colors.transparent, BlendMode.dst),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // البوابة الذكية
               SizedBox(
                 height: 200,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // البوابات (فكي الخزنة)
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -136,8 +127,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         _buildGate(isLeft: false),
                       ],
                     ),
-                    
-                    // الكرة المتحركة
                     Transform.translate(
                       offset: Offset(0, _ballPosition.value),
                       child: Container(
@@ -150,14 +139,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                             BoxShadow(
                               color: AppTheme.goldPrimary.withOpacity(0.5),
                               blurRadius: 20,
-                              spreadRadius": 5,
+                              spreadRadius: 5,
                             ),
                           ] : null,
                         ),
                       ),
                     ),
-                    
-                    // إشارة النجاح (Ripple Effect)
                     if (_showSuccess)
                       Container(
                         width: 60,
@@ -171,10 +158,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   ],
                 ),
               ),
-              
               const SizedBox(height: 30),
-              
-              // النص الظاهر بعد الحركة
               AnimatedBuilder(
                 animation: _fadeAnimation,
                 builder: (context, child) {
@@ -183,7 +167,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     child: Transform.scale(
                       scale: _scaleAnimation.value,
                       child: Column(
-                        children": [
+                        children: [
                           ShaderMask(
                             shaderCallback: (bounds) => const LinearGradient(
                               colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
@@ -238,7 +222,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           BoxShadow(
             color: AppTheme.goldPrimary.withOpacity(0.3),
             blurRadius: 10,
-            spreadRadius": 2,
+            spreadRadius: 2,
           ),
         ] : null,
       ),
