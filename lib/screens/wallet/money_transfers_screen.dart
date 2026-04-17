@@ -51,7 +51,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
     final convertedAmount = amount * _exchangeRate;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تحويلات دولية'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

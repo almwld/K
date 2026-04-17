@@ -37,7 +37,7 @@ class _RechargeCreditScreenState extends State<RechargeCreditScreen> {
     final selectedAmount = _amounts.firstWhere((a) => a['value'] == _selectedAmount, orElse: () => {});
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'شحن رصيد'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

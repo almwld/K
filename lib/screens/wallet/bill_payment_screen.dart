@@ -57,7 +57,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
     );
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'دفع الفواتير'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

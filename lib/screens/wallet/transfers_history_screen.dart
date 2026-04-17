@@ -31,7 +31,7 @@ class _TransfersHistoryScreenState extends State<TransfersHistoryScreen> {
     final transfers = _selectedTab == 'المرسلة' ? _sentTransfers : _receivedTransfers;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'سجل الحوالات'),
       body: Column(
         children: [

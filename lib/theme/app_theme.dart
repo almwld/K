@@ -361,3 +361,14 @@ static const LinearGradient goldGradient = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
 );
+
+// متغيرات إضافية للتوافق
+static const Color navyCard = Color(0xFF223A5E);
+static const Color darkCard = Color(0xFF223A5E);
+static const Color darkBackground = navyPrimary;
+static const Color lightBackground = Color(0xFFF8FAFC);
+static const LinearGradient goldGradient = LinearGradient(
+  colors: [goldColor, Color(0xFFE5C158)],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);

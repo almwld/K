@@ -32,7 +32,7 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
     final total = amount + fee;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.navyPrimary : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تحويل رصيد بين الشبكات'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
