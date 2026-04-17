@@ -9,6 +9,7 @@ import '../stores/stores_screen.dart';
 import '../chat/chat_screen.dart';
 import '../map/interactive_map_screen.dart';
 import '../wallet/wallet_screen.dart';
+import '../cart/cart_screen.dart';
 import '../profile_screen.dart';
 import '../add_ad_screen.dart';
 import '../request_service_screen.dart';
