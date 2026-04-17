@@ -179,11 +179,11 @@ class SellerReportService {
 
   List<CategorySalesModel> _getMockCategorySales() {
     return [
-      CategorySalesModel(category: 'هواتف ذكية', sales: 416400, percentage: 45, color: const Color(0xFF2196F3)),
-      CategorySalesModel(category: 'لابتوبات', sales: 235200, percentage: 25, color: const Color(0xFF4CAF50)),
-      CategorySalesModel(category: 'أجهزة لوحية', sales: 120800, percentage: 13, color: const Color(0xFFFF9800)),
-      CategorySalesModel(category: 'سماعات', sales: 98500, percentage: 10, color: const Color(0xFF9C27B0)),
-      CategorySalesModel(category: 'إكسسوارات', sales: 65400, percentage: 7, color: const Color(0xFFE91E63)),
+      CategorySalesModel(category: 'هواتف ذكية', sales: 416400, percentage: 45, color: Color(0xFF2196F3)),
+      CategorySalesModel(category: 'لابتوبات', sales: 235200, percentage: 25, color: Color(0xFF4CAF50)),
+      CategorySalesModel(category: 'أجهزة لوحية', sales: 120800, percentage: 13, color: Color(0xFFFF9800)),
+      CategorySalesModel(category: 'سماعات', sales: 98500, percentage: 10, color: Color(0xFF9C27B0)),
+      CategorySalesModel(category: 'إكسسوارات', sales: 65400, percentage: 7, color: Color(0xFFE91E63)),
     ];
   }
 
