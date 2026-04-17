@@ -263,7 +263,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                             itemBuilder: (context, index) {
                               final product = _results[index];
                               return GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product.name, productName: product.name, storeName: product.storeName))),
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: product.id, productName: product.name, storeName: ''))),
                                 child: Container(
                                   decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
                                   child: Column(
