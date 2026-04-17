@@ -19,20 +19,50 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   bool _isExpanded = false;
+  late AnimationController _rotationController;
+  late Animation<double> _rotationAnimation;
 
-  // الشاشات: الرئيسية | المتجر | الدردشة | (زر+) | الخريطة | المحفظة | حسابي
   final List<Widget> _screens = const [
-    HomeScreen(),           // 0
-    StoresScreen(),         // 1
-    ChatScreen(),           // 2 - الدردشة
-    SizedBox(),             // 3 - الزر الأزرق
-    InteractiveMapScreen(), // 4
-    WalletScreen(),         // 5
-    ProfileScreen(),        // 6
+    HomeScreen(),
+    StoresScreen(),
+    ChatScreen(),
+    SizedBox(),
+    InteractiveMapScreen(),
+    WalletScreen(),
+    ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _rotationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    _rotationAnimation = Tween<double>(begin: 0, end: 2.5).animate(
+      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
+  }
+
+  void _toggleExpand() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _rotationController.forward(from: 0);
+      } else {
+        _rotationController.reverse();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,22 +74,26 @@ class _MainNavigationState extends State<MainNavigation> {
           IndexedStack(index: _currentIndex, children: _screens),
           if (_isExpanded)
             GestureDetector(
-              onTap: () => setState(() => _isExpanded = false),
+              onTap: _toggleExpand,
               child: Container(color: Colors.black.withOpacity(0.5)),
             ),
           if (_isExpanded)
             Positioned(
-              bottom: 100,
-              left: 20,
-              right: 20,
+              bottom: 120,
+              left: 30,
+              right: 30,
               child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: AppTheme.surface, borderRadius: BorderRadius.circular(20)),
+                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: AppTheme.surface,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 20, spreadRadius: 5)],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildActionButton(Icons.campaign_outlined, 'إضافة إعلان', () { setState(() => _isExpanded = false); Navigator.push(context, MaterialPageRoute(builder: (_) => const AddAdScreen())); }),
-                    _buildActionButton(Icons.handyman_outlined, 'طلب خدمة', () { setState(() => _isExpanded = false); Navigator.push(context, MaterialPageRoute(builder: (_) => const RequestServiceScreen())); }),
+                    _buildActionButton(Icons.campaign_outlined, 'إضافة إعلان', () { _toggleExpand(); Navigator.push(context, MaterialPageRoute(builder: (_) => const AddAdScreen())); }),
+                    _buildActionButton(Icons.handyman_outlined, 'طلب خدمة', () { _toggleExpand(); Navigator.push(context, MaterialPageRoute(builder: (_) => const RequestServiceScreen())); }),
                   ],
                 ),
               ),
@@ -77,7 +111,7 @@ class _MainNavigationState extends State<MainNavigation> {
                 _buildNavItem(0, 'assets/icons/svg/home.svg', 'الرئيسية'),
                 _buildNavItem(1, 'assets/icons/svg/merchant.svg', 'المتجر'),
                 _buildNavItem(2, 'assets/icons/svg/chat.svg', 'الدردشة'),
-                _buildGoldenButton(),
+                _buildRotatingButton(),
                 _buildNavItem(4, 'assets/icons/svg/location.svg', 'الخريطة'),
                 _buildNavItem(5, 'assets/icons/svg/wallet.svg', 'المحفظة'),
                 _buildNavItem(6, 'assets/icons/svg/profile.svg', 'حسابي'),
@@ -95,7 +129,10 @@ class _MainNavigationState extends State<MainNavigation> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => setState(() => _currentIndex = index),
+          onTap: () {
+            if (_isExpanded) _toggleExpand();
+            setState(() => _currentIndex = index);
+          },
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -109,21 +146,29 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  Widget _buildGoldenButton() {
+  Widget _buildRotatingButton() {
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => _isExpanded = !_isExpanded),
+        onTap: _toggleExpand,
         child: Container(
           margin: const EdgeInsets.only(bottom: 20),
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: AppTheme.primaryBlue,
-              shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: AppTheme.primaryBlue.withOpacity(0.4), blurRadius: 15, spreadRadius: 2)],
-            ),
-            child: Icon(_isExpanded ? Icons.close : Icons.add, color: Colors.white, size: 30),
+          child: AnimatedBuilder(
+            animation: _rotationAnimation,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: _rotationAnimation.value * 3.14159 * 2,
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryBlue,
+                    shape: BoxShape.circle,
+                    boxShadow: [BoxShadow(color: AppTheme.primaryBlue.withOpacity(0.4), blurRadius: 15, spreadRadius: 2)],
+                  ),
+                  child: Icon(_isExpanded ? Icons.close : Icons.add, color: Colors.white, size: 30),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -135,9 +180,9 @@ class _MainNavigationState extends State<MainNavigation> {
       onTap: onTap,
       child: Column(
         children: [
-          Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.primaryBlue.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.primaryBlue, size: 28)),
+          Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.primaryBlue.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.primaryBlue, size: 32)),
           const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 12)),
+          Text(label, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14, fontWeight: FontWeight.w500)),
         ],
       ),
     );
