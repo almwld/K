@@ -1,3 +1,4 @@
+import '../cart/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
@@ -111,6 +112,10 @@ class _HomeScreenState extends State<HomeScreen> {
             centerTitle: true,
             elevation: 0,
             actions: [
+              IconButton(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CartScreen())),
+                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+              ),
               IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black)),
               IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined, color: Colors.black)),
             ],
@@ -319,3 +324,18 @@ class ProductGridShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GridView.builder(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: const EdgeInsets.all(12), gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 12, mainAxisSpacing: 12), itemCount: 6, itemBuilder: (context, index) => Container(decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 130, color: Colors.grey[300]), Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(height: 14, width: double.infinity, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 12, width: 80, color: Colors.grey[300]), const SizedBox(height: 8), Container(height: 16, width: 60, color: Colors.grey[300])]))]));
 }
+
+// إضافة أيقونة السلة في AppBar actions
+// ابحث عن: actions: [
+              IconButton(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CartScreen())),
+                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+              ),
+//   IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black)),
+//   IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined, color: Colors.black)),
+// ]
+// وأضف قبلهم:
+// IconButton(
+//   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CartScreen())),
+//   icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+// ),

@@ -9,7 +9,6 @@ import '../chat/chat_screen.dart';
 import '../map/interactive_map_screen.dart';
 import '../wallet/wallet_screen.dart';
 import '../profile_screen.dart';
-import '../cart/cart_screen.dart';
 import '../add_ad_screen.dart';
 import '../request_service_screen.dart';
 
@@ -24,10 +23,11 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   bool _isExpanded = false;
 
+  // الشاشات: الرئيسية | المتجر | الدردشة | (زر+) | الخريطة | المحفظة | حسابي
   final List<Widget> _screens = const [
     HomeScreen(),
     StoresScreen(),
-    CartScreen(),
+    ChatScreen(),
     SizedBox(),
     InteractiveMapScreen(),
     WalletScreen(),
@@ -67,7 +67,7 @@ class _MainNavigationState extends State<MainNavigation> {
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: AppTheme.bottomBar, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)]),
+        decoration: BoxDecoration(color: AppTheme.bottomBar, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)]),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -76,7 +76,7 @@ class _MainNavigationState extends State<MainNavigation> {
               children: [
                 _buildNavItem(0, 'assets/icons/svg/home.svg', 'الرئيسية'),
                 _buildNavItem(1, 'assets/icons/svg/merchant.svg', 'المتجر'),
-                _buildNavItem(2, 'assets/icons/svg/cart.svg', 'السلة'),
+                _buildNavItem(2, 'assets/icons/svg/chat.svg', 'الدردشة'),
                 _buildGoldenButton(),
                 _buildNavItem(4, 'assets/icons/svg/location.svg', 'الخريطة'),
                 _buildNavItem(5, 'assets/icons/svg/wallet.svg', 'المحفظة'),
@@ -86,7 +86,6 @@ class _MainNavigationState extends State<MainNavigation> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -100,9 +99,9 @@ class _MainNavigationState extends State<MainNavigation> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SvgPicture.asset(iconPath, width: 24, height: 24, colorFilter: ColorFilter.mode(isSelected ? AppTheme.goldPrimary : AppTheme.textMuted, BlendMode.srcIn)),
+              SvgPicture.asset(iconPath, width: 24, height: 24, colorFilter: ColorFilter.mode(isSelected ? AppTheme.primaryBlue : AppTheme.textMuted, BlendMode.srcIn)),
               const SizedBox(height: 4),
-              Text(label, style: TextStyle(fontSize: 10, color: isSelected ? AppTheme.goldPrimary : AppTheme.textMuted, fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal)),
+              Text(label, style: TextStyle(fontSize: 10, color: isSelected ? AppTheme.primaryBlue : AppTheme.textMuted)),
             ],
           ),
         ),
@@ -120,11 +119,11 @@ class _MainNavigationState extends State<MainNavigation> {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: AppTheme.goldPrimary,
+              color: AppTheme.primaryBlue,
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: AppTheme.goldPrimary.withOpacity(0.5), blurRadius: 15, spreadRadius: 2)],
+              boxShadow: [BoxShadow(color: AppTheme.primaryBlue.withOpacity(0.4), blurRadius: 15, spreadRadius: 2)],
             ),
-            child: Icon(_isExpanded ? Icons.close : Icons.add, color: Colors.black, size: 30),
+            child: Icon(_isExpanded ? Icons.close : Icons.add, color: Colors.white, size: 30),
           ),
         ),
       ),
@@ -136,7 +135,7 @@ class _MainNavigationState extends State<MainNavigation> {
       onTap: onTap,
       child: Column(
         children: [
-          Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.goldPrimary, size: 28)),
+          Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.primaryBlue.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.primaryBlue, size: 28)),
           const SizedBox(height: 8),
           Text(label, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 12)),
         ],
