@@ -1,103 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../services/chat_service.dart';
-import '../../models/chat_model.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  final ConversationModel conversation;
+  final String userName;
+  final String userId;
 
-  const ChatDetailScreen({super.key, required this.conversation});
+  const ChatDetailScreen({super.key, required this.userName, required this.userId});
 
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
-  late ChatService _chatService;
   final TextEditingController _messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  List<MessageModel> _messages = [];
+  final List<Map<String, dynamic>> _messages = [];
 
   @override
   void initState() {
     super.initState();
-    _chatService = context.read<ChatService>();
-    _chatService.openConversation(widget.conversation.id);
-    _chatService.getMessages(widget.conversation.id).then((messages) {
-      if (mounted) setState(() => _messages = messages);
-    });
-    _chatService.messagesStream.listen((messages) {
-      if (mounted) {
-        setState(() => _messages = messages);
-        _scrollToBottom();
-      }
-    });
+    _loadMessages();
   }
 
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
-      }
-    });
+  void _loadMessages() {
+    _messages.addAll([
+      {'text': 'مرحباً، هل المنتج متوفر؟', 'isMe': true, 'time': '10:30'},
+      {'text': 'نعم متوفر، يمكنك الطلب الآن', 'isMe': false, 'time': '10:32'},
+    ]);
   }
 
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
-    _chatService.sendMessage(widget.conversation.id, _messageController.text.trim());
+    setState(() {
+      _messages.add({
+        'text': _messageController.text,
+        'isMe': true,
+        'time': '${DateTime.now().hour}:${DateTime.now().minute}',
+      });
+    });
     _messageController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(title: widget.conversation.merchantName),
+      backgroundColor: AppTheme.background,
+      appBar: SimpleAppBar(title: widget.userName),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
-              controller: _scrollController,
               padding: const EdgeInsets.all(16),
               itemCount: _messages.length,
+              reverse: true,
               itemBuilder: (context, index) {
-                final message = _messages[index];
-                final isMe = message.senderId == widget.conversation.customerId;
-                return Align(
-                  alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: isMe ? AppTheme.goldColor : Colors.grey[300],
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(20),
-                        topRight: const Radius.circular(20),
-                        bottomLeft: Radius.circular(isMe ? 20 : 5),
-                        bottomRight: Radius.circular(isMe ? 5 : 20),
-                      ),
-                    ),
-                    child: Text(message.content, style: TextStyle(color: isMe ? Colors.white : Colors.black87)),
-                  ),
-                );
+                final reversedIndex = _messages.length - 1 - index;
+                final message = _messages[reversedIndex];
+                return _buildMessageBubble(message);
               },
             ),
           ),
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Theme.of(context).cardColor, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)]),
+            decoration: BoxDecoration(color: AppTheme.surface, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)]),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(hintText: 'اكتب رسالتك...', filled: true, fillColor: Colors.grey[100], border: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide.none)),
+                    decoration: InputDecoration(hintText: 'اكتب رسالتك...', filled: true, fillColor: Colors.grey[100], border: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide.none), contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  decoration: const BoxDecoration(color: AppTheme.goldColor, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: AppTheme.primaryBlue, shape: BoxShape.circle),
                   child: IconButton(onPressed: _sendMessage, icon: const Icon(Icons.send, color: Colors.white)),
                 ),
               ],
@@ -108,10 +84,18 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _messageController.dispose();
-    _scrollController.dispose();
-    super.dispose();
+  Widget _buildMessageBubble(Map<String, dynamic> message) {
+    return Align(
+      alignment: message['isMe'] ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: message['isMe'] ? AppTheme.primaryBlue : Colors.grey[300],
+          borderRadius: BorderRadius.only(topLeft: const Radius.circular(20), topRight: const Radius.circular(20), bottomLeft: Radius.circular(message['isMe'] ? 20 : 5), bottomRight: Radius.circular(message['isMe'] ? 5 : 20)),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(message['text'], style: TextStyle(color: message['isMe'] ? Colors.white : Colors.black87)), const SizedBox(height: 4), Text(message['time'], style: TextStyle(fontSize: 10, color: message['isMe'] ? Colors.white70 : Colors.grey[600]))]),
+      ),
+    );
   }
 }
