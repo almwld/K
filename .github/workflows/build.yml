@@ -76,7 +76,7 @@ jobs:
           
           plugins {
               id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-              id "com.android.application" version "8.2.2" apply false
+              id "com.android.application" version "8.5.0" apply false
               id "org.jetbrains.kotlin.android" version "2.0.21" apply false
           }
           
@@ -94,8 +94,8 @@ jobs:
               }
               
               dependencies {
-                  classpath 'com.android.tools.build:gradle:8.2.2'
-                  classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+                  classpath 'com.android.tools.build:gradle:8.5.0'
+                  classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21"
               }
           }
           
@@ -135,7 +135,6 @@ jobs:
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_17
                   targetCompatibility JavaVersion.VERSION_17
-                  coreLibraryDesugaringEnabled true
               }
               
               kotlinOptions {
@@ -149,7 +148,6 @@ jobs:
                   versionCode 1
                   versionName "1.0"
                   multiDexEnabled true
-                  resConfigs "ar", "en"
               }
               
               signingConfigs {
@@ -164,9 +162,6 @@ jobs:
               buildTypes {
                   release {
                       signingConfig signingConfigs.release
-                      minifyEnabled true
-                      shrinkResources true
-                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
                   }
               }
           }
@@ -178,27 +173,18 @@ jobs:
           dependencies {
               implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
               implementation 'androidx.multidex:multidex:2.0.1'
-              coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+          }
+          
+          configurations.all {
+              resolutionStrategy {
+                  force 'org.jetbrains.kotlin:kotlin-stdlib:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-reflect:2.0.21'
+              }
           }
           APPGRADLE
-
-      - name: Create proguard-rules.pro
-        run: |
-          cat > android/app/proguard-rules.pro << 'PROGUARD'
-          -keep class io.flutter.app.** { *; }
-          -keep class io.flutter.plugin.** { *; }
-          -keep class io.flutter.util.** { *; }
-          -keep class io.flutter.view.** { *; }
-          -keep class io.flutter.** { *; }
-          -keep class io.flutter.plugins.** { *; }
-          -keep class io.supabase.** { *; }
-          -keep class com.supabase.** { *; }
-          -keep class com.google.gson.** { *; }
-          -keep class androidx.lifecycle.** { *; }
-          -keep class com.google.firebase.** { *; }
-          -dontnote **
-          -dontwarn **
-          PROGUARD
 
       - name: Create gradle-wrapper.properties
         run: |
@@ -207,7 +193,7 @@ jobs:
           distributionPath=wrapper/dists
           zipStoreBase=GRADLE_USER_HOME
           zipStorePath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-all.zip
           WRAPPER
 
       - name: Create AndroidManifest.xml
@@ -216,19 +202,15 @@ jobs:
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
               package="com.flexyemen.flex_yemen">
               <uses-permission android:name="android.permission.INTERNET"/>
-              <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
               <application
                   android:label="Flex Yemen"
-                  android:icon="@mipmap/ic_launcher"
-                  android:usesCleartextTraffic="true">
+                  android:icon="@mipmap/ic_launcher">
                   <activity
                       android:name=".MainActivity"
                       android:exported="true"
-                      android:launchMode="singleTop"
                       android:theme="@style/LaunchTheme"
-                      android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-                      android:hardwareAccelerated="true"
-                      android:windowSoftInputMode="adjustResize">
+                      android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+                      android:hardwareAccelerated="true">
                       <meta-data
                           android:name="io.flutter.embedding.android.NormalTheme"
                           android:resource="@style/NormalTheme"/>
@@ -237,9 +219,7 @@ jobs:
                           <category android:name="android.intent.category.LAUNCHER"/>
                       </intent-filter>
                   </activity>
-                  <meta-data
-                      android:name="flutterEmbedding"
-                      android:value="2" />
+                  <meta-data android:name="flutterEmbedding" android:value="2"/>
               </application>
           </manifest>
           MANIFEST
@@ -285,8 +265,7 @@ jobs:
           COLORS
 
       - name: Create local.properties
-        run: |
-          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+        run: echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
 
       - name: Get Flutter dependencies
         run: flutter pub get
@@ -301,11 +280,6 @@ jobs:
           flutter clean
           flutter pub get
           flutter build apk --release
-
-      - name: List all APK files
-        run: |
-          echo "=== البحث عن جميع ملفات APK ==="
-          find . -name "*.apk" -type f 2>/dev/null | head -20
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
