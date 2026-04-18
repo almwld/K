@@ -243,14 +243,16 @@ class AppTheme {
 }
 
 // دوال إضافية
-static Color getTextColor(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark 
-      ? Colors.white 
-      : Colors.black87;
-}
+  // دوال مساعدة
+  static Color getTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? Colors.white 
+        : Colors.black87;
+  }
 
-static Color getDividerColor(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark 
-      ? const Color(0xFF3C3C3C) 
-      : const Color(0xFFE0E0E0);
+  static Color getDividerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? const Color(0xFF3C3C3C) 
+        : const Color(0xFFE0E0E0);
+  }
 }

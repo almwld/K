@@ -36,28 +36,4 @@ class CartItem {
       stockQuantity: stockQuantity,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'productId': productId,
-    'productName': productName,
-    'imageUrl': imageUrl,
-    'price': price,
-    'quantity': quantity,
-    'vendorId': vendorId,
-    'vendorName': vendorName,
-    'stockQuantity': stockQuantity,
-  };
-
-  factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
-    id: json['id'],
-    productId: json['productId'],
-    productName: json['productName'],
-    imageUrl: json['imageUrl'],
-    price: json['price'],
-    quantity: json['quantity'],
-    vendorId: json['vendorId'],
-    vendorName: json['vendorName'],
-    stockQuantity: json['stockQuantity'],
-  );
 }
