@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'providers/theme_manager.dart';
+import 'providers/cart_provider.dart';
 import 'providers/theme_manager.dart';
+import 'providers/cart_provider.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
@@ -36,6 +38,7 @@ void main() async {
   
   runApp(
     ChangeNotifierProvider(
+      ChangeNotifierProvider(create: (_) => CartProvider()),
       create: (_) => ThemeManager(),
       child: const FlexYemenApp(),
     ),
