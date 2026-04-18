@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../theme/app_theme.dart';
 import 'home/main_navigation.dart';
-import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -56,22 +54,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (!mounted) return;
 
-    // التحقق من حالة تسجيل الدخول
-    final session = Supabase.instance.client.auth.currentSession;
-    
-    if (session != null) {
-      // المستخدم مسجل دخول → الواجهة الرئيسية
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainNavigation()),
-      );
-    } else {
-      // المستخدم غير مسجل → شاشة تسجيل الدخول
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    }
+    // ✅ الانتقال مباشرة للمنصة الرئيسية (تجاوز تسجيل الدخول)
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const MainNavigation()),
+    );
   }
 
   @override
