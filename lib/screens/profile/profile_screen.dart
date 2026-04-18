@@ -1,108 +1,155 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../theme/app_theme.dart';
 import '../login_screen.dart';
+import 'account_info_screen.dart';
+import '../settings_screen.dart';
+import '../my_ads_screen.dart';
+import '../favorites_screen.dart';
+import '../help_support_screen.dart';
+import '../about_screen.dart';
 
-class ProfileScreen extends StatefulWidget {
-  final bool isGuest;
-  
-  const ProfileScreen({super.key, this.isGuest = false});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
+  final List<Map<String, dynamic>> _menuItems = const [
+    {'title': 'إعلاناتي', 'icon': Icons.campaign, 'screen': MyAdsScreen()},
+    {'title': 'المفضلة', 'icon': Icons.favorite, 'screen': FavoritesScreen()},
+    {'title': 'معلومات الحساب', 'icon': Icons.person, 'screen': AccountInfoScreen()},
+    {'title': 'الإعدادات', 'icon': Icons.settings, 'screen': SettingsScreen()},
+    {'title': 'المساعدة والدعم', 'icon': Icons.help_outline, 'screen': HelpSupportScreen()},
+    {'title': 'عن التطبيق', 'icon': Icons.info_outline, 'screen': AboutScreen()},
+  ];
 
-class _ProfileScreenState extends State<ProfileScreen> {
+  Future<void> _logout(BuildContext context) async {
+    await Supabase.instance.client.auth.signOut();
+    if (context.mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.isGuest) {
-      return _buildGuestView();
-    }
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final user = Supabase.instance.client.auth.currentUser;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('حسابي'),
-      ),
-      body: const Center(
-        child: Text('الملف الشخصي'),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppTheme.gold.withOpacity(0.3),
+                      isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: SafeArea(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          gradient: AppTheme.goldGradient,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppTheme.gold, width: 3),
+                        ),
+                        child: const Icon(Icons.person, size: 50, color: Colors.black),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        user?.email ?? 'مستخدم',
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final item = _menuItems[index];
+                  return _buildMenuItem(context, item, isDark);
+                },
+                childCount: _menuItems.length,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton.icon(
+                onPressed: () => _logout(context),
+                icon: const Icon(Icons.logout, color: Colors.white),
+                label: const Text(
+                  'تسجيل الخروج',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.error,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+        ],
       ),
     );
   }
 
-  Widget _buildGuestView() {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('حسابي'),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: AppTheme.gold.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.person_outline,
-                  size: 60,
-                  color: AppTheme.gold,
-                ),
+  Widget _buildMenuItem(BuildContext context, Map<String, dynamic> item, bool isDark) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => item['screen']));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppTheme.gold.withOpacity(0.2),
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 24),
-              const Text(
-                'سجل دخول للوصول إلى حسابك',
+              child: Icon(item['icon'], color: AppTheme.gold),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                item['title'],
                 style: TextStyle(
-                  fontFamily: 'Changa',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'قم بتسجيل الدخول أو إنشاء حساب جديد للاستمتاع بجميع الميزات',
-                style: TextStyle(
-                  fontFamily: 'Changa',
-                  fontSize: 14,
-                  color: AppTheme.getSecondaryTextColor(context),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.gold,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    'تسجيل الدخول',
-                    style: TextStyle(
-                      fontFamily: 'Changa',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
               ),
-            ],
-          ),
+            ),
+            Icon(Icons.arrow_forward_ios, size: 16, color: isDark ? Colors.grey[600] : Colors.grey[400]),
+          ],
         ),
       ),
     );

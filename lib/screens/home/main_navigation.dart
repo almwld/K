@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../theme/app_theme.dart';
 import 'home_screen.dart';
 import '../all_ads_screen.dart';
 import '../wallet/wallet_screen.dart';
 import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
-import '../login_screen.dart';
+import '../cart/cart_screen.dart';
 
-/// الشريط السفلي الرئيسي للتنقل
 class MainNavigation extends StatefulWidget {
-  final bool isGuest;
-  
-  const MainNavigation({super.key, this.isGuest = false});
+  const MainNavigation({super.key});
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
@@ -21,128 +17,24 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
 
-  late final List<Widget> _screens;
-
-  @override
-  void initState() {
-    super.initState();
-    _screens = [
-      const HomeScreen(),
-      const AllAdsScreen(),
-      const Placeholder(), // مكان للزر العائم
-      WalletScreen(isGuest: widget.isGuest),
-      ChatScreen(isGuest: widget.isGuest),
-      ProfileScreen(isGuest: widget.isGuest),
-    ];
-  }
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const AllAdsScreen(),
+    const CartScreen(),
+    const WalletScreen(),
+    const ChatScreen(),
+    const ProfileScreen(),
+  ];
 
   void _onItemTapped(int index) {
-    // الزر العائم - إضافة إعلان
     if (index == 2) {
-      _handleAddAdAction();
+      Navigator.pushNamed(context, '/add_ad');
       return;
     }
     
     setState(() {
       _currentIndex = index;
     });
-  }
-
-  void _handleAddAdAction() {
-    // ✅ إذا كان ضيف، نطلب تسجيل الدخول
-    if (widget.isGuest) {
-      _showLoginRequiredDialog();
-      return;
-    }
-    
-    // إذا كان مسجل دخول، ننتقل لصفحة إضافة إعلان
-    Navigator.pushNamed(context, '/add_ad');
-  }
-
-  void _handleWalletAction() {
-    // ✅ إذا كان ضيف، نطلب تسجيل الدخول
-    if (widget.isGuest) {
-      _showLoginRequiredDialog();
-      return;
-    }
-    
-    setState(() {
-      _currentIndex = 1; // المحفظة هي الفهرس 1 بعد إزالة الزر العائم
-    });
-  }
-
-  void _handleChatAction() {
-    // ✅ إذا كان ضيف، نطلب تسجيل الدخول
-    if (widget.isGuest) {
-      _showLoginRequiredDialog();
-      return;
-    }
-    
-    setState(() {
-      _currentIndex = 2; // الدردشة هي الفهرس 2
-    });
-  }
-
-  void _showLoginRequiredDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: const Row(
-          children: [
-            Icon(Icons.lock_outline, color: AppTheme.gold),
-            SizedBox(width: 12),
-            Text(
-              'تسجيل الدخول مطلوب',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        content: const Text(
-          'هذه الميزة تتطلب تسجيل الدخول.\nهل تريد تسجيل الدخول أو إنشاء حساب جديد؟',
-          style: TextStyle(fontFamily: 'Changa'),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'لاحقاً',
-              style: TextStyle(fontFamily: 'Changa'),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // الانتقال لصفحة تسجيل الدخول
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.gold,
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text(
-              'تسجيل الدخول',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -152,13 +44,7 @@ class _MainNavigationState extends State<MainNavigation> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [
-          const HomeScreen(),
-          const AllAdsScreen(),
-          WalletScreen(isGuest: widget.isGuest),
-          ChatScreen(isGuest: widget.isGuest),
-          ProfileScreen(isGuest: widget.isGuest),
-        ],
+        children: _screens,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -180,9 +66,9 @@ class _MainNavigationState extends State<MainNavigation> {
                 _buildNavItem(0, Icons.home_outlined, 'الرئيسية'),
                 _buildNavItem(1, Icons.storefront_outlined, 'المتجر'),
                 _buildAddButton(),
-                _buildNavItem(2, Icons.account_balance_wallet_outlined, 'المحفظة'),
-                _buildNavItem(3, Icons.chat_bubble_outline, 'الدردشة'),
-                _buildNavItem(4, Icons.person_outline, 'حسابي'),
+                _buildNavItem(3, Icons.shopping_cart_outlined, 'السلة'),
+                _buildNavItem(4, Icons.chat_bubble_outline, 'الدردشة'),
+                _buildNavItem(5, Icons.person_outline, 'حسابي'),
               ],
             ),
           ),
@@ -246,7 +132,7 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
         child: const Icon(
           Icons.add,
-          color: Colors.white,
+          color: Colors.black,
           size: 32,
         ),
       ),

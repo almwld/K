@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../theme/app_theme.dart';
 import 'home/main_navigation.dart';
+import 'login_screen.dart';
 
-/// شاشة الترحيب
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -56,14 +56,22 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (!mounted) return;
 
-    // ✅ الانتقال مباشرة للواجهة الرئيسية كضيف
-    // المستخدم يمكنه التصفح بحرية
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const MainNavigation(isGuest: true), // وضع الضيف
-      ),
-    );
+    // التحقق من حالة تسجيل الدخول
+    final session = Supabase.instance.client.auth.currentSession;
+    
+    if (session != null) {
+      // المستخدم مسجل دخول → الواجهة الرئيسية
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainNavigation()),
+      );
+    } else {
+      // المستخدم غير مسجل → شاشة تسجيل الدخول
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    }
   }
 
   @override
@@ -87,7 +95,6 @@ class _SplashScreenState extends State<SplashScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // الشعار
               AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
@@ -112,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen>
                         child: const Icon(
                           Icons.shopping_bag,
                           size: 80,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -120,7 +127,6 @@ class _SplashScreenState extends State<SplashScreen>
                 },
               ),
               const SizedBox(height: 40),
-              // اسم التطبيق
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Row(
@@ -149,7 +155,6 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
               const SizedBox(height: 16),
-              // الشعار الفرعي
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Text(
@@ -161,28 +166,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
-              // رسالة ترحيبية
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.gold.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: const Text(
-                    '👋 أهلاً بك! تصفح المنصة بحرية',
-                    style: TextStyle(
-                      fontFamily: 'Changa',
-                      fontSize: 14,
-                      color: AppTheme.gold,
-                    ),
-                  ),
-                ),
-              ),
               const SizedBox(height: 60),
-              // مؤشر التحميل
               const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
                 strokeWidth: 3,
