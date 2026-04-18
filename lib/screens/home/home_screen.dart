@@ -89,15 +89,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     setState(() => item.isFavorite = !item.isFavorite);
   }
 
-  void _toggleTheme(ThemeManager themeManager) {
-    _themeRotationController.forward(from: 0);
-    themeManager.setThemeModeIndex(themeManager.isDarkMode ? 0 : 1);
-  }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final themeManager = context.watch<ThemeManager>();
+    final themeManager = Provider.of<ThemeManager>(context);
     
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../services/chatbot_service.dart';
 import 'live_support_screen.dart';

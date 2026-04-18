@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import '../widgets/product_card.dart';
 
 class ProductDetailScreen extends StatefulWidget {

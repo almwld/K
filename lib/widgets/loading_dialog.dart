@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 
 class LoadingDialog extends StatelessWidget {
   final String? message;

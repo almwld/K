@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
-import '../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 
 class ShimmerImage extends StatelessWidget {
   final String imageUrl;

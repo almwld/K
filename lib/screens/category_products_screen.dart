@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../widgets/shimmer_image.dart';
 import '../data/market_data.dart';

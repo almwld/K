@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../widgets/custom_button.dart';
 import 'home_screen.dart';
