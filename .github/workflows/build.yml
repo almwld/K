@@ -50,8 +50,6 @@ jobs:
           org.gradle.jvmargs=-Xmx4G -XX:MaxMetaspaceSize=2G
           android.useAndroidX=true
           android.enableJetifier=true
-          android.enableR8.fullMode=true
-          kotlin.code.style=official
           GRADLEPROPS
 
       - name: Create settings.gradle
@@ -95,7 +93,7 @@ jobs:
               
               dependencies {
                   classpath 'com.android.tools.build:gradle:8.5.0'
-                  classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21"
+                  classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
               }
           }
           
@@ -135,6 +133,7 @@ jobs:
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_17
                   targetCompatibility JavaVersion.VERSION_17
+                  coreLibraryDesugaringEnabled true
               }
               
               kotlinOptions {
@@ -171,17 +170,16 @@ jobs:
           }
           
           dependencies {
-              implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
+              implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
               implementation 'androidx.multidex:multidex:2.0.1'
+              coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
           }
           
           configurations.all {
               resolutionStrategy {
-                  force 'org.jetbrains.kotlin:kotlin-stdlib:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-reflect:2.0.21'
+                  force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+                  force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+                  force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
               }
           }
           APPGRADLE
