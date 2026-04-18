@@ -3,11 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../theme/app_theme.dart';
 import '../login_screen.dart';
 import 'account_info_screen.dart';
-import '../settings_screen.dart';
 import '../my_ads_screen.dart';
 import '../favorites_screen.dart';
 import '../help_support_screen.dart';
-import '../about_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -16,9 +14,7 @@ class ProfileScreen extends StatelessWidget {
     {'title': 'إعلاناتي', 'icon': Icons.campaign, 'screen': MyAdsScreen()},
     {'title': 'المفضلة', 'icon': Icons.favorite, 'screen': FavoritesScreen()},
     {'title': 'معلومات الحساب', 'icon': Icons.person, 'screen': AccountInfoScreen()},
-    {'title': 'الإعدادات', 'icon': Icons.settings, 'screen': SettingsScreen()},
     {'title': 'المساعدة والدعم', 'icon': Icons.help_outline, 'screen': HelpSupportScreen()},
-    {'title': 'عن التطبيق', 'icon': Icons.info_outline, 'screen': AboutScreen()},
   ];
 
   Future<void> _logout(BuildContext context) async {

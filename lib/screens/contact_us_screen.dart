@@ -22,7 +22,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   final List<Map<String, dynamic>> _contactMethods = [
     {'icon': Icons.phone, 'title': 'الهاتف', 'value': '+967 777 123 456', 'color': 0xFF4CAF50, 'action': 'tel:+967777123456'},
     {'icon': Icons.email, 'title': 'البريد الإلكتروني', 'value': 'support@flexyemen.com', 'color': 0xFF2196F3, 'action': 'mailto:support@flexyemen.com'},
-    {'icon': Icons.whatsapp, 'title': 'واتساب', 'value': '+967 777 123 456', 'color': 0xFF25D366, 'action': 'https://wa.me/967777123456'},
+    {'icon': Icons.chat, 'title': 'واتساب', 'value': '+967 777 123 456', 'color': 0xFF25D366, 'action': 'https://wa.me/967777123456'},
     {'icon': Icons.location_on, 'title': 'العنوان', 'value': 'صنعاء، اليمن', 'color': 0xFFFF9800, 'action': null},
   ];
   

@@ -88,7 +88,7 @@ class CartScreen extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             'سلة التسوق فارغة',
-            style: theme.textTheme.headlineSmall?.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontFamily: 'Changa',
               color: Colors.grey[600],
             ),
@@ -96,7 +96,7 @@ class CartScreen extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             'استعرض المنتجات وأضف ما يعجبك إلى السلة',
-            style: theme.textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontFamily: 'Changa',
               color: Colors.grey[500],
             ),
@@ -104,7 +104,7 @@ class CartScreen extends StatelessWidget {
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/marketplace');
+              Navigator.of(context).pushNamed( '/marketplace');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.gold,
@@ -420,7 +420,7 @@ class CartScreen extends StatelessWidget {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: isDark ? AppTheme.nightSurface : Colors.grey[200],
-            foregroundColor: theme.textTheme.bodyMedium?.color,
+            foregroundColor: Theme.of(context).textTheme.bodyMedium?.color,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

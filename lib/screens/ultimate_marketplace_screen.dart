@@ -628,7 +628,7 @@ class _UltimateMarketplaceScreenState extends State<UltimateMarketplaceScreen> {
                               selected: isSelected,
                               onSelected: (_) {
                                 setModalState(() {
-                                  _minRating = rating;
+                                  _minRating = rating.toDouble();
                                 });
                               },
                             );

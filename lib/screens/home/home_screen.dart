@@ -93,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final themeManager = Provider.of<ThemeManager>(context);
     
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
@@ -112,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   return Transform.rotate(
                     angle: _themeRotationAnimation.value * 3.14159 * 2,
                     child: IconButton(
-                      onPressed: () => _toggleTheme(themeManager),
                       icon: Icon(themeManager.isDarkMode ? Icons.light_mode : Icons.dark_mode, color: Colors.white),
                     ),
                   );
