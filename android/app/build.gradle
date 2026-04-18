@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
 }
 
 def localProperties = new Properties()
@@ -23,9 +24,9 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.flexyemen.flex_yemen"
+    namespace "com.almwld.flex_yemen"
     compileSdk 34
-    ndkVersion flutter.ndkVersion
+    ndkVersion "27.0.12077973"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -41,17 +42,28 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.flexyemen.flex_yemen"
+        applicationId "com.almwld.flex_yemen"
         minSdk 23
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'upload'
+            keyPassword '123456'
+            storeFile file('upload-keystore.jks')
+            storePassword '123456'
+        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
-            minifyEnabled true
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -62,15 +74,18 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.2.0"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }
 
-// إجبار استخدام إصدار محدد من Kotlin
 configurations.all {
     resolutionStrategy {
-        force 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
-        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.0'
-        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0'
-        force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.2.0'
+        force 'org.jetbrains.kotlin:kotlin-stdlib:2.0.21'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21'
+        force 'org.jetbrains.kotlin:kotlin-reflect:2.0.21'
     }
 }
