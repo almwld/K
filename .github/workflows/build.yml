@@ -128,17 +128,6 @@ jobs:
               id "dev.flutter.flutter-gradle-plugin"
           }
           
-          def localProperties = new Properties()
-          def localPropertiesFile = rootProject.file('local.properties')
-          if (localPropertiesFile.exists()) {
-              localPropertiesFile.withReader('UTF-8') { reader ->
-                  localProperties.load(reader)
-              }
-          }
-          
-          def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
-          def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
-          
           android {
               namespace "com.flexyemen.flex_yemen"
               compileSdk 34
@@ -153,16 +142,12 @@ jobs:
                   jvmTarget = '17'
               }
               
-              sourceSets {
-                  main.java.srcDirs += 'src/main/kotlin'
-              }
-              
               defaultConfig {
                   applicationId "com.flexyemen.flex_yemen"
                   minSdk 23
                   targetSdk 34
-                  versionCode flutterVersionCode.toInteger()
-                  versionName flutterVersionName
+                  versionCode 1
+                  versionName "1.0"
                   multiDexEnabled true
                   resConfigs "ar", "en"
               }
@@ -184,15 +169,6 @@ jobs:
                       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
                   }
               }
-              
-              splits {
-                  abi {
-                      enable true
-                      reset()
-                      include 'armeabi-v7a', 'arm64-v8a'
-                      universalApk false
-                  }
-              }
           }
           
           flutter {
@@ -203,15 +179,6 @@ jobs:
               implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
               implementation 'androidx.multidex:multidex:2.0.1'
               coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-          }
-          
-          configurations.all {
-              resolutionStrategy {
-                  force 'org.jetbrains.kotlin:kotlin-stdlib:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21'
-              }
           }
           APPGRADLE
 
@@ -229,15 +196,6 @@ jobs:
           -keep class com.google.gson.** { *; }
           -keep class androidx.lifecycle.** { *; }
           -keep class com.google.firebase.** { *; }
-          
-          -assumenosideeffects class android.util.Log {
-              public static *** v(...);
-              public static *** d(...);
-              public static *** i(...);
-          }
-          
-          -allowaccessmodification
-          -repackageclasses
           -dontnote **
           -dontwarn **
           PROGUARD
@@ -256,28 +214,13 @@ jobs:
         run: |
           cat > android/app/src/main/AndroidManifest.xml << 'MANIFEST'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               package="com.flexyemen.flex_yemen">
-              
               <uses-permission android:name="android.permission.INTERNET"/>
               <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-              <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-              <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-              <uses-permission android:name="android.permission.CAMERA"/>
-              <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-              
-              <uses-feature android:name="android.hardware.camera" android:required="false"/>
-              <uses-feature android:name="android.hardware.location" android:required="false"/>
-              
               <application
                   android:label="Flex Yemen"
-                  android:name="${applicationName}"
                   android:icon="@mipmap/ic_launcher"
-                  android:usesCleartextTraffic="true"
-                  android:allowBackup="false"
-                  android:supportsRtl="true"
-                  tools:replace="android:allowBackup,android:label">
-                  
+                  android:usesCleartextTraffic="true">
                   <activity
                       android:name=".MainActivity"
                       android:exported="true"
@@ -294,7 +237,6 @@ jobs:
                           <category android:name="android.intent.category.LAUNCHER"/>
                       </intent-filter>
                   </activity>
-                  
                   <meta-data
                       android:name="flutterEmbedding"
                       android:value="2" />
@@ -358,36 +300,16 @@ jobs:
         run: |
           flutter clean
           flutter pub get
-          flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/debug-info
-          
-      - name: List APK files
-        run: |
-          echo "=== جميع ملفات APK ==="
-          find . -name "*.apk" -type f -ls 2>/dev/null || true
-          echo ""
-          echo "=== محتوى build/app/outputs/flutter-apk/ ==="
-          ls -la build/app/outputs/flutter-apk/ 2>/dev/null || echo "المجلد غير موجود"
-          echo ""
-          echo "=== محتوى build/app/outputs/apk/release/ ==="
-          ls -la build/app/outputs/apk/release/ 2>/dev/null || echo "المجلد غير موجود"
+          flutter build apk --release
 
-      - name: Display APK sizes
+      - name: List all APK files
         run: |
-          if ls build/app/outputs/flutter-apk/*.apk 1> /dev/null 2>&1; then
-            echo "=== أحجام ملفات APK ==="
-            ls -lh build/app/outputs/flutter-apk/*.apk
-          elif ls build/app/outputs/apk/release/*.apk 1> /dev/null 2>&1; then
-            echo "=== أحجام ملفات APK (مسار بديل) ==="
-            ls -lh build/app/outputs/apk/release/*.apk
-            mkdir -p build/app/outputs/flutter-apk/
-            cp build/app/outputs/apk/release/*.apk build/app/outputs/flutter-apk/
-          fi
+          echo "=== البحث عن جميع ملفات APK ==="
+          find . -name "*.apk" -type f 2>/dev/null | head -20
 
-      - name: Upload APK artifacts
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: flex-yemen-apks
-          path: |
-            build/app/outputs/flutter-apk/*.apk
-            build/app/outputs/apk/release/*.apk
+          name: flex-yemen-apk
+          path: build/app/outputs/flutter-apk/*.apk
           retention-days: 7
