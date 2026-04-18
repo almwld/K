@@ -76,8 +76,8 @@ jobs:
           
           plugins {
               id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-              id "com.android.application" version "8.1.4" apply false
-              id "org.jetbrains.kotlin.android" version "1.9.24" apply false
+              id "com.android.application" version "8.2.2" apply false
+              id "org.jetbrains.kotlin.android" version "2.0.21" apply false
           }
           
           include ":app"
@@ -87,14 +87,14 @@ jobs:
         run: |
           cat > android/build.gradle << 'PROJECTGRADLE'
           buildscript {
-              ext.kotlin_version = '1.9.24'
+              ext.kotlin_version = '2.0.21'
               repositories {
                   google()
                   mavenCentral()
               }
               
               dependencies {
-                  classpath 'com.android.tools.build:gradle:8.1.4'
+                  classpath 'com.android.tools.build:gradle:8.2.2'
                   classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
               }
           }
@@ -200,9 +200,19 @@ jobs:
           }
           
           dependencies {
-              implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
+              implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
               implementation 'androidx.multidex:multidex:2.0.1'
               coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+          }
+          
+          configurations.all {
+              resolutionStrategy {
+                  force 'org.jetbrains.kotlin:kotlin-stdlib:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21'
+                  force 'org.jetbrains.kotlin:kotlin-reflect:2.0.21'
+              }
           }
           APPGRADLE
 
@@ -219,6 +229,7 @@ jobs:
           -keep class com.supabase.** { *; }
           -keep class com.google.gson.** { *; }
           -keep class androidx.lifecycle.** { *; }
+          -keep class com.google.firebase.** { *; }
           
           -assumenosideeffects class android.util.Log {
               public static *** v(...);
@@ -239,7 +250,7 @@ jobs:
           distributionPath=wrapper/dists
           zipStoreBase=GRADLE_USER_HOME
           zipStorePath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.3-all.zip
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip
           WRAPPER
 
       - name: Create AndroidManifest.xml
@@ -343,7 +354,6 @@ jobs:
         run: |
           echo "SUPABASE_URL=https://ziqpohdxtermunnhlkm.supabase.co" > .env
           echo "SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppcXBvaGR4dGVtc211bm5obGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3ODQzNDcsImV4cCI6MjA4NzM2MDM0N30.ABAg5YZSrrAtBTWATJ3eRTmo4BuZVyVlrMV1HZjRWs0" >> .env
-          echo "MINIMAX_API_KEY=sk-api-3srQHm600IiTt7ibuFkqWMB62Y2EQHpjwRLyisrT6jZTReILYdyalX-KZnPD_nftvrmNthCmNx3gBnpZdB_0j_YqV4rg0zINGWotoyhHx9sy8vMN9Y-PHJo" >> .env
 
       - name: Build APK
         run: |
