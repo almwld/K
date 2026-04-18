@@ -50,10 +50,10 @@ class _GardenScreenState extends State<GardenScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'حديقة النقاط'),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.goldPrimary))
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.gold))
           : SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -108,10 +108,10 @@ class _GardenScreenState extends State<GardenScreen> {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: AppTheme.goldPrimary.withOpacity(0.1),
+            color: AppTheme.gold.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: AppTheme.goldPrimary),
+          child: Icon(icon, color: AppTheme.gold),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle),

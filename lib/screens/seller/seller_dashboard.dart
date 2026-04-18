@@ -11,7 +11,7 @@ class SellerDashboard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'لوحة تحكم البائع'),
       body: SingleChildScrollView(
         child: Column(
@@ -125,7 +125,7 @@ class SellerDashboard extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [AppTheme.goldPrimary, AppTheme.goldLight],
+                          colors: [AppTheme.gold, AppTheme.goldLight],
                         ),
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -168,7 +168,7 @@ class SellerDashboard extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/seller_orders'),
-                child: const Text('عرض الكل', style: TextStyle(color: AppTheme.goldPrimary)),
+                child: const Text('عرض الكل', style: TextStyle(color: AppTheme.gold)),
               ),
             ],
           ),
@@ -191,10 +191,10 @@ class SellerDashboard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.goldPrimary.withOpacity(0.1),
+                      color: AppTheme.gold.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.shopping_bag, color: AppTheme.goldPrimary),
+                    child: const Icon(Icons.shopping_bag, color: AppTheme.gold),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -225,7 +225,7 @@ class SellerDashboard extends StatelessWidget {
                         '${order['amount']} ر.ي',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.goldPrimary,
+                          color: AppTheme.gold,
                         ),
                       ),
                       Container(

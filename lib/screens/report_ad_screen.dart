@@ -40,7 +40,7 @@ class _ReportAdScreenState extends State<ReportAdScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تبليغ عن إعلان'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -54,7 +54,7 @@ class _ReportAdScreenState extends State<ReportAdScreen> {
               value: reason,
               groupValue: _selectedReason,
               onChanged: (value) => setState(() => _selectedReason = value.toString()),
-              activeColor: AppTheme.goldPrimary,
+              activeColor: AppTheme.gold,
             )),
             const SizedBox(height: 16),
             TextField(

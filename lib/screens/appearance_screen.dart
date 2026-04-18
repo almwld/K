@@ -35,7 +35,7 @@ class AppearanceScreen extends StatelessWidget {
                   onChanged: (value) => themeManager.setThemeModeIndex(0),
                   title: const Text('الوضع النهاري'),
                   subtitle: const Text('مظهر كلاسيكي أنيق'),
-                  secondary: Icon(Icons.light_mode, color: AppTheme.goldPrimary),
+                  secondary: Icon(Icons.light_mode, color: AppTheme.gold),
                 ),
                 RadioListTile<int>(
                   value: 1,
@@ -43,7 +43,7 @@ class AppearanceScreen extends StatelessWidget {
                   onChanged: (value) => themeManager.setThemeModeIndex(1),
                   title: const Text('الوضع الداكن'),
                   subtitle: const Text('مظهر فاخر مع لمسات ذهبية'),
-                  secondary: Icon(Icons.dark_mode, color: AppTheme.goldPrimary),
+                  secondary: Icon(Icons.dark_mode, color: AppTheme.gold),
                 ),
               ],
             ),

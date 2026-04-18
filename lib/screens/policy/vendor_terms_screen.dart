@@ -10,7 +10,7 @@ class VendorTermsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'شروط التجار'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -46,7 +46,7 @@ class VendorTermsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary)),
+        Text(title, style: const TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.gold)),
         const SizedBox(height: 8),
         ...items.map((item) => _buildBulletPoint(context, item)),
         const SizedBox(height: 24),
@@ -60,7 +60,7 @@ class VendorTermsScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('- ', style: TextStyle(fontSize: 14, color: AppTheme.goldPrimary, fontWeight: FontWeight.bold)),
+          const Text('- ', style: TextStyle(fontSize: 14, color: AppTheme.gold, fontWeight: FontWeight.bold)),
           Expanded(child: Text(text, style: const TextStyle(fontSize: 14, height: 1.5))),
         ],
       ),

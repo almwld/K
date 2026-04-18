@@ -15,7 +15,7 @@ class StoresNearbyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المتاجر القريبة'),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
@@ -30,7 +30,7 @@ class StoresNearbyScreen extends StatelessWidget {
             subtitle: Text(s['distance']!),
             trailing: ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
               child: const Text('عرض'),
             ),
           );

@@ -17,7 +17,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
-      backgroundColor: AppTheme.goldPrimary,
+      backgroundColor: AppTheme.gold,
       foregroundColor: Colors.black,
       centerTitle: centerTitle,
       actions: actions,

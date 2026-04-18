@@ -100,7 +100,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     final themeManager = context.watch<ThemeManager>();
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(
         title: 'المساعد الذكي',
         backgroundColor: Theme.of(context).primaryColor,

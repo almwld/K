@@ -10,7 +10,7 @@ class SecuritySettingsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الأمان'),
       body: ListView(
         children: [
@@ -37,12 +37,12 @@ class SecuritySettingsScreen extends StatelessWidget {
           
           _buildSection('المصادقة الثنائية'),
           SwitchListTile(
-            secondary: const Icon(Icons.security, color: AppTheme.goldPrimary),
+            secondary: const Icon(Icons.security, color: AppTheme.gold),
             title: const Text('تفعيل 2FA'),
             subtitle: const Text('حماية إضافية للحساب'),
             value: false,
             onChanged: (v) {},
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
         ],
       ),
@@ -55,7 +55,7 @@ class SecuritySettingsScreen extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(
-          color: AppTheme.goldPrimary,
+          color: AppTheme.gold,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
@@ -65,7 +65,7 @@ class SecuritySettingsScreen extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, IconData icon, String title, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: AppTheme.goldPrimary),
+      leading: Icon(icon, color: AppTheme.gold),
       title: Text(title),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,

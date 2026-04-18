@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AppBar(
-      backgroundColor: backgroundColor ?? (isDark ? AppTheme.darkSurface : AppTheme.lightSurface),
+      backgroundColor: backgroundColor ?? (isDark ? AppTheme.nightSurface : AppTheme.lightSurface),
       elevation: 0,
       centerTitle: true,
       automaticallyImplyLeading: false,
@@ -44,7 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [AppTheme.goldPrimary, AppTheme.goldLight],
+                      colors: [AppTheme.gold, AppTheme.goldLight],
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -61,7 +61,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     fontFamily: 'Changa',
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: AppTheme.goldPrimary,
+                    color: AppTheme.gold,
                   ),
                 ),
               ],

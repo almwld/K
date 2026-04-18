@@ -145,7 +145,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(
         title: widget.product != null ? 'AI مساعد' : 'AI الدعم الذكي',
         actions: [
@@ -167,17 +167,17 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
+                border: Border.all(color: AppTheme.gold.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
                   Container(
                     width: 50, height: 50,
                     decoration: BoxDecoration(
-                      color: AppTheme.goldPrimary.withOpacity(0.1),
+                      color: AppTheme.gold.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.image, color: AppTheme.goldPrimary),
+                    child: const Icon(Icons.image, color: AppTheme.gold),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -186,7 +186,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                       children: [
                         Text(widget.product!.title, style: const TextStyle(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
-                        Text('${widget.product!.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.goldPrimary)),
+                        Text('${widget.product!.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(color: AppTheme.gold)),
                       ],
                     ),
                   ),
@@ -197,7 +197,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
           // حالة AI
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: AppTheme.goldPrimary.withOpacity(0.1),
+            color: AppTheme.gold.withOpacity(0.1),
             child: Row(
               children: [
                 Container(
@@ -214,7 +214,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                 ),
                 const Spacer(),
                 if (!_isTransferring) ...[
-                  const Icon(Icons.bolt, size: 16, color: AppTheme.goldPrimary),
+                  const Icon(Icons.bolt, size: 16, color: AppTheme.gold),
                   const SizedBox(width: 4),
                   const Text('ذكي', style: TextStyle(fontSize: 12)),
                 ],
@@ -241,7 +241,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                 Color bgColor;
                 
                 if (isUser) {
-                  bgColor = AppTheme.goldPrimary;
+                  bgColor = AppTheme.gold;
                 } else if (isAI) {
                   bgColor = Theme.of(context).cardColor;
                 } else if (isSeller) {
@@ -276,7 +276,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                             if (isAI)
                               const Row(
                                 children: [
-                                  Icon(Icons.bolt, size: 12, color: AppTheme.goldPrimary),
+                                  Icon(Icons.bolt, size: 12, color: AppTheme.gold),
                                   SizedBox(width: 4),
                                   Text('AI Assistant', style: TextStyle(fontSize: 10)),
                                 ],
@@ -306,7 +306,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                             icon: const Icon(Icons.support_agent),
                             label: const Text('تحدث مع التاجر'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.goldPrimary,
+                              backgroundColor: AppTheme.gold,
                               foregroundColor: Colors.black,
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             ),
@@ -342,7 +342,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                       return ActionChip(
                         label: Text(question),
                         onPressed: () => _sendMessage(question),
-                        backgroundColor: AppTheme.goldPrimary.withOpacity(0.1),
+                        backgroundColor: AppTheme.gold.withOpacity(0.1),
                         labelStyle: const TextStyle(fontSize: 12),
                       );
                     }).toList(),
@@ -370,7 +370,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[100],
+                      fillColor: isDark ? AppTheme.nightCard : Colors.grey[100],
                     ),
                     onSubmitted: _sendMessage,
                   ),
@@ -378,7 +378,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                 const SizedBox(width: 8),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppTheme.goldPrimary,
+                    color: AppTheme.gold,
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
@@ -409,17 +409,17 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
           children: const [
             SizedBox(
               width: 8, height: 8,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldPrimary),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.gold),
             ),
             SizedBox(width: 4),
             SizedBox(
               width: 8, height: 8,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldPrimary),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.gold),
             ),
             SizedBox(width: 4),
             SizedBox(
               width: 8, height: 8,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldPrimary),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.gold),
             ),
           ],
         ),

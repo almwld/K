@@ -9,7 +9,7 @@ class RechargePaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'شحن'),
       body: Center(
         child: Column(

@@ -17,7 +17,7 @@ class TermsOfServiceScreen extends StatelessWidget {
           children: [
             Text(
               'FLEX YEMEN TERMS OF SERVICE',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.gold),
             ),
             Text(
               'Last Updated: April 16, 2026 | Effective Date: April 16, 2026',
@@ -246,7 +246,7 @@ class TermsOfServiceScreen extends StatelessWidget {
                 children: [
                   Text(
                     'ACKNOWLEDGMENT AND ACCEPTANCE',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.gold),
                   ),
                   const SizedBox(height: 12),
                   Text(

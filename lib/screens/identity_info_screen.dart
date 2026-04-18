@@ -72,7 +72,7 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'بيانات الهوية'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -87,13 +87,13 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: AppTheme.goldPrimary.withOpacity(0.1),
+                    color: AppTheme.gold.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.verified_user,
                     size: 40,
-                    color: AppTheme.goldPrimary,
+                    color: AppTheme.gold,
                   ),
                 ),
               ),

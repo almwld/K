@@ -13,7 +13,7 @@ class SupportScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الدعم الفني'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -146,10 +146,10 @@ class SupportScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: AppTheme.goldPrimary.withOpacity(0.1),
+                color: AppTheme.gold.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: AppTheme.goldPrimary, size: 22),
+              child: Icon(icon, color: AppTheme.gold, size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(

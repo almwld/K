@@ -70,15 +70,15 @@ class _SplashScreenState extends State<SplashScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-              isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+              isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+              isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
             ],
           ),
         ),
@@ -102,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen>
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.goldPrimary.withOpacity(0.4),
+                              color: AppTheme.gold.withOpacity(0.4),
                               blurRadius: 30,
                               spreadRadius: 5,
                             ),
@@ -131,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen>
                         fontFamily: 'Changa',
                         fontSize: 42,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.goldPrimary,
+                        color: AppTheme.gold,
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -167,7 +167,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   decoration: BoxDecoration(
-                    color: AppTheme.goldPrimary.withOpacity(0.1),
+                    color: AppTheme.gold.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: const Text(
@@ -175,7 +175,7 @@ class _SplashScreenState extends State<SplashScreen>
                     style: TextStyle(
                       fontFamily: 'Changa',
                       fontSize: 14,
-                      color: AppTheme.goldPrimary,
+                      color: AppTheme.gold,
                     ),
                   ),
                 ),
@@ -183,7 +183,7 @@ class _SplashScreenState extends State<SplashScreen>
               const SizedBox(height: 60),
               // مؤشر التحميل
               const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldPrimary),
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
                 strokeWidth: 3,
               ),
             ].animate(

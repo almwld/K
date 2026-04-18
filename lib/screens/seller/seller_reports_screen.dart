@@ -53,7 +53,7 @@ class _SellerReportsScreenState extends State<SellerReportsScreen> {
                         children: [
                           _buildStatCard('المبيعات', '${_summary!.totalSales.toInt()} ريال', Icons.trending_up, Colors.green),
                           _buildStatCard('الطلبات', '${_summary!.totalOrders}', Icons.shopping_bag, Colors.blue),
-                          _buildStatCard('الأرباح', '${_summary!.totalProfit.toInt()} ريال', Icons.monetization_on, AppTheme.goldPrimary),
+                          _buildStatCard('الأرباح', '${_summary!.totalProfit.toInt()} ريال', Icons.monetization_on, AppTheme.gold),
                           _buildStatCard('العملاء', '${_summary!.totalCustomers}', Icons.people, Colors.orange),
                         ],
                       ),

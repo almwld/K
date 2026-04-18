@@ -100,7 +100,7 @@ class _SellerProductsScreenState extends State<SellerProductsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إضافة منتج'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -156,7 +156,7 @@ class _SellerProductsScreenState extends State<SellerProductsScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _isSubmitting ? null : _submitProduct,
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                   child: _isSubmitting ? const CircularProgressIndicator(strokeWidth: 2) : const Text('إضافة المنتج'),
                 ),
               ),
@@ -187,7 +187,7 @@ class _SellerProductsScreenState extends State<SellerProductsScreen> {
                   child: Container(
                     width: 100, height: 100,
                     margin: const EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(color: isDark ? Colors.grey[800] : Colors.grey[200], borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.goldPrimary, width: 1)),
+                    decoration: BoxDecoration(color: isDark ? Colors.grey[800] : Colors.grey[200], borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.gold, width: 1)),
                     child: const Icon(Icons.add_photo_alternate, size: 40),
                   ),
                 );

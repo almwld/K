@@ -56,7 +56,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تغيير كلمة المرور'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -145,7 +145,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldPrimary.withOpacity(0.1),
+                  color: AppTheme.gold.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
@@ -153,7 +153,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.security, color: AppTheme.goldPrimary, size: 20),
+                        Icon(Icons.security, color: AppTheme.gold, size: 20),
                         SizedBox(width: 8),
                         Text('نصائح أمنية', style: TextStyle(fontWeight: FontWeight.bold)),
                       ],

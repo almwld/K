@@ -85,7 +85,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.goldPrimary,
+                      color: AppTheme.gold,
                     ),
                   ),
                 ],
@@ -125,14 +125,14 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
+        border: Border.all(color: AppTheme.gold.withOpacity(0.3)),
       ),
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.goldPrimary.withOpacity(0.1),
+              color: AppTheme.gold.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -178,7 +178,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
               ElevatedButton(
                 onPressed: () => _placeBid(minBid),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldPrimary,
+                  backgroundColor: AppTheme.gold,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

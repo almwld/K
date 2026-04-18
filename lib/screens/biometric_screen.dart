@@ -112,7 +112,7 @@ class _BiometricScreenState extends State<BiometricScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? AppTheme.darkBackground 
+          ? AppTheme.nightBackground 
           : AppTheme.lightBackground,
       body: SafeArea(
         child: Padding(
@@ -122,7 +122,7 @@ class _BiometricScreenState extends State<BiometricScreen> {
             children: [
               if (_isLoading)
                 const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldPrimary),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
                 )
               else if (!_isBiometricAvailable || !_hasEnrolledBiometrics)
                 _buildNotAvailableWidget()
@@ -168,7 +168,7 @@ class _BiometricScreenState extends State<BiometricScreen> {
         ElevatedButton(
           onPressed: _skipForNow,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.goldPrimary,
+            backgroundColor: AppTheme.gold,
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 50),
             shape: RoundedRectangleBorder(
@@ -189,14 +189,14 @@ class _BiometricScreenState extends State<BiometricScreen> {
           height: 140,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [AppTheme.goldPrimary, Color(0xFFFFD700)],
+              colors: [AppTheme.gold, Color(0xFFFFD700)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: AppTheme.goldPrimary.withOpacity(0.3),
+                color: AppTheme.gold.withOpacity(0.3),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
@@ -223,7 +223,7 @@ class _BiometricScreenState extends State<BiometricScreen> {
         ElevatedButton(
           onPressed: _isAuthenticating ? null : _authenticate,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.goldPrimary,
+            backgroundColor: AppTheme.gold,
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 55),
             shape: RoundedRectangleBorder(
@@ -249,7 +249,7 @@ class _BiometricScreenState extends State<BiometricScreen> {
           onPressed: _skipForNow,
           child: const Text(
             'تخطي الآن',
-            style: TextStyle(color: AppTheme.goldPrimary),
+            style: TextStyle(color: AppTheme.gold),
           ),
         ),
       ],

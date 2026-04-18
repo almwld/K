@@ -27,7 +27,7 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'طلب خدمة'),
       body: Form(
         key: _formKey,
@@ -61,10 +61,10 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   Widget _buildHeaderInfo() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(16)),
       child: const Row(
         children: [
-          Icon(Icons.info_outline, color: AppTheme.goldPrimary),
+          Icon(Icons.info_outline, color: AppTheme.gold),
           SizedBox(width: 12),
           Expanded(child: Text('سيتم نشر طلبك وسيتواصل معك مقدمو الخدمات المهتمون', style: TextStyle(fontSize: 13))),
         ],
@@ -80,7 +80,7 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
-          decoration: InputDecoration(hintText: hint, prefixIcon: Icon(icon, color: AppTheme.goldPrimary), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppTheme.goldPrimary, width: 2))),
+          decoration: InputDecoration(hintText: hint, prefixIcon: Icon(icon, color: AppTheme.gold), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppTheme.gold, width: 2))),
           maxLines: maxLines,
           keyboardType: keyboardType,
           validator: (value) => value == null || value.isEmpty ? 'هذا الحقل مطلوب' : null,
@@ -97,7 +97,7 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           value: value,
-          decoration: InputDecoration(hintText: 'اختر $label', prefixIcon: const Icon(Icons.category, color: AppTheme.goldPrimary), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
+          decoration: InputDecoration(hintText: 'اختر $label', prefixIcon: const Icon(Icons.category, color: AppTheme.gold), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
           items: items.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
           onChanged: onChanged,
           validator: (value) => value == null ? 'هذا الحقل مطلوب' : null,
@@ -111,7 +111,7 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: _isLoading ? null : _submitRequest,
-        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
         child: _isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Text('نشر الطلب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
       ),
     );

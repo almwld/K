@@ -36,7 +36,7 @@ class _ProfilePictureStatusScreenState extends State<ProfilePictureStatusScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الصورة والحالات'),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -54,7 +54,7 @@ class _ProfilePictureStatusScreenState extends State<ProfilePictureStatusScreen>
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _addStatus,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                     child: const Text('نشر الحالة'),
                   ),
                 ),

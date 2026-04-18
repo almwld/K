@@ -53,7 +53,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الأرباح والفوائد'),
       body: CustomScrollView(
         slivers: [

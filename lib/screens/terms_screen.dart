@@ -10,7 +10,7 @@ class TermsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الشروط والأحكام'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -22,7 +22,7 @@ class TermsScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.goldPrimary,
+                color: AppTheme.gold,
               ),
             ),
             const SizedBox(height: 16),
@@ -84,7 +84,7 @@ class TermsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.goldPrimary.withOpacity(0.1),
+                color: AppTheme.gold.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -93,7 +93,7 @@ class TermsScreen extends StatelessWidget {
                     'للتواصل والدعم',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.goldPrimary,
+                      color: AppTheme.gold,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -136,7 +136,7 @@ class TermsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: AppTheme.goldPrimary,
+              color: AppTheme.gold,
             ),
           ),
           const SizedBox(height: 8),

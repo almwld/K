@@ -60,7 +60,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'استلام حوالة'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -68,7 +68,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
           key: _formKey,
           child: Column(
             children: [
-              const Icon(Icons.account_balance_wallet, size: 60, color: AppTheme.goldPrimary),
+              const Icon(Icons.account_balance_wallet, size: 60, color: AppTheme.gold),
               const SizedBox(height: 16),
               const Text('استلام حوالة مالية', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
@@ -104,7 +104,7 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _isSubmitting ? null : _submitRequest,
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                   child: _isSubmitting ? const CircularProgressIndicator(strokeWidth: 2) : const Text('استلام الحوالة'),
                 ),
               ),

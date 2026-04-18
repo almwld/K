@@ -14,7 +14,7 @@ class ReelsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الرييلز'),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
@@ -27,7 +27,7 @@ class ReelsScreen extends StatelessWidget {
             decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)),
             child: Stack(
               children: [
-                const Center(child: Icon(Icons.play_circle_outline, size: 80, color: AppTheme.goldPrimary)),
+                const Center(child: Icon(Icons.play_circle_outline, size: 80, color: AppTheme.gold)),
                 Positioned(
                   left: 12,
                   bottom: 12,

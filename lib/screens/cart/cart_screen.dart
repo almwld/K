@@ -53,7 +53,7 @@ class CartScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [const Icon(Icons.store, color: AppTheme.goldPrimary), const SizedBox(width: 8), Text(storeName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16))]),
+            Row(children: [const Icon(Icons.store, color: AppTheme.gold), const SizedBox(width: 8), Text(storeName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16))]),
             const SizedBox(height: 12),
             ...storeItems.map((item) => _buildCartItem(item, cartProvider, context)),
             const Divider(),
@@ -81,13 +81,13 @@ class CartScreen extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(item.productName, style: const TextStyle(fontWeight: FontWeight.w500), maxLines: 2, overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 4),
-                Text('${item.finalPrice.toStringAsFixed(2)} ريال', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldPrimary)),
+                Text('${item.finalPrice.toStringAsFixed(2)} ريال', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.gold)),
               ]),
             ),
             Row(children: [
-              IconButton(onPressed: () => cartProvider.updateQuantity(item.productId, item.quantity - 1), icon: const Icon(Icons.remove_circle_outline, color: AppTheme.goldPrimary)),
+              IconButton(onPressed: () => cartProvider.updateQuantity(item.productId, item.quantity - 1), icon: const Icon(Icons.remove_circle_outline, color: AppTheme.gold)),
               Text('${item.quantity}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              IconButton(onPressed: () => cartProvider.updateQuantity(item.productId, item.quantity + 1), icon: const Icon(Icons.add_circle_outline, color: AppTheme.goldPrimary)),
+              IconButton(onPressed: () => cartProvider.updateQuantity(item.productId, item.quantity + 1), icon: const Icon(Icons.add_circle_outline, color: AppTheme.gold)),
             ]),
           ]),
         ),
@@ -101,9 +101,9 @@ class CartScreen extends StatelessWidget {
       decoration: BoxDecoration(color: Theme.of(context).cardColor, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -2))]),
       child: SafeArea(
         child: Row(children: [
-          Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text('الإجمالي', style: TextStyle(color: Colors.grey[600])), Text('${cartProvider.total.toStringAsFixed(2)} ريال', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary))]),
+          Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text('الإجمالي', style: TextStyle(color: Colors.grey[600])), Text('${cartProvider.total.toStringAsFixed(2)} ريال', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.gold))]),
           const SizedBox(width: 20),
-          Expanded(child: ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen(cartItems: cartProvider.items))), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))), child: const Text('متابعة الشراء', style: TextStyle(fontSize: 16, color: Colors.black)))),
+          Expanded(child: ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CheckoutScreen(cartItems: cartProvider.items))), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))), child: const Text('متابعة الشراء', style: TextStyle(fontSize: 16, color: Colors.black)))),
         ]),
       ),
     );

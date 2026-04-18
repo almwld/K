@@ -102,7 +102,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الأمان'),
       body: ListView(
         children: [
@@ -110,29 +110,29 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.fingerprint, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.fingerprint, color: AppTheme.gold),
             ),
             title: const Text('المصادقة البيومترية'),
             subtitle: Text(_isBiometricAvailable ? 'بصمة الإصبع / التعرف على الوجه' : 'غير مدعوم على هذا الجهاز'),
-            trailing: Switch(value: _biometricEnabled, onChanged: _isBiometricAvailable ? _toggleBiometric : null, activeColor: AppTheme.goldPrimary),
+            trailing: Switch(value: _biometricEnabled, onChanged: _isBiometricAvailable ? _toggleBiometric : null, activeColor: AppTheme.gold),
           ),
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.security, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.security, color: AppTheme.gold),
             ),
             title: const Text('المصادقة الثنائية (2FA)'),
             subtitle: const Text('حماية إضافية للحساب'),
-            trailing: Switch(value: _twoFactorEnabled, onChanged: _toggleTwoFactor, activeColor: AppTheme.goldPrimary),
+            trailing: Switch(value: _twoFactorEnabled, onChanged: _toggleTwoFactor, activeColor: AppTheme.gold),
           ),
           _buildSection('جلسات الدخول'),
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.devices, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.devices, color: AppTheme.gold),
             ),
             title: const Text('الأجهزة المتصلة'),
             subtitle: const Text('إدارة الأجهزة المسجلة'),
@@ -142,8 +142,8 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.history, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.history, color: AppTheme.gold),
             ),
             title: const Text('سجل تسجيل الدخول'),
             subtitle: const Text('آخر 10 جلسات دخول'),
@@ -154,8 +154,8 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.visibility_off, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.visibility_off, color: AppTheme.gold),
             ),
             title: const Text('إعدادات الخصوصية'),
             subtitle: const Text('التحكم في من يرى معلوماتك'),
@@ -165,8 +165,8 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.block, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.block, color: AppTheme.gold),
             ),
             title: const Text('الحظر والإبلاغ'),
             subtitle: const Text('إدارة المستخدمين المحظورين'),
@@ -181,7 +181,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
   Widget _buildSection(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-      child: Text(title, style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
+      child: Text(title, style: const TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold, fontSize: 14)),
     );
   }
 }

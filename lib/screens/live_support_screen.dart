@@ -42,7 +42,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الدعم المباشر'),
       body: Column(
         children: [
@@ -60,7 +60,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                     decoration: BoxDecoration(
-                      color: isUser ? AppTheme.goldPrimary : Theme.of(context).cardColor,
+                      color: isUser ? AppTheme.gold : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -91,13 +91,13 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                       hintText: 'اكتب رسالتك...',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
                       filled: true,
-                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[100],
+                      fillColor: isDark ? AppTheme.nightCard : Colors.grey[100],
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  decoration: BoxDecoration(color: AppTheme.goldPrimary, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: AppTheme.gold, shape: BoxShape.circle),
                   child: IconButton(
                     icon: const Icon(Icons.send, color: Colors.black),
                     onPressed: _sendMessage,

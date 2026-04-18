@@ -9,13 +9,13 @@ class PickLocationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'اختيار الموقع'),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.map, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
+            Icon(Icons.map, size: 80, color: AppTheme.gold.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('اختيار الموقع', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

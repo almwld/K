@@ -56,7 +56,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
               autofocus: true,
               decoration: InputDecoration(
                 hintText: 'ابحث عن منتج...',
-                prefixIcon: const Icon(Icons.search, color: AppTheme.goldPrimary),
+                prefixIcon: const Icon(Icons.search, color: AppTheme.gold),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
                 filled: true,
               ),
@@ -109,7 +109,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(product.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                            Text(product.formattedPrice, style: TextStyle(color: AppTheme.goldPrimary)),
+                                            Text(product.formattedPrice, style: TextStyle(color: AppTheme.gold)),
                                           ],
                                         ),
                                       ),

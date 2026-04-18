@@ -54,12 +54,12 @@ class ThemeMenuButton extends StatelessWidget {
           value: ThemeMode.light,
           child: Row(
             children: [
-              const Icon(Icons.light_mode, color: AppTheme.goldPrimary),
+              const Icon(Icons.light_mode, color: AppTheme.gold),
               const SizedBox(width: 12),
               const Text('نهاري'),
               if (!themeManager.isDarkMode) ...[
                 const Spacer(),
-                const Icon(Icons.check, color: AppTheme.goldPrimary, size: 18),
+                const Icon(Icons.check, color: AppTheme.gold, size: 18),
               ],
             ],
           ),

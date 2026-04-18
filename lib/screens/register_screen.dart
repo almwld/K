@@ -114,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -165,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
               // User Type Tabs (Customer / Merchant)
               Container(
                 decoration: BoxDecoration(
-                  color: isDark ? AppTheme.darkCard : Colors.grey[100],
+                  color: isDark ? AppTheme.nightCard : Colors.grey[100],
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TabBar(
@@ -175,7 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                     gradient: AppTheme.goldGradient,
                     boxShadow: [
                       BoxShadow(
-                        color: AppTheme.goldPrimary.withOpacity(0.3),
+                        color: AppTheme.gold.withOpacity(0.3),
                         blurRadius: 10,
                       ),
                     ],
@@ -199,13 +199,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                   padding: const EdgeInsets.all(16),
                   margin: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
-                    color: AppTheme.goldPrimary.withOpacity(0.1),
+                    color: AppTheme.gold.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
+                    border: Border.all(color: AppTheme.gold.withOpacity(0.3)),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.info_outline, color: AppTheme.goldPrimary, size: 24),
+                      Icon(Icons.info_outline, color: AppTheme.gold, size: 24),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -228,13 +228,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       decoration: InputDecoration(
                         labelText: 'الاسم الكامل',
                         hintText: _userType == 'merchant' ? 'اسم المتجر / الاسم التجاري' : 'الاسم الثلاثي',
-                        prefixIcon: const Icon(Icons.person, color: AppTheme.goldPrimary),
+                        prefixIcon: const Icon(Icons.person, color: AppTheme.gold),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -253,13 +253,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       decoration: InputDecoration(
                         labelText: 'رقم الجوال أو البريد الإلكتروني',
                         hintText: 'سجل رقمك أو بريدك الإلكتروني',
-                        prefixIcon: const Icon(Icons.phone, color: AppTheme.goldPrimary),
+                        prefixIcon: const Icon(Icons.phone, color: AppTheme.gold),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -281,7 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       decoration: InputDecoration(
                         labelText: 'كلمة المرور',
                         hintText: '6 أحرف على الأقل',
-                        prefixIcon: const Icon(Icons.lock, color: AppTheme.goldPrimary),
+                        prefixIcon: const Icon(Icons.lock, color: AppTheme.gold),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -294,7 +294,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -315,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       obscureText: !_isConfirmPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'تأكيد كلمة المرور',
-                        prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.goldPrimary),
+                        prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.gold),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -328,7 +328,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -349,7 +349,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         Checkbox(
                           value: _agreeToTerms,
                           onChanged: (value) => setState(() => _agreeToTerms = value ?? false),
-                          activeColor: AppTheme.goldPrimary,
+                          activeColor: AppTheme.gold,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -362,13 +362,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                 const TextSpan(text: 'أوافق على '),
                                 TextSpan(
                                   text: 'الشروط والأحكام',
-                                  style: TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold),
                                   recognizer: null, // Add TapGestureRecognizer for navigation
                                 ),
                                 const TextSpan(text: ' و '),
                                 TextSpan(
                                   text: 'سياسة الخصوصية',
-                                  style: TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -385,7 +385,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _handleRegister,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.goldPrimary,
+                          backgroundColor: AppTheme.gold,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -431,7 +431,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           child: Text(
                             'تسجيل الدخول',
                             style: TextStyle(
-                              color: AppTheme.goldPrimary,
+                              color: AppTheme.gold,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

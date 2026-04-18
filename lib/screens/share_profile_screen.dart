@@ -10,13 +10,13 @@ class ShareProfileScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'مشاركة الملف الشخصي'),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.share, size: 80, color: AppTheme.goldPrimary),
+            const Icon(Icons.share, size: 80, color: AppTheme.gold),
             const SizedBox(height: 16),
             const Text(
               'مشاركة الملف الشخصي',
@@ -35,7 +35,7 @@ class ShareProfileScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               label: const Text('العودة'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldPrimary,
+                backgroundColor: AppTheme.gold,
                 foregroundColor: Colors.black,
               ),
             ),

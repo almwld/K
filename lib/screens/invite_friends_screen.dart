@@ -24,7 +24,7 @@ class InviteFriendsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textStyle = Theme.of(context).textTheme.titleLarge; // استخدم titleLarge بدلاً من headline6
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'دعوة الأصدقاء'),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -49,7 +49,7 @@ class InviteFriendsScreen extends StatelessWidget {
                     onPressed: () => _shareInvite(context),
                     icon: const Icon(Icons.share),
                     label: const Text('مشاركة'),
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                   ),
                 ],
               ),

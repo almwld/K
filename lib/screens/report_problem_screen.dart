@@ -43,7 +43,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الإبلاغ عن مشكلة'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -108,7 +108,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                 subtitle: const Text('سيساعدنا ذلك في فهم المشكلة بشكل أفضل'),
                 value: _includeScreenshot,
                 onChanged: (v) => setState(() => _includeScreenshot = v),
-                activeColor: AppTheme.goldPrimary,
+                activeColor: AppTheme.gold,
               ),
               
               if (_includeScreenshot) ...[
@@ -120,7 +120,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
+                      border: Border.all(color: AppTheme.gold.withOpacity(0.3)),
                     ),
                     child: const Center(
                       child: Column(
@@ -149,12 +149,12 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldPrimary.withOpacity(0.1),
+                  color: AppTheme.gold.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info_outline, color: AppTheme.goldPrimary),
+                    const Icon(Icons.info_outline, color: AppTheme.gold),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(

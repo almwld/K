@@ -92,7 +92,7 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
         title: const Row(
           children: [
-            Icon(Icons.lock_outline, color: AppTheme.goldPrimary),
+            Icon(Icons.lock_outline, color: AppTheme.gold),
             SizedBox(width: 12),
             Text(
               'تسجيل الدخول مطلوب',
@@ -126,7 +126,7 @@ class _MainNavigationState extends State<MainNavigation> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldPrimary,
+              backgroundColor: AppTheme.gold,
               foregroundColor: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -162,7 +162,7 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+          color: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -200,7 +200,7 @@ class _MainNavigationState extends State<MainNavigation> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.goldPrimary.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? AppTheme.gold.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -208,7 +208,7 @@ class _MainNavigationState extends State<MainNavigation> {
           children: [
             Icon(
               icon,
-              color: isSelected ? AppTheme.goldPrimary : AppTheme.getSecondaryTextColor(context),
+              color: isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -217,7 +217,7 @@ class _MainNavigationState extends State<MainNavigation> {
               style: TextStyle(
                 fontFamily: 'Changa',
                 fontSize: 11,
-                color: isSelected ? AppTheme.goldPrimary : AppTheme.getSecondaryTextColor(context),
+                color: isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -238,7 +238,7 @@ class _MainNavigationState extends State<MainNavigation> {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.goldPrimary.withOpacity(0.4),
+              color: AppTheme.gold.withOpacity(0.4),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),

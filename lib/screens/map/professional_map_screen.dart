@@ -9,7 +9,7 @@ class ProfessionalMapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'خريطة احترافية'),
       body: const Center(child: Text('الخريطة الاحترافية - قيد التطوير')),
     );

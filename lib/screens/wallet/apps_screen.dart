@@ -20,7 +20,7 @@ class AppsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تطبيقات وخدمات رقمية'),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),

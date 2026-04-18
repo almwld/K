@@ -88,7 +88,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'عناويني'),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -102,7 +102,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     icon: const Icon(Icons.add),
                     label: const Text('إضافة عنوان جديد'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.goldPrimary,
+                      backgroundColor: AppTheme.gold,
                       foregroundColor: Colors.black,
                       minimumSize: const Size(double.infinity, 50),
                     ),
@@ -165,7 +165,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: _addAddress,
-                                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                                     child: const Text('حفظ'),
                                   ),
                                 ),
@@ -185,7 +185,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.location_off, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
+                              Icon(Icons.location_off, size: 80, color: AppTheme.gold.withOpacity(0.5)),
                               const SizedBox(height: 16),
                               const Text('لا توجد عناوين', style: TextStyle(fontSize: 18)),
                               const SizedBox(height: 8),
@@ -204,7 +204,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(16),
-                                border: address['isDefault'] ? Border.all(color: AppTheme.goldPrimary, width: 2) : null,
+                                border: address['isDefault'] ? Border.all(color: AppTheme.gold, width: 2) : null,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,10 +214,10 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                       Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: AppTheme.goldPrimary.withOpacity(0.1),
+                                          color: AppTheme.gold.withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(8),
                                         ),
-                                        child: const Icon(Icons.location_on, color: AppTheme.goldPrimary, size: 20),
+                                        child: const Icon(Icons.location_on, color: AppTheme.gold, size: 20),
                                       ),
                                       const SizedBox(width: 12),
                                       Expanded(
@@ -232,10 +232,10 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                                     margin: const EdgeInsets.only(left: 8),
                                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                                     decoration: BoxDecoration(
-                                                      color: AppTheme.goldPrimary.withOpacity(0.2),
+                                                      color: AppTheme.gold.withOpacity(0.2),
                                                       borderRadius: BorderRadius.circular(8),
                                                     ),
-                                                    child: const Text('افتراضي', style: TextStyle(fontSize: 10, color: AppTheme.goldPrimary)),
+                                                    child: const Text('افتراضي', style: TextStyle(fontSize: 10, color: AppTheme.gold)),
                                                   ),
                                               ],
                                             ),

@@ -46,7 +46,7 @@ class _ConnectedDevicesScreenState extends State<ConnectedDevicesScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الأجهزة المتصلة'),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -61,7 +61,7 @@ class _ConnectedDevicesScreenState extends State<ConnectedDevicesScreen> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
-                    border: device['current'] ? Border.all(color: AppTheme.goldPrimary, width: 1.5) : null,
+                    border: device['current'] ? Border.all(color: AppTheme.gold, width: 1.5) : null,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,10 +71,10 @@ class _ConnectedDevicesScreenState extends State<ConnectedDevicesScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppTheme.goldPrimary.withOpacity(0.1),
+                              color: AppTheme.gold.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Icon(device['name'].contains('iPhone') || device['name'].contains('Samsung') ? Icons.phone_android : Icons.computer, color: AppTheme.goldPrimary),
+                            child: Icon(device['name'].contains('iPhone') || device['name'].contains('Samsung') ? Icons.phone_android : Icons.computer, color: AppTheme.gold),
                           ),
                           const SizedBox(width: 12),
                           Expanded(

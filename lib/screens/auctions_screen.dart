@@ -107,7 +107,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المزادات'),
       body: Column(
         children: [
@@ -148,7 +148,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
                   _selectedCategory = selected ? category : 'الكل';
                 });
               },
-              selectedColor: AppTheme.goldPrimary,
+              selectedColor: AppTheme.gold,
               labelStyle: TextStyle(
                 color: isSelected ? Colors.white : null,
               ),
@@ -168,10 +168,10 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
       ),
       child: TabBar(
         controller: _tabController,
-        labelColor: AppTheme.goldPrimary,
+        labelColor: AppTheme.gold,
         unselectedLabelColor: Theme.of(context).textTheme.bodyMedium!.color,
         indicator: BoxDecoration(
-          color: AppTheme.goldPrimary.withOpacity(0.1),
+          color: AppTheme.gold.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         tabs: const [
@@ -347,7 +347,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
               _tabController.animateTo(0);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldPrimary,
+              backgroundColor: AppTheme.gold,
             ),
             child: const Text('استكشف المزادات'),
           ),
@@ -376,7 +376,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
       case 'جديد':
         return Colors.green;
       default:
-        return AppTheme.goldPrimary;
+        return AppTheme.gold;
     }
   }
 }

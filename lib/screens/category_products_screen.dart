@@ -42,7 +42,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(title: widget.categoryName),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

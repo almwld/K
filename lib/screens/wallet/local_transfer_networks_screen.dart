@@ -44,7 +44,7 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
     final fee = selectedNetwork.isNotEmpty ? (amount * (double.parse(selectedNetwork['fee'].replaceAll('%', '')) / 100)).toInt() : 0;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'شبكات التحويل المحلية'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

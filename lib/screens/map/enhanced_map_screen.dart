@@ -164,8 +164,8 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                     errorBuilder: (_, __, ___) => Container(
                       width: 80,
                       height: 80,
-                      color: AppTheme.goldPrimary.withOpacity(0.1),
-                      child: const Icon(Icons.image, color: AppTheme.goldPrimary),
+                      color: AppTheme.gold.withOpacity(0.1),
+                      child: const Icon(Icons.image, color: AppTheme.gold),
                     ),
                   ),
                 ),
@@ -180,7 +180,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                       ),
                       Text(
                         city['region'],
-                        style: TextStyle(color: AppTheme.goldPrimary, fontSize: 12),
+                        style: TextStyle(color: AppTheme.gold, fontSize: 12),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -211,7 +211,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
               children: (city['places'] as List<dynamic>).map((place) {
                 return Chip(
                   label: Text(place),
-                  backgroundColor: AppTheme.goldPrimary.withOpacity(0.1),
+                  backgroundColor: AppTheme.gold.withOpacity(0.1),
                   labelStyle: const TextStyle(fontSize: 12),
                 );
               }).toList(),
@@ -227,7 +227,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                 icon: const Icon(Icons.map),
                 label: const Text('عرض على الخريطة'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldPrimary,
+                  backgroundColor: AppTheme.gold,
                   foregroundColor: Colors.black,
                 ),
               ),
@@ -244,7 +244,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'خريطة اليمن'),
       body: Stack(
         children: [
@@ -279,11 +279,11 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                         duration: const Duration(milliseconds: 200),
                         padding: EdgeInsets.all(isSelected ? 12 : 8),
                         decoration: BoxDecoration(
-                          color: AppTheme.goldPrimary,
+                          color: AppTheme.gold,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.goldPrimary.withOpacity(isSelected ? 0.6 : 0.3),
+                              color: AppTheme.gold.withOpacity(isSelected ? 0.6 : 0.3),
                               blurRadius: isSelected ? 15 : 8,
                               spreadRadius: isSelected ? 5 : 2,
                             ),
@@ -314,7 +314,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                   _mapController.move(_center, _zoom);
                 });
               },
-              backgroundColor: AppTheme.goldPrimary,
+              backgroundColor: AppTheme.gold,
               child: const Icon(Icons.zoom_out, color: Colors.black),
             ),
           ),
@@ -331,7 +331,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                   _mapController.move(_center, _zoom);
                 });
               },
-              backgroundColor: AppTheme.goldPrimary,
+              backgroundColor: AppTheme.gold,
               child: const Icon(Icons.zoom_in, color: Colors.black),
             ),
           ),
@@ -350,7 +350,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                   _mapController.move(_center, _zoom);
                 });
               },
-              backgroundColor: AppTheme.goldPrimary,
+              backgroundColor: AppTheme.gold,
               child: const Icon(Icons.center_focus_strong, color: Colors.black),
             ),
           ),
@@ -363,7 +363,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
             child: Container(
               height: 50,
               decoration: BoxDecoration(
-                color: isDark ? AppTheme.darkCard : Colors.white,
+                color: isDark ? AppTheme.nightCard : Colors.white,
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 5)],
               ),
@@ -382,10 +382,10 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                       decoration: BoxDecoration(
                         gradient: isSelected
                             ? const LinearGradient(
-                                colors: [AppTheme.goldPrimary, AppTheme.goldLight],
+                                colors: [AppTheme.gold, AppTheme.goldLight],
                               )
                             : null,
-                        color: isSelected ? null : (isDark ? AppTheme.darkCard : Colors.grey[200]),
+                        color: isSelected ? null : (isDark ? AppTheme.nightCard : Colors.grey[200]),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(

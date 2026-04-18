@@ -41,7 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final cartSummary = CartSummary(items: widget.cartItems);
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إتمام الطلب'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -79,7 +79,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [const Icon(Icons.store, color: AppTheme.goldPrimary, size: 18), const SizedBox(width: 8), Text(items.first.storeName, style: const TextStyle(fontWeight: FontWeight.bold))]),
+        Row(children: [const Icon(Icons.store, color: AppTheme.gold, size: 18), const SizedBox(width: 8), Text(items.first.storeName, style: const TextStyle(fontWeight: FontWeight.bold))]),
         const SizedBox(height: 8),
         ...items.map((item) => Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Row(children: [Text('${item.quantity}x', style: TextStyle(color: Colors.grey[600])), const SizedBox(width: 8), Expanded(child: Text(item.productName)), Text('${item.totalPrice.toStringAsFixed(2)} ريال')]))),
         const Divider(),
@@ -93,11 +93,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(children: [
-        TextFormField(controller: _addressController, decoration: InputDecoration(labelText: 'العنوان التفصيلي', prefixIcon: const Icon(Icons.location_on, color: AppTheme.goldPrimary), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.darkCard : Colors.grey[50]), maxLines: 2, validator: (v) => v?.isEmpty == true ? 'مطلوب' : null),
+        TextFormField(controller: _addressController, decoration: InputDecoration(labelText: 'العنوان التفصيلي', prefixIcon: const Icon(Icons.location_on, color: AppTheme.gold), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.nightCard : Colors.grey[50]), maxLines: 2, validator: (v) => v?.isEmpty == true ? 'مطلوب' : null),
         const SizedBox(height: 12),
-        TextFormField(controller: _phoneController, decoration: InputDecoration(labelText: 'رقم الجوال', prefixIcon: const Icon(Icons.phone, color: AppTheme.goldPrimary), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.darkCard : Colors.grey[50]), keyboardType: TextInputType.phone),
+        TextFormField(controller: _phoneController, decoration: InputDecoration(labelText: 'رقم الجوال', prefixIcon: const Icon(Icons.phone, color: AppTheme.gold), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.nightCard : Colors.grey[50]), keyboardType: TextInputType.phone),
         const SizedBox(height: 12),
-        TextFormField(controller: _notesController, decoration: InputDecoration(labelText: 'ملاحظات (اختياري)', prefixIcon: const Icon(Icons.note, color: AppTheme.goldPrimary), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.darkCard : Colors.grey[50]), maxLines: 2),
+        TextFormField(controller: _notesController, decoration: InputDecoration(labelText: 'ملاحظات (اختياري)', prefixIcon: const Icon(Icons.note, color: AppTheme.gold), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.nightCard : Colors.grey[50]), maxLines: 2),
       ]),
     );
   }
@@ -114,8 +114,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(border: Border.all(color: isSelected ? AppTheme.goldPrimary : Colors.grey.withOpacity(0.3), width: isSelected ? 2 : 1), borderRadius: BorderRadius.circular(12), color: isSelected ? AppTheme.goldPrimary.withOpacity(0.1) : Colors.transparent),
-              child: Row(children: [Radio(value: option['id'], groupValue: _selectedDelivery, onChanged: (v) => setState(() => _selectedDelivery = v!), activeColor: AppTheme.goldPrimary), const SizedBox(width: 8), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(option['name'], style: const TextStyle(fontWeight: FontWeight.bold)), Text(option['time'], style: TextStyle(fontSize: 12, color: Colors.grey[600]))])), Text('${option['fee']} ريال', style: const TextStyle(fontWeight: FontWeight.bold))]),
+              decoration: BoxDecoration(border: Border.all(color: isSelected ? AppTheme.gold : Colors.grey.withOpacity(0.3), width: isSelected ? 2 : 1), borderRadius: BorderRadius.circular(12), color: isSelected ? AppTheme.gold.withOpacity(0.1) : Colors.transparent),
+              child: Row(children: [Radio(value: option['id'], groupValue: _selectedDelivery, onChanged: (v) => setState(() => _selectedDelivery = v!), activeColor: AppTheme.gold), const SizedBox(width: 8), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(option['name'], style: const TextStyle(fontWeight: FontWeight.bold)), Text(option['time'], style: TextStyle(fontSize: 12, color: Colors.grey[600]))])), Text('${option['fee']} ريال', style: const TextStyle(fontWeight: FontWeight.bold))]),
             ),
           );
         }).toList(),
@@ -145,8 +145,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(border: Border.all(color: isSelected ? AppTheme.goldPrimary : Colors.grey.withOpacity(0.3), width: isSelected ? 2 : 1), borderRadius: BorderRadius.circular(12), color: isSelected ? AppTheme.goldPrimary.withOpacity(0.1) : Colors.transparent),
-        child: Row(children: [Radio(value: id, groupValue: _selectedPayment, onChanged: (v) => setState(() => _selectedPayment = v!), activeColor: AppTheme.goldPrimary), const SizedBox(width: 8), Icon(icon, color: AppTheme.goldPrimary), const SizedBox(width: 8), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: const TextStyle(fontWeight: FontWeight.bold)), if (subtitle != null) Text(subtitle, style: TextStyle(fontSize: 11, color: Colors.grey[600]))]))]),
+        decoration: BoxDecoration(border: Border.all(color: isSelected ? AppTheme.gold : Colors.grey.withOpacity(0.3), width: isSelected ? 2 : 1), borderRadius: BorderRadius.circular(12), color: isSelected ? AppTheme.gold.withOpacity(0.1) : Colors.transparent),
+        child: Row(children: [Radio(value: id, groupValue: _selectedPayment, onChanged: (v) => setState(() => _selectedPayment = v!), activeColor: AppTheme.gold), const SizedBox(width: 8), Icon(icon, color: AppTheme.gold), const SizedBox(width: 8), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(name, style: const TextStyle(fontWeight: FontWeight.bold)), if (subtitle != null) Text(subtitle, style: TextStyle(fontSize: 11, color: Colors.grey[600]))]))]),
       ),
     );
   }
@@ -169,7 +169,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(label, style: TextStyle(fontSize: isTotal ? 16 : 14, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
-        Text(value, style: TextStyle(fontSize: isTotal ? 18 : 14, fontWeight: FontWeight.bold, color: isTotal ? AppTheme.goldPrimary : null)),
+        Text(value, style: TextStyle(fontSize: isTotal ? 18 : 14, fontWeight: FontWeight.bold, color: isTotal ? AppTheme.gold : null)),
       ]),
     );
   }
@@ -181,7 +181,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: SafeArea(
         child: ElevatedButton(
           onPressed: _isLoading ? null : _placeOrder,
-          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
           child: _isLoading ? const CircularProgressIndicator(color: Colors.black) : const Text('تأكيد الطلب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
         ),
       ),

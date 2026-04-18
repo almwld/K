@@ -47,7 +47,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تقييم المنتج'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -65,10 +65,10 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
                   Container(
                     width: 60, height: 60,
                     decoration: BoxDecoration(
-                      color: AppTheme.goldPrimary.withOpacity(0.1),
+                      color: AppTheme.gold.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.image, color: AppTheme.goldPrimary, size: 30),
+                    child: const Icon(Icons.image, color: AppTheme.gold, size: 30),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -82,7 +82,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
                         const SizedBox(height: 4),
                         Text(
                           '${widget.product?['price'] ?? 0} ر.ي',
-                          style: const TextStyle(color: AppTheme.goldPrimary),
+                          style: const TextStyle(color: AppTheme.gold),
                         ),
                       ],
                     ),
@@ -114,7 +114,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
             Center(
               child: Text(
                 _rating == 1 ? 'سيء' : (_rating == 2 ? 'ضعيف' : (_rating == 3 ? 'متوسط' : (_rating == 4 ? 'جيد' : 'ممتاز'))),
-                style: const TextStyle(color: AppTheme.goldPrimary),
+                style: const TextStyle(color: AppTheme.gold),
               ),
             ),
             const SizedBox(height: 24),
@@ -162,7 +162,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
                       }
                     });
                   },
-                  selectedColor: AppTheme.goldPrimary,
+                  selectedColor: AppTheme.gold,
                   backgroundColor: Theme.of(context).cardColor,
                   labelStyle: TextStyle(color: isSelected ? Colors.black : null),
                 );
@@ -178,13 +178,13 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
+                  border: Border.all(color: AppTheme.gold.withOpacity(0.3)),
                 ),
                 child: const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.add_photo_alternate, color: AppTheme.goldPrimary),
+                      Icon(Icons.add_photo_alternate, color: AppTheme.gold),
                       SizedBox(height: 4),
                       Text('إضافة صور (اختياري)', style: TextStyle(fontSize: 12)),
                     ],
@@ -200,7 +200,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
               subtitle: const Text('لن يظهر اسمك في المراجعة'),
               value: _isAnonymous,
               onChanged: (v) => setState(() => _isAnonymous = v!),
-              activeColor: AppTheme.goldPrimary,
+              activeColor: AppTheme.gold,
             ),
             
             const SizedBox(height: 32),

@@ -24,7 +24,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'اللغة'),
       body: ListView.builder(
         itemCount: languages.length,
@@ -34,7 +34,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: isSelected ? AppTheme.goldPrimary : Colors.grey.withOpacity(0.2),
+              backgroundColor: isSelected ? AppTheme.gold : Colors.grey.withOpacity(0.2),
               child: Text(
                 lang['native']![0],
                 style: TextStyle(
@@ -46,7 +46,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             title: Text(lang['name']!),
             subtitle: Text(lang['native']!),
             trailing: isSelected
-                ? const Icon(Icons.check_circle, color: AppTheme.goldPrimary)
+                ? const Icon(Icons.check_circle, color: AppTheme.gold)
                 : null,
             onTap: () {
               setState(() => _selectedLanguage = lang['code']!);

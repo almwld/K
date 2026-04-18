@@ -54,7 +54,7 @@ class ThemeSelectionScreen extends StatelessWidget {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppTheme.goldPrimary : Colors.transparent,
+            color: isSelected ? AppTheme.gold : Colors.transparent,
             width: 2,
           ),
         ),
@@ -64,10 +64,10 @@ class ThemeSelectionScreen extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: AppTheme.goldPrimary.withOpacity(0.1),
+                color: AppTheme.gold.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: AppTheme.goldPrimary),
+              child: Icon(icon, color: AppTheme.gold),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -79,7 +79,7 @@ class ThemeSelectionScreen extends StatelessWidget {
                 ],
               ),
             ),
-            if (isSelected) Icon(Icons.check_circle, color: AppTheme.goldPrimary),
+            if (isSelected) Icon(Icons.check_circle, color: AppTheme.gold),
           ],
         ),
       ),

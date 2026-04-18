@@ -9,13 +9,13 @@ class BiometricAuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المصادقة البيومترية'),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.fingerprint, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
+            Icon(Icons.fingerprint, size: 80, color: AppTheme.gold.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('المصادقة البيومترية', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

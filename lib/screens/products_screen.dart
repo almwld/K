@@ -43,7 +43,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(
         title: 'المنتجات',
         actions: [
@@ -56,7 +56,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: _loadProducts,
-        color: AppTheme.goldPrimary,
+        color: AppTheme.gold,
         child: _isLoading
             ? const ProductGridShimmer(itemCount: 8)
             : GridView.builder(
@@ -89,9 +89,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 children: [
                   Text(product['name'], maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                   const SizedBox(height: 4),
-                  Text('${product['price']} ريال', style: TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text('${product['price']} ريال', style: TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold, fontSize: 14)),
                   const SizedBox(height: 4),
-                  Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(product['tag'], style: TextStyle(color: AppTheme.goldPrimary, fontSize: 10))),
+                  Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: Text(product['tag'], style: TextStyle(color: AppTheme.gold, fontSize: 10))),
                 ],
               ),
             ),

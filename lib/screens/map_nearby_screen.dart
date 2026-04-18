@@ -21,7 +21,7 @@ class _MapNearbyScreenState extends State<MapNearbyScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الأماكن القريبة'),
       body: Column(
         children: [
@@ -50,7 +50,7 @@ class _MapNearbyScreenState extends State<MapNearbyScreen> {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تحديث الموقع'))),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                   child: const Icon(Icons.my_location),
                 ),
               ],
@@ -70,7 +70,7 @@ class _MapNearbyScreenState extends State<MapNearbyScreen> {
                   subtitle: Text('${p['type']} • ${p['distance']}'),
                   trailing: ElevatedButton(
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                     child: const Text('عرض'),
                   ),
                 );

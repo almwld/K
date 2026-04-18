@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -65,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               effect: WormEffect(
                 dotWidth: 10,
                 dotHeight: 10,
-                activeDotColor: AppTheme.goldPrimary,
+                activeDotColor: AppTheme.gold,
                 dotColor: Colors.grey[400]!,
               ),
             ),
@@ -123,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ElevatedButton(
               onPressed: _completeOnboarding,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldPrimary,
+                backgroundColor: AppTheme.gold,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
@@ -136,7 +136,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 curve: Curves.ease,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldPrimary,
+                backgroundColor: AppTheme.gold,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),

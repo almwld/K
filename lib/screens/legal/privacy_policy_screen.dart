@@ -17,7 +17,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             Text(
               'FLEX YEMEN PRIVACY POLICY',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.gold),
             ),
             Text(
               'Last Updated: April 16, 2026 | Effective Date: April 16, 2026',
@@ -257,7 +257,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 children: [
                   Text(
                     'ACKNOWLEDGMENT AND CONSENT',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldPrimary),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.gold),
                   ),
                   const SizedBox(height: 12),
                   Text(

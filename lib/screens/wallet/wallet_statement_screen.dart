@@ -71,7 +71,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
     final filtered = _filteredTransactions;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'كشف الحساب'),
       body: Column(
         children: [

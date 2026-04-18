@@ -24,7 +24,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إعدادات الخصوصية'),
       body: ListView(
         children: [
@@ -46,15 +46,15 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
           ListTile(
             leading: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.goldPrimary.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.download, color: AppTheme.goldPrimary),
+              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.download, color: AppTheme.gold),
             ),
             title: const Text('تحميل بياناتي'),
             subtitle: const Text('احصل على نسخة من بياناتك'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('جاري تحضير بياناتك...'), backgroundColor: AppTheme.goldPrimary),
+                const SnackBar(content: Text('جاري تحضير بياناتك...'), backgroundColor: AppTheme.gold),
               );
             },
           ),
@@ -80,7 +80,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldPrimary,
+                backgroundColor: AppTheme.gold,
                 foregroundColor: Colors.black,
                 minimumSize: const Size(double.infinity, 50),
               ),
@@ -126,7 +126,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   Widget _buildSection(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-      child: Text(title, style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
+      child: Text(title, style: const TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold, fontSize: 14)),
     );
   }
   
@@ -136,7 +136,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
       subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
       value: value,
       onChanged: onChanged,
-      activeColor: AppTheme.goldPrimary,
+      activeColor: AppTheme.gold,
     );
   }
 }

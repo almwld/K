@@ -62,11 +62,11 @@ class LoadingDialog extends StatelessWidget {
                     height: size,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppTheme.goldPrimary, width: 3),
+                      border: Border.all(color: AppTheme.gold, width: 3),
                     ),
                     child: const Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.goldPrimary),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
                       ),
                     ),
                   );

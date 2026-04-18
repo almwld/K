@@ -49,10 +49,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المفضلة'),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.goldPrimary))
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.gold))
           : _favorites.isEmpty
               ? Center(
                   child: Column(
@@ -149,7 +149,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   Text(
                     product['price'],
                     style: TextStyle(
-                      color: AppTheme.goldPrimary,
+                      color: AppTheme.gold,
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
@@ -158,12 +158,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: AppTheme.goldPrimary.withOpacity(0.1),
+                      color: AppTheme.gold.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       product['category'],
-                      style: TextStyle(color: AppTheme.goldPrimary, fontSize: 10),
+                      style: TextStyle(color: AppTheme.gold, fontSize: 10),
                     ),
                   ),
                 ],

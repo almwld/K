@@ -27,7 +27,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'المستندات والملفات'),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -37,7 +37,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
               onPressed: _pickDocument,
               icon: const Icon(Icons.upload_file),
               label: const Text('رفع مستند'),
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
             ),
             const SizedBox(height: 12),
             Expanded(

@@ -22,7 +22,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'اللغة'),
       body: ListView.builder(
         itemCount: _languages.length,
@@ -34,12 +34,12 @@ class _LanguageScreenState extends State<LanguageScreen> {
             title: Text(lang['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Text(lang['native']),
             trailing: isSelected
-                ? const Icon(Icons.check_circle, color: AppTheme.goldPrimary)
+                ? const Icon(Icons.check_circle, color: AppTheme.gold)
                 : null,
             onTap: () {
               setState(() => _selectedLanguage = lang['code']);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('تم تغيير اللغة إلى ${lang['name']}'), backgroundColor: AppTheme.goldPrimary),
+                SnackBar(content: Text('تم تغيير اللغة إلى ${lang['name']}'), backgroundColor: AppTheme.gold),
               );
             },
           );

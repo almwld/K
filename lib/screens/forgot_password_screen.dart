@@ -60,12 +60,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
       appBar: AppBar(
         title: const Text('نسيت كلمة المرور'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: AppTheme.goldPrimary,
+        foregroundColor: AppTheme.gold,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -82,12 +82,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppTheme.goldPrimary.withOpacity(0.1),
+                        color: AppTheme.gold.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.lock_reset,
-                        color: AppTheme.goldPrimary,
+                        color: AppTheme.gold,
                         size: 40,
                       ),
                     ),
@@ -126,13 +126,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     decoration: InputDecoration(
                       labelText: 'رقم الجوال',
                       hintText: 'مثال: 777123456',
-                      prefixIcon: const Icon(Icons.phone, color: AppTheme.goldPrimary),
+                      prefixIcon: const Icon(Icons.phone, color: AppTheme.gold),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
+                      fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -153,7 +153,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _handleResetPassword,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.goldPrimary,
+                      backgroundColor: AppTheme.gold,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -221,14 +221,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      side: BorderSide(color: AppTheme.goldPrimary),
+                      side: BorderSide(color: AppTheme.gold),
                     ),
                     child: Text(
                       'العودة لتسجيل الدخول',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.goldPrimary,
+                        color: AppTheme.gold,
                       ),
                     ),
                   ),

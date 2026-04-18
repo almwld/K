@@ -40,7 +40,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(
         title: 'معلومات الحساب',
         actions: [
@@ -63,15 +63,15 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
-                      child: const Icon(Icons.person, size: 50, color: AppTheme.goldPrimary),
+                      backgroundColor: AppTheme.gold.withOpacity(0.2),
+                      child: const Icon(Icons.person, size: 50, color: AppTheme.gold),
                     ),
                     if (_isEditing)
                       Positioned(
                         bottom: 0, right: 0,
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(color: AppTheme.goldPrimary, shape: BoxShape.circle),
+                          decoration: const BoxDecoration(color: AppTheme.gold, shape: BoxShape.circle),
                           child: const Icon(Icons.camera_alt, size: 16, color: Colors.black),
                         ),
                       ),

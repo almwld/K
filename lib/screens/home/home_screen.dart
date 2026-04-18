@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         return Scaffold(
-          backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+          backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
           appBar: AppBar(
             title: const Text('فلكس يمن', style: TextStyle(fontWeight: FontWeight.bold)),
             backgroundColor: AppTheme.serviceBlue,

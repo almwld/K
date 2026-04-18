@@ -1,197 +1,101 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../models/product_model.dart';
 
-class ProductCard extends StatelessWidget {
-  final ProductModel product;
-  final VoidCallback? onTap;
-  final VoidCallback? onAddToCart;
+class ProductCard extends StatefulWidget {
+  final String id;
+  final String title;
+  final String image;
+  final double price;
+  final bool isAvailable;
+  final VoidCallback onTap;
 
   const ProductCard({
     super.key,
-    required this.product,
-    this.onTap,
-    this.onAddToCart,
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.price,
+    required this.isAvailable,
+    required this.onTap,
   });
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  double scale = 1.0;
+
+  void _down(_) => setState(() => scale = 0.96);
+  void _up(_) => setState(() => scale = 1.0);
+
+  @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final hasDiscount = product.discountPercent != null && product.discountPercent! > 0;
-    final displayPrice = hasDiscount ? product.discountedPrice : product.price;
-    final originalPrice = hasDiscount ? product.price : null;
+    final theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // صورة المنتج
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      onTap: widget.onTap,
+      onTapDown: _down,
+      onTapUp: _up,
+      onTapCancel: () => _up(null),
+      child: AnimatedScale(
+        scale: scale,
+        duration: const Duration(milliseconds: 120),
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(18),
+                ),
+                child: Hero(
+                  tag: widget.id,
                   child: Image.network(
-                    product.imageUrl,
+                    widget.image,
                     height: 140,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
+                    errorBuilder: (context, error, stackTrace) => Container(
                       height: 140,
-                      color: isDark ? Colors.grey[800] : Colors.grey[200],
-                      child: const Icon(Icons.image, size: 40),
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image, size: 50, color: Colors.grey),
                     ),
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        height: 140,
-                        color: isDark ? Colors.grey[800] : Colors.grey[200],
-                        child: Center(
-                          child: SizedBox(
-                            width: 30, height: 30,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.goldPrimary),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
                   ),
                 ),
-                // علامة الخصم
-                if (hasDiscount)
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '${product.discountPercent}%',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                // حالة التوفر
-                if (!product.inStock)
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'غير متوفر',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            // معلومات المنتج
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  // السعر
-                  Row(
-                    children: [
-                      if (hasDiscount)
-                        Text(
-                          '${originalPrice!.toStringAsFixed(0)} ريال',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: isDark ? Colors.grey[500] : Colors.grey[400],
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${displayPrice.toStringAsFixed(0)} ريال',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: AppTheme.goldPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  // التقييم
-                  Row(
-                    children: [
-                      const Icon(Icons.star, size: 12, color: Colors.amber),
-                      const SizedBox(width: 2),
-                      Text(
-                        product.rating.toString(),
-                        style: TextStyle(fontSize: 11, color: isDark ? Colors.grey[400] : Colors.grey[600]),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '(${product.reviewCount})',
-                        style: TextStyle(fontSize: 10, color: isDark ? Colors.grey[500] : Colors.grey[400]),
-                      ),
-                      const Spacer(),
-                      // زر إضافة إلى السلة
-                      if (product.inStock)
-                        InkWell(
-                          onTap: onAddToCart,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: AppTheme.goldPrimary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Icon(
-                              Icons.add_shopping_cart,
-                              size: 18,
-                              color: AppTheme.goldPrimary,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      "${widget.price.toStringAsFixed(0)} ر.ي",
+                      style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      widget.isAvailable ? "متوفر" : "غير متوفر",
+                      style: TextStyle(
+                        color: widget.isAvailable
+                            ? Colors.green
+                            : theme.colorScheme.error,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

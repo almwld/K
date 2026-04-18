@@ -21,7 +21,7 @@ class _ChatSettingsScreenState extends State<ChatSettingsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إعدادات المحادثة'),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -31,45 +31,45 @@ class _ChatSettingsScreenState extends State<ChatSettingsScreen> {
             subtitle: const Text('تفعيل التحديث الفوري للرسائل'),
             value: realtimeEnabled,
             onChanged: (v) => setState(() => realtimeEnabled = v),
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
           SwitchListTile(
             title: const Text('إظهار حالة الكتابة'),
             value: typingIndicator,
             onChanged: (v) => setState(() => typingIndicator = v),
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
           SwitchListTile(
             title: const Text('تأكيدات القراءة'),
             value: readReceipts,
             onChanged: (v) => setState(() => readReceipts = v),
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
           SwitchListTile(
             title: const Text('السماح بمشاركة الملفات والمستندات'),
             value: allowFiles,
             onChanged: (v) => setState(() => allowFiles = v),
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
           SwitchListTile(
             title: const Text('السماح بالإيموجي'),
             value: allowEmoji,
             onChanged: (v) => setState(() => allowEmoji = v),
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
           SwitchListTile(
             title: const Text('الحالات اليومية'),
             subtitle: const Text('عرض وإمكانية مشاركة حالات يومية (Stories)'),
             value: dailyStatus,
             onChanged: (v) => setState(() => dailyStatus = v),
-            activeColor: AppTheme.goldPrimary,
+            activeColor: AppTheme.gold,
           ),
           const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم حفظ إعدادات الدردشة')));
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
             child: const Text('حفظ'),
           ),
         ],

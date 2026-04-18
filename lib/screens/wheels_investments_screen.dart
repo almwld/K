@@ -19,7 +19,7 @@ class _WheelsInvestmentsScreenState extends State<WheelsInvestmentsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'العجلات والاستثمارات'),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
@@ -41,12 +41,12 @@ class _WheelsInvestmentsScreenState extends State<WheelsInvestmentsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('${it['price']} ر.ي', style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold)),
+                    Text('${it['price']} ر.ي', style: const TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold)),
                     Text(it['chance'], style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                     const SizedBox(height: 6),
                     ElevatedButton(
                       onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم المشاركة'))),
-                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                       child: const Text('شارك'),
                     ),
                   ],

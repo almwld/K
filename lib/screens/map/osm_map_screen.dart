@@ -20,7 +20,7 @@ class OSMmapScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'خريطة اليمن'),
       body: FlutterMap(
         options: MapOptions(
@@ -40,7 +40,7 @@ class OSMmapScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldPrimary,
+                  color: AppTheme.gold,
                   shape: BoxShape.circle,
                   boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 5)],
                 ),

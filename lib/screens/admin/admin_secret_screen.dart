@@ -52,7 +52,7 @@ class _AdminSecretScreenState extends State<AdminSecretScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.admin_panel_settings, color: AppTheme.goldPrimary, size: 80),
+                const Icon(Icons.admin_panel_settings, color: AppTheme.gold, size: 80),
                 const SizedBox(height: 30),
                 const Text('وضع المشرف', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 20),
@@ -74,7 +74,7 @@ class _AdminSecretScreenState extends State<AdminSecretScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _verifyCode,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, padding: const EdgeInsets.symmetric(vertical: 16)),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, padding: const EdgeInsets.symmetric(vertical: 16)),
                     child: _isLoading ? const CircularProgressIndicator() : const Text('دخول', style: TextStyle(fontSize: 18)),
                   ),
                 ),

@@ -140,17 +140,17 @@ class SocialMediaWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.goldPrimary.withOpacity(0.1),
+              color: AppTheme.gold.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppTheme.goldPrimary.withOpacity(0.3),
+                color: AppTheme.gold.withOpacity(0.3),
               ),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.warning_amber_rounded,
-                  color: AppTheme.goldPrimary,
+                  color: AppTheme.gold,
                   size: 20,
                 ),
                 const SizedBox(width: 12),

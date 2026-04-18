@@ -38,7 +38,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الإشعارات'),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -47,7 +47,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.notifications_none, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
+                      Icon(Icons.notifications_none, size: 80, color: AppTheme.gold.withOpacity(0.5)),
                       const SizedBox(height: 16),
                       const Text('لا توجد إشعارات', style: TextStyle(fontSize: 18)),
                     ],
@@ -64,7 +64,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                       decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(16),
-                        border: notification['read'] ? null : Border.all(color: AppTheme.goldPrimary, width: 1),
+                        border: notification['read'] ? null : Border.all(color: AppTheme.gold, width: 1),
                       ),
                       child: Row(
                         children: [
@@ -92,7 +92,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                           if (!notification['read'])
                             Container(
                               width: 8, height: 8,
-                              decoration: const BoxDecoration(color: AppTheme.goldPrimary, shape: BoxShape.circle),
+                              decoration: const BoxDecoration(color: AppTheme.gold, shape: BoxShape.circle),
                             ),
                         ],
                       ),

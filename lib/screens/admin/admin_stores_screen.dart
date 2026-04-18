@@ -27,7 +27,7 @@ class _AdminStoresScreenState extends State<AdminStoresScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('إدارة المتاجر'), backgroundColor: AppTheme.goldPrimary),
+      appBar: AppBar(title: const Text('إدارة المتاجر'), backgroundColor: AppTheme.gold),
       body: _isLoading ? const Center(child: CircularProgressIndicator()) : ListView.builder(itemCount: _stores.length, itemBuilder: (context, index) => ListTile(leading: const CircleAvatar(child: Icon(Icons.store)), title: Text(_stores[index]['name'] ?? ''))),
     );
   }

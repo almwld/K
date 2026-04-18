@@ -24,7 +24,7 @@ class ThemeService {
   };
   
   static final Map<AppThemeMode, Color> primaryColors = {
-    AppThemeMode.light: AppTheme.goldPrimary,
+    AppThemeMode.light: AppTheme.gold,
     AppThemeMode.dark: AppTheme.navyGold,
     AppThemeMode.system: AppTheme.navyGold,
   };

@@ -10,7 +10,7 @@ class AccountSettingsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'إعدادات الحساب'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -22,15 +22,15 @@ class AccountSettingsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundColor: AppTheme.goldPrimary.withOpacity(0.2),
-                    child: const Icon(Icons.person, size: 50, color: AppTheme.goldPrimary),
+                    backgroundColor: AppTheme.gold.withOpacity(0.2),
+                    child: const Icon(Icons.person, size: 50, color: AppTheme.gold),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: CircleAvatar(
                       radius: 16,
-                      backgroundColor: AppTheme.goldPrimary,
+                      backgroundColor: AppTheme.gold,
                       child: const Icon(Icons.camera_alt, size: 16, color: Colors.black),
                     ),
                   ),
@@ -58,7 +58,7 @@ class AccountSettingsScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldPrimary,
+                  backgroundColor: AppTheme.gold,
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -83,7 +83,7 @@ class AccountSettingsScreen extends StatelessWidget {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppTheme.goldPrimary, width: 2),
+            borderSide: const BorderSide(color: AppTheme.gold, width: 2),
           ),
         ),
       ),

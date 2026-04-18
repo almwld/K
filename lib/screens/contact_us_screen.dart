@@ -51,7 +51,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'اتصل بنا'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -143,12 +143,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.goldPrimary.withOpacity(0.1),
+                color: AppTheme.gold.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.access_time, color: AppTheme.goldPrimary),
+                  const Icon(Icons.access_time, color: AppTheme.gold),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(

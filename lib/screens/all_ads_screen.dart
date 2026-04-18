@@ -20,7 +20,7 @@ class AllAdsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'جميع الإعلانات'),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),
@@ -84,7 +84,7 @@ class AllAdsScreen extends StatelessWidget {
                 Text(
                   '${ad['price']} ريال',
                   style: TextStyle(
-                    color: AppTheme.goldPrimary,
+                    color: AppTheme.gold,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),

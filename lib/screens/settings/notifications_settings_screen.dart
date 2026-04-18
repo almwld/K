@@ -23,7 +23,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'الإشعارات'),
       body: ListView(
         children: [
@@ -50,7 +50,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
       child: Text(
         title,
         style: const TextStyle(
-          color: AppTheme.goldPrimary,
+          color: AppTheme.gold,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
@@ -64,7 +64,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
       subtitle: Text(subtitle, style: TextStyle(color: AppTheme.darkTextSecondary)),
       value: value,
       onChanged: onChanged,
-      activeColor: AppTheme.goldPrimary,
+      activeColor: AppTheme.gold,
     );
   }
 }

@@ -78,7 +78,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: const SimpleAppBar(title: 'تذاكر الدعم'),
       body: Column(
         children: [
@@ -90,7 +90,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
               icon: const Icon(Icons.add),
               label: const Text('تذكرة جديدة'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldPrimary,
+                backgroundColor: AppTheme.gold,
                 foregroundColor: Colors.black,
                 minimumSize: const Size(double.infinity, 50),
               ),
@@ -145,7 +145,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: _createTicket,
-                              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldPrimary, foregroundColor: Colors.black),
+                              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
                               child: const Text('إرسال'),
                             ),
                           ),
@@ -165,7 +165,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.confirmation_number, size: 80, color: AppTheme.goldPrimary.withOpacity(0.5)),
+                        Icon(Icons.confirmation_number, size: 80, color: AppTheme.gold.withOpacity(0.5)),
                         const SizedBox(height: 16),
                         const Text('لا توجد تذاكر', style: TextStyle(fontSize: 18)),
                         const SizedBox(height: 8),

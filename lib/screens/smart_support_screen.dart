@@ -121,7 +121,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(
         title: 'الدعم الذكي',
         actions: [
@@ -137,7 +137,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
           // حالة البوت
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: AppTheme.goldPrimary.withOpacity(0.1),
+            color: AppTheme.gold.withOpacity(0.1),
             child: Row(
               children: [
                 Container(
@@ -147,7 +147,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                 const SizedBox(width: 8),
                 const Text('متصل', style: TextStyle(fontSize: 12)),
                 const Spacer(),
-                const Icon(Icons.smart_toy, size: 16, color: AppTheme.goldPrimary),
+                const Icon(Icons.smart_toy, size: 16, color: AppTheme.gold),
                 const SizedBox(width: 4),
                 const Text('مساعد ذكي', style: TextStyle(fontSize: 12)),
               ],
@@ -178,7 +178,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                           maxWidth: MediaQuery.of(context).size.width * 0.75,
                         ),
                         decoration: BoxDecoration(
-                          color: isUser ? AppTheme.goldPrimary : Theme.of(context).cardColor,
+                          color: isUser ? AppTheme.gold : Theme.of(context).cardColor,
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(12),
                             topRight: const Radius.circular(12),
@@ -201,7 +201,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                             icon: const Icon(Icons.support_agent),
                             label: const Text('تحدث مع موظف دعم'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.goldPrimary,
+                              backgroundColor: AppTheme.gold,
                               foregroundColor: Colors.black,
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             ),
@@ -237,7 +237,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                       return ActionChip(
                         label: Text(question),
                         onPressed: () => _sendMessage(question),
-                        backgroundColor: AppTheme.goldPrimary.withOpacity(0.1),
+                        backgroundColor: AppTheme.gold.withOpacity(0.1),
                         labelStyle: const TextStyle(fontSize: 12),
                       );
                     }).toList(),
@@ -265,7 +265,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[100],
+                      fillColor: isDark ? AppTheme.nightCard : Colors.grey[100],
                     ),
                     onSubmitted: _sendMessage,
                   ),
@@ -273,7 +273,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                 const SizedBox(width: 8),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppTheme.goldPrimary,
+                    color: AppTheme.gold,
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
@@ -304,17 +304,17 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
           children: const [
             SizedBox(
               width: 8, height: 8,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldPrimary),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.gold),
             ),
             SizedBox(width: 4),
             SizedBox(
               width: 8, height: 8,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldPrimary),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.gold),
             ),
             SizedBox(width: 4),
             SizedBox(
               width: 8, height: 8,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.goldPrimary),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.gold),
             ),
           ],
         ),

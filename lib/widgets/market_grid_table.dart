@@ -56,7 +56,7 @@ class MarketGridTable extends StatelessWidget {
               selected: isSelected,
               onSelected: (_) {},
               backgroundColor: Colors.grey.shade100,
-              selectedColor: AppTheme.goldPrimary,
+              selectedColor: AppTheme.gold,
               checkmarkColor: Colors.white,
             ),
           );

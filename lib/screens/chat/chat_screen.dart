@@ -47,13 +47,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: AppTheme.goldPrimary.withOpacity(0.1),
+                  color: AppTheme.gold.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.chat_bubble_outline,
                   size: 60,
-                  color: AppTheme.goldPrimary,
+                  color: AppTheme.gold,
                 ),
               ),
               const SizedBox(height: 24),
@@ -87,7 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.goldPrimary,
+                    backgroundColor: AppTheme.gold,
                     foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
