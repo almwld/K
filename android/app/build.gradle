@@ -64,3 +64,13 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:2.2.0"
 }
+
+// إجبار استخدام إصدار محدد من Kotlin
+configurations.all {
+    resolutionStrategy {
+        force 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.0'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.2.0'
+    }
+}
