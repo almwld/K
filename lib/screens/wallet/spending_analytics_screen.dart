@@ -99,7 +99,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent : Colors.transparent,
+                  color: isSelected ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -124,7 +124,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.goldAccent, AppTheme.goldDark],
+          colors: [AppTheme.goldLight, AppTheme.goldDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -166,18 +166,18 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedChartType == 'pie' ? AppTheme.goldAccent.withOpacity(0.1) : Colors.transparent,
+                  color: _selectedChartType == 'pie' ? AppTheme.goldLight.withOpacity(0.1) : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: _selectedChartType == 'pie' ? AppTheme.goldAccent : Colors.grey.withOpacity(0.3),
+                    color: _selectedChartType == 'pie' ? AppTheme.goldLight : Colors.grey.withOpacity(0.3),
                   ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.pie_chart, color: _selectedChartType == 'pie' ? AppTheme.goldAccent : Colors.grey),
+                    Icon(Icons.pie_chart, color: _selectedChartType == 'pie' ? AppTheme.goldLight : Colors.grey),
                     const SizedBox(width: 8),
-                    Text('دائري', style: TextStyle(color: _selectedChartType == 'pie' ? AppTheme.goldAccent : null)),
+                    Text('دائري', style: TextStyle(color: _selectedChartType == 'pie' ? AppTheme.goldLight : null)),
                   ],
                 ),
               ),
@@ -190,18 +190,18 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedChartType == 'bar' ? AppTheme.goldAccent.withOpacity(0.1) : Colors.transparent,
+                  color: _selectedChartType == 'bar' ? AppTheme.goldLight.withOpacity(0.1) : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: _selectedChartType == 'bar' ? AppTheme.goldAccent : Colors.grey.withOpacity(0.3),
+                    color: _selectedChartType == 'bar' ? AppTheme.goldLight : Colors.grey.withOpacity(0.3),
                   ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.bar_chart, color: _selectedChartType == 'bar' ? AppTheme.goldAccent : Colors.grey),
+                    Icon(Icons.bar_chart, color: _selectedChartType == 'bar' ? AppTheme.goldLight : Colors.grey),
                     const SizedBox(width: 8),
-                    Text('أعمدة', style: TextStyle(color: _selectedChartType == 'bar' ? AppTheme.goldAccent : null)),
+                    Text('أعمدة', style: TextStyle(color: _selectedChartType == 'bar' ? AppTheme.goldLight : null)),
                   ],
                 ),
               ),
@@ -277,7 +277,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
               barRods: [
                 BarChartRodData(
                   toY: entry.value['amount'].toDouble(),
-                  color: AppTheme.goldAccent,
+                  color: AppTheme.goldLight,
                   width: 20,
                   borderRadius: BorderRadius.circular(4),
                 ),

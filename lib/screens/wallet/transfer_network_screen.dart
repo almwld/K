@@ -97,7 +97,7 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
   Widget _buildSummary(Map<String, dynamic> fromNetwork, Map<String, dynamic> toNetwork, int amount, int fee, int total) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.goldAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: AppTheme.goldLight.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
       child: Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('من:'), Text(fromNetwork['name'], style: const TextStyle(fontWeight: FontWeight.bold))]),
         const SizedBox(height: 8),
@@ -105,7 +105,7 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
         const Divider(),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('المبلغ:'), Text('$amount ر.ي')]),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('رسوم التحويل:'), Text('$fee ر.ي', style: const TextStyle(color: Colors.orange))]),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)), Text('$total ر.ي', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldAccent))]),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)), Text('$total ر.ي', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldLight))]),
       ]),
     );
   }
@@ -115,7 +115,7 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: (_phoneController.text.isNotEmpty) ? () => _processTransfer(fromNetwork, toNetwork, amount, fee, total) : null,
-        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
         child: const Text('تأكيد التحويل', style: TextStyle(fontSize: 18)),
       ),
     );
@@ -139,7 +139,7 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(fromNetwork, toNetwork, amount); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent), child: const Text('تأكيد')),
+          ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(fromNetwork, toNetwork, amount); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight), child: const Text('تأكيد')),
         ],
       ),
     );

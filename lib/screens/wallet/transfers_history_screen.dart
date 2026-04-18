@@ -81,7 +81,7 @@ class _TransfersHistoryScreenState extends State<TransfersHistoryScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedTab == 'المرسلة' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedTab == 'المرسلة' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -105,7 +105,7 @@ class _TransfersHistoryScreenState extends State<TransfersHistoryScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedTab == 'المستلمة' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedTab == 'المستلمة' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -211,7 +211,7 @@ class _TransfersHistoryScreenState extends State<TransfersHistoryScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppTheme.goldAccent.withOpacity(0.05),
+                color: AppTheme.goldLight.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(

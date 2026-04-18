@@ -84,7 +84,7 @@ class DepositScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(onPressed: () { Navigator.pop(context); _showRequestDialog(context, amountController.text); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent), child: const Text('تقديم طلب')),
+          ElevatedButton(onPressed: () { Navigator.pop(context); _showRequestDialog(context, amountController.text); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight), child: const Text('تقديم طلب')),
         ],
       ),
     );
@@ -112,7 +112,7 @@ class DepositScreen extends StatelessWidget {
   Widget _buildInfoCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.goldAccent.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: AppTheme.goldAccent.withOpacity(0.2))),
+      decoration: BoxDecoration(color: AppTheme.goldLight.withOpacity(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: AppTheme.goldLight.withOpacity(0.2))),
       child: Row(children: [
         const Icon(Icons.info_outline, color: Colors.blue),
         const SizedBox(width: 12),

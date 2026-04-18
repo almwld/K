@@ -16,7 +16,7 @@ class _TransferScreenState extends State<TransferScreen> {
   String _selectedMethod = 'flexpay';
   
   final List<Map<String, dynamic>> _transferMethods = [
-    {'id': 'flexpay', 'name': 'محفظة فلكس', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldAccent, 'fee': '0'},
+    {'id': 'flexpay', 'name': 'محفظة فلكس', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldLight, 'fee': '0'},
     {'id': 'yemen_mobile', 'name': 'يمن موبايل', 'icon': Icons.phone_android, 'color': 0xFFE31E24, 'fee': '0'},
     {'id': 'you', 'name': 'YOU', 'icon': Icons.phone_android, 'color': 0xFF4CAF50, 'fee': '0'},
     {'id': 'way', 'name': 'Way', 'icon': Icons.phone_android, 'color': 0xFF9C27B0, 'fee': '0'},
@@ -71,24 +71,24 @@ class _TransferScreenState extends State<TransferScreen> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
+                  color: isSelected ? AppTheme.goldLight.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2),
+                    color: isSelected ? AppTheme.goldLight : Colors.grey.withOpacity(0.2),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(method['icon'], color: isSelected ? AppTheme.goldAccent : Color(method['color']), size: 32),
+                    Icon(method['icon'], color: isSelected ? AppTheme.goldLight : Color(method['color']), size: 32),
                     const SizedBox(height: 8),
                     Text(
                       method['name'],
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected ? AppTheme.goldAccent : null,
+                        color: isSelected ? AppTheme.goldLight : null,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -148,7 +148,7 @@ class _TransferScreenState extends State<TransferScreen> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.goldAccent.withOpacity(0.1),
+            color: AppTheme.goldLight.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -163,7 +163,7 @@ class _TransferScreenState extends State<TransferScreen> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.goldAccent.withOpacity(0.05),
+            color: AppTheme.goldLight.withOpacity(0.05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -185,7 +185,7 @@ class _TransferScreenState extends State<TransferScreen> {
           child: ElevatedButton(
             onPressed: _validateAndTransfer,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldAccent,
+              backgroundColor: AppTheme.goldLight,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),

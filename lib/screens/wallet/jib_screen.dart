@@ -15,7 +15,7 @@ class JibScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.school, size: 80, color: AppTheme.goldAccent.withOpacity(0.5)),
+            Icon(Icons.school, size: 80, color: AppTheme.goldLight.withOpacity(0.5)),
             const SizedBox(height: 16),
             const Text('جيب', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

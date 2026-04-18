@@ -49,7 +49,7 @@ class _CashWithdrawalScreenState extends State<CashWithdrawalScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.goldAccent, AppTheme.goldDark],
+          colors: [AppTheme.goldLight, AppTheme.goldDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -106,7 +106,7 @@ class _CashWithdrawalScreenState extends State<CashWithdrawalScreen> {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.goldAccent.withOpacity(0.1),
+                color: AppTheme.goldLight.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -188,7 +188,7 @@ class _CashWithdrawalScreenState extends State<CashWithdrawalScreen> {
                 ? () => _processWithdrawal()
                 : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldAccent,
+              backgroundColor: AppTheme.goldLight,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),

@@ -115,7 +115,7 @@ class _WalletHelpSupportScreenState extends State<WalletHelpSupportScreen> {
               label: Text(category['name']),
               selected: isSelected,
               onSelected: (selected) => setState(() => _selectedIndex = selected ? category['id'] : 0),
-              selectedColor: AppTheme.goldAccent,
+              selectedColor: AppTheme.goldLight,
               labelStyle: TextStyle(color: isSelected ? Colors.white : null),
             ),
           );
@@ -156,7 +156,7 @@ class _WalletHelpSupportScreenState extends State<WalletHelpSupportScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.goldAccent, AppTheme.goldDark],
+          colors: [AppTheme.goldLight, AppTheme.goldDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

@@ -84,9 +84,9 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
+                  color: isSelected ? AppTheme.goldLight.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
+                  border: Border.all(color: isSelected ? AppTheme.goldLight : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -164,7 +164,7 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppTheme.goldAccent.withOpacity(0.1),
+            color: AppTheme.goldLight.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -177,7 +177,7 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
               const Divider(),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('${amount + fee} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldAccent))]),
+                  Text('${amount + fee} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldLight))]),
             ],
           ),
         ),
@@ -187,7 +187,7 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
           child: ElevatedButton(
             onPressed: (_receiverNameController.text.isNotEmpty && amount > 0) ? () => _processTransfer(network, amount, fee) : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldAccent,
+              backgroundColor: AppTheme.goldLight,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -222,7 +222,7 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
               Navigator.pop(context);
               _showSuccessDialog(network, amount);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تأكيد'),
           ),
         ],

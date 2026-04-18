@@ -83,7 +83,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedTab == 'banks' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedTab == 'banks' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text('الحسابات البنكية', textAlign: TextAlign.center,
@@ -98,7 +98,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedTab == 'wallets' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedTab == 'wallets' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text('المحافظ الإلكترونية', textAlign: TextAlign.center,
@@ -153,7 +153,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
           ),
           ElevatedButton(
             onPressed: () => _showTransferDialog(bank, 'bank'),
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تحويل', style: TextStyle(fontSize: 12)),
           ),
         ],
@@ -202,7 +202,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
           ),
           ElevatedButton(
             onPressed: () => _showTransferDialog(wallet, 'wallet'),
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تحويل', style: TextStyle(fontSize: 12)),
           ),
         ],
@@ -244,7 +244,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: AppTheme.goldAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: AppTheme.goldLight.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -262,7 +262,7 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
               Navigator.pop(context);
               _showSuccessDialog(item, _amountController.text);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تأكيد التحويل'),
           ),
         ],

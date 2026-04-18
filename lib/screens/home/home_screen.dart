@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldAccent, borderRadius: BorderRadius.circular(12)), child: Text(item['discount'] as String, style: const TextStyle(color: Colors.white, fontSize: 10))),
+                            Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.goldLight, borderRadius: BorderRadius.circular(12)), child: Text(item['discount'] as String, style: const TextStyle(color: Colors.white, fontSize: 10))),
                             const SizedBox(height: 4),
                             Text(item['title'] as String, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                             Text(item['subtitle'] as String, style: const TextStyle(color: Colors.white70, fontSize: 11)),
@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppTheme.goldAccent, AppTheme.goldDark]), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppTheme.goldLight, AppTheme.goldDark]), borderRadius: BorderRadius.circular(16)),
       child: Row(
         children: [
           Expanded(
@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 const Text('مزاد الجنابي', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                 const Text('أكبر مزاد للسيوف التراثية', style: TextStyle(color: Colors.white70)),
                 const SizedBox(height: 8),
-                ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldAccent), child: const Text('شارك الآن')),
+                ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.goldLight), child: const Text('شارك الآن')),
               ],
             ),
           ),

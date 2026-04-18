@@ -246,7 +246,7 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
         child: const Icon(
           Icons.add,
-          color: AppTheme.darkText,
+          color: Colors.white,
           size: 32,
         ),
       ),

@@ -107,7 +107,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppTheme.goldAccent, AppTheme.goldDark],
+          colors: [AppTheme.goldLight, AppTheme.goldDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -181,11 +181,11 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppTheme.goldAccent.withOpacity(0.3)),
+                      border: Border.all(color: AppTheme.goldLight.withOpacity(0.3)),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.date_range, color: AppTheme.goldAccent),
+                        Icon(Icons.date_range, color: AppTheme.goldLight),
                         const SizedBox(width: 8),
                         Text(
                           '${DateFormat('dd/MM/yyyy').format(_selectedDateRange.start)} - ${DateFormat('dd/MM/yyyy').format(_selectedDateRange.end)}',
@@ -203,7 +203,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.goldAccent.withOpacity(0.3)),
+                  border: Border.all(color: AppTheme.goldLight.withOpacity(0.3)),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
@@ -334,7 +334,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
             onPressed: () => _showExportDialog(),
             icon: const Icon(Icons.download),
             label: const Text('تصدير'),
-            style: TextButton.styleFrom(foregroundColor: AppTheme.goldAccent),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.goldLight),
           ),
         ],
       ),
@@ -370,7 +370,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
               Navigator.pop(context);
               _showSuccessDialog(format);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تصدير'),
           ),
         ],

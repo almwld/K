@@ -113,9 +113,9 @@ class _PayBundlesScreenState extends State<PayBundlesScreen> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
+                  color: isSelected ? AppTheme.goldLight.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
+                  border: Border.all(color: isSelected ? AppTheme.goldLight : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -164,9 +164,9 @@ class _PayBundlesScreenState extends State<PayBundlesScreen> {
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
+                  color: isSelected ? AppTheme.goldLight.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
+                  border: Border.all(color: isSelected ? AppTheme.goldLight : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +188,7 @@ class _PayBundlesScreenState extends State<PayBundlesScreen> {
                         ],
                       ),
                     ),
-                    Text('${bundle['price']} ر.ي', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.goldAccent)),
+                    Text('${bundle['price']} ر.ي', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.goldLight)),
                   ],
                 ),
               ),
@@ -223,7 +223,7 @@ class _PayBundlesScreenState extends State<PayBundlesScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: (_phoneController.text.length >= 9) ? () => _processPayment(bundle, operator, isModem) : null,
-        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
         child: Text('شراء الباقة بقيمة ${bundle['price']} ر.ي', style: const TextStyle(fontSize: 16)),
       ),
     );
@@ -247,7 +247,7 @@ class _PayBundlesScreenState extends State<PayBundlesScreen> {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(bundle, operator); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent), child: const Text('تأكيد')),
+          ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(bundle, operator); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight), child: const Text('تأكيد')),
         ],
       ),
     );

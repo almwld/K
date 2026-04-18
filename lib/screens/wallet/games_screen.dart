@@ -41,11 +41,11 @@ class GamesScreen extends StatelessWidget {
             child: Icon(game['icon'], color: Color(game['color']), size: 40)),
           const SizedBox(height: 12),
           Text(game['name'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(game['value'], style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(game['value'], style: TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(height: 4),
           Text('${game['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(height: 12),
-          ElevatedButton(onPressed: () => _buyGame(context, game), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+          ElevatedButton(onPressed: () => _buyGame(context, game), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             child: const Text('شراء')),
         ],
       ),
@@ -59,7 +59,7 @@ class GamesScreen extends StatelessWidget {
         children: [const Icon(Icons.sports_esports, size: 60, color: Colors.green), const SizedBox(height: 16),
           Text('شراء ${game['name']} - ${game['value']}'), Text('السعر: ${game['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold))]),
       actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-        ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(context, game); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent), child: const Text('تأكيد'))]));
+        ElevatedButton(onPressed: () { Navigator.pop(context); _showSuccessDialog(context, game); }, style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight), child: const Text('تأكيد'))]));
   }
 
   void _showSuccessDialog(BuildContext context, Map<String, dynamic> game) {

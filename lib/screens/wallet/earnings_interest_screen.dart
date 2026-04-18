@@ -333,7 +333,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
                   barRods: [
                     BarChartRodData(
                       toY: (entry.value['earnings'] as num).toDouble(),
-                      color: AppTheme.goldAccent,
+                      color: AppTheme.goldLight,
                       width: 15,
                       borderRadius: BorderRadius.circular(4),
                     ),

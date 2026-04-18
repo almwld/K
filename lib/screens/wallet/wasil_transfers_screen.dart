@@ -75,12 +75,12 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedAction == 'send' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedAction == 'send' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   children: [
-                    Icon(Icons.send, color: _selectedAction == 'send' ? Colors.white : AppTheme.goldAccent, size: 24),
+                    Icon(Icons.send, color: _selectedAction == 'send' ? Colors.white : AppTheme.goldLight, size: 24),
                     const SizedBox(height: 4),
                     Text('إرسال', style: TextStyle(color: _selectedAction == 'send' ? Colors.white : null)),
                   ],
@@ -94,12 +94,12 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedAction == 'receive' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedAction == 'receive' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   children: [
-                    Icon(Icons.download, color: _selectedAction == 'receive' ? Colors.white : AppTheme.goldAccent, size: 24),
+                    Icon(Icons.download, color: _selectedAction == 'receive' ? Colors.white : AppTheme.goldLight, size: 24),
                     const SizedBox(height: 4),
                     Text('استلام', style: TextStyle(color: _selectedAction == 'receive' ? Colors.white : null)),
                   ],
@@ -113,12 +113,12 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _selectedAction == 'cancel' ? AppTheme.goldAccent : Colors.transparent,
+                  color: _selectedAction == 'cancel' ? AppTheme.goldLight : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   children: [
-                    Icon(Icons.cancel, color: _selectedAction == 'cancel' ? Colors.white : AppTheme.goldAccent, size: 24),
+                    Icon(Icons.cancel, color: _selectedAction == 'cancel' ? Colors.white : AppTheme.goldLight, size: 24),
                     const SizedBox(height: 4),
                     Text('إلغاء', style: TextStyle(color: _selectedAction == 'cancel' ? Colors.white : null)),
                   ],
@@ -212,7 +212,7 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.goldAccent.withOpacity(0.1),
+              color: AppTheme.goldLight.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -225,7 +225,7 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
                 const Divider(),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('$total ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldAccent))]),
+                    Text('$total ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldLight))]),
               ],
             ),
           ),
@@ -237,7 +237,7 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
                   ? () => _sendTransfer(amount, fee, total)
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldAccent,
+                backgroundColor: AppTheme.goldLight,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -309,7 +309,7 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
                   ? () => _receiveTransfer()
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.goldAccent,
+                backgroundColor: AppTheme.goldLight,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -458,7 +458,7 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
               Navigator.pop(context);
               _showSuccessDialog('send', amount);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تأكيد'),
           ),
         ],
@@ -489,7 +489,7 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
               Navigator.pop(context);
               _showSuccessDialog('receive', 0);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تأكيد'),
           ),
         ],

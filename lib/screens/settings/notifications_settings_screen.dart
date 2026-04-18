@@ -61,7 +61,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
   Widget _buildSwitch(String title, String subtitle, bool value, Function(bool) onChanged) {
     return SwitchListTile(
       title: Text(title),
-      subtitle: Text(subtitle, style: TextStyle(color: AppTheme.darkTextSecondary)),
+      subtitle: Text(subtitle, style: TextStyle(color: Colors.whiteSecondary)),
       value: value,
       onChanged: onChanged,
       activeColor: AppTheme.gold,

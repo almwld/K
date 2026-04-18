@@ -19,7 +19,7 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
   final TextEditingController _posNumberController = TextEditingController();
 
   final List<Map<String, dynamic>> _paymentMethods = [
-    {'id': 'flexpay', 'name': 'فلكس باي', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldAccent, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
+    {'id': 'flexpay', 'name': 'فلكس باي', 'icon': Icons.account_balance_wallet, 'color': AppTheme.goldLight, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
     {'id': 'jaib', 'name': 'جيب', 'icon': Icons.account_balance_wallet, 'color': 0xFFD4AF37, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
     {'id': 'other', 'name': 'محافظ أخرى', 'icon': Icons.account_balance_wallet, 'color': 0xFF4CAF50, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
     {'id': 'wint', 'name': 'Wint', 'icon': Icons.account_balance_wallet, 'color': 0xFF2196F3, 'fee': '0', 'image': 'https://play-lh.googleusercontent.com/3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x3x'},
@@ -106,10 +106,10 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
+                  color: isSelected ? AppTheme.goldLight.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2),
+                    color: isSelected ? AppTheme.goldLight : Colors.grey.withOpacity(0.2),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
@@ -267,7 +267,7 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.goldAccent.withOpacity(0.1),
+            color: AppTheme.goldLight.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
@@ -280,7 +280,7 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
               const Divider(),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [const Text('الإجمالي:', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('$total ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldAccent))]),
+                  Text('$total ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.goldLight))]),
             ],
           ),
         ),
@@ -292,7 +292,7 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
                 ? () => _processPayment(method, amount, fee, total)
                 : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.goldAccent,
+              backgroundColor: AppTheme.goldLight,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -337,7 +337,7 @@ class _PurchasePaymentScreenState extends State<PurchasePaymentScreen> {
               Navigator.pop(context);
               _showSuccessDialog(method, amount, paymentVia);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تأكيد'),
           ),
         ],

@@ -84,7 +84,7 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
                   _selectedCategory = selected ? category : 'الكل';
                 });
               },
-              selectedColor: AppTheme.goldAccent,
+              selectedColor: AppTheme.goldLight,
               labelStyle: TextStyle(color: isSelected ? Colors.white : null),
             ),
           );
@@ -115,7 +115,7 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
                 padding: const EdgeInsets.all(12),
                 child: Image.network(
                   card['image'],
-                  errorBuilder: (_, __, ___) => Icon(Icons.card_giftcard, size: 50, color: AppTheme.goldAccent),
+                  errorBuilder: (_, __, ___) => Icon(Icons.card_giftcard, size: 50, color: AppTheme.goldLight),
                 ),
               ),
               const SizedBox(height: 8),
@@ -125,7 +125,7 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
               ),
               Text(
                 card['value'],
-                style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.bold, fontSize: 14),
+                style: TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 14),
               ),
               const SizedBox(height: 4),
               Text(
@@ -136,7 +136,7 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
               ElevatedButton(
                 onPressed: isOutOfStock ? null : () => _buyGiftCard(card),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldAccent,
+                  backgroundColor: AppTheme.goldLight,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 child: Text(isOutOfStock ? 'نفد' : 'شراء'),
@@ -184,7 +184,7 @@ class _GiftCardsScreenState extends State<GiftCardsScreen> {
               Navigator.pop(context);
               _showSuccessDialog(card);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('تأكيد'),
           ),
         ],

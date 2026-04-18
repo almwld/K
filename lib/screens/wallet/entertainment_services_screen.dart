@@ -16,7 +16,7 @@ class _EntertainmentServicesScreenState extends State<EntertainmentServicesScree
   final TextEditingController _emailController = TextEditingController();
 
   final List<Map<String, dynamic>> _categories = [
-    {'id': 'all', 'name': 'الكل', 'icon': Icons.grid_view, 'color': AppTheme.goldAccent},
+    {'id': 'all', 'name': 'الكل', 'icon': Icons.grid_view, 'color': AppTheme.goldLight},
     {'id': 'streaming', 'name': 'بث مباشر', 'icon': Icons.live_tv, 'color': 0xFFF44336},
     {'id': 'music', 'name': 'موسيقى', 'icon': Icons.music_note, 'color': 0xFF4CAF50},
     {'id': 'gaming', 'name': 'ألعاب', 'icon': Icons.sports_esports, 'color': 0xFF9C27B0},
@@ -109,7 +109,7 @@ class _EntertainmentServicesScreenState extends State<EntertainmentServicesScree
               label: Row(children: [Icon(category['icon'], size: 16), const SizedBox(width: 4), Text(category['name'])]),
               selected: isSelected,
               onSelected: (selected) => setState(() => _selectedCategory = selected ? category['id'] : 'all'),
-              selectedColor: AppTheme.goldAccent,
+              selectedColor: AppTheme.goldLight,
               labelStyle: TextStyle(color: isSelected ? Colors.white : null),
             ),
           );
@@ -139,7 +139,7 @@ class _EntertainmentServicesScreenState extends State<EntertainmentServicesScree
             ),
             const SizedBox(height: 12),
             Text(service['name'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-            Text(service['value'], style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.bold, fontSize: 12)),
+            Text(service['value'], style: TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 12)),
             Text('${service['price']} ر.ي', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             const SizedBox(height: 8),
             Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: Color(service['color']).withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
@@ -185,7 +185,7 @@ class _EntertainmentServicesScreenState extends State<EntertainmentServicesScree
                 _showSuccessDialog(service);
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldLight),
             child: const Text('شراء'),
           ),
         ],
