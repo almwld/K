@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
-import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import 'home_screen.dart';
 import '../stores/stores_screen.dart';
 import '../chat/chat_screen.dart';

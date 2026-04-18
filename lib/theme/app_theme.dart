@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+/// FLEX YEMEN - Global E-Commerce Platform Theme
+/// Professional theme inspired by Amazon & Alibaba
 class AppTheme {
   // Brand Colors - Premium Gold Palette
   static const Color goldPrimary = Color(0xFFD4AF37);
@@ -8,11 +11,11 @@ class AppTheme {
   static const Color goldDark = Color(0xFFB8860B);
   static const Color goldAccent = Color(0xFFFFD700);
   
-  // Dark Theme Colors - نفس ألوان السبلاش
-  static const Color darkBackground = Color(0xFF1A1A2E);
-  static const Color darkSurface = Color(0xFF16213E);
-  static const Color darkCard = Color(0xFF0F3460);
-  static const Color darkElevated = Color(0xFF1A2A4A);
+  // Dark Theme Colors
+  static const Color darkBackground = Color(0xFF0A0A0A);
+  static const Color darkSurface = Color(0xFF141414);
+  static const Color darkCard = Color(0xFF1E1E1E);
+  static const Color darkElevated = Color(0xFF2A2A2A);
   
   // Light Theme Colors
   static const Color lightBackground = Color(0xFFF8F9FA);
@@ -33,8 +36,13 @@ class AppTheme {
     end: Alignment.bottomRight,
   );
   
-  // نفس تدرج السبلاش
-  static const LinearGradient splashGradient = LinearGradient(
+  static const LinearGradient darkGradient = LinearGradient(
+    colors: [darkSurface, darkBackground],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+  
+  static const LinearGradient premiumGradient = LinearGradient(
     colors: [Color(0xFF1A1A2E), Color(0xFF16213E), Color(0xFF0F3460)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -59,7 +67,7 @@ class AppTheme {
     ),
   ];
 
-  // ============ Dark Theme (مثل السبلاش) ============
+  // Dark Theme
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
@@ -86,12 +94,11 @@ class AppTheme {
         centerTitle: true,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: const TextStyle(
-          color: goldPrimary,
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w600,
           fontFamily: 'Changa',
         ),
-        iconTheme: const IconThemeData(color: goldPrimary),
       ),
       cardTheme: CardTheme(
         color: darkCard,
@@ -104,7 +111,7 @@ class AppTheme {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: darkSurface,
         selectedItemColor: goldPrimary,
-        unselectedItemColor: Colors.grey[500],
+        unselectedItemColor: Colors.grey[600],
         type: BottomNavigationBarType.fixed,
         elevation: 20,
         selectedLabelStyle: const TextStyle(
@@ -157,6 +164,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: goldPrimary, width: 2),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: error, width: 1),
+        ),
         hintStyle: TextStyle(color: Colors.grey[500], fontFamily: 'Changa'),
         labelStyle: const TextStyle(color: Colors.white70, fontFamily: 'Changa'),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -177,6 +188,27 @@ class AppTheme {
           ),
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: goldPrimary,
+          side: const BorderSide(color: goldPrimary, width: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: const TextStyle(
+            fontFamily: 'Changa',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: goldPrimary,
+          textStyle: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w500),
+        ),
+      ),
       iconTheme: const IconThemeData(
         color: Colors.white,
         size: 24,
@@ -189,6 +221,7 @@ class AppTheme {
         backgroundColor: darkElevated,
         selectedColor: goldPrimary.withOpacity(0.2),
         labelStyle: const TextStyle(fontFamily: 'Changa'),
+        secondaryLabelStyle: const TextStyle(fontFamily: 'Changa'),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -197,7 +230,7 @@ class AppTheme {
     );
   }
 
-  // ============ Light Theme (ذهبي) ============
+  // Light Theme
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
@@ -229,7 +262,6 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           fontFamily: 'Changa',
         ),
-        iconTheme: const IconThemeData(color: goldDark),
       ),
       cardTheme: CardTheme(
         color: lightCard,
@@ -295,6 +327,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: goldDark, width: 2),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: error, width: 1),
+        ),
         hintStyle: TextStyle(color: Colors.grey[500], fontFamily: 'Changa'),
         labelStyle: TextStyle(color: Colors.grey[700], fontFamily: 'Changa'),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -315,6 +351,27 @@ class AppTheme {
           ),
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: goldDark,
+          side: const BorderSide(color: goldDark, width: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: const TextStyle(
+            fontFamily: 'Changa',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: goldDark,
+          textStyle: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w500),
+        ),
+      ),
       iconTheme: const IconThemeData(
         color: Color(0xFF1A1A1A),
         size: 24,
@@ -327,6 +384,7 @@ class AppTheme {
         backgroundColor: lightElevated,
         selectedColor: goldDark.withOpacity(0.2),
         labelStyle: const TextStyle(fontFamily: 'Changa'),
+        secondaryLabelStyle: const TextStyle(fontFamily: 'Changa'),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -334,4 +392,38 @@ class AppTheme {
       ),
     );
   }
+}
+
+/// Theme Manager with Provider
+class ThemeManager extends ChangeNotifier {
+  static const String _themeKey = 'is_dark_mode';
+  bool _isDarkMode = true;
+
+  bool get isDarkMode => _isDarkMode;
+
+  ThemeManager() {
+    _loadTheme();
+  }
+
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    _isDarkMode = prefs.getBool(_themeKey) ?? true;
+    notifyListeners();
+  }
+
+  Future<void> toggleTheme() async {
+    _isDarkMode = !_isDarkMode;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, _isDarkMode);
+    notifyListeners();
+  }
+
+  Future<void> setDarkMode(bool value) async {
+    _isDarkMode = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, _isDarkMode);
+    notifyListeners();
+  }
+
+  ThemeData get currentTheme => _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
 }

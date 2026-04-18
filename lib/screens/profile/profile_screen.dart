@@ -4,7 +4,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/simple_app_bar.dart';
 import '../../widgets/social_media_widget.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import '../settings/settings_screen.dart';
 import '../my_orders_screen.dart';
 import '../favorites_screen.dart';

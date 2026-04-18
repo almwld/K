@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shimmer_image.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/theme_manager.dart';
+import '../../theme/app_theme.dart';
 import '../../data/market_data.dart';
 import '../../widgets/market_top_tabs.dart';
 import '../../widgets/market_grid_table.dart';
