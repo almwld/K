@@ -64,7 +64,7 @@ class FlexYemenApp extends StatelessWidget {
                   curve: Curves.easeInOut,
                 ),
               ],
-              child: child,
+              child: child ?? const SizedBox.shrink(),
             );
           },
         );

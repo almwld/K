@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Theme.of(context).primaryColor, width: 3),
+                border: Border.all(color: AppTheme.goldPrimary, width: 3),
               ),
               child: CircleAvatar(
                 radius: 50,
@@ -86,12 +86,12 @@ class ProfileScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
+            color: AppTheme.goldPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             authProvider.user?.userMetadata?['role'] == 'merchant' ? 'تاجر' : 'عميل',
-            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12),
+            style: TextStyle(color: AppTheme.goldPrimary, fontSize: 12),
           ),
         ),
       ],

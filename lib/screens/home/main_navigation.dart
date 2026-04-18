@@ -147,7 +147,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       child: Column(children: [
         Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.serviceBlue.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.serviceBlue, size: 32)),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: 14, fontWeight: FontWeight.w500)),
+        Text(label, style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: 14, fontWeight: FontWeight.w500)),
       ]),
     );
   }
