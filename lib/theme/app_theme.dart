@@ -11,9 +11,6 @@ class AppTheme {
   static const Color goldDark = Color(0xFFB8860B);
   static const Color goldAccent = Color(0xFFFFD700);
   
-  // للتوافق مع الكود القديم
-  static const Color goldColor = Color(0xFFD4AF37);
-  
   // ============ Dark Theme Colors ============
   static const Color darkBackground = Color(0xFF0A0A0A);
   static const Color darkSurface = Color(0xFF141414);
@@ -516,12 +513,37 @@ class AppTheme {
   }
 }
 
+/// Extension للتوافق مع الكود القديم فقط
+/// يمكن حذف هذا الجزء بعد تحديث جميع الملفات
+extension LegacyAppTheme on AppTheme {
+  // ألوان قديمة
+  static const Color primaryBlue = Color(0xFF2196F3);
+  static const Color navyCard = Color(0xFF1E2A47);
+  static const Color textMuted = Color(0xFF757575);
+  static const Color textPrimary = Color(0xFF212121);
+  static const Color priceColor = Color(0xFF4CAF50);
+  
+  // دوال قديمة
+  static Color getCardColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? AppTheme.darkCard 
+        : AppTheme.lightCard;
+  }
+  
+  static Color getSecondaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? Colors.white70 
+        : const Color(0xFF666666);
+  }
+}
+
 /// Theme Manager with Provider
 class ThemeManager extends ChangeNotifier {
   static const String _themeKey = 'is_dark_mode';
   bool _isDarkMode = true;
 
   bool get isDarkMode => _isDarkMode;
+  bool get isLightMode => !_isDarkMode;  // ✅ للتوافق
 
   ThemeManager() {
     _loadTheme();
@@ -547,7 +569,6 @@ class ThemeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  // للتوافق مع الكود القديم
   Future<void> setThemeModeIndex(int index) async {
     _isDarkMode = index == 1;
     final prefs = await SharedPreferences.getInstance();
@@ -556,4 +577,7 @@ class ThemeManager extends ChangeNotifier {
   }
 
   ThemeData get currentTheme => _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+  
+  // ✅ للتوافق مع profile_screen.dart
+  Color get primaryColor => _isDarkMode ? AppTheme.goldPrimary : AppTheme.goldDark;
 }

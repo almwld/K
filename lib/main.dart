@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'theme/app_theme.dart';
-import 'providers/theme_manager.dart';
+import 'theme/app_theme.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
