@@ -86,3 +86,6 @@ class FlexYemenApp extends StatelessWidget {
     );
   }
 }
+
+// في بداية main() قبل runApp
+// await SharedPreferences.getInstance().then((prefs) => prefs.remove('is_dark_mode'));

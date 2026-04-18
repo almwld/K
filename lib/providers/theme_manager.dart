@@ -4,7 +4,7 @@ import '../theme/app_theme.dart';
 
 class ThemeManager extends ChangeNotifier {
   static const String _themeKey = 'is_dark_mode';
-  bool _isDarkMode = true;
+  bool _isDarkMode = false;  // ✅ الوضع النهاري (ذهبي) هو الافتراضي
 
   bool get isDarkMode => _isDarkMode;
   bool get isLightMode => !_isDarkMode;
@@ -15,7 +15,7 @@ class ThemeManager extends ChangeNotifier {
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    _isDarkMode = prefs.getBool(_themeKey) ?? true;
+    _isDarkMode = prefs.getBool(_themeKey) ?? false; // ✅ افتراضي false = نهاري
     notifyListeners();
   }
 
@@ -26,8 +26,8 @@ class ThemeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setThemeModeIndex(int index) async {
-    _isDarkMode = index == 1;
+  Future<void> setDarkMode(bool value) async {
+    _isDarkMode = value;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_themeKey, _isDarkMode);
     notifyListeners();
