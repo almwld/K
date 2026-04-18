@@ -31,7 +31,7 @@ class ThemeToggleButton extends StatelessWidget {
         child: Icon(
           themeManager.isDarkMode ? Icons.light_mode : Icons.dark_mode,
           key: ValueKey(themeManager.isDarkMode),
-          color: themeManager.primaryColor,
+          color: Theme.of(context).primaryColor,
         ),
       ),
       tooltip: themeManager.isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي',
@@ -54,12 +54,12 @@ class ThemeMenuButton extends StatelessWidget {
           value: ThemeMode.light,
           child: Row(
             children: [
-              const Icon(Icons.light_mode, color: AppTheme.goldColor),
+              const Icon(Icons.light_mode, color: AppTheme.goldPrimary),
               const SizedBox(width: 12),
               const Text('نهاري'),
-              if (themeManager.isLightMode) ...[
+              if (!themeManager.isDarkMode) ...[
                 const Spacer(),
-                const Icon(Icons.check, color: AppTheme.goldColor, size: 18),
+                const Icon(Icons.check, color: AppTheme.goldPrimary, size: 18),
               ],
             ],
           ),
@@ -96,12 +96,12 @@ class ThemeMenuButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: themeManager.primaryColor.withOpacity(0.1),
+          color: Theme.of(context).primaryColor.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
         child: Icon(
           themeManager.modeIcon,
-          color: themeManager.primaryColor,
+          color: Theme.of(context).primaryColor,
         ),
       ),
     );

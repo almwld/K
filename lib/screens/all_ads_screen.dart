@@ -44,7 +44,7 @@ class AllAdsScreen extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

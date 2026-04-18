@@ -106,7 +106,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Form(
@@ -169,7 +169,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                         const SizedBox(height: 16),
                         const Text('لا توجد تذاكر', style: TextStyle(fontSize: 18)),
                         const SizedBox(height: 8),
-                        Text('اضغط على "تذكرة جديدة" لإنشاء تذكرة', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                        Text('اضغط على "تذكرة جديدة" لإنشاء تذكرة', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                       ],
                     ),
                   )
@@ -182,7 +182,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppTheme.getCardColor(context),
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Column(

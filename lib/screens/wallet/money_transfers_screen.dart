@@ -87,7 +87,7 @@ class _MoneyTransfersScreenState extends State<MoneyTransfersScreen> {
               onTap: () => setState(() => _selectedService = service['id']),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
+                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2), width: isSelected ? 2 : 1),
                 ),

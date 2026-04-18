@@ -24,7 +24,7 @@ class ReelsScreen extends StatelessWidget {
           final r = reels[i];
           return Container(
             height: 220,
-            decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)),
             child: Stack(
               children: [
                 const Center(child: Icon(Icons.play_circle_outline, size: 80, color: AppTheme.goldPrimary)),

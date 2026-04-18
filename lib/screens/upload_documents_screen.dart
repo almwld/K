@@ -42,14 +42,14 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
             const SizedBox(height: 12),
             Expanded(
               child: docs.isEmpty
-                  ? Center(child: Text('لا توجد مستندات', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))))
+                  ? Center(child: Text('لا توجد مستندات', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)))
                   : ListView.separated(
                       itemCount: docs.length,
                       separatorBuilder: (_, __) => const SizedBox(height: 8),
                       itemBuilder: (context, i) {
                         final d = docs[i];
                         return ListTile(
-                          tileColor: AppTheme.getCardColor(context),
+                          tileColor: Theme.of(context).cardColor,
                           leading: const Icon(Icons.insert_drive_file),
                           title: Text(d['name']!),
                           subtitle: Text(d['size']!),

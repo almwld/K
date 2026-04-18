@@ -44,7 +44,7 @@ class _ProfilePictureStatusScreenState extends State<ProfilePictureStatusScreen>
           children: [
             GestureDetector(
               onTap: _pickAvatar,
-              child: CircleAvatar(radius: 42, backgroundColor: AppTheme.getCardColor(context), child: avatarUrl == null ? const Icon(Icons.camera_alt) : null),
+              child: CircleAvatar(radius: 42, backgroundColor: Theme.of(context).cardColor, child: avatarUrl == null ? const Icon(Icons.camera_alt) : null),
             ),
             const SizedBox(height: 12),
             TextField(controller: statusC, decoration: const InputDecoration(labelText: 'اكتب حالة يومية', border: OutlineInputBorder())),
@@ -63,13 +63,13 @@ class _ProfilePictureStatusScreenState extends State<ProfilePictureStatusScreen>
             const SizedBox(height: 12),
             Expanded(
               child: statuses.isEmpty
-                  ? Center(child: Text('لا توجد حالات', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))))
+                  ? Center(child: Text('لا توجد حالات', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)))
                   : ListView.separated(
                       itemCount: statuses.length,
                       separatorBuilder: (_, __) => const SizedBox(height: 8),
                       itemBuilder: (context, i) {
                         return ListTile(
-                          tileColor: AppTheme.getCardColor(context),
+                          tileColor: Theme.of(context).cardColor,
                           title: Text(statuses[i]),
                           trailing: IconButton(onPressed: () => _removeStatus(i), icon: const Icon(Icons.close, color: Colors.red)),
                         );

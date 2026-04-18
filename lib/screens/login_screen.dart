@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               // User Type Tabs
               Container(
                 decoration: BoxDecoration(
-                  color: isDark ? AppTheme.navyCard : Colors.grey[100],
+                  color: isDark ? AppTheme.darkCard : Colors.grey[100],
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TabBar(
@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
                       ),
                       validator: _validateIdentifier,
                     ),
@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
+                        fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {

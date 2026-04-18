@@ -179,7 +179,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     decoration: BoxDecoration(
-                      color: AppTheme.getCardColor(context),
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppTheme.goldAccent.withOpacity(0.3)),
                     ),
@@ -201,7 +201,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppTheme.goldAccent.withOpacity(0.3)),
                 ),
@@ -241,7 +241,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -303,7 +303,7 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

@@ -31,7 +31,7 @@ class AppearanceScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 RadioListTile<int>(
                   value: 0,
-                  groupValue: themeManager.isLightMode ? 0 : 1,
+                  groupValue: !themeManager.isDarkMode ? 0 : 1,
                   onChanged: (value) => themeManager.setThemeModeIndex(0),
                   title: const Text('الوضع النهاري'),
                   subtitle: const Text('مظهر كلاسيكي أنيق'),
@@ -39,7 +39,7 @@ class AppearanceScreen extends StatelessWidget {
                 ),
                 RadioListTile<int>(
                   value: 1,
-                  groupValue: themeManager.isLightMode ? 0 : 1,
+                  groupValue: !themeManager.isDarkMode ? 0 : 1,
                   onChanged: (value) => themeManager.setThemeModeIndex(1),
                   title: const Text('الوضع الداكن'),
                   subtitle: const Text('مظهر فاخر مع لمسات ذهبية'),

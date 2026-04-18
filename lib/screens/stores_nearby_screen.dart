@@ -24,7 +24,7 @@ class StoresNearbyScreen extends StatelessWidget {
         itemBuilder: (context, i) {
           final s = stores[i];
           return ListTile(
-            tileColor: AppTheme.getCardColor(context),
+            tileColor: Theme.of(context).cardColor,
             leading: const Icon(Icons.store),
             title: Text(s['name']!),
             subtitle: Text(s['distance']!),

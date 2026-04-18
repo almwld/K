@@ -60,7 +60,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                     decoration: BoxDecoration(
-                      color: isUser ? AppTheme.goldPrimary : AppTheme.getCardColor(context),
+                      color: isUser ? AppTheme.goldPrimary : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -79,7 +79,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
+              color: Theme.of(context).cardColor,
               border: Border(top: BorderSide(color: AppTheme.getDividerColor(context))),
             ),
             child: Row(

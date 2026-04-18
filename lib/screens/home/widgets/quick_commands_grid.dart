@@ -38,7 +38,7 @@ class QuickCommandsGrid extends StatelessWidget {
             onTap: () => onCommandSelected(cmd['command']),
             child: Container(
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context).withOpacity(0.8),
+                color: Theme.of(context).cardColor.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: Color(cmd['color']).withOpacity(0.5),

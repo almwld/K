@@ -198,7 +198,7 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
             const SizedBox(height: 16),
             Text(
               city['description'],
-              style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
             ),
             const SizedBox(height: 16),
             const Text(

@@ -30,7 +30,7 @@ class _WheelsInvestmentsScreenState extends State<WheelsInvestmentsScreen> {
           return Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -42,7 +42,7 @@ class _WheelsInvestmentsScreenState extends State<WheelsInvestmentsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('${it['price']} ر.ي', style: const TextStyle(color: AppTheme.goldPrimary, fontWeight: FontWeight.bold)),
-                    Text(it['chance'], style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                    Text(it['chance'], style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                     const SizedBox(height: 6),
                     ElevatedButton(
                       onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم المشاركة'))),

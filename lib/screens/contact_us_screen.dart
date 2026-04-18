@@ -75,7 +75,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.getCardColor(context),
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Color(method['color']).withOpacity(0.3)),
                     ),
@@ -99,7 +99,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Form(

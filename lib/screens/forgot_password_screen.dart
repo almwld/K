@@ -132,7 +132,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: isDark ? AppTheme.navyCard : Colors.grey[50],
+                      fillColor: isDark ? AppTheme.darkCard : Colors.grey[50],
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {

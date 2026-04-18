@@ -77,7 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [const Icon(Icons.store, color: AppTheme.goldPrimary, size: 18), const SizedBox(width: 8), Text(items.first.storeName, style: const TextStyle(fontWeight: FontWeight.bold))]),
         const SizedBox(height: 8),
@@ -91,7 +91,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget _buildAddressForm(bool isDark) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(children: [
         TextFormField(controller: _addressController, decoration: InputDecoration(labelText: 'العنوان التفصيلي', prefixIcon: const Icon(Icons.location_on, color: AppTheme.goldPrimary), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)), filled: true, fillColor: isDark ? AppTheme.darkCard : Colors.grey[50]), maxLines: 2, validator: (v) => v?.isEmpty == true ? 'مطلوب' : null),
         const SizedBox(height: 12),
@@ -105,7 +105,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget _buildDeliveryOptions(bool isDark) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(
         children: _deliveryOptions.map((option) {
           final isSelected = _selectedDelivery == option['id'];
@@ -128,7 +128,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(
         children: [
           _buildPaymentRadio('cash', 'نقداً عند الاستلام', Icons.money),
@@ -154,7 +154,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget _buildOrderSummary() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16)),
       child: Column(children: [
         _buildSummaryRow('المجموع الفرعي', '$subtotal ريال'),
         _buildSummaryRow('رسوم التوصيل', '$deliveryFee ريال'),
@@ -177,7 +177,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget _buildBottomBar(bool isDark) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -2))]),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -2))]),
       child: SafeArea(
         child: ElevatedButton(
           onPressed: _isLoading ? null : _placeOrder,

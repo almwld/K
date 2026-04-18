@@ -321,7 +321,7 @@ class _WalletScreenState extends State<WalletScreen> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -384,7 +384,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
-                    color: AppTheme.getCardColor(context),
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -468,7 +468,7 @@ class _WalletScreenState extends State<WalletScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(

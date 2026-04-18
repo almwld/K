@@ -33,7 +33,7 @@ class GamesScreen extends StatelessWidget {
 
   Widget _buildGameCard(BuildContext context, Map<String, dynamic> game) {
     return Container(
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(16),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16),
         boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2))]),
       child: Column(mainAxisAlignment: MainAxisAlignment.center,
         children: [

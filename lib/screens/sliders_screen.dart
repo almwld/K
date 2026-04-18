@@ -24,7 +24,7 @@ class SlidersScreen extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Center(

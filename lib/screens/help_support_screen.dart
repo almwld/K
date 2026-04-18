@@ -74,7 +74,7 @@ class HelpSupportScreen extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: ListTile(

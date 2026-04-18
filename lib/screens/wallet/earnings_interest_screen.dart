@@ -140,7 +140,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -186,7 +186,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
             title,
             style: TextStyle(
               fontSize: 12,
-              color: AppTheme.getSecondaryTextColor(context),
+              color: Theme.of(context).textTheme.bodyMedium!.color,
             ),
           ),
           const SizedBox(height: 4),
@@ -223,7 +223,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -303,7 +303,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
           margin: const EdgeInsets.all(16),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.getCardColor(context),
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
           ),
           child: BarChart(
@@ -377,7 +377,7 @@ class _EarningsInterestScreenState extends State<EarningsInterestScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(

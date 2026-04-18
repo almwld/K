@@ -87,7 +87,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -218,7 +218,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: PieChart(
@@ -247,7 +247,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: BarChart(
@@ -309,7 +309,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -367,7 +367,7 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(

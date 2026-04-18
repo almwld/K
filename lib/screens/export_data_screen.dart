@@ -86,7 +86,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                   Expanded(
                     child: Text(
                       'قم بتصدير بياناتك الشخصية (المنتجات، الطلبات، الملف الشخصي) بتنسيق مختلف',
-                      style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
+                      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
                     ),
                   ),
                 ],
@@ -100,7 +100,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -166,7 +166,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -205,7 +205,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                   Expanded(
                     child: Text(
                       'بياناتك آمنة ومشفرة. يتم تصدير البيانات بشكل آمن.',
-                      style: TextStyle(fontSize: 12, color: AppTheme.getSecondaryTextColor(context)),
+                      style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodyMedium!.color),
                     ),
                   ),
                 ],

@@ -61,7 +61,7 @@ class SellerDashboard extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
@@ -81,7 +81,7 @@ class SellerDashboard extends StatelessWidget {
                 Text(
                   stat['title'] as String,
                   style: TextStyle(
-                    color: AppTheme.getSecondaryTextColor(context),
+                    color: Theme.of(context).textTheme.bodyMedium!.color,
                   ),
                 ),
               ],
@@ -183,7 +183,7 @@ class SellerDashboard extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -212,7 +212,7 @@ class SellerDashboard extends StatelessWidget {
                           order['id'] as String,
                           style: TextStyle(
                             fontSize: 12,
-                            color: AppTheme.getSecondaryTextColor(context),
+                            color: Theme.of(context).textTheme.bodyMedium!.color,
                           ),
                         ),
                       ],

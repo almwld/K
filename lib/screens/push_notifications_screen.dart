@@ -62,7 +62,7 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.getCardColor(context),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(16),
                         border: notification['read'] ? null : Border.all(color: AppTheme.goldPrimary, width: 1),
                       ),

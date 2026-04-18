@@ -29,7 +29,7 @@ class ThemeSelectionScreen extends StatelessWidget {
             title: 'الوضع النهاري',
             subtitle: 'مظهر كلاسيكي أنيق',
             icon: Icons.light_mode,
-            isSelected: themeManager.isLightMode,
+            isSelected: !themeManager.isDarkMode,
             onTap: () => themeManager.setThemeModeIndex(0),
           ),
         ],

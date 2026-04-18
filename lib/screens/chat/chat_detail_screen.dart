@@ -73,7 +73,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  decoration: BoxDecoration(color: AppTheme.primaryBlue, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: AppTheme.serviceBlue, shape: BoxShape.circle),
                   child: IconButton(onPressed: _sendMessage, icon: const Icon(Icons.send, color: Colors.white)),
                 ),
               ],
@@ -91,7 +91,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: message['isMe'] ? AppTheme.primaryBlue : Colors.grey[300],
+          color: message['isMe'] ? AppTheme.serviceBlue : Colors.grey[300],
           borderRadius: BorderRadius.only(topLeft: const Radius.circular(20), topRight: const Radius.circular(20), bottomLeft: Radius.circular(message['isMe'] ? 20 : 5), bottomRight: Radius.circular(message['isMe'] ? 5 : 20)),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [Text(message['text'], style: TextStyle(color: message['isMe'] ? Colors.white : Colors.black87)), const SizedBox(height: 4), Text(message['time'], style: TextStyle(fontSize: 10, color: message['isMe'] ? Colors.white70 : Colors.grey[600]))]),

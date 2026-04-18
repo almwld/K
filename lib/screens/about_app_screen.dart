@@ -41,7 +41,7 @@ class AboutAppScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -58,7 +58,7 @@ class AboutAppScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -81,7 +81,7 @@ class AboutAppScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -110,7 +110,7 @@ class AboutAppScreen extends StatelessWidget {
             const SizedBox(height: 32),
             Text(
               '© 2026 Flex Yemen. جميع الحقوق محفوظة',
-              style: TextStyle(color: AppTheme.getSecondaryTextColor(context), fontSize: 12),
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color, fontSize: 12),
             ),
           ],
         ),

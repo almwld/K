@@ -108,9 +108,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             setState(() => _currentIndex = index);
           },
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            SvgPicture.asset(iconPath, width: 24, height: 24, colorFilter: ColorFilter.mode(isSelected ? AppTheme.primaryBlue : AppTheme.textMuted, BlendMode.srcIn)),
+            SvgPicture.asset(iconPath, width: 24, height: 24, colorFilter: ColorFilter.mode(isSelected ? AppTheme.serviceBlue : Colors.grey, BlendMode.srcIn)),
             const SizedBox(height: 4),
-            Text(label, style: TextStyle(fontSize: 10, color: isSelected ? AppTheme.primaryBlue : AppTheme.textMuted)),
+            Text(label, style: TextStyle(fontSize: 10, color: isSelected ? AppTheme.serviceBlue : Colors.grey)),
           ]),
         ),
       ),
@@ -130,7 +130,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                 angle: _rotationAnimation.value * 3.14159 * 2,
                 child: Container(
                   width: 56, height: 56,
-                  decoration: BoxDecoration(color: AppTheme.primaryBlue, shape: BoxShape.circle, boxShadow: [BoxShadow(color: AppTheme.primaryBlue.withOpacity(0.4), blurRadius: 15)]),
+                  decoration: BoxDecoration(color: AppTheme.serviceBlue, shape: BoxShape.circle, boxShadow: [BoxShadow(color: AppTheme.serviceBlue.withOpacity(0.4), blurRadius: 15)]),
                   child: Icon(_isExpanded ? Icons.close : Icons.add, color: Colors.white, size: 30),
                 ),
               );
@@ -145,9 +145,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     return GestureDetector(
       onTap: onTap,
       child: Column(children: [
-        Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.primaryBlue.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.primaryBlue, size: 32)),
+        Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppTheme.serviceBlue.withOpacity(0.1), shape: BoxShape.circle), child: Icon(icon, color: AppTheme.serviceBlue, size: 32)),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14, fontWeight: FontWeight.w500)),
+        Text(label, style: const TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: 14, fontWeight: FontWeight.w500)),
       ]),
     );
   }

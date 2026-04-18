@@ -123,7 +123,7 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
       ),

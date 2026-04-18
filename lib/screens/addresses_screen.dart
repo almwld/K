@@ -118,7 +118,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.getCardColor(context),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Form(
@@ -189,7 +189,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                               const SizedBox(height: 16),
                               const Text('لا توجد عناوين', style: TextStyle(fontSize: 18)),
                               const SizedBox(height: 8),
-                              Text('أضف عنواناً جديداً', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                              Text('أضف عنواناً جديداً', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                             ],
                           ),
                         )
@@ -202,7 +202,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                               margin: const EdgeInsets.only(bottom: 12),
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: AppTheme.getCardColor(context),
+                                color: Theme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(16),
                                 border: address['isDefault'] ? Border.all(color: AppTheme.goldPrimary, width: 2) : null,
                               ),

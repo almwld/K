@@ -24,7 +24,7 @@ class ProductRecommendationsScreen extends StatelessWidget {
         itemBuilder: (context, i) {
           final r = recs[i];
           return Container(
-            decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)),
             padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

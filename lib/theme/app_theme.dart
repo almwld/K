@@ -85,11 +85,13 @@ class AppTheme {
       brightness: Brightness.dark,
       scaffoldBackgroundColor: darkBackground,
       primaryColor: goldPrimary,
+      cardColor: darkCard,
       fontFamily: 'Cairo',
       colorScheme: const ColorScheme.dark(
         primary: goldPrimary,
         secondary: goldLight,
         surface: darkSurface,
+        surfaceContainer: darkCard,
         background: darkBackground,
         onPrimary: Colors.black,
         onSecondary: Colors.black,
@@ -302,11 +304,13 @@ class AppTheme {
       brightness: Brightness.light,
       scaffoldBackgroundColor: lightBackground,
       primaryColor: goldDark,
+      cardColor: lightCard,
       fontFamily: 'Cairo',
       colorScheme: const ColorScheme.light(
         primary: goldDark,
         secondary: goldPrimary,
         surface: lightSurface,
+        surfaceContainer: lightCard,
         background: lightBackground,
         onPrimary: Colors.white,
         onSecondary: Colors.black,
@@ -513,37 +517,12 @@ class AppTheme {
   }
 }
 
-/// Extension للتوافق مع الكود القديم فقط
-/// يمكن حذف هذا الجزء بعد تحديث جميع الملفات
-extension LegacyAppTheme on AppTheme {
-  // ألوان قديمة
-  static const Color primaryBlue = Color(0xFF2196F3);
-  static const Color navyCard = Color(0xFF1E2A47);
-  static const Color textMuted = Color(0xFF757575);
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color priceColor = Color(0xFF4CAF50);
-  
-  // دوال قديمة
-  static Color getCardColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? AppTheme.darkCard 
-        : AppTheme.lightCard;
-  }
-  
-  static Color getSecondaryTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? Colors.white70 
-        : const Color(0xFF666666);
-  }
-}
-
 /// Theme Manager with Provider
 class ThemeManager extends ChangeNotifier {
   static const String _themeKey = 'is_dark_mode';
   bool _isDarkMode = true;
 
   bool get isDarkMode => _isDarkMode;
-  bool get isLightMode => !_isDarkMode;  // ✅ للتوافق
 
   ThemeManager() {
     _loadTheme();
@@ -577,7 +556,4 @@ class ThemeManager extends ChangeNotifier {
   }
 
   ThemeData get currentTheme => _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
-  
-  // ✅ للتوافق مع profile_screen.dart
-  Color get primaryColor => _isDarkMode ? AppTheme.goldPrimary : AppTheme.goldDark;
 }

@@ -201,7 +201,7 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
           margin: const EdgeInsets.all(24),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppTheme.getCardColor(context),
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(

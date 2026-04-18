@@ -118,7 +118,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.getCardColor(context),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Form(
@@ -228,7 +228,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                               const SizedBox(height: 16),
                               const Text('لا توجد طرق دفع محفوظة', style: TextStyle(fontSize: 18)),
                               const SizedBox(height: 8),
-                              Text('أضف بطاقة ائتمانية أو محفظة', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                              Text('أضف بطاقة ائتمانية أو محفظة', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                             ],
                           ),
                         )
@@ -241,7 +241,7 @@ class _SavedPaymentMethodsScreenState extends State<SavedPaymentMethodsScreen> {
                               margin: const EdgeInsets.only(bottom: 12),
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: AppTheme.getCardColor(context),
+                                color: Theme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(16),
                                 border: method['isDefault'] ? Border.all(color: AppTheme.goldPrimary, width: 2) : null,
                               ),

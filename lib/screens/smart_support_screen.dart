@@ -178,7 +178,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
                           maxWidth: MediaQuery.of(context).size.width * 0.75,
                         ),
                         decoration: BoxDecoration(
-                          color: isUser ? AppTheme.goldPrimary : AppTheme.getCardColor(context),
+                          color: isUser ? AppTheme.goldPrimary : Theme.of(context).cardColor,
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(12),
                             topRight: const Radius.circular(12),
@@ -250,7 +250,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
+              color: Theme.of(context).cardColor,
               border: Border(top: BorderSide(color: AppTheme.getDividerColor(context))),
             ),
             child: Row(
@@ -296,7 +296,7 @@ class _SmartSupportScreenState extends State<SmartSupportScreen> {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

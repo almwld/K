@@ -50,7 +50,7 @@ class SecurityPolicyScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'آخر تحديث: مارس 2026',
-              style: TextStyle(color: AppTheme.getSecondaryTextColor(context), fontSize: 12),
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color, fontSize: 12),
             ),
           ],
         ),

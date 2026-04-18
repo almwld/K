@@ -33,10 +33,10 @@ class AdCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
           border: isFeatured
-              ? Border.all(color: AppTheme.goldColor.withOpacity(0.5), width: 2)
+              ? Border.all(color: AppTheme.goldPrimary.withOpacity(0.5), width: 2)
               : null,
         ),
         child: Column(
@@ -48,7 +48,7 @@ class AdCard extends StatelessWidget {
                 Container(
                   height: 150,
                   decoration: BoxDecoration(
-                    color: AppTheme.goldColor.withOpacity(0.1),
+                    color: AppTheme.goldPrimary.withOpacity(0.1),
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: imageUrl != null
@@ -59,10 +59,10 @@ class AdCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             errorBuilder: (context, error, stackTrace) =>
-                                const Center(child: Icon(Icons.image, color: AppTheme.goldColor, size: 50)),
+                                const Center(child: Icon(Icons.image, color: AppTheme.goldPrimary, size: 50)),
                           ),
                         )
-                      : const Center(child: Icon(Icons.image, color: AppTheme.goldColor, size: 50)),
+                      : const Center(child: Icon(Icons.image, color: AppTheme.goldPrimary, size: 50)),
                 ),
                 if (isFeatured)
                   Positioned(
@@ -72,7 +72,7 @@ class AdCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [AppTheme.goldColor, AppTheme.goldLight],
+                          colors: [AppTheme.goldPrimary, AppTheme.goldLight],
                         ),
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -127,7 +127,7 @@ class AdCard extends StatelessWidget {
                   Text(
                     '${price.toStringAsFixed(0)} ر.ي',
                     style: const TextStyle(
-                      color: AppTheme.goldColor,
+                      color: AppTheme.goldPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -136,7 +136,7 @@ class AdCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 14, color: AppTheme.getSecondaryTextColor(context)),
+                        Icon(Icons.location_on, size: 14, color: Theme.of(context).textTheme.bodyMedium!.color),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
@@ -145,7 +145,7 @@ class AdCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 12,
-                              color: AppTheme.getSecondaryTextColor(context),
+                              color: Theme.of(context).textTheme.bodyMedium!.color,
                             ),
                           ),
                         ),
@@ -171,7 +171,7 @@ class AdCard extends StatelessWidget {
                             '($reviewCount)',
                             style: TextStyle(
                               fontSize: 12,
-                              color: AppTheme.getSecondaryTextColor(context),
+                              color: Theme.of(context).textTheme.bodyMedium!.color,
                             ),
                           ),
                         ],
@@ -212,7 +212,7 @@ class AdCardHorizontal extends StatelessWidget {
         width: 200,
         margin: const EdgeInsets.only(left: 12),
         decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -221,7 +221,7 @@ class AdCardHorizontal extends StatelessWidget {
             Container(
               height: 120,
               decoration: BoxDecoration(
-                color: AppTheme.goldColor.withOpacity(0.1),
+                color: AppTheme.goldPrimary.withOpacity(0.1),
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               ),
               child: imageUrl != null
@@ -233,7 +233,7 @@ class AdCardHorizontal extends StatelessWidget {
                         width: double.infinity,
                       ),
                     )
-                  : const Center(child: Icon(Icons.image, color: AppTheme.goldColor, size: 40)),
+                  : const Center(child: Icon(Icons.image, color: AppTheme.goldPrimary, size: 40)),
             ),
             Padding(
               padding: const EdgeInsets.all(12),
@@ -254,7 +254,7 @@ class AdCardHorizontal extends StatelessWidget {
                   Text(
                     '${price.toStringAsFixed(0)} ر.ي',
                     style: const TextStyle(
-                      color: AppTheme.goldColor,
+                      color: AppTheme.goldPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),

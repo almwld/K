@@ -53,7 +53,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   padding: const EdgeInsets.all(20),
                   margin: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppTheme.getCardColor(context),
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -77,7 +77,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                               }),
                             ),
                             const SizedBox(height: 8),
-                            Text('${_reviews.length} تقييم', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                            Text('${_reviews.length} تقييم', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                           ],
                         ),
                       ),
@@ -114,7 +114,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppTheme.getCardColor(context),
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Column(

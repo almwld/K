@@ -99,11 +99,11 @@ class TermsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'البريد الإلكتروني: support@flexyemen.com',
-                    style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
                   ),
                   Text(
                     'الهاتف: 777777777',
-                    style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
                   ),
                 ],
               ),
@@ -114,7 +114,7 @@ class TermsScreen extends StatelessWidget {
                 'آخر تحديث: 1 يناير 2024',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppTheme.getSecondaryTextColor(context),
+                  color: Theme.of(context).textTheme.bodyMedium!.color,
                 ),
               ),
             ),

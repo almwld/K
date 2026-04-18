@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
           appBar: AppBar(
             title: const Text('فلكس يمن', style: TextStyle(fontWeight: FontWeight.bold)),
-            backgroundColor: AppTheme.primaryBlue,
+            backgroundColor: AppTheme.serviceBlue,
             foregroundColor: Colors.white,
             centerTitle: true,
             elevation: 0,
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: _loadData,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.serviceBlue,
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           height: 400,
                           margin: const EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
-                            color: AppTheme.getCardColor(context),
+                            color: Theme.of(context).cardColor,
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
                           ),
@@ -229,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             return Container(
               width: 8, height: 8,
               margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(shape: BoxShape.circle, color: _currentCarouselIndex == e.key ? AppTheme.primaryBlue : Colors.grey.withOpacity(0.5)),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: _currentCarouselIndex == e.key ? AppTheme.serviceBlue : Colors.grey.withOpacity(0.5)),
             );
           }).toList(),
         ),
@@ -268,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())), child: Text('عرض الكل', style: TextStyle(color: AppTheme.primaryBlue))),
+          TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen())), child: Text('عرض الكل', style: TextStyle(color: AppTheme.serviceBlue))),
         ],
       ),
     );
@@ -355,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(16)), child: ShimmerImage(imageUrl: product.imageUrl, height: 130, width: double.infinity)),
-                Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product.name, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text(product.formattedPrice, style: TextStyle(color: AppTheme.priceColor, fontWeight: FontWeight.bold, fontSize: 14))])),
+                Padding(padding: const EdgeInsets.all(8), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product.name, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)), const SizedBox(height: 4), Text(product.formattedPrice, style: TextStyle(color: AppTheme.success, fontWeight: FontWeight.bold, fontSize: 14))])),
               ],
             ),
           ),

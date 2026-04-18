@@ -74,7 +74,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                         Container(
                           width: 50, height: 50,
                           decoration: BoxDecoration(
-                            color: isSelected ? Color(type['color']) : AppTheme.getCardColor(context),
+                            color: isSelected ? Color(type['color']) : Theme.of(context).cardColor,
                             shape: BoxShape.circle,
                             border: Border.all(color: Color(type['color'])),
                           ),
@@ -118,7 +118,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                   child: Container(
                     height: 120,
                     decoration: BoxDecoration(
-                      color: AppTheme.getCardColor(context),
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
                     ),
@@ -159,7 +159,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                     Expanded(
                       child: Text(
                         'سيتم الرد على بلاغك خلال 24 ساعة. نشكرك على مساعدتنا في تحسين المنصة.',
-                        style: TextStyle(fontSize: 12, color: AppTheme.getSecondaryTextColor(context)),
+                        style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodyMedium!.color),
                       ),
                     ),
                   ],

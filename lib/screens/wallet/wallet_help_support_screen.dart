@@ -128,7 +128,7 @@ class _WalletHelpSupportScreenState extends State<WalletHelpSupportScreen> {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: AppTheme.getCardColor(context),
+      color: Theme.of(context).cardColor,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
@@ -141,7 +141,7 @@ class _WalletHelpSupportScreenState extends State<WalletHelpSupportScreen> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 faq['answer'],
-                style: TextStyle(color: AppTheme.getSecondaryTextColor(context)),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
               ),
             ),
           ],

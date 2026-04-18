@@ -165,7 +165,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
               ),
@@ -243,7 +243,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
                 if (isUser) {
                   bgColor = AppTheme.goldPrimary;
                 } else if (isAI) {
-                  bgColor = AppTheme.getCardColor(context);
+                  bgColor = Theme.of(context).cardColor;
                 } else if (isSeller) {
                   bgColor = Colors.green.withOpacity(0.1);
                 } else {
@@ -355,7 +355,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.getCardColor(context),
+              color: Theme.of(context).cardColor,
               border: Border(top: BorderSide(color: AppTheme.getDividerColor(context))),
             ),
             child: Row(
@@ -401,7 +401,7 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

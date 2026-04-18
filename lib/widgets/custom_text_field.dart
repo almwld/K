@@ -48,7 +48,7 @@ class CustomTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         filled: true,
-        fillColor: AppTheme.getCardColor(context),
+        fillColor: Theme.of(context).cardColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -59,7 +59,7 @@ class CustomTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppTheme.goldColor, width: 2),
+          borderSide: const BorderSide(color: AppTheme.goldPrimary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -106,7 +106,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       suffixIcon: IconButton(
         icon: Icon(
           _obscureText ? Icons.visibility_off : Icons.visibility,
-          color: AppTheme.getSecondaryTextColor(context),
+          color: Theme.of(context).textTheme.bodyMedium!.color,
         ),
         onPressed: () => setState(() => _obscureText = !_obscureText),
       ),

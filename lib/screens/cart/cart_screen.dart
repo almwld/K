@@ -51,7 +51,7 @@ class CartScreen extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [const Icon(Icons.store, color: AppTheme.goldPrimary), const SizedBox(width: 8), Text(storeName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16))]),
             const SizedBox(height: 12),
@@ -98,7 +98,7 @@ class CartScreen extends StatelessWidget {
   Widget _buildBottomBar(BuildContext context, CartProvider cartProvider) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppTheme.getCardColor(context), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -2))]),
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -2))]),
       child: SafeArea(
         child: Row(children: [
           Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text('الإجمالي', style: TextStyle(color: Colors.grey[600])), Text('${cartProvider.total.toStringAsFixed(2)} ريال', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.goldPrimary))]),

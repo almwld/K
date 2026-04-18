@@ -57,7 +57,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -163,7 +163,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
                     });
                   },
                   selectedColor: AppTheme.goldPrimary,
-                  backgroundColor: AppTheme.getCardColor(context),
+                  backgroundColor: Theme.of(context).cardColor,
                   labelStyle: TextStyle(color: isSelected ? Colors.black : null),
                 );
               }).toList(),
@@ -176,7 +176,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
               child: Container(
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.getCardColor(context),
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppTheme.goldPrimary.withOpacity(0.3)),
                 ),

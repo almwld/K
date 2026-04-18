@@ -58,7 +58,7 @@ class _SellerReviewScreenState extends State<SellerReviewScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.getCardColor(context),
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -126,7 +126,7 @@ class _SellerReviewScreenState extends State<SellerReviewScreen> {
                   },
                   avatar: Icon(aspect['icon'], size: 18, color: isSelected ? Colors.black : Color(aspect['color'])),
                   selectedColor: Color(aspect['color']),
-                  backgroundColor: AppTheme.getCardColor(context),
+                  backgroundColor: Theme.of(context).cardColor,
                   labelStyle: TextStyle(color: isSelected ? Colors.black : null),
                 );
               }).toList(),

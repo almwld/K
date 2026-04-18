@@ -70,7 +70,7 @@ class _FaqScreenState extends State<FaqScreen> {
                 hintText: 'ابحث في الأسئلة...',
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
-                fillColor: AppTheme.getCardColor(context),
+                fillColor: Theme.of(context).cardColor,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               ),
             ),
@@ -131,7 +131,7 @@ class _FaqScreenState extends State<FaqScreen> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(16),
-                              child: Text(faq['answer'], style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                              child: Text(faq['answer'], style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                             ),
                           ],
                         ),

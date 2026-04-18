@@ -103,7 +103,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       appBar: SimpleAppBar(
         title: 'المساعد الذكي',
-        backgroundColor: themeManager.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
             onPressed: () {
@@ -122,7 +122,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
         children: [
           Expanded(
             child: _messages.isEmpty
-                ? _buildSuggestions(themeManager.primaryColor)
+                ? _buildSuggestions(Theme.of(context).primaryColor)
                 : ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(16),
@@ -130,7 +130,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                     itemBuilder: (context, index) {
                       return _buildMessageBubble(
                         _messages[index],
-                        themeManager.primaryColor,
+                        Theme.of(context).primaryColor,
                       );
                     },
                   ),
@@ -146,7 +146,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: themeManager.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -157,7 +157,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                 ],
               ),
             ),
-          _buildMessageInput(themeManager.primaryColor),
+          _buildMessageInput(Theme.of(context).primaryColor),
         ],
       ),
     );

@@ -163,13 +163,13 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: TabBar(
         controller: _tabController,
         labelColor: AppTheme.goldPrimary,
-        unselectedLabelColor: AppTheme.getSecondaryTextColor(context),
+        unselectedLabelColor: Theme.of(context).textTheme.bodyMedium!.color,
         indicator: BoxDecoration(
           color: AppTheme.goldPrimary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
@@ -230,7 +230,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(

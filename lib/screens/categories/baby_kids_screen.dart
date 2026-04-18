@@ -33,7 +33,7 @@ class BabyKidsScreen extends StatelessWidget {
             Text(
               'سيتم إضافة منتجات هذا القسم قريباً',
               style: TextStyle(
-                color: AppTheme.getSecondaryTextColor(context),
+                color: Theme.of(context).textTheme.bodyMedium!.color,
               ),
             ),
           ],

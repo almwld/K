@@ -21,7 +21,7 @@ class CategoriesScreen extends StatelessWidget {
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/category', arguments: categories[i]),
             child: Container(
-              decoration: BoxDecoration(color: AppTheme.getCardColor(context), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12)),
               child: Center(child: Text(categories[i], textAlign: TextAlign.center)),
             ),
           );

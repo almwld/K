@@ -59,7 +59,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                       const SizedBox(height: 16),
                       const Text('لا تتابع أي بائع', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
-                      Text('تابع البائعين لترى إعلاناتهم', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+                      Text('تابع البائعين لترى إعلاناتهم', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () => Navigator.pushNamed(context, '/all_ads'),
@@ -78,7 +78,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.getCardColor(context),
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(

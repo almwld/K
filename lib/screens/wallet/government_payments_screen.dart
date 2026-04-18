@@ -67,7 +67,7 @@ class _GovernmentPaymentsScreenState extends State<GovernmentPaymentsScreen> {
               onTap: () => setState(() => _selectedService = service['id']),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.getCardColor(context),
+                  color: isSelected ? AppTheme.goldAccent.withOpacity(0.1) : Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected ? AppTheme.goldAccent : Colors.grey.withOpacity(0.2),

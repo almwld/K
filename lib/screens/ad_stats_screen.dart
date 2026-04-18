@@ -19,7 +19,7 @@ class AdStatsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Text('إحصائيات الإعلان', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text('سيتم إضافة هذه الميزة قريباً', style: TextStyle(color: AppTheme.getSecondaryTextColor(context))),
+            Text('سيتم إضافة هذه الميزة قريباً', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color)),
           ],
         ),
       ),

@@ -41,7 +41,7 @@ class _MapNearbyScreenState extends State<MapNearbyScreen> {
                     onChanged: (v) => setState(() => filter = v ?? 'كل الأماكن'),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: AppTheme.getCardColor(context),
+                      fillColor: Theme.of(context).cardColor,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     ),
@@ -64,7 +64,7 @@ class _MapNearbyScreenState extends State<MapNearbyScreen> {
               itemBuilder: (context, i) {
                 final p = places[i];
                 return ListTile(
-                  tileColor: AppTheme.getCardColor(context),
+                  tileColor: Theme.of(context).cardColor,
                   leading: const Icon(Icons.location_on),
                   title: Text(p['name']!),
                   subtitle: Text('${p['type']} • ${p['distance']}'),

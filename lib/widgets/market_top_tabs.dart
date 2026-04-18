@@ -44,17 +44,17 @@ class _MarketTopTabsState extends State<MarketTopTabs> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppTheme.goldColor.withOpacity(0.1) : Colors.transparent,
+                    color: isSelected ? AppTheme.goldPrimary.withOpacity(0.1) : Colors.transparent,
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: isSelected ? AppTheme.goldColor : Colors.grey.shade300,
+                      color: isSelected ? AppTheme.goldPrimary : Colors.grey.shade300,
                       width: 1,
                     ),
                   ),
                   child: Text(
                     tab,
                     style: TextStyle(
-                      color: isSelected ? AppTheme.goldColor : Colors.grey.shade700,
+                      color: isSelected ? AppTheme.goldPrimary : Colors.grey.shade700,
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       fontSize: 12,
                     ),
