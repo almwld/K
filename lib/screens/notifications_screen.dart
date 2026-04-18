@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import '../theme/app_theme.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
@@ -9,15 +7,14 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const SimpleAppBar(title: 'الإشعارات'),
+      appBar: AppBar(title: const Text('الإشعارات')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.notifications_off_outlined, size: 80, color: Colors.grey[400]),
+            Icon(Icons.notifications_outlined, size: 80, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            Text('لا توجد إشعارات حالياً', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+            Text('لا توجد إشعارات', style: TextStyle(fontSize: 18, color: Colors.grey[600], fontFamily: 'Changa')),
           ],
         ),
       ),
