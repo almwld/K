@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// الثيم الرئيسي للتطبيق - Flex Yemen
 class AppTheme {
@@ -16,6 +17,17 @@ class AppTheme {
   static const Color success = Color(0xFF2ECC71);
   static const Color warning = Color(0xFFF39C12);
   static const Color info = Color(0xFF3498DB);
+
+  // ✅ ألوان الخدمات
+  static const Color serviceBlue = Color(0xFF2196F3);
+  static const Color serviceOrange = Color(0xFFFF9800);
+  static const Color serviceRed = Color(0xFFE53935);
+  static const Color serviceGreen = Color(0xFF4CAF50);
+  static const Color servicePurple = Color(0xFF9C27B0);
+  static const Color serviceTeal = Color(0xFF009688);
+  static const Color servicePink = Color(0xFFE91E63);
+  static const Color serviceIndigo = Color(0xFF3F51B5);
+  static const Color serviceAmber = Color(0xFFFFC107);
 
   // الخلفيات الداكنة
   static const Color darkBackground = Color(0xFF121212);
@@ -197,6 +209,7 @@ class AppTheme {
 
 /// مدير الثيم
 class ThemeManager extends ChangeNotifier {
+  static const String _themeKey = 'is_dark_mode';
   bool _isDarkMode = true;
   bool get isDarkMode => _isDarkMode;
 
@@ -205,17 +218,46 @@ class ThemeManager extends ChangeNotifier {
   }
 
   Future<void> _loadTheme() async {
-    _isDarkMode = true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _isDarkMode = prefs.getBool(_themeKey) ?? true;
+    } catch (e) {
+      _isDarkMode = true;
+    }
     notifyListeners();
   }
 
   Future<void> toggleTheme() async {
     _isDarkMode = !_isDarkMode;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_themeKey, _isDarkMode);
+    } catch (e) {
+      // ignore
+    }
     notifyListeners();
   }
 
   Future<void> setDarkMode(bool value) async {
     _isDarkMode = value;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_themeKey, _isDarkMode);
+    } catch (e) {
+      // ignore
+    }
+    notifyListeners();
+  }
+
+  // ✅ للتوافق مع الكود القديم
+  Future<void> setThemeModeIndex(int index) async {
+    _isDarkMode = index == 1;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_themeKey, _isDarkMode);
+    } catch (e) {
+      // ignore
+    }
     notifyListeners();
   }
 
