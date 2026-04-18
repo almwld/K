@@ -28,7 +28,7 @@ class AppTheme {
   static const Color serviceRed = Color(0xFFE53935);
   static const Color serviceGreen = Color(0xFF4CAF50);
 
-  // ✅ دوال مساعدة
+  // دوال مساعدة
   static Color getCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
         ? nightCard 
@@ -39,6 +39,18 @@ class AppTheme {
     return Theme.of(context).brightness == Brightness.dark 
         ? Colors.white70 
         : Colors.black54;
+  }
+
+  static Color getTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? Colors.white 
+        : Colors.black87;
+  }
+
+  static Color getDividerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? const Color(0xFF3C3C3C) 
+        : const Color(0xFFE0E0E0);
   }
 
   static LinearGradient get goldGradient => const LinearGradient(
@@ -68,78 +80,21 @@ class AppTheme {
       fontFamily: 'Changa',
       colorScheme: scheme,
       scaffoldBackgroundColor: scheme.background,
-
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface.withOpacity(0.95),
         foregroundColor: scheme.onSurface,
         elevation: 0,
         centerTitle: true,
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        titleTextStyle: const TextStyle(
-          fontFamily: 'Changa',
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+        titleTextStyle: const TextStyle(fontFamily: 'Changa', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         iconTheme: const IconThemeData(color: gold),
       ),
-
       cardTheme: CardTheme(
         color: nightCard,
         elevation: 6,
         shadowColor: Colors.black.withOpacity(0.3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: BorderSide(color: gold.withOpacity(0.08)),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: gold.withOpacity(0.08))),
       ),
-
-      textTheme: const TextTheme(
-        titleLarge: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: Colors.white),
-        titleMedium: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w600, color: Colors.white),
-        bodyLarge: TextStyle(fontFamily: 'Changa', color: Colors.white),
-        bodyMedium: TextStyle(fontFamily: 'Changa', color: Colors.white70),
-      ),
-
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: nightSurface,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: gold, width: 2),
-        ),
-        hintStyle: const TextStyle(fontFamily: 'Changa', color: Colors.white54),
-        labelStyle: const TextStyle(fontFamily: 'Changa', color: Colors.white70),
-      ),
-
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: gold,
-          foregroundColor: Colors.black,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          textStyle: const TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: nightSurface,
-        selectedItemColor: gold,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: TextStyle(fontFamily: 'Changa', fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontFamily: 'Changa', fontSize: 11),
-      ),
-
       splashColor: gold.withOpacity(0.2),
       highlightColor: gold.withOpacity(0.1),
     );
@@ -166,93 +121,17 @@ class AppTheme {
       fontFamily: 'Changa',
       colorScheme: scheme,
       scaffoldBackgroundColor: scheme.background,
-
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface.withOpacity(0.95),
         foregroundColor: scheme.onSurface,
         elevation: 0,
         centerTitle: true,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleTextStyle: const TextStyle(
-          fontFamily: 'Changa',
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
+        titleTextStyle: const TextStyle(fontFamily: 'Changa', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
         iconTheme: const IconThemeData(color: goldDark),
       ),
-
-      cardTheme: CardTheme(
-        color: lightCard,
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-      ),
-
-      textTheme: const TextTheme(
-        titleLarge: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: Colors.black),
-        titleMedium: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w600, color: Colors.black),
-        bodyLarge: TextStyle(fontFamily: 'Changa', color: Colors.black87),
-        bodyMedium: TextStyle(fontFamily: 'Changa', color: Colors.black54),
-      ),
-
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: lightCard,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: goldDark, width: 2),
-        ),
-        hintStyle: const TextStyle(fontFamily: 'Changa', color: Colors.black45),
-        labelStyle: const TextStyle(fontFamily: 'Changa', color: Colors.black54),
-      ),
-
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: goldDark,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          textStyle: const TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: lightSurface,
-        selectedItemColor: goldDark,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: TextStyle(fontFamily: 'Changa', fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontFamily: 'Changa', fontSize: 11),
-      ),
-
       splashColor: goldDark.withOpacity(0.2),
       highlightColor: goldDark.withOpacity(0.1),
     );
-  }
-}
-
-// دوال إضافية
-  // دوال مساعدة
-  static Color getTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? Colors.white 
-        : Colors.black87;
-  }
-
-  static Color getDividerColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark 
-        ? const Color(0xFF3C3C3C) 
-        : const Color(0xFFE0E0E0);
   }
 }

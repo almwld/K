@@ -110,7 +110,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 builder: (context, child) {
                   return Transform.rotate(
                     angle: _themeRotationAnimation.value * 3.14159 * 2,
-                    child: IconButton(onPressed: () {},onPressed: () {},
                       icon: Icon(themeManager.isDarkMode ? Icons.light_mode : Icons.dark_mode, color: Colors.white),
                     ),
                   );

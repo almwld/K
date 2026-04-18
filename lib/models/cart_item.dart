@@ -36,4 +36,32 @@ class CartItem {
       stockQuantity: stockQuantity,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'productId': productId,
+      'productName': productName,
+      'imageUrl': imageUrl,
+      'price': price,
+      'quantity': quantity,
+      'vendorId': vendorId,
+      'vendorName': vendorName,
+      'stockQuantity': stockQuantity,
+    };
+  }
+
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      id: json['id'] ?? '',
+      productId: json['productId'] ?? '',
+      productName: json['productName'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      quantity: json['quantity'] ?? 1,
+      vendorId: json['vendorId'] ?? '',
+      vendorName: json['vendorName'] ?? '',
+      stockQuantity: json['stockQuantity'] ?? 0,
+    );
+  }
 }
