@@ -36,13 +36,11 @@ jobs:
       - name: Create gradle.properties
         run: |
           cat > android/gradle.properties << 'EOF'
-          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError
+          org.gradle.jvmargs=-Xmx4g
           org.gradle.parallel=true
           org.gradle.caching=true
-          org.gradle.daemon=true
           android.useAndroidX=true
           android.enableJetifier=true
-          android.enableR8.fullMode=false
           EOF
 
       - name: Create settings.gradle
@@ -129,7 +127,7 @@ jobs:
           android {
               namespace "com.flexyemen.flex_yemen"
               compileSdk 34
-              ndkVersion "25.1.8937393"
+              ndkVersion flutter.ndkVersion
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_17
                   targetCompatibility JavaVersion.VERSION_17
@@ -137,10 +135,6 @@ jobs:
               }
               kotlinOptions {
                   jvmTarget = '17'
-                  freeCompilerArgs += ['-Xjvm-default=all']
-              }
-              sourceSets {
-                  main.java.srcDirs += 'src/main/kotlin'
               }
               defaultConfig {
                   applicationId "com.flexyemen.flex_yemen"
@@ -148,21 +142,12 @@ jobs:
                   targetSdk 34
                   versionCode flutterVersionCode.toInteger()
                   versionName flutterVersionName
-                  multiDexEnabled true
               }
               buildTypes {
                   release {
                       signingConfig signingConfigs.debug
-                      minifyEnabled true
-                      shrinkResources true
-                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-                  }
-              }
-              packagingOptions {
-                  exclude 'META-INF/*.kotlin_module'
-                  exclude 'META-INF/*.version'
-                  jniLibs {
-                      useLegacyPackaging true
+                      minifyEnabled false
+                      shrinkResources false
                   }
               }
           }
@@ -170,23 +155,9 @@ jobs:
               source '../..'
           }
           dependencies {
-              implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
               coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
           }
           APPGRADLE
-
-      - name: Create proguard-rules.pro (مبسط)
-        run: |
-          cat > android/app/proguard-rules.pro << 'PROGUARD'
-          -keep class io.flutter.** { *; }
-          -keep class com.google.firebase.** { *; }
-          -keep class io.supabase.** { *; }
-          -keep class com.onesignal.** { *; }
-          -keepattributes *Annotation*
-          -keepattributes SourceFile,LineNumberTable
-          -dontwarn javax.annotation.**
-          -dontwarn org.conscrypt.**
-          PROGUARD
 
       - name: Create gradle-wrapper.properties
         run: |
@@ -201,8 +172,7 @@ jobs:
       - name: Create AndroidManifest.xml
         run: |
           cat > android/app/src/main/AndroidManifest.xml << 'MANIFEST'
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools">
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.INTERNET"/>
               <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
               <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -211,8 +181,7 @@ jobs:
                   android:label="Flex Yemen"
                   android:name="${applicationName}"
                   android:icon="@mipmap/ic_launcher"
-                  android:usesCleartextTraffic="true"
-                  tools:replace="android:label">
+                  android:usesCleartextTraffic="true">
                   <activity
                       android:name=".MainActivity"
                       android:exported="true"
@@ -229,9 +198,7 @@ jobs:
                           <category android:name="android.intent.category.LAUNCHER"/>
                       </intent-filter>
                   </activity>
-                  <meta-data
-                      android:name="flutterEmbedding"
-                      android:value="2" />
+                  <meta-data android:name="flutterEmbedding" android:value="2" />
               </application>
           </manifest>
           MANIFEST
@@ -240,9 +207,7 @@ jobs:
         run: |
           cat > android/app/src/main/kotlin/com/flexyemen/flex_yemen/MainActivity.kt << 'ACTIVITY'
           package com.flexyemen.flex_yemen
-          
           import io.flutter.embedding.android.FlutterActivity
-          
           class MainActivity: FlutterActivity()
           ACTIVITY
 
