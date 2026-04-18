@@ -21,7 +21,7 @@ class ProductDetailScreen extends StatefulWidget {
     required this.id,
     required this.title,
     required this.image,
-    required this.price,
+    required this.price, this.oldPrice,
     required this.description,
     required this.sellerName,
     required this.rating,
