@@ -3,33 +3,47 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// FLEX YEMEN - Global E-Commerce Platform Theme
-/// Professional theme inspired by Amazon & Alibaba
+/// Premium professional theme with gold accents
 class AppTheme {
-  // Brand Colors - Premium Gold Palette
+  // ============ Brand Colors - Premium Gold Palette ============
   static const Color goldPrimary = Color(0xFFD4AF37);
   static const Color goldLight = Color(0xFFF4E4A6);
   static const Color goldDark = Color(0xFFB8860B);
   static const Color goldAccent = Color(0xFFFFD700);
   
-  // Dark Theme Colors
+  // للتوافق مع الكود القديم
+  static const Color goldColor = Color(0xFFD4AF37);
+  
+  // ============ Dark Theme Colors ============
   static const Color darkBackground = Color(0xFF0A0A0A);
   static const Color darkSurface = Color(0xFF141414);
   static const Color darkCard = Color(0xFF1E1E1E);
   static const Color darkElevated = Color(0xFF2A2A2A);
   
-  // Light Theme Colors
+  // ============ Light Theme Colors ============
   static const Color lightBackground = Color(0xFFF8F9FA);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFF5F5F5);
   static const Color lightElevated = Color(0xFFEEEEEE);
   
-  // Semantic Colors
+  // ============ Semantic Colors ============
   static const Color success = Color(0xFF00C853);
   static const Color error = Color(0xFFFF1744);
   static const Color warning = Color(0xFFFF9100);
   static const Color info = Color(0xFF00B0FF);
   
-  // Gradient Definitions
+  // ============ Service Colors ============
+  static const Color serviceOrange = Color(0xFFFF9800);
+  static const Color serviceRed = Color(0xFFE53935);
+  static const Color serviceGreen = Color(0xFF4CAF50);
+  static const Color serviceBlue = Color(0xFF2196F3);
+  static const Color servicePurple = Color(0xFF9C27B0);
+  static const Color serviceTeal = Color(0xFF009688);
+  static const Color servicePink = Color(0xFFE91E63);
+  static const Color serviceIndigo = Color(0xFF3F51B5);
+  static const Color serviceAmber = Color(0xFFFFC107);
+  
+  // ============ Gradients ============
   static const LinearGradient goldGradient = LinearGradient(
     colors: [goldPrimary, goldLight, goldAccent],
     begin: Alignment.topLeft,
@@ -48,7 +62,7 @@ class AppTheme {
     end: Alignment.bottomRight,
   );
 
-  // Shadow Definitions
+  // ============ Shadows ============
   static List<BoxShadow> get goldShadow => [
     BoxShadow(
       color: goldPrimary.withOpacity(0.3),
@@ -67,14 +81,14 @@ class AppTheme {
     ),
   ];
 
-  // Dark Theme
+  // ============ Dark Theme ============
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: darkBackground,
       primaryColor: goldPrimary,
-      fontFamily: 'Changa',
+      fontFamily: 'Cairo',
       colorScheme: const ColorScheme.dark(
         primary: goldPrimary,
         secondary: goldLight,
@@ -96,9 +110,10 @@ class AppTheme {
         titleTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 20,
-          fontWeight: FontWeight.w600,
-          fontFamily: 'Changa',
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Cairo',
         ),
+        iconTheme: const IconThemeData(color: goldPrimary),
       ),
       cardTheme: CardTheme(
         color: darkCard,
@@ -115,12 +130,12 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 20,
         selectedLabelStyle: const TextStyle(
-          fontFamily: 'Changa',
+          fontFamily: 'Cairo',
           fontWeight: FontWeight.w600,
           fontSize: 12,
         ),
         unselectedLabelStyle: const TextStyle(
-          fontFamily: 'Changa',
+          fontFamily: 'Cairo',
           fontSize: 11,
         ),
       ),
@@ -133,21 +148,21 @@ class AppTheme {
         ),
       ),
       textTheme: const TextTheme(
-        displayLarge: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w700),
-        displayMedium: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w700),
-        displaySmall: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        headlineLarge: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        headlineMedium: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        headlineSmall: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        titleLarge: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        titleMedium: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        titleSmall: TextStyle(color: Colors.white70, fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        bodyLarge: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w400),
-        bodyMedium: TextStyle(color: Colors.white70, fontFamily: 'Changa', fontWeight: FontWeight.w400),
-        bodySmall: TextStyle(color: Colors.white54, fontFamily: 'Changa', fontWeight: FontWeight.w400),
-        labelLarge: TextStyle(color: Colors.white, fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        labelMedium: TextStyle(color: Colors.white70, fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        labelSmall: TextStyle(color: Colors.white54, fontFamily: 'Changa', fontWeight: FontWeight.w400),
+        displayLarge: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w700),
+        displayMedium: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w700),
+        displaySmall: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        headlineLarge: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        headlineMedium: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        headlineSmall: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        titleLarge: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        titleMedium: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        titleSmall: TextStyle(color: Colors.white70, fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        bodyLarge: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w400),
+        bodyMedium: TextStyle(color: Colors.white70, fontFamily: 'Cairo', fontWeight: FontWeight.w400),
+        bodySmall: TextStyle(color: Colors.white54, fontFamily: 'Cairo', fontWeight: FontWeight.w400),
+        labelLarge: TextStyle(color: Colors.white, fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        labelMedium: TextStyle(color: Colors.white70, fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        labelSmall: TextStyle(color: Colors.white54, fontFamily: 'Cairo', fontWeight: FontWeight.w400),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -168,8 +183,12 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: error, width: 1),
         ),
-        hintStyle: TextStyle(color: Colors.grey[500], fontFamily: 'Changa'),
-        labelStyle: const TextStyle(color: Colors.white70, fontFamily: 'Changa'),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: error, width: 2),
+        ),
+        hintStyle: TextStyle(color: Colors.grey[500], fontFamily: 'Cairo'),
+        labelStyle: const TextStyle(color: Colors.white70, fontFamily: 'Cairo'),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -182,8 +201,8 @@ class AppTheme {
             borderRadius: BorderRadius.circular(16),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.w600,
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
@@ -197,8 +216,8 @@ class AppTheme {
             borderRadius: BorderRadius.circular(16),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.w600,
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
@@ -206,7 +225,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: goldPrimary,
-          textStyle: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w500),
+          textStyle: const TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w600),
         ),
       ),
       iconTheme: const IconThemeData(
@@ -220,24 +239,73 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: darkElevated,
         selectedColor: goldPrimary.withOpacity(0.2),
-        labelStyle: const TextStyle(fontFamily: 'Changa'),
-        secondaryLabelStyle: const TextStyle(fontFamily: 'Changa'),
+        labelStyle: const TextStyle(fontFamily: 'Cairo'),
+        secondaryLabelStyle: const TextStyle(fontFamily: 'Cairo'),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
       ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldPrimary;
+          }
+          return Colors.grey[600]!;
+        }),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldPrimary;
+          }
+          return Colors.grey[600]!;
+        }),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldPrimary;
+          }
+          return Colors.grey[400]!;
+        }),
+        trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldPrimary.withOpacity(0.5);
+          }
+          return Colors.grey[800]!;
+        }),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: goldPrimary,
+        circularTrackColor: Colors.white24,
+      ),
+      sliderTheme: SliderThemeData(
+        activeTrackColor: goldPrimary,
+        inactiveTrackColor: Colors.grey[800],
+        thumbColor: goldPrimary,
+        overlayColor: goldPrimary.withOpacity(0.2),
+        valueIndicatorColor: goldPrimary,
+        valueIndicatorTextStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Cairo',
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
-  // Light Theme
+  // ============ Light Theme ============
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       scaffoldBackgroundColor: lightBackground,
       primaryColor: goldDark,
-      fontFamily: 'Changa',
+      fontFamily: 'Cairo',
       colorScheme: const ColorScheme.light(
         primary: goldDark,
         secondary: goldPrimary,
@@ -259,9 +327,10 @@ class AppTheme {
         titleTextStyle: const TextStyle(
           color: Color(0xFF1A1A1A),
           fontSize: 20,
-          fontWeight: FontWeight.w600,
-          fontFamily: 'Changa',
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Cairo',
         ),
+        iconTheme: const IconThemeData(color: goldDark),
       ),
       cardTheme: CardTheme(
         color: lightCard,
@@ -278,12 +347,12 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 10,
         selectedLabelStyle: const TextStyle(
-          fontFamily: 'Changa',
+          fontFamily: 'Cairo',
           fontWeight: FontWeight.w600,
           fontSize: 12,
         ),
         unselectedLabelStyle: const TextStyle(
-          fontFamily: 'Changa',
+          fontFamily: 'Cairo',
           fontSize: 11,
         ),
       ),
@@ -296,21 +365,21 @@ class AppTheme {
         ),
       ),
       textTheme: const TextTheme(
-        displayLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w700),
-        displayMedium: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w700),
-        displaySmall: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        headlineLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        headlineMedium: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        headlineSmall: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        titleLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w600),
-        titleMedium: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        titleSmall: TextStyle(color: Color(0xFF666666), fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        bodyLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w400),
-        bodyMedium: TextStyle(color: Color(0xFF666666), fontFamily: 'Changa', fontWeight: FontWeight.w400),
-        bodySmall: TextStyle(color: Color(0xFF999999), fontFamily: 'Changa', fontWeight: FontWeight.w400),
-        labelLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        labelMedium: TextStyle(color: Color(0xFF666666), fontFamily: 'Changa', fontWeight: FontWeight.w500),
-        labelSmall: TextStyle(color: Color(0xFF999999), fontFamily: 'Changa', fontWeight: FontWeight.w400),
+        displayLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w700),
+        displayMedium: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w700),
+        displaySmall: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        headlineLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        headlineMedium: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        headlineSmall: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        titleLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w600),
+        titleMedium: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        titleSmall: TextStyle(color: Color(0xFF666666), fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        bodyLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w400),
+        bodyMedium: TextStyle(color: Color(0xFF666666), fontFamily: 'Cairo', fontWeight: FontWeight.w400),
+        bodySmall: TextStyle(color: Color(0xFF999999), fontFamily: 'Cairo', fontWeight: FontWeight.w400),
+        labelLarge: TextStyle(color: Color(0xFF1A1A1A), fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        labelMedium: TextStyle(color: Color(0xFF666666), fontFamily: 'Cairo', fontWeight: FontWeight.w500),
+        labelSmall: TextStyle(color: Color(0xFF999999), fontFamily: 'Cairo', fontWeight: FontWeight.w400),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -331,8 +400,12 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: error, width: 1),
         ),
-        hintStyle: TextStyle(color: Colors.grey[500], fontFamily: 'Changa'),
-        labelStyle: TextStyle(color: Colors.grey[700], fontFamily: 'Changa'),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: error, width: 2),
+        ),
+        hintStyle: TextStyle(color: Colors.grey[500], fontFamily: 'Cairo'),
+        labelStyle: TextStyle(color: Colors.grey[700], fontFamily: 'Cairo'),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -345,8 +418,8 @@ class AppTheme {
             borderRadius: BorderRadius.circular(16),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.w600,
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
@@ -360,8 +433,8 @@ class AppTheme {
             borderRadius: BorderRadius.circular(16),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Changa',
-            fontWeight: FontWeight.w600,
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
@@ -369,7 +442,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: goldDark,
-          textStyle: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w500),
+          textStyle: const TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.w600),
         ),
       ),
       iconTheme: const IconThemeData(
@@ -383,11 +456,60 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: lightElevated,
         selectedColor: goldDark.withOpacity(0.2),
-        labelStyle: const TextStyle(fontFamily: 'Changa'),
-        secondaryLabelStyle: const TextStyle(fontFamily: 'Changa'),
+        labelStyle: const TextStyle(fontFamily: 'Cairo'),
+        secondaryLabelStyle: const TextStyle(fontFamily: 'Cairo'),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldDark;
+          }
+          return Colors.grey[400]!;
+        }),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldDark;
+          }
+          return Colors.grey[400]!;
+        }),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldDark;
+          }
+          return Colors.grey[300]!;
+        }),
+        trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return goldDark.withOpacity(0.5);
+          }
+          return Colors.grey[300]!;
+        }),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: goldDark,
+        circularTrackColor: Colors.black12,
+      ),
+      sliderTheme: SliderThemeData(
+        activeTrackColor: goldDark,
+        inactiveTrackColor: Colors.grey[300],
+        thumbColor: goldDark,
+        overlayColor: goldDark.withOpacity(0.2),
+        valueIndicatorColor: goldDark,
+        valueIndicatorTextStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'Cairo',
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -420,6 +542,14 @@ class ThemeManager extends ChangeNotifier {
 
   Future<void> setDarkMode(bool value) async {
     _isDarkMode = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, _isDarkMode);
+    notifyListeners();
+  }
+
+  // للتوافق مع الكود القديم
+  Future<void> setThemeModeIndex(int index) async {
+    _isDarkMode = index == 1;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_themeKey, _isDarkMode);
     notifyListeners();
