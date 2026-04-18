@@ -43,7 +43,6 @@ jobs:
           android.useAndroidX=true
           android.enableJetifier=true
           android.enableR8.fullMode=false
-          android.enableR8.libraries=false
           EOF
 
       - name: Create settings.gradle
