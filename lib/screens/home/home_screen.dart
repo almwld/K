@@ -348,7 +348,6 @@ class _HomeScreenState extends State<HomeScreen> {
               title: product['name'],
               image: product['image'],
               price: product['price'],
-              oldPrice: product['oldPrice'],
               description: 'وصف المنتج ${product['name']}',
               sellerName: 'متجر Flex',
               rating: product['rating'],
