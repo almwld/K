@@ -1,4 +1,4 @@
-name: Build Flex Yemen APK
+name: Build Flex Yemen APK (Ultra Compressed)
 
 on:
   push:
@@ -25,6 +25,41 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      # ============================================
+      # ✅ 1. تحسين pubspec.yaml - إزالة الحزم غير الضرورية
+      # ============================================
+      - name: Optimize pubspec.yaml
+        run: |
+          # إزالة الحزم غير المستخدمة
+          flutter pub remove flutter_facebook_auth 2>/dev/null || true
+          flutter pub remove google_sign_in 2>/dev/null || true
+          flutter pub remove sign_in_with_apple 2>/dev/null || true
+          flutter pub remove twitter_login 2>/dev/null || true
+
+      # ============================================
+      # ✅ 2. إنشاء ملف .flutter-plugins-dependencies محسن
+      # ============================================
+      - name: Create optimized flutter plugins
+        run: |
+          cat > .flutter-plugins-dependencies << 'PLUGINS'
+          {
+            "info": "This file is auto-generated",
+            "plugins": {
+              "ios": [],
+              "android": [],
+              "macos": [],
+              "linux": [],
+              "windows": [],
+              "web": []
+            },
+            "dependencyGraph": [],
+            "date": "2024-01-01T00:00:00.000000"
+          }
+          PLUGINS
+
+      # ============================================
+      # ✅ 3. إنشاء Android project structure
+      # ============================================
       - name: Create Android project structure
         run: |
           mkdir -p android/app/src/main/kotlin/com/flexyemen/flex_yemen
@@ -32,16 +67,45 @@ jobs:
           mkdir -p android/app/src/main/res/values
           mkdir -p android/app/src/main/res/drawable
 
-      - name: Create gradle.properties
+      # ============================================
+      # ✅ 4. gradle.properties - أقصى تحسينات
+      # ============================================
+      - name: Create gradle.properties (Max Optimization)
         run: |
           cat > android/gradle.properties << 'GRADLEPROPS'
+          # Memory
           org.gradle.jvmargs=-Xmx4G -XX:MaxMetaspaceSize=2G -XX:+HeapDumpOnOutOfMemoryError
+          org.gradle.parallel=true
+          org.gradle.caching=true
+          org.gradle.daemon=true
+          org.gradle.configureondemand=true
+          
+          # Android
           android.useAndroidX=true
           android.enableJetifier=true
-          android.enableR8.fullMode=false
+          
+          # R8 Optimization - أقصى ضغط
+          android.enableR8.fullMode=true
+          android.enableR8.libraries=true
+          android.r8.maxWorkers=4
+          
+          # Kotlin
           kotlin.code.style=official
+          kotlin.incremental=true
+          kotlin.incremental.java=true
+          
+          # Build speed
+          android.enableBuildCache=true
+          android.buildCacheDir=build-cache
+          
+          # Disable unnecessary features
+          android.enableAdditionalTestOutput=false
+          android.enableUnitTestBinaryResources=false
           GRADLEPROPS
 
+      # ============================================
+      # ✅ 5. settings.gradle
+      # ============================================
       - name: Create settings.gradle
         run: |
           cat > android/settings.gradle << 'SETTINGS'
@@ -71,6 +135,9 @@ jobs:
           include ":app"
           SETTINGS
 
+      # ============================================
+      # ✅ 6. build.gradle (project)
+      # ============================================
       - name: Create build.gradle (project level)
         run: |
           cat > android/build.gradle << 'PROJECTGRADLE'
@@ -84,7 +151,6 @@ jobs:
               dependencies {
                   classpath 'com.android.tools.build:gradle:8.2.2'
                   classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-                  classpath 'com.google.gms:google-services:4.4.0'
               }
           }
           
@@ -108,14 +174,16 @@ jobs:
           }
           PROJECTGRADLE
 
-      - name: Create app build.gradle
+      # ============================================
+      # ✅ 7. app/build.gradle - أقصى تحسينات للحجم
+      # ============================================
+      - name: Create app build.gradle (Ultra Compression)
         run: |
           cat > android/app/build.gradle << 'APPGRADLE'
           plugins {
               id "com.android.application"
               id "kotlin-android"
               id "dev.flutter.flutter-gradle-plugin"
-              id "com.google.gms.google-services"
           }
           
           def localProperties = new Properties()
@@ -126,15 +194,8 @@ jobs:
               }
           }
           
-          def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-          if (flutterVersionCode == null) {
-              flutterVersionCode = '1'
-          }
-          
-          def flutterVersionName = localProperties.getProperty('flutter.versionName')
-          if (flutterVersionName == null) {
-              flutterVersionName = '1.0'
-          }
+          def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
+          def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
           
           android {
               namespace "com.flexyemen.flex_yemen"
@@ -149,6 +210,7 @@ jobs:
               
               kotlinOptions {
                   jvmTarget = '17'
+                  freeCompilerArgs = ['-Xno-param-assertions', '-Xno-call-assertions', '-Xno-receiver-assertions']
               }
               
               sourceSets {
@@ -162,14 +224,77 @@ jobs:
                   versionCode flutterVersionCode.toInteger()
                   versionName flutterVersionName
                   multiDexEnabled true
+                  
+                  // ✅ إزالة اللغات غير المستخدمة
+                  resConfigs "ar", "en"
+                  
+                  // ✅ تعطيل الميزات غير المستخدمة
+                  vectorDrawables.useSupportLibrary = true
+              }
+              
+              signingConfigs {
+                  release {
+                      keyAlias 'upload'
+                      keyPassword '123456'
+                      storeFile file('upload-keystore.jks')
+                      storePassword '123456'
+                  }
               }
               
               buildTypes {
                   release {
-                      signingConfig signingConfigs.debug
+                      signingConfig signingConfigs.release
+                      
+                      // ✅ أقصى تحسينات للحجم
+                      minifyEnabled true
+                      shrinkResources true
+                      zipAlignEnabled true
+                      debuggable false
+                      jniDebuggable false
+                      renderscriptDebuggable false
+                      pseudoLocalesEnabled false
+                      crunchPngs true
+                      
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                      
+                      // ✅ إزالة جميع معلومات التصحيح
+                      ndk {
+                          debugSymbolLevel 'none'
+                      }
+                  }
+                  debug {
                       minifyEnabled false
                       shrinkResources false
+                      debuggable true
                   }
+              }
+              
+              // ✅ حزم ABI منفصلة
+              splits {
+                  abi {
+                      enable true
+                      reset()
+                      include 'armeabi-v7a', 'arm64-v8a'
+                      universalApk false
+                  }
+              }
+              
+              // ✅ إزالة الملفات غير الضرورية
+              packagingOptions {
+                  resources {
+                      excludes += ['/META-INF/{AL2.0,LGPL2.1}', 'META-INF/*.kotlin_module']
+                      excludes += ['**/*.proto', '**/*.bin', '**/*.so']
+                      excludes += ['DebugProbesKt.bin']
+                  }
+                  jniLibs {
+                      keepDebugSymbols = []
+                  }
+              }
+              
+              // ✅ تعطيل الميزات غير المستخدمة
+              lint {
+                  disable 'InvalidPackage'
+                  checkReleaseBuilds false
               }
           }
           
@@ -180,54 +305,123 @@ jobs:
           dependencies {
               implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
               implementation 'androidx.multidex:multidex:2.0.1'
-              implementation platform('com.google.firebase:firebase-bom:32.7.0')
-              implementation 'com.google.firebase:firebase-analytics'
               coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
           }
           
+          // ✅ إجبار استخدام إصدارات محددة لتجنب التكرار
           configurations.all {
               resolutionStrategy {
                   force 'org.jetbrains.kotlin:kotlin-stdlib:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21'
-                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
                   force 'org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21'
+                  
+                  // ✅ استخدام مكتبات أخف
+                  eachDependency { details ->
+                      if (details.requested.group == 'com.google.android.gms') {
+                          details.useVersion '18.0.2'
+                      }
+                  }
               }
           }
           APPGRADLE
 
-      - name: Create gradle-wrapper.properties
+      # ============================================
+      # ✅ 8. proguard-rules.pro - أقصى تحسينات
+      # ============================================
+      - name: Create proguard-rules.pro (Aggressive)
         run: |
-          cat > android/gradle/wrapper/gradle-wrapper.properties << 'WRAPPER'
-          distributionBase=GRADLE_USER_HOME
-          distributionPath=wrapper/dists
-          zipStoreBase=GRADLE_USER_HOME
-          zipStorePath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip
-          WRAPPER
+          cat > android/app/proguard-rules.pro << 'PROGUARD'
+          # ============================================
+          # Flutter
+          # ============================================
+          -keep class io.flutter.app.** { *; }
+          -keep class io.flutter.plugin.** { *; }
+          -keep class io.flutter.util.** { *; }
+          -keep class io.flutter.view.** { *; }
+          -keep class io.flutter.** { *; }
+          -keep class io.flutter.plugins.** { *; }
+          
+          # ============================================
+          # Supabase (ضروري)
+          # ============================================
+          -keep class io.supabase.** { *; }
+          -keep class com.supabase.** { *; }
+          -keep class com.google.gson.** { *; }
+          
+          # ============================================
+          # AndroidX
+          # ============================================
+          -keep class androidx.lifecycle.** { *; }
+          -keep class androidx.work.** { *; }
+          
+          # ============================================
+          # إزالة كل شيء آخر
+          # ============================================
+          # إزالة logging
+          -assumenosideeffects class android.util.Log {
+              public static *** v(...);
+              public static *** d(...);
+              public static *** i(...);
+              public static *** w(...);
+              public static *** e(...);
+          }
+          
+          # إزالة Assertions
+          -assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+              static void checkNotNullParameter(java.lang.Object, java.lang.String);
+          }
+          
+          # إزالة الكود غير المستخدم
+          -allowaccessmodification
+          -repackageclasses
+          -optimizationpasses 10
+          -overloadaggressively
+          
+          # إزالة التعليقات
+          -dontnote **
+          -dontwarn **
+          
+          # ضغط aggressive
+          -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+          PROGUARD
 
+      # ============================================
+      # ✅ 9. AndroidManifest.xml - تعطيل الميزات غير المستخدمة
+      # ============================================
       - name: Create AndroidManifest.xml
         run: |
           cat > android/app/src/main/AndroidManifest.xml << 'MANIFEST'
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              package="com.flexyemen.flex_yemen">
+              
+              <!-- الصلاحيات الضرورية فقط -->
               <uses-permission android:name="android.permission.INTERNET"/>
               <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+              
+              <!-- صلاحيات اختيارية - نطلبها فقط عند الحاجة -->
               <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
               <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-              <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-              <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
               <uses-permission android:name="android.permission.CAMERA"/>
-              <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-              <uses-permission android:name="android.permission.VIBRATE"/>
-              <uses-permission android:name="android.permission.WAKE_LOCK"/>
-              <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
               <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+              
+              <!-- تعطيل الميزات غير المستخدمة -->
+              <uses-feature android:name="android.hardware.camera" android:required="false"/>
+              <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+              <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+              <uses-feature android:name="android.hardware.location" android:required="false"/>
               
               <application
                   android:label="Flex Yemen"
                   android:name="${applicationName}"
                   android:icon="@mipmap/ic_launcher"
                   android:usesCleartextTraffic="true"
-                  android:requestLegacyExternalStorage="true">
+                  android:allowBackup="false"
+                  android:supportsRtl="true"
+                  android:extractNativeLibs="true"
+                  android:hasCode="true"
+                  tools:replace="android:allowBackup,android:label"
+                  tools:targetApi="31">
+                  
                   <activity
                       android:name=".MainActivity"
                       android:exported="true"
@@ -244,6 +438,7 @@ jobs:
                           <category android:name="android.intent.category.LAUNCHER"/>
                       </intent-filter>
                   </activity>
+                  
                   <meta-data
                       android:name="flutterEmbedding"
                       android:value="2" />
@@ -251,18 +446,19 @@ jobs:
           </manifest>
           MANIFEST
 
-      - name: Create MainActivity.kt
+      # ============================================
+      # ✅ 10. باقي الملفات
+      # ============================================
+      - name: Create remaining files
         run: |
+          # MainActivity.kt
           cat > android/app/src/main/kotlin/com/flexyemen/flex_yemen/MainActivity.kt << 'ACTIVITY'
           package com.flexyemen.flex_yemen
-          
           import io.flutter.embedding.android.FlutterActivity
-          
           class MainActivity: FlutterActivity()
           ACTIVITY
-
-      - name: Create styles.xml
-        run: |
+          
+          # styles.xml
           cat > android/app/src/main/res/values/styles.xml << 'STYLES'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
@@ -274,30 +470,35 @@ jobs:
               </style>
           </resources>
           STYLES
-
-      - name: Create launch_background.xml
-        run: |
+          
+          # launch_background.xml
           cat > android/app/src/main/res/drawable/launch_background.xml << 'BACKGROUND'
           <?xml version="1.0" encoding="utf-8"?>
           <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
               <item android:drawable="@color/black" />
           </layer-list>
           BACKGROUND
-
-      - name: Create colors.xml
-        run: |
+          
+          # colors.xml
           cat > android/app/src/main/res/values/colors.xml << 'COLORS'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
               <color name="black">#FF000000</color>
           </resources>
           COLORS
+          
+          # gradle-wrapper.properties
+          cat > android/gradle/wrapper/gradle-wrapper.properties << 'WRAPPER'
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip
+          WRAPPER
 
       - name: Create local.properties
         run: |
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-          echo "flutter.versionName=1.0.0" >> android/local.properties
-          echo "flutter.versionCode=1" >> android/local.properties
 
       - name: Get Flutter dependencies
         run: flutter pub get
@@ -307,10 +508,28 @@ jobs:
           echo "SUPABASE_URL=https://ziqpohdxtermunnhlkm.supabase.co" > .env
           echo "SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppcXBvaGR4dGVtc211bm5obGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3ODQzNDcsImV4cCI6MjA4NzM2MDM0N30.ABAg5YZSrrAtBTWATJ3eRTmo4BuZVyVlrMV1HZjRWs0" >> .env
           echo "MINIMAX_API_KEY=sk-api-3srQHm600IiTt7ibuFkqWMB62Y2EQHpjwRLyisrT6jZTReILYdyalX-KZnPD_nftvrmNthCmNx3gBnpZdB_0j_YqV4rg0zINGWotoyhHx9sy8vMN9Y-PHJo" >> .env
-          echo "MINIMAX_GROUP_ID=1871489234567890123" >> .env
 
-      - name: Build APK
-        run: flutter build apk --release --split-per-abi
+      # ============================================
+      # ✅ 11. بناء APK مع أقصى ضغط
+      # ============================================
+      - name: Build Ultra Compressed APK
+        run: |
+          flutter clean
+          flutter pub get
+          flutter build apk --release \
+            --split-per-abi \
+            --obfuscate \
+            --split-debug-info=build/debug-info \
+            --no-tree-shake-icons \
+            --verbose
+
+      - name: Display APK sizes
+        run: |
+          echo "=== أحجام ملفات APK النهائية ==="
+          ls -lh build/app/outputs/flutter-apk/*.apk
+          echo ""
+          echo "=== تحليل الحجم ==="
+          du -sh build/app/outputs/flutter-apk/
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
