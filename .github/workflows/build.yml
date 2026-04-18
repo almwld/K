@@ -18,6 +18,7 @@ jobs:
         with:
           flutter-version: '3.22.0'
           channel: 'stable'
+          cache: true
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -35,10 +36,14 @@ jobs:
       - name: Create gradle.properties
         run: |
           cat > android/gradle.properties << 'EOF'
-          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g
+          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError
+          org.gradle.parallel=true
+          org.gradle.caching=true
+          org.gradle.daemon=true
           android.useAndroidX=true
           android.enableJetifier=true
           android.enableR8.fullMode=false
+          android.enableR8.libraries=false
           EOF
 
       - name: Create settings.gradle
@@ -133,6 +138,7 @@ jobs:
               }
               kotlinOptions {
                   jvmTarget = '17'
+                  freeCompilerArgs += ['-Xjvm-default=all']
               }
               sourceSets {
                   main.java.srcDirs += 'src/main/kotlin'
@@ -148,8 +154,16 @@ jobs:
               buildTypes {
                   release {
                       signingConfig signingConfigs.debug
-                      minifyEnabled false
-                      shrinkResources false
+                      minifyEnabled true
+                      shrinkResources true
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                  }
+              }
+              packagingOptions {
+                  exclude 'META-INF/*.kotlin_module'
+                  exclude 'META-INF/*.version'
+                  jniLibs {
+                      useLegacyPackaging true
                   }
               }
           }
@@ -161,6 +175,19 @@ jobs:
               coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
           }
           APPGRADLE
+
+      - name: Create proguard-rules.pro (مبسط)
+        run: |
+          cat > android/app/proguard-rules.pro << 'PROGUARD'
+          -keep class io.flutter.** { *; }
+          -keep class com.google.firebase.** { *; }
+          -keep class io.supabase.** { *; }
+          -keep class com.onesignal.** { *; }
+          -keepattributes *Annotation*
+          -keepattributes SourceFile,LineNumberTable
+          -dontwarn javax.annotation.**
+          -dontwarn org.conscrypt.**
+          PROGUARD
 
       - name: Create gradle-wrapper.properties
         run: |
