@@ -51,7 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // ✅ دوال الاتصال
   Future<void> _callPhone() async {
     final Uri url = Uri.parse('tel:8001234567');
     if (await canLaunchUrl(url)) {
@@ -93,7 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 40),
-                      // الشعار
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -129,7 +127,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      // حقل البريد الإلكتروني
                       CustomTextField(
                         label: 'البريد الإلكتروني أو رقم الجوال',
                         hint: 'example@email.com',
@@ -144,7 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      // حقل كلمة المرور
                       CustomTextField(
                         label: 'كلمة المرور',
                         hint: '********',
@@ -169,7 +165,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 8),
-                      // نسيت كلمة المرور
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextButton(
@@ -189,13 +184,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      // زر تسجيل الدخول
                       CustomButton(
                         text: 'تسجيل الدخول',
                         onPressed: _login,
                       ),
                       const SizedBox(height: 16),
-                      // إنشاء حساب جديد
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -225,7 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       const SizedBox(height: 40),
-                      // ✅ معلومات الاتصال - قابلة للضغط
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -235,7 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            // 📞 هاتف
                             GestureDetector(
                               onTap: _callPhone,
                               child: const Row(
@@ -246,7 +237,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-                            // 🗺️ نقاط الخدمة
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -262,7 +252,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-                            // 🛟 الدعم الفني
                             GestureDetector(
                               onTap: _openSupport,
                               child: const Row(
@@ -273,7 +262,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-                            // 💬 واتساب
                             GestureDetector(
                               onTap: _openWhatsApp,
                               child: const Row(

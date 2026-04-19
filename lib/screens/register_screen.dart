@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
+import '../providers/theme_manager.dart';
+import '../theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import 'login_screen.dart';
 import 'home/main_navigation.dart';
@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   bool _agreeToTerms = false;
-  String _userType = 'customer'; // 'customer' or 'merchant'
+  String _userType = 'customer';
 
   late TabController _tabController;
 
@@ -134,11 +134,11 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                     children: [
                       // ✅ تبويبات عميل / تاجر - أكبر حجماً
                       Container(
-                        height: 60, // ✅ أكبر
+                        height: 60,
                         margin: const EdgeInsets.only(bottom: 24),
                         decoration: BoxDecoration(
                           color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
-                          borderRadius: BorderRadius.circular(40), // ✅ أكبر
+                          borderRadius: BorderRadius.circular(40),
                         ),
                         child: TabBar(
                           controller: _tabController,
@@ -151,12 +151,12 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           unselectedLabelColor: isDark ? Colors.white70 : Colors.black54,
                           labelStyle: const TextStyle(
                             fontFamily: 'Changa',
-                            fontSize: 18, // ✅ خط أكبر
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                           unselectedLabelStyle: const TextStyle(
                             fontFamily: 'Changa',
-                            fontSize: 16, // ✅ خط أكبر
+                            fontSize: 16,
                           ),
                           tabs: const [
                             Tab(text: 'عميل'),
