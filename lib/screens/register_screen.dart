@@ -5,8 +5,8 @@ import '../../theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import 'login_screen.dart';
 import 'home/main_navigation.dart';
-import 'legal/terms_of_service_screen.dart';
-import 'legal/privacy_policy_screen.dart';
+import 'policy/terms_screen.dart';
+import 'policy/privacy_policy_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
