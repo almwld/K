@@ -51,6 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _loginAsGuest() async {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const MainNavigation()),
+      (route) => false,
+    );
+  }
+
   Future<void> _callPhone() async {
     final Uri url = Uri.parse('tel:8001234567');
     if (await canLaunchUrl(url)) {
@@ -165,23 +172,36 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
-                            );
-                          },
-                          child: const Text(
-                            'نسيت كلمة المرور؟',
-                            style: TextStyle(
-                              fontFamily: 'Changa',
-                              color: AppTheme.gold,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
+                              );
+                            },
+                            child: const Text(
+                              'نسيت كلمة المرور؟',
+                              style: TextStyle(
+                                fontFamily: 'Changa',
+                                color: AppTheme.gold,
+                              ),
                             ),
                           ),
-                        ),
+                          TextButton(
+                            onPressed: _loginAsGuest,
+                            child: const Text(
+                              'الدخول كضيف',
+                              style: TextStyle(
+                                fontFamily: 'Changa',
+                                color: AppTheme.gold,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 24),
                       CustomButton(
