@@ -21,13 +21,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   bool _agreeToTerms = false;
   String _userType = 'customer'; // 'customer' or 'merchant'
-  
+
   late TabController _tabController;
 
   @override
@@ -40,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       });
     });
   }
+
   @override
   void dispose() {
     _fullNameController.dispose();
@@ -76,25 +77,23 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     if (!mounted) return;
 
     if (success) {
-      // Show success message and navigate
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            _userType == 'merchant' 
+            _userType == 'merchant'
                 ? 'تم إنشاء حساب التاجر بنجاح! سيتم مراجعة طلبك.'
                 : 'تم إنشاء الحساب بنجاح!',
           ),
           backgroundColor: Colors.green,
         ),
       );
-      
+
       if (_userType == 'customer') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const MainNavigation()),
         );
       } else {
-        // For merchants, go back to login (pending approval)
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -115,338 +114,285 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
+      appBar: AppBar(
+        title: const Text('إنشاء حساب'),
+        centerTitle: true,
+      ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              
-              // Title
-              Center(
-                child: Column(
-                  children: [
-                    Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        gradient: AppTheme.goldGradient,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Icon(
-                        Icons.person_add,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'إنشاء حساب جديد',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'أدخل بياناتك لإنشاء حساب جديد',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
                 ),
-              ),
-              
-              const SizedBox(height: 30),
-              
-              // User Type Tabs (Customer / Merchant)
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? AppTheme.nightCard : Colors.grey[100],
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TabBar(
-                  controller: _tabController,
-                  indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    gradient: AppTheme.goldGradient,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.gold.withOpacity(0.3),
-                        blurRadius: 10,
-                      ),
-                    ],
-                  ),
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey[600],
-                  labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  unselectedLabelStyle: const TextStyle(fontSize: 16),
-                  tabs: const [
-                    Tab(text: 'عميل'),
-                    Tab(text: 'تاجر'),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 30),
-              
-              // Merchant Notice
-              if (_userType == 'merchant')
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  margin: const EdgeInsets.only(bottom: 20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.gold.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppTheme.gold.withOpacity(0.3)),
-                  ),
-                  child: Row(
+              )
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Icon(Icons.info_outline, color: AppTheme.gold, size: 24),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'حساب التاجر يتطلب مراجعة وتوثيق. سيتم التواصل معك خلال 24 ساعة لاستكمال إجراءات التوثيق.',
-                          style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+                      // ✅ تبويبات عميل / تاجر - أكبر حجماً
+                      Container(
+                        height: 60, // ✅ أكبر
+                        margin: const EdgeInsets.only(bottom: 24),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
+                          borderRadius: BorderRadius.circular(40), // ✅ أكبر
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                            
-              // Register Form
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // Full Name Field
-                    TextFormField(
-                      controller: _fullNameController,
-                      decoration: InputDecoration(
-                        labelText: 'الاسم الكامل',
-                        hintText: _userType == 'merchant' ? 'اسم المتجر / الاسم التجاري' : 'الاسم الثلاثي',
-                        prefixIcon: const Icon(Icons.person, color: AppTheme.gold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال الاسم';
-                        }
-                        return null;
-                      },
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Phone Number Field
-                    TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        labelText: 'رقم الجوال أو البريد الإلكتروني',
-                        hintText: 'سجل رقمك أو بريدك الإلكتروني',
-                        prefixIcon: const Icon(Icons.phone, color: AppTheme.gold),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال رقم الجوال';
-                        }
-                        if (value.length < 9) {
-                          return 'رقم الجوال غير صحيح';
-                        }
-                        return null;
-                      },
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Password Field
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: !_isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'كلمة المرور',
-                        hintText: '6 أحرف على الأقل',
-                        prefixIcon: const Icon(Icons.lock, color: AppTheme.gold),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.grey,
+                        child: TabBar(
+                          controller: _tabController,
+                          indicator: BoxDecoration(
+                            gradient: AppTheme.goldGradient,
+                            borderRadius: BorderRadius.circular(40),
                           ),
-                          onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال كلمة المرور';
-                        }
-                        if (value.length < 6) {
-                          return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
-                        }
-                        return null;
-                      },
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Confirm Password Field
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      obscureText: !_isConfirmPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'تأكيد كلمة المرور',
-                        prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.gold),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.grey,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: isDark ? Colors.white70 : Colors.black54,
+                          labelStyle: const TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 18, // ✅ خط أكبر
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () => setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
+                          unselectedLabelStyle: const TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 16, // ✅ خط أكبر
+                          ),
+                          tabs: const [
+                            Tab(text: 'عميل'),
+                            Tab(text: 'تاجر'),
+                          ],
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: isDark ? AppTheme.nightCard : Colors.grey[50],
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'الرجاء تأكيد كلمة المرور';
-                        }
-                        if (value != _passwordController.text) {
-                          return 'كلمة المرور غير متطابقة';
-                        }
-                        return null;
-                      },
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Terms and Conditions Checkbox
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _agreeToTerms,
-                          onChanged: (value) => setState(() => _agreeToTerms = value ?? false),
-                          activeColor: AppTheme.gold,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
+
+                      const SizedBox(height: 16),
+
+                      // حقل الاسم الكامل
+                      TextFormField(
+                        controller: _fullNameController,
+                        decoration: InputDecoration(
+                          labelText: 'الاسم الكامل',
+                          hintText: 'أدخل اسمك الكامل',
+                          prefixIcon: const Icon(Icons.person_outline),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'يرجى إدخال الاسم';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // حقل رقم الهاتف
+                      TextFormField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          labelText: 'رقم الهاتف',
+                          hintText: 'مثال: 771234567',
+                          prefixIcon: const Icon(Icons.phone_outlined),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'يرجى إدخال رقم الهاتف';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // حقل كلمة المرور
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: !_isPasswordVisible,
+                        decoration: InputDecoration(
+                          labelText: 'كلمة المرور',
+                          hintText: '********',
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'يرجى إدخال كلمة المرور';
+                          }
+                          if (value.length < 6) {
+                            return 'كلمة المرور 6 أحرف على الأقل';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // حقل تأكيد كلمة المرور
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: !_isConfirmPasswordVisible,
+                        decoration: InputDecoration(
+                          labelText: 'تأكيد كلمة المرور',
+                          hintText: '********',
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isConfirmPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                              });
+                            },
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'يرجى تأكيد كلمة المرور';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'كلمة المرور غير متطابقة';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
+
+                      // الموافقة على الشروط
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _agreeToTerms,
+                            onChanged: (value) {
+                              setState(() {
+                                _agreeToTerms = value ?? false;
+                              });
+                            },
+                            activeColor: AppTheme.gold,
+                          ),
+                          Expanded(
+                            child: Wrap(
                               children: [
-                                const TextSpan(text: 'أوافق على '),
-                                TextSpan(
-                                  text: 'الشروط والأحكام',
-                                  style: TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold),
-                                  recognizer: null, // Add TapGestureRecognizer for navigation
+                                const Text(
+                                  'أوافق على ',
+                                  style: TextStyle(fontFamily: 'Changa'),
                                 ),
-                                const TextSpan(text: ' و '),
-                                TextSpan(
-                                  text: 'سياسة الخصوصية',
-                                  style: TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const TermsScreen()),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'الشروط والأحكام',
+                                    style: TextStyle(
+                                      fontFamily: 'Changa',
+                                      color: AppTheme.gold,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  ' و ',
+                                  style: TextStyle(fontFamily: 'Changa'),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'سياسة الخصوصية',
+                                    style: TextStyle(
+                                      fontFamily: 'Changa',
+                                      color: AppTheme.gold,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Register Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : _handleRegister,
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+
+                      // زر إنشاء حساب
+                      ElevatedButton(
+                        onPressed: _handleRegister,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.gold,
+                          foregroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        child: _isLoading
-                            ? const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(
-                                  color: Colors.black,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Text(
-                                _userType == 'merchant' ? 'تقديم طلب التسجيل' : 'إنشاء حساب',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Login Link
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'لديك حساب بالفعل؟ ',
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (_) => const LoginScreen()),
-                            );
-                          },
-                          child: Text(
-                            'تسجيل الدخول',
-                            style: TextStyle(
-                              color: AppTheme.gold,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: Text(
+                          _userType == 'merchant' ? 'تسجيل تاجر' : 'إنشاء حساب',
+                          style: const TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // لديك حساب؟
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'لديك حساب بالفعل؟ ',
+                            style: TextStyle(
+                              fontFamily: 'Changa',
+                              color: AppTheme.getSecondaryTextColor(context),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                              );
+                            },
+                            child: const Text(
+                              'تسجيل الدخول',
+                              style: TextStyle(
+                                fontFamily: 'Changa',
+                                color: AppTheme.gold,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              
-              const SizedBox(height: 30),
-            ],
-          ),
-        ),
       ),
     );
   }
