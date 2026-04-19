@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (!mounted) return;
 
-    // ✅ الانتقال مباشرة للمنصة الرئيسية (تجاوز تسجيل الدخول)
+    // ✅ الانتقال مباشرة للمنصة الرئيسية (بدون تسجيل دخول)
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const MainNavigation()),
