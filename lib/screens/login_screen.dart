@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 import 'home/main_navigation.dart';
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
+import 'contact_us_screen.dart';
+import 'help_support_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    // ✅ تعبئة بيانات افتراضية للتطوير
     _emailController.text = 'test@flexyemen.com';
     _passwordController.text = '123456';
   }
@@ -39,17 +41,36 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-
-    // ✅ محاكاة تسجيل الدخول - قبول أي بيانات
     await Future.delayed(const Duration(seconds: 1));
 
     if (mounted) {
-      // ✅ الانتقال للمنصة الرئيسية
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const MainNavigation()),
         (route) => false,
       );
     }
+  }
+
+  // ✅ دوال الاتصال
+  Future<void> _callPhone() async {
+    final Uri url = Uri.parse('tel:8001234567');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    }
+  }
+
+  Future<void> _openWhatsApp() async {
+    final Uri url = Uri.parse('https://wa.me/9678001234567');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    }
+  }
+
+  Future<void> _openSupport() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+    );
   }
 
   @override
@@ -132,9 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         prefixIcon: const Icon(Icons.lock_outline),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
@@ -146,7 +165,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value == null || value.isEmpty) {
                             return 'يرجى إدخال كلمة المرور';
                           }
-                          // ✅ قبول أي كلمة مرور في وضع التطوير
                           return null;
                         },
                       ),
@@ -158,9 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (_) => const ForgotPasswordScreen(),
-                              ),
+                              MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
                             );
                           },
                           child: const Text(
@@ -194,9 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (_) => const RegisterScreen(),
-                                ),
+                                MaterialPageRoute(builder: (_) => const RegisterScreen()),
                               );
                             },
                             child: const Text(
@@ -211,38 +225,64 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       const SizedBox(height: 40),
-                      // معلومات الاتصال
+                      // ✅ معلومات الاتصال - قابلة للضغط
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: isDark
-                              ? AppTheme.nightCard
-                              : AppTheme.lightCard,
+                          color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.phone, size: 18, color: AppTheme.gold),
-                                SizedBox(width: 8),
-                                Text('800 123 4567', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                              ],
+                            // 📞 هاتف
+                            GestureDetector(
+                              onTap: _callPhone,
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.phone, size: 18, color: AppTheme.gold),
+                                  SizedBox(width: 8),
+                                  Text('800 123 4567', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
+                                ],
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Icon(Icons.support_agent, size: 18, color: AppTheme.gold),
-                                SizedBox(width: 8),
-                                Text('الدعم الفني', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                              ],
+                            // 🗺️ نقاط الخدمة
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => const ContactUsScreen()),
+                                );
+                              },
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.location_on, size: 18, color: AppTheme.gold),
+                                  SizedBox(width: 8),
+                                  Text('نقاط الخدمة', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
+                                ],
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Icon(Icons.chat, size: 18, color: Colors.green),
-                                SizedBox(width: 8),
-                                Text('واتساب', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                              ],
+                            // 🛟 الدعم الفني
+                            GestureDetector(
+                              onTap: _openSupport,
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.support_agent, size: 18, color: AppTheme.gold),
+                                  SizedBox(width: 8),
+                                  Text('الدعم الفني', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
+                                ],
+                              ),
+                            ),
+                            // 💬 واتساب
+                            GestureDetector(
+                              onTap: _openWhatsApp,
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.chat, size: 18, color: Colors.green),
+                                  SizedBox(width: 8),
+                                  Text('واتساب', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
+                                ],
+                              ),
                             ),
                           ],
                         ),
