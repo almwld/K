@@ -58,9 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              themeManager.toggleTheme();
-            },
+            onPressed: () => themeManager.toggleTheme(),
             icon: Icon(themeManager.isDarkMode ? Icons.light_mode : Icons.dark_mode, color: Colors.white),
           ),
           IconButton(
@@ -104,47 +102,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const LoginScreen()),
-                        );
-                      },
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen())),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.gold,
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: const Text(
-                        'تسجيل الدخول',
-                        style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold),
-                      ),
+                      child: const Text('تسجيل الدخول', style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold)),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                        );
-                      },
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterScreen())),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppTheme.gold,
                         side: const BorderSide(color: AppTheme.gold),
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: const Text(
-                        'إنشاء حساب',
-                        style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold),
-                      ),
+                      child: const Text('إنشاء حساب', style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -165,10 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        image: NetworkImage(item['image']),
-                        fit: BoxFit.cover,
-                      ),
+                      image: DecorationImage(image: NetworkImage(item['image']), fit: BoxFit.cover),
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -181,10 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       alignment: Alignment.bottomCenter,
                       padding: const EdgeInsets.all(16),
-                      child: Text(
-                        item['title'],
-                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Changa'),
-                      ),
+                      child: Text(item['title'], style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Changa')),
                     ),
                   );
                 },
@@ -240,10 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Container(
                             width: 60,
                             height: 60,
-                            decoration: BoxDecoration(
-                              color: cat['color'].withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
+                            decoration: BoxDecoration(color: cat['color'].withOpacity(0.1), shape: BoxShape.circle),
                             child: Icon(cat['icon'], color: cat['color']),
                           ),
                           const SizedBox(height: 8),
