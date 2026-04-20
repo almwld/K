@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -16,24 +18,33 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
+  String _userType = 'customer';
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _emailController.text = 'test@flexyemen.com';
     _passwordController.text = '123456';
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        _userType = _tabController.index == 0 ? 'customer' : 'merchant';
+      });
+    });
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -41,17 +52,36 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
+    
+    final authProvider = context.read<AuthProvider>();
+    final success = await authProvider.signIn(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
 
-    if (mounted) {
+    setState(() => _isLoading = false);
+
+    if (!mounted) return;
+
+    if (success) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const MainNavigation()),
         (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(authProvider.error ?? 'فشل تسجيل الدخول'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
 
   Future<void> _loginAsGuest() async {
+    final authProvider = context.read<AuthProvider>();
+    authProvider.loginAsGuest();
+    
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const MainNavigation()),
       (route) => false,
@@ -98,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -124,16 +154,53 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
+                      
+                      // ✅ تبويبات عميل / تاجر
+                      Container(
+                        height: 55,
+                        margin: const EdgeInsets.only(top: 16, bottom: 8),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: TabBar(
+                          controller: _tabController,
+                          indicator: BoxDecoration(
+                            gradient: AppTheme.goldGradient,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelColor: Colors.black,
+                          unselectedLabelColor: isDark ? Colors.white70 : Colors.black54,
+                          labelStyle: const TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          unselectedLabelStyle: const TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 14,
+                          ),
+                          tabs: const [
+                            Tab(text: 'عميل'),
+                            Tab(text: 'تاجر'),
+                          ],
+                        ),
+                      ),
+                      
                       Text(
-                        'تسجيل الدخول إلى حسابك',
+                        _userType == 'customer' 
+                            ? 'تسجيل الدخول كعميل' 
+                            : 'تسجيل الدخول كتاجر',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Changa',
-                          fontSize: 16,
+                          fontSize: 14,
                           color: AppTheme.getSecondaryTextColor(context),
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 24),
+                      
                       CustomTextField(
                         label: 'البريد الإلكتروني أو رقم الجوال',
                         hint: 'example@email.com',
@@ -205,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 24),
                       CustomButton(
-                        text: 'تسجيل الدخول',
+                        text: _userType == 'customer' ? 'تسجيل دخول عميل' : 'تسجيل دخول تاجر',
                         onPressed: _login,
                       ),
                       const SizedBox(height: 16),
@@ -223,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                                MaterialPageRoute(builder: (_) => RegisterScreen(userType: _userType)),
                               );
                             },
                             child: const Text(
@@ -237,8 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 40),
-                      // ✅ تعديل: تحسين تنسيق أيقونات الاتصال لتكون أوضح وأكثر ترتيباً
+                      const SizedBox(height: 30),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                         decoration: BoxDecoration(

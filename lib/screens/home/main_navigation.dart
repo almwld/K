@@ -24,23 +24,22 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
 
-  // ✅ الشاشات: الرئيسية | المتاجر | الخريطة | المحفظة | الدردشة | حسابي
   final List<Widget> _screens = const [
-    HomeScreen(),           // 0: الرئيسية
-    AllAdsScreen(),         // 1: المتاجر
-    InteractiveMapScreen(), // 2: الخريطة
-    WalletScreen(),         // 3: المحفظة
-    ChatScreen(),           // 4: الدردشة
-    ProfileScreen(),        // 5: حسابي
+    HomeScreen(),
+    AllAdsScreen(),
+    InteractiveMapScreen(),
+    WalletScreen(),
+    ChatScreen(),
+    ProfileScreen(),
   ];
 
   static const List<String> _icons = [
-    'assets/icons/svg/home.svg',      // الرئيسية
-    'assets/icons/svg/shop.svg',      // المتاجر
-    'assets/icons/svg/location.svg',  // الخريطة
-    'assets/icons/svg/wallet.svg',    // المحفظة
-    'assets/icons/svg/chat.svg',      // الدردشة
-    'assets/icons/svg/profile.svg',   // حسابي
+    'assets/icons/svg/home.svg',
+    'assets/icons/svg/shop.svg',
+    'assets/icons/svg/location.svg',
+    'assets/icons/svg/wallet.svg',
+    'assets/icons/svg/chat.svg',
+    'assets/icons/svg/profile.svg',
   ];
 
   static const List<String> _labels = [
@@ -52,9 +51,12 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     'حسابي',
   ];
 
+  // ✅ أزرار الخدمات الجانبية (دائرية)
   final List<Map<String, dynamic>> _quickActions = [
-    {'icon': Icons.campaign, 'label': 'إضافة إعلان', 'color': AppTheme.serviceBlue, 'route': AddAdScreen},
-    {'icon': Icons.handyman, 'label': 'طلب خدمة', 'color': AppTheme.serviceGreen, 'route': RequestServiceScreen},
+    {'icon': Icons.add_circle_outline, 'label': 'إعلان', 'color': AppTheme.serviceBlue, 'route': AddAdScreen},
+    {'icon': Icons.shopping_bag_outlined, 'label': 'منتج', 'color': AppTheme.serviceOrange, 'route': AddAdScreen},
+    {'icon': Icons.handyman_outlined, 'label': 'خدمة', 'color': AppTheme.serviceGreen, 'route': RequestServiceScreen},
+    {'icon': Icons.account_balance_wallet_outlined, 'label': 'حوالة', 'color': Colors.purple, 'route': AddAdScreen},
   ];
 
   @override
@@ -101,7 +103,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 
-  // ✅ AppBar مخصص مع أيقونة السلة
   PreferredSizeWidget _buildAppBar(bool isDark) {
     return AppBar(
       title: Row(
@@ -140,7 +141,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
       elevation: 0,
       actions: [
-        // ✅ أيقونة السلة في الشريط العلوي
         Stack(
           children: [
             IconButton(
@@ -178,9 +178,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         ),
         IconButton(
           icon: const Icon(Icons.notifications_outlined, color: AppTheme.gold),
-          onPressed: () {
-            // TODO: الانتقال لشاشة الإشعارات
-          },
+          onPressed: () {},
           tooltip: 'الإشعارات',
         ),
       ],
@@ -192,7 +190,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: _buildAppBar(isDark),  // ✅ إضافة AppBar مع أيقونة السلة
+      appBar: _buildAppBar(isDark),
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
@@ -222,13 +220,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(0),  // الرئيسية
-              _buildNavItem(1),  // المتاجر
-              _buildNavItem(2),  // الخريطة
-              const SizedBox(width: 60),  // مساحة للزر الذهبي
-              _buildNavItem(3),  // المحفظة
-              _buildNavItem(4),  // الدردشة
-              _buildNavItem(5),  // حسابي
+              _buildNavItem(0),
+              _buildNavItem(1),
+              _buildNavItem(2),
+              const SizedBox(width: 70),
+              _buildNavItem(3),
+              _buildNavItem(4),
+              _buildNavItem(5),
             ],
           ),
         ),
@@ -290,15 +288,31 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
-        // القائمة المنبثقة
+        // ✅ القائمة الجانبية الدائرية
         if (_isMenuOpen) ...[
+          // أعلى اليمين
           Positioned(
-            bottom: 85,
-            child: _buildMenuItem(_quickActions[0]),
+            bottom: 70,
+            right: -30,
+            child: _buildCircularMenuItem(_quickActions[0], 0),
           ),
+          // أعلى اليسار
           Positioned(
-            top: 85,
-            child: _buildMenuItem(_quickActions[1]),
+            bottom: 70,
+            left: -30,
+            child: _buildCircularMenuItem(_quickActions[1], 1),
+          ),
+          // أسفل اليمين
+          Positioned(
+            top: 70,
+            right: -30,
+            child: _buildCircularMenuItem(_quickActions[2], 2),
+          ),
+          // أسفل اليسار
+          Positioned(
+            top: 70,
+            left: -30,
+            child: _buildCircularMenuItem(_quickActions[3], 3),
           ),
         ],
 
@@ -326,7 +340,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   height: 65,
                   decoration: BoxDecoration(
                     gradient: AppTheme.goldGradient,
-                    borderRadius: BorderRadius.circular(22),
+                    shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: AppTheme.gold.withOpacity(0.5),
@@ -351,55 +365,53 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 
-  Widget _buildMenuItem(Map<String, dynamic> action) {
+  // ✅ أيقونة دائرية للخدمات الجانبية
+  Widget _buildCircularMenuItem(Map<String, dynamic> action, int index) {
     final color = action['color'] as Color;
     final icon = action['icon'] as IconData;
     final label = action['label'] as String;
 
     return GestureDetector(
       onTap: () => _executeAction(action),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppTheme.nightCard
-              : AppTheme.lightCard,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300 + (index * 50)),
+        curve: Curves.elasticOut,
+        transform: Matrix4.identity()..scale(_isMenuOpen ? 1.0 : 0.0),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppTheme.nightCard
+                : AppTheme.lightCard,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(
+              color: color.withOpacity(0.5),
+              width: 2,
             ),
-          ],
-          border: Border.all(
-            color: AppTheme.gold.withOpacity(0.3),
-            width: 1,
           ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
-                shape: BoxShape.circle,
-                border: Border.all(color: color.withOpacity(0.5), width: 1),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
               ),
-              child: Icon(icon, color: color, size: 20),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.getTextColor(context),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
