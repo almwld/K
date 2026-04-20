@@ -275,3 +275,4 @@ class FlashSaleScreen extends StatelessWidget {
     );
   }
 }
+import '../models/product_model.dart';
