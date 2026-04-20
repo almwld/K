@@ -1,58 +1,52 @@
+import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
-  // التحقق من صلاحيات الموقع
-  static Future<bool> checkPermissions() async {
+  static Future<Position> getCurrentLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('خدمة الموقع غير مفعلة');
+    }
+
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('تم رفض صلاحيات الموقع');
+      }
     }
+
     if (permission == LocationPermission.deniedForever) {
-      return false;
+      throw Exception('صلاحيات الموقع مرفوضة بشكل دائم');
     }
-    return permission == LocationPermission.whileInUse || 
-           permission == LocationPermission.always;
+
+    return await Geolocator.getCurrentPosition();
   }
 
-  // الحصول على الموقع الحالي
-  static Future<Position?> getCurrentLocation() async {
-    bool hasPermission = await checkPermissions();
-    if (!hasPermission) return null;
-    
-    try {
-      return await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 10,
-        ),
-      );
-    } catch (e) {
-      print('خطأ في الحصول على الموقع: $e');
-      return null;
-    }
-  }
-
-  // حساب المسافة بين نقطتين (كيلومترات)
   static double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
-    const double earthRadius = 6371;
+    const double earthRadius = 6371; // كيلومتر
+    
     double dLat = _toRadians(lat2 - lat1);
     double dLng = _toRadians(lng2 - lng1);
-    double a = (dLat / 2).sin() * (dLat / 2).sin() +
-               _toRadians(lat1).cos() * _toRadians(lat2).cos() *
-               (dLng / 2).sin() * (dLng / 2).sin();
-    double c = 2 * a.asin();
+    
+    double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+               math.cos(_toRadians(lat1)) * math.cos(_toRadians(lat2)) *
+               math.sin(dLng / 2) * math.sin(dLng / 2);
+    
+    double c = 2 * math.asin(math.sqrt(a));
+    
     return earthRadius * c;
   }
 
   static double _toRadians(double degree) {
-    return degree * 3.14159 / 180;
+    return degree * math.pi / 180.0;
   }
 
-  // تنسيق المسافة للعرض
-  static String formatDistance(double km) {
-    if (km < 1) {
-      return '${(km * 1000).toInt()} م';
+  static String formatDistance(double distance) {
+    if (distance < 1) {
+      return '${(distance * 1000).round()} متر';
+    } else {
+      return '${distance.toStringAsFixed(1)} كم';
     }
-    return '${km.toStringAsFixed(1)} كم';
   }
 }
