@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/user_stats_model.dart';
-import '../models/user_stats_model.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_stats_provider.dart';
 import '../models/user_stats_model.dart';
