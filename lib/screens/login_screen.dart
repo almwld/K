@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                       const SizedBox(height: 8),
                       
-                      // ✅ تبويبات عميل / تاجر
+                      // تبويبات عميل / تاجر
                       Container(
                         height: 55,
                         margin: const EdgeInsets.only(top: 16, bottom: 8),
@@ -290,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (_) => RegisterScreen(userType: _userType)),
+                                MaterialPageRoute(builder: (_) => const RegisterScreen()),
                               );
                             },
                             child: const Text(
