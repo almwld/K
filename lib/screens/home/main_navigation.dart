@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/app_drawer.dart';
+import '../../providers/auth_provider.dart';
 import 'home_screen.dart';
 import '../all_ads_screen.dart';
 import '../wallet/wallet_screen.dart';
@@ -51,7 +54,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     'حسابي',
   ];
 
-  // ✅ أزرار الخدمات الجانبية (دائرية)
   final List<Map<String, dynamic>> _quickActions = [
     {'icon': Icons.add_circle_outline, 'label': 'إعلان', 'color': AppTheme.serviceBlue, 'route': AddAdScreen},
     {'icon': Icons.shopping_bag_outlined, 'label': 'منتج', 'color': AppTheme.serviceOrange, 'route': AddAdScreen},
@@ -105,6 +107,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
   PreferredSizeWidget _buildAppBar(bool isDark) {
     return AppBar(
+      leading: Builder(
+        builder: (context) => IconButton(
+          icon: const Icon(Icons.menu, color: AppTheme.gold),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'القائمة',
+        ),
+      ),
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -163,14 +172,16 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   shape: BoxShape.circle,
                 ),
                 constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                child: const Text(
-                  '0',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                child: Consumer<AuthProvider>(
+                  builder: (context, auth, _) => Text(
+                    '0',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -190,6 +201,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      key: const Key('main_navigation_scaffold'),
+      drawer: const AppDrawer(),
       appBar: _buildAppBar(isDark),
       body: IndexedStack(
         index: _currentIndex,
@@ -288,27 +301,22 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
-        // ✅ القائمة الجانبية الدائرية
         if (_isMenuOpen) ...[
-          // أعلى اليمين
           Positioned(
             bottom: 70,
             right: -30,
             child: _buildCircularMenuItem(_quickActions[0], 0),
           ),
-          // أعلى اليسار
           Positioned(
             bottom: 70,
             left: -30,
             child: _buildCircularMenuItem(_quickActions[1], 1),
           ),
-          // أسفل اليمين
           Positioned(
             top: 70,
             right: -30,
             child: _buildCircularMenuItem(_quickActions[2], 2),
           ),
-          // أسفل اليسار
           Positioned(
             top: 70,
             left: -30,
@@ -316,7 +324,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           ),
         ],
 
-        // خلفية شفافة للإغلاق
         if (_isMenuOpen)
           Positioned.fill(
             child: GestureDetector(
@@ -327,7 +334,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             ),
           ),
 
-        // الزر الذهبي الرئيسي
         AnimatedBuilder(
           animation: _rotationAnimation,
           builder: (context, child) {
@@ -365,7 +371,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 
-  // ✅ أيقونة دائرية للخدمات الجانبية
   Widget _buildCircularMenuItem(Map<String, dynamic> action, int index) {
     final color = action['color'] as Color;
     final icon = action['icon'] as IconData;
