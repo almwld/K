@@ -88,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                         fontFamily: 'Changa',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.getPrimaryTextColor(context; }
+                        color: AppTheme.getPrimaryTextColor(context)
                       ; }
                     ; }
                     Container(
@@ -187,7 +187,7 @@ class HomeScreen extends StatelessWidget {
                             fontFamily: 'Changa',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.getPrimaryTextColor(context; }
+                            color: AppTheme.getPrimaryTextColor(context)
                           ; }
                         ; }
                         const SizedBox(width: 8; }
@@ -244,7 +244,7 @@ class HomeScreen extends StatelessWidget {
                         fontFamily: 'Changa',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.getPrimaryTextColor(context; }
+                        color: AppTheme.getPrimaryTextColor(context)
                       ; }
                     ; }
                     TextButton(
@@ -283,7 +283,7 @@ class HomeScreen extends StatelessWidget {
                         fontFamily: 'Changa',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.getPrimaryTextColor(context; }
+                        color: AppTheme.getPrimaryTextColor(context)
                       ; }
                     ; }
                     TextButton(
