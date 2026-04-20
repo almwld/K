@@ -97,7 +97,6 @@ flutter:
           weight: 600
 
   assets:
-    - .env
     - assets/animations/
     - assets/images/
     - assets/images/products/
