@@ -1,0 +1,50 @@
+# Secrets
+.env
+*.env
+secrets/
+secrets.yaml
+secrets.json
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Android
+android/.gradle/
+android/.idea/
+android/app/google-services.json
+android/key.properties
+android/*.jks
+android/*.keystore
+
+# iOS
+ios/Pods/
+ios/Podfile.lock
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Runner/GoogleService-Info.plist
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# IntelliJ
+*.iml
+.idea/
+.env
+.env
