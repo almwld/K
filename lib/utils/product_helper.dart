@@ -3,7 +3,7 @@ import '../models/product_model.dart';
 import '../screens/product_detail_screen.dart';
 
 class ProductHelper {
-  static Widget buildDetailScreen(dynamic product) {
+  static Route<dynamic> buildDetailScreen(dynamic product) {
     String id = '';
     String title = '';
     String image = '';
@@ -39,17 +39,19 @@ class ProductHelper {
       inStock = product['inStock'] ?? true;
     }
 
-    return ProductDetailScreen(
-      id: id,
-      title: title,
-      image: image,
-      price: price,
-      description: description,
-      sellerName: sellerName,
-      rating: rating,
-      reviewCount: reviewCount,
-      images: images,
-      inStock: inStock,
+    return MaterialPageRoute(
+      builder: (_) => ProductDetailScreen(
+        id: id,
+        title: title,
+        image: image,
+        price: price,
+        description: description,
+        sellerName: sellerName,
+        rating: rating,
+        reviewCount: reviewCount,
+        images: images,
+        inStock: inStock,
+      ),
     );
   }
 }
