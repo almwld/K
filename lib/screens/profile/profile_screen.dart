@@ -157,7 +157,7 @@ class ProfileScreen extends StatelessWidget {
                   'title': 'لوحة التحكم',
                   'icon': Icons.dashboard,
                   'color': const Color(0xFFF0B90B),
-                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => UserDashboardScreen())),
+                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => UserDashboard())),
                 }, isDark),
                 _buildMenuItem(context, {
                   'title': 'إعلاناتي',
@@ -185,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                   'title': 'لوحة تحكم البائع',
                   'icon': Icons.store,
                   'color': const Color(0xFF0ECB81),
-                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => SellerDashboardScreen())),
+                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => SellerDashboard())),
                 }, isDark),
                 const SizedBox(height: 16),
 
