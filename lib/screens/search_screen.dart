@@ -324,7 +324,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildProductCard(ProductModel product) {
     return GestureDetector(
-      onTap: () { Navigator.push(
+      onTap: () => Navigator.push(
         context,
         Navigator.push(context, MaterialPageRoute(builder: (_) => ProductHelper.buildDetailScreen(product))),
       ),
