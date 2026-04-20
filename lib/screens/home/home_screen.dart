@@ -58,7 +58,6 @@ class HomeScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.search, color: AppTheme.gold),
                 onPressed: () => Navigator.push(
-                  context,
                   MaterialPageRoute(builder: (_) => const SearchScreen()),
                 ),
               ),
@@ -72,7 +71,6 @@ class HomeScreen extends StatelessWidget {
                 VipBanner(
                   isCompact: true,
                   onTap: () => Navigator.push(
-                    context,
                     MaterialPageRoute(builder: (_) => const VipSubscriptionScreen()),
                   ),
                 ),
@@ -120,7 +118,6 @@ class HomeScreen extends StatelessWidget {
                 MarketTable(
                   markets: mockMarkets.take(5).toList(),
                   onMarketTap: (market) => Navigator.push(
-                    context,
                     MaterialPageRoute(builder: (_) => MarketDetailScreen(market: market)),
                   ),
                 ),
@@ -129,7 +126,6 @@ class HomeScreen extends StatelessWidget {
                 // =================== FLASH SALE ===================
                 InkWell(
                   onTap: () => Navigator.push(
-                    context,
                     MaterialPageRoute(builder: (_) => const FlashSaleScreen()),
                   ),
                   child: Container(
@@ -210,7 +206,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () => Navigator.push(
-                        context,
                         MaterialPageRoute(builder: (_) => const NewArrivalsScreen()),
                       ),
                       child: const Text(
@@ -380,8 +375,6 @@ class HomeScreen extends StatelessWidget {
   Widget _buildNewArrivalCard(BuildContext context, ProductModel product) {
     return GestureDetector(
       onTap: () => Navigator.push(
-        context,
-        product.navigateToDetail(context),
       ),
       child: Container(
         width: 160,
@@ -464,8 +457,6 @@ class HomeScreen extends StatelessWidget {
   Widget _buildFeaturedProductCard(BuildContext context, ProductModel product) {
     return GestureDetector(
       onTap: () => Navigator.push(
-        context,
-        product.navigateToDetail(context),
       ),
       child: Container(
         decoration: BoxDecoration(
