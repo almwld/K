@@ -70,3 +70,4 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     );
   }
 }
+

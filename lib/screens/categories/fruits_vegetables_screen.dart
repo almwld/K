@@ -42,3 +42,4 @@ class FruitsVegetablesScreen extends StatelessWidget {
     );
   }
 }
+

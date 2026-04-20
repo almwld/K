@@ -251,3 +251,4 @@ class FeeScheduleScreen extends StatelessWidget {
     );
   }
 }
+

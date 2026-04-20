@@ -27,3 +27,4 @@ class StoreModel {
     this.tags = const [],
   });
 }
+

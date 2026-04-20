@@ -381,3 +381,4 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
     }
   }
 }
+

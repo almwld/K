@@ -1,0 +1,36 @@
+==============
+  static ThemeData get lightTheme {
+    final scheme = const ColorScheme.light(
+      primary: goldDark,
+      secondary: gold,
+      background: lightBackground,
+      surface: lightSurface,
+      error: error,
+      onPrimary: Colors.white,
+      onSecondary: Colors.black,
+      onBackground: Colors.black,
+      onSurface: Colors.black,
+      onError: Colors.white,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      fontFamily: 'Changa',
+      colorScheme: scheme,
+      scaffoldBackgroundColor: scheme.background,
+      appBarTheme: AppBarTheme(
+        backgroundColor: scheme.surface.withOpacity(0.95),
+        foregroundColor: scheme.onSurface,
+        elevation: 0,
+        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleTextStyle: const TextStyle(fontFamily: 'Changa', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+        iconTheme: const IconThemeData(color: goldDark),
+      ),
+      splashColor: goldDark.withOpacity(0.2),
+      highlightColor: goldDark.withOpacity(0.1),
+    );
+  }
+}
+

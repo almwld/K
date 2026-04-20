@@ -42,3 +42,4 @@ class NutsDriedFruitsScreen extends StatelessWidget {
     );
   }
 }
+

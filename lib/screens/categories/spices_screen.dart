@@ -42,3 +42,4 @@ class SpicesScreen extends StatelessWidget {
     );
   }
 }
+

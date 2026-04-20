@@ -27,3 +27,4 @@ class SpendingScreen extends StatelessWidget {
     );
   }
 }
+

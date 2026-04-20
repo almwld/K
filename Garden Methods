@@ -1,0 +1,20 @@
+=========
+  int getGardenPoints() {
+    return _prefs.getInt('garden_points') ?? 0;
+  }
+
+  Future<void> setGardenPoints(int points) async {
+    await init();
+    await _prefs.setInt('garden_points', points);
+  }
+
+  int getStreakDays() {
+    return _prefs.getInt('streak_days') ?? 0;
+  }
+
+  Future<void> setStreakDays(int days) async {
+    await init();
+    await _prefs.setInt('streak_days', days);
+  }
+
+  // =========

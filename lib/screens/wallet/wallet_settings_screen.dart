@@ -323,3 +323,4 @@ class _WalletSettingsScreenState extends State<WalletSettingsScreen> {
     );
   }
 }
+

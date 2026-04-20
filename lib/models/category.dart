@@ -96,3 +96,4 @@ class Product {
   String? get formattedOldPrice => oldPrice != null ? '${oldPrice!.toStringAsFixed(0)} ر.ي' : null;
   int get discountPercentage => oldPrice != null ? ((oldPrice! - price) / oldPrice! * 100).round() : 0;
 }
+

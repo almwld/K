@@ -42,3 +42,4 @@ class GraduationPartiesScreen extends StatelessWidget {
     );
   }
 }
+

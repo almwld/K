@@ -92,3 +92,4 @@ class AdModel {
     return '';
   }
 }
+

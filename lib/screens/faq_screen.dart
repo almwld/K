@@ -145,3 +145,4 @@ class _FaqScreenState extends State<FaqScreen> {
     );
   }
 }
+

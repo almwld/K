@@ -229,3 +229,4 @@ class _WalletHelpSupportScreenState extends State<WalletHelpSupportScreen> {
     );
   }
 }
+

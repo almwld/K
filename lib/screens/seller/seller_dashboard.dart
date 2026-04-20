@@ -253,3 +253,4 @@ class SellerDashboard extends StatelessWidget {
     ).animate().fadeIn(delay: 300.ms);
   }
 }
+

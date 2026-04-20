@@ -411,3 +411,4 @@ class _SpendingAnalyticsScreenState extends State<SpendingAnalyticsScreen> {
     );
   }
 }
+

@@ -38,3 +38,4 @@ class YemenCitiesData {
     return getAllCities().where((c) => c.type == 'عاصمة' || c.type == 'مدينة ساحلية').toList();
   }
 }
+

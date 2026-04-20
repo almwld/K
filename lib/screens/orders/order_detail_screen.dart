@@ -4,3 +4,4 @@ class OrderDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: const Text('تفاصيل الطلب')), body: const Center(child: Text('تفاصيل الطلب')));
 }
+

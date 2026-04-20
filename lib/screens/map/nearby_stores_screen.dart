@@ -102,3 +102,4 @@ class _NearbyStoresScreenState extends State<NearbyStoresScreen> {
     );
   }
 }
+

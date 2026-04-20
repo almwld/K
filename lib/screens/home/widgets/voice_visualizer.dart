@@ -46,3 +46,4 @@ class VoiceVisualizer extends StatelessWidget {
     );
   }
 }
+

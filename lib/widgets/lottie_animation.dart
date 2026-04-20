@@ -78,3 +78,4 @@ class LoadingAnimation extends StatelessWidget {
     );
   }
 }
+

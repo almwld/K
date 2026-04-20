@@ -42,3 +42,4 @@ class ConsumerElectronicsScreen extends StatelessWidget {
     );
   }
 }
+

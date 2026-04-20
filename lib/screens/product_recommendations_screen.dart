@@ -51,3 +51,4 @@ class ProductRecommendationsScreen extends StatelessWidget {
     );
   }
 }
+

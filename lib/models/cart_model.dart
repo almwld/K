@@ -64,3 +64,4 @@ class CartSummary {
     return map;
   }
 }
+

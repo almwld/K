@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart';
-import '../../theme/app_theme.dart';
-import '../../widgets/simple_app_bar.dart';
+import '../theme/app_theme.dart';
+import '../widgets/simple_app_bar.dart';
 
 class SecuritySettingsScreen extends StatefulWidget {
   const SecuritySettingsScreen({super.key});
@@ -11,177 +10,198 @@ class SecuritySettingsScreen extends StatefulWidget {
 }
 
 class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
-  final LocalAuthentication _localAuth = LocalAuthentication();
-  
-  bool _biometricEnabled = false;
-  bool _twoFactorEnabled = false;
-  bool _isBiometricAvailable = false;
-  
-  @override
-  void initState() {
-    super.initState();
-    _checkBiometricAvailability();
-  }
-  
-  Future<void> _checkBiometricAvailability() async {
-    final isAvailable = await _localAuth.canCheckBiometrics;
-    final isDeviceSupported = await _localAuth.isDeviceSupported();
-    setState(() {
-      _isBiometricAvailable = isAvailable && isDeviceSupported;
-    });
-  }
-  
-  Future<void> _toggleBiometric(bool value) async {
-    if (value && _isBiometricAvailable) {
-      final authenticated = await _localAuth.authenticate(
-        localizedReason: 'سجل دخولك باستخدام بصمتك أو وجهك',
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          stickyAuth: true,
-        ),
-      );
-      if (authenticated) {
-        setState(() => _biometricEnabled = true);
-        _showSnackBar('تم تفعيل المصادقة البيومترية', Colors.green);
-      } else {
-        _showSnackBar('فشل التحقق من الهوية', Colors.red);
-      }
-    } else if (!value) {
-      setState(() => _biometricEnabled = false);
-      _showSnackBar('تم تعطيل المصادقة البيومترية', Colors.orange);
-    }
-  }
-  
-  Future<void> _toggleTwoFactor(bool value) async {
-    if (value) {
-      _showSetup2FADialog();
-    } else {
-      setState(() => _twoFactorEnabled = false);
-      _showSnackBar('تم تعطيل المصادقة الثنائية', Colors.orange);
-    }
-  }
-  
-  void _showSetup2FADialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('تفعيل المصادقة الثنائية'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.qr_code, size: 80),
-            SizedBox(height: 16),
-            Text('امسح رمز QR باستخدام تطبيق Google Authenticator'),
-            SizedBox(height: 8),
-            SelectableText('ABC123XYZ', style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() => _twoFactorEnabled = true);
-              _showSnackBar('تم تفعيل المصادقة الثنائية', Colors.green);
-            },
-            child: const Text('تفعيل'),
-          ),
-        ],
-      ),
-    );
-  }
-  
-  void _showSnackBar(String message, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: color),
-    );
-  }
-  
+  bool _biometricAuth = false;
+  bool _twoFactorAuth = false;
+  bool _loginAlerts = true;
+  bool _savePasswords = false;
+
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'الأمان'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: const SimpleAppBar(title: 'إعدادات الأمان'),
       body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          _buildSection('حماية الحساب'),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.fingerprint, color: AppTheme.gold),
+          // Password Section
+          _sectionTitle('كلمة المرور'),
+          _buildCard([
+            _buildListTile(
+              icon: Icons.lock,
+              title: 'تغيير كلمة المرور',
+              subtitle: 'آخر تحديث: منذ شهر',
+              onTap: () {},
             ),
-            title: const Text('المصادقة البيومترية'),
-            subtitle: Text(_isBiometricAvailable ? 'بصمة الإصبع / التعرف على الوجه' : 'غير مدعوم على هذا الجهاز'),
-            trailing: Switch(value: _biometricEnabled, onChanged: _isBiometricAvailable ? _toggleBiometric : null, activeColor: AppTheme.gold),
-          ),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.security, color: AppTheme.gold),
+          ]),
+          const SizedBox(height: 20),
+
+          // Biometric Section
+          _sectionTitle('المصادقة البيومترية'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.fingerprint,
+              title: 'قفل البصمة / Face ID',
+              subtitle: 'فتح التطبيق بالبصمة',
+              value: _biometricAuth,
+              onChanged: (v) => setState(() => _biometricAuth = v),
             ),
-            title: const Text('المصادقة الثنائية (2FA)'),
-            subtitle: const Text('حماية إضافية للحساب'),
-            trailing: Switch(value: _twoFactorEnabled, onChanged: _toggleTwoFactor, activeColor: AppTheme.gold),
-          ),
-          _buildSection('جلسات الدخول'),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.devices, color: AppTheme.gold),
+          ]),
+          const SizedBox(height: 20),
+
+          // 2FA Section
+          _sectionTitle('المصادقة الثنائية'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.security,
+              title: 'تفعيل 2FA',
+              subtitle: 'حماية إضافية لحسابك',
+              value: _twoFactorAuth,
+              onChanged: (v) => setState(() => _twoFactorAuth = v),
             ),
-            title: const Text('الأجهزة المتصلة'),
-            subtitle: const Text('إدارة الأجهزة المسجلة'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => Navigator.pushNamed(context, '/connected_devices'),
-          ),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.history, color: AppTheme.gold),
+          ]),
+          const SizedBox(height: 20),
+
+          // Login Alerts
+          _sectionTitle('تنبيهات تسجيل الدخول'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.notifications_active,
+              title: 'تنبيه عند تسجيل الدخول',
+              subtitle: 'إشعار عند دخول جديد',
+              value: _loginAlerts,
+              onChanged: (v) => setState(() => _loginAlerts = v),
             ),
-            title: const Text('سجل تسجيل الدخول'),
-            subtitle: const Text('آخر 10 جلسات دخول'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => Navigator.pushNamed(context, '/login_history'),
-          ),
-          _buildSection('الخصوصية'),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.visibility_off, color: AppTheme.gold),
+            _buildSwitchTile(
+              icon: Icons.password,
+              title: 'حفظ كلمات المرور',
+              subtitle: 'تذكر كلمات المرور للدخول السريع',
+              value: _savePasswords,
+              onChanged: (v) => setState(() => _savePasswords = v),
             ),
-            title: const Text('إعدادات الخصوصية'),
-            subtitle: const Text('التحكم في من يرى معلوماتك'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => Navigator.pushNamed(context, '/privacy_settings'),
-          ),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.block, color: AppTheme.gold),
-            ),
-            title: const Text('الحظر والإبلاغ'),
-            subtitle: const Text('إدارة المستخدمين المحظورين'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => Navigator.pushNamed(context, '/privacy_block'),
-          ),
+          ]),
+          const SizedBox(height: 20),
+
+          // Connected Devices
+          _sectionTitle('الأجهزة المتصلة'),
+          _buildCard([
+            _buildDeviceTile('iPhone 15 Pro', 'صنعاء، اليمن', true, 'الآن'),
+            _buildDeviceTile('Chrome - Windows', 'صنعاء، اليمن', false, 'منذ 2 يوم'),
+          ]),
         ],
       ),
     );
   }
-  
-  Widget _buildSection(String title) {
+
+  Widget _sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-      child: Text(title, style: const TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold, fontSize: 14)),
+      padding: const EdgeInsets.only(bottom: 12, right: 8),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontFamily: 'Changa',
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFFF0B90B),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard(List<Widget> children) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2329),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  Widget _buildListTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0B90B).withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, color: const Color(0xFFF0B90B), size: 22),
+      ),
+      title: Text(title, style: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w600)),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF))),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF9CA3AF)),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildSwitchTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return SwitchListTile(
+      secondary: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0B90B).withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, color: const Color(0xFFF0B90B), size: 22),
+      ),
+      title: Text(title, style: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w600)),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF))),
+      value: value,
+      onChanged: onChanged,
+      activeColor: const Color(0xFFF0B90B),
+    );
+  }
+
+  Widget _buildDeviceTile(String name, String location, bool isCurrent, String time) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isCurrent ? const Color(0xFF0ECB81).withOpacity(0.2) : Colors.grey[800],
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(
+          isCurrent ? Icons.phone_iphone : Icons.computer,
+          color: isCurrent ? const Color(0xFF0ECB81) : Colors.grey,
+          size: 22,
+        ),
+      ),
+      title: Row(
+        children: [
+          Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
+          if (isCurrent)
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0ECB81).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Text(
+                'الجهاز الحالي',
+                style: TextStyle(fontSize: 10, color: Color(0xFF0ECB81)),
+              ),
+            ),
+        ],
+      ),
+      subtitle: Text('$location · $time', style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF))),
+      trailing: isCurrent
+          ? null
+          : TextButton(
+              onPressed: () {},
+              child: const Text('إنهاء', style: TextStyle(color: Color(0xFFF6465D))),
+            ),
     );
   }
 }

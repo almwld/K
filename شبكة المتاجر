@@ -1,0 +1,101 @@
+=================
+  Widget _buildVendorsGrid(ThemeData theme) {
+    final vendors = _selectedMainCategory?.vendors ?? [];
+    
+    return SliverPadding(
+      padding: const EdgeInsets.all(12),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 180,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 0.9,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final vendor = vendors[index];
+            final isDark = theme.brightness == Brightness.dark;
+            
+            return Container(
+              decoration: BoxDecoration(
+                color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppTheme.gold, width: 2),
+                        ),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: vendor.logoUrl,
+                            fit: BoxFit.cover,
+                            errorWidget: (_, __, ___) => const Icon(Icons.store, color: AppTheme.gold),
+                          ),
+                        ),
+                      ),
+                      if (vendor.isVerified)
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.check, size: 14, color: Colors.white),
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    vendor.name,
+                    style: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    '${vendor.productsCount} منتج',
+                    style: TextStyle(fontFamily: 'Changa', fontSize: 12, color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 14),
+                      Text(
+                        ' ${vendor.rating}',
+                        style: const TextStyle(fontFamily: 'Changa', fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppTheme.gold),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    ),
+                    child: const Text('متابعة', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
+                  ),
+                ],
+              ),
+            );
+          },
+          childCount: vendors.length,
+        ),
+      ),
+    );
+  }
+
+  // =================

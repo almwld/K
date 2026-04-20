@@ -42,3 +42,4 @@ class HairCareScreen extends StatelessWidget {
     );
   }
 }
+

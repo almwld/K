@@ -1,0 +1,81 @@
+=================
+  Widget _buildProductsGrid(ThemeData theme) {
+    List<Product> products = [];
+    if (_selectedMainCategory != null) {
+      products = _selectedMainCategory!.products;
+      
+      // تطبيق الفلاتر
+      if (_selectedSubCategory != null) {
+        // تصفية حسب الفرع
+      }
+      if (_selectedMall != null) {
+        // تصفية حسب المول
+      }
+      products = products.where((p) => p.price >= _priceRange.start && p.price <= _priceRange.end).toList();
+      products = products.where((p) => p.rating >= _minRating).toList();
+    }
+    
+    if (products.isEmpty) {
+      return SliverFillRemaining(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.search_off, size: 80, color: Colors.grey[400]),
+              const SizedBox(height: 16),
+              Text(
+                'لا توجد منتجات',
+                style: theme.textTheme.titleLarge?.copyWith(color: Colors.grey[600]),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    
+    return SliverPadding(
+      padding: const EdgeInsets.all(12),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 0.7,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final product = products[index];
+            return ProductCard(
+              id: product.id,
+              title: product.name,
+              image: product.imageUrl,
+              price: product.price,
+              isAvailable: product.inStock,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProductDetailScreen(
+                      id: product.id,
+                      title: product.name,
+                      image: product.imageUrl,
+                      price: product.price,
+                      description: 'وصف المنتج ${product.name}',
+                      sellerName: product.vendorName,
+                      rating: product.rating,
+                      reviewCount: product.reviewsCount,
+                      images: [product.imageUrl],
+                      inStock: product.inStock,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+          childCount: products.length,
+        ),
+      ),
+    );
+  }
+
+  // =================

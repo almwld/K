@@ -42,3 +42,4 @@ class SecuritySafetyScreen extends StatelessWidget {
     );
   }
 }
+

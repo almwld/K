@@ -37,3 +37,4 @@ class _AdminDashboardState extends State<AdminDashboard> {
     return Card(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, size: 40, color: AppTheme.gold), const SizedBox(height: 8), Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), Text(title, style: TextStyle(color: Colors.grey[600]))]));
   }
 }
+

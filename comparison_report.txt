@@ -1,0 +1,1914 @@
+═══════════════════════════════════════════════════════════════════════════
+🔍 تقرير مقارنة شامل بين المشروعين - Flex Yemen
+═══════════════════════════════════════════════════════════════════════════
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 1. main.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 37 سطر
+   الجديد: 44 سطر
+
+📋 Providers الجديدة المضافة:
+        ChangeNotifierProvider(create: (_) => MarketProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => UserStatsProvider()),
+
+📋 محتوى main.dart القديم:
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
+import 'providers/theme_manager.dart';
+import 'screens/home/main_navigation.dart';
+import 'screens/login_screen.dart';
+import 'theme/app_theme.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeManager()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: Consumer<ThemeManager>(
+        builder: (context, themeManager, child) {
+          return MaterialApp(
+            title: 'Flex Yemen',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeManager.themeMode,
+            debugShowCheckedModeBanner: false,
+            home: const LoginScreen(), // نبدأ بشاشة تسجيل الدخول
+          );
+        },
+      ),
+    );
+  }
+}
+
+📋 محتوى main.dart الجديد:
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
+import 'providers/theme_manager.dart';
+import 'providers/market_provider.dart';
+import 'providers/subscription_provider.dart';
+import 'providers/user_stats_provider.dart';
+import 'screens/login_screen.dart';
+import 'theme/app_theme.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeManager()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => MarketProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => UserStatsProvider()),
+      ],
+      child: Consumer<ThemeManager>(
+        builder: (context, themeManager, child) {
+          return MaterialApp(
+            title: 'Flex Yemen',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeManager.themeMode,
+            debugShowCheckedModeBanner: false,
+            home: const LoginScreen(), // نبدأ بشاشة تسجيل الدخول
+          );
+        },
+      ),
+    );
+  }
+}
+
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 2. splash_screen.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 173 سطر
+   الجديد: 174 سطر
+
+📋 محتوى splash_screen.dart القديم:
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import '../theme/app_theme.dart';
+import 'home/main_navigation.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0, 0.5, curve: Curves.easeIn),
+      ),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.elasticOut,
+      ),
+    );
+
+    _controller.forward();
+    _navigateToNextScreen();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) return;
+
+    // ✅ الانتقال مباشرة للمنصة الرئيسية (بدون تسجيل دخول)
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const MainNavigation()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+              isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          gradient: AppTheme.goldGradient,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.gold.withOpacity(0.4),
+                              blurRadius: 30,
+                              spreadRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.shopping_bag,
+                          size: 80,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 40),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'FLEX',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 42,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.gold,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'YEMEN',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.goldLight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Text(
+                  'منصة التجارة الإلكترونية اليمنية',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 16,
+                    color: AppTheme.getSecondaryTextColor(context),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 60),
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
+                strokeWidth: 3,
+              ),
+            ].animate(
+              interval: const Duration(milliseconds: 100),
+            ).fadeIn().slideY(
+              begin: 0.3,
+              end: 0,
+              duration: const Duration(milliseconds: 600),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+📋 محتوى splash_screen.dart الجديد:
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import '../theme/app_theme.dart';
+import 'home/main_navigation.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0, 0.5, curve: Curves.easeIn),
+      ),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.elasticOut,
+      ),
+    );
+
+    _controller.forward();
+    _navigateToNextScreen();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) return;
+
+    // ✅ الانتقال مباشرة للمنصة الرئيسية (بدون تسجيل دخول)
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const MainNavigation()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+              isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          gradient: AppTheme.goldGradient,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.gold.withOpacity(0.4),
+                              blurRadius: 30,
+                              spreadRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.shopping_bag,
+                          size: 80,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 40),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'FLEX',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 42,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.gold,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'YEMEN',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.goldLight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Text(
+                  'منصة التجارة الإلكترونية اليمنية',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 16,
+                    color: AppTheme.getSecondaryTextColor(context),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 60),
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
+                strokeWidth: 3,
+              ),
+            ].animate(
+              interval: const Duration(milliseconds: 100),
+            ).fadeIn().slideY(
+              begin: 0.3,
+              end: 0,
+              duration: const Duration(milliseconds: 600),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 3. app_theme.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 147 سطر
+   الجديد: 71 سطر
+
+📋 محتوى app_theme.dart القديم:
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class AppTheme {
+  // 🌙 Night (كحلي فاخر)
+  static const Color nightBackground = Color(0xFF0F172A);
+  static const Color nightSurface = Color(0xFF16213E);
+  static const Color nightCard = Color(0xFF1A2A44);
+  static const Color nightTextPrimary = Color(0xFFFFFFFF);
+  static const Color nightTextSecondary = Color(0xFFB0B0B0);
+
+  // ☀️ Light
+  static const Color lightBackground = Color(0xFFF8F9FA);
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightCard = Color(0xFFF5F5F5);
+  static const Color lightTextPrimary = Color(0xFF1A1A1A);
+  static const Color lightTextSecondary = Color(0xFF757575);
+
+  // ✨ Brand
+  static const Color gold = Color(0xFFD4AF37);
+  static const Color goldDark = Color(0xFFB8962E);
+  static const Color goldLight = Color(0xFFF4E4A6);
+
+  // ⚠️ Status
+  static const Color error = Color(0xFFB00020);
+  static const Color success = Color(0xFF00C853);
+  static const Color warning = Color(0xFFFF9100);
+
+  // 🎨 Service Colors
+  static const Color serviceBlue = Color(0xFF2196F3);
+  static const Color serviceOrange = Color(0xFFFF9800);
+  static const Color serviceRed = Color(0xFFE53935);
+  static const Color serviceGreen = Color(0xFF4CAF50);
+
+  static LinearGradient get goldGradient => const LinearGradient(
+    colors: [gold, goldLight],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  // دوال مساعدة
+  static Color getCardColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightCard 
+        : lightCard;
+  }
+
+  static Color getSecondaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextSecondary 
+        : lightTextSecondary;
+  }
+
+  static Color getTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextPrimary 
+        : lightTextPrimary;
+  }
+
+  static Color getDividerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? const Color(0xFF3C3C3C) 
+        : const Color(0xFFE0E0E0);
+  }
+
+  static Color getPrimaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextPrimary 
+        : lightTextPrimary;
+  }
+
+  // ================= DARK =================
+  static ThemeData get darkTheme {
+    final scheme = const ColorScheme.dark(
+      primary: gold,
+      secondary: goldDark,
+      background: nightBackground,
+      surface: nightSurface,
+      error: error,
+      onPrimary: Colors.black,
+      onSecondary: Colors.black,
+      onBackground: Colors.white,
+      onSurface: Colors.white,
+      onError: Colors.white,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      fontFamily: 'Changa',
+      colorScheme: scheme,
+      scaffoldBackgroundColor: scheme.background,
+      appBarTheme: AppBarTheme(
+        backgroundColor: scheme.surface.withOpacity(0.95),
+        foregroundColor: scheme.onSurface,
+        elevation: 0,
+        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        titleTextStyle: const TextStyle(fontFamily: 'Changa', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        iconTheme: const IconThemeData(color: gold),
+      ),
+      cardTheme: CardTheme(
+        color: nightCard,
+        elevation: 6,
+        shadowColor: Colors.black.withOpacity(0.3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: gold.withOpacity(0.08))),
+      ),
+      splashColor: gold.withOpacity(0.2),
+      highlightColor: gold.withOpacity(0.1),
+    );
+  }
+
+  // ================= LIGHT =================
+  static ThemeData get lightTheme {
+    final scheme = const ColorScheme.light(
+      primary: goldDark,
+      secondary: gold,
+      background: lightBackground,
+      surface: lightSurface,
+      error: error,
+      onPrimary: Colors.white,
+      onSecondary: Colors.black,
+      onBackground: Colors.black,
+      onSurface: Colors.black,
+      onError: Colors.white,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      fontFamily: 'Changa',
+      colorScheme: scheme,
+      scaffoldBackgroundColor: scheme.background,
+      appBarTheme: AppBarTheme(
+        backgroundColor: scheme.surface.withOpacity(0.95),
+        foregroundColor: scheme.onSurface,
+        elevation: 0,
+        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleTextStyle: const TextStyle(fontFamily: 'Changa', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+        iconTheme: const IconThemeData(color: goldDark),
+      ),
+      splashColor: goldDark.withOpacity(0.2),
+      highlightColor: goldDark.withOpacity(0.1),
+    );
+  }
+}
+
+📋 محتوى app_theme.dart الجديد:
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class AppTheme {
+  // 🌙 Night (كحلي فاخر)
+  static const Color nightBackground = Color(0xFF0F172A);
+  static const Color nightSurface = Color(0xFF16213E);
+  static const Color nightCard = Color(0xFF1A2A44);
+  static const Color nightTextPrimary = Color(0xFFFFFFFF);
+  static const Color nightTextSecondary = Color(0xFFB0B0B0);
+
+  // ☀️ Light
+  static const Color lightBackground = Color(0xFFF8F9FA);
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightCard = Color(0xFFF5F5F5);
+  static const Color lightTextPrimary = Color(0xFF1A1A1A);
+  static const Color lightTextSecondary = Color(0xFF757575);
+
+  // ✨ Brand
+  static const Color gold = Color(0xFFD4AF37);
+  static const Color goldDark = Color(0xFFB8962E);
+  static const Color goldLight = Color(0xFFF4E4A6);
+
+  // ⚠️ Status
+  static const Color error = Color(0xFFB00020);
+  static const Color success = Color(0xFF00C853);
+  static const Color warning = Color(0xFFFF9100);
+
+  // 🎨 Service Colors
+  static const Color serviceBlue = Color(0xFF2196F3);
+  static const Color serviceOrange = Color(0xFFFF9800);
+  static const Color serviceRed = Color(0xFFE53935);
+  static const Color serviceGreen = Color(0xFF4CAF50);
+
+  static LinearGradient get goldGradient => const LinearGradient(
+    colors: [gold, goldLight],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  // دوال مساعدة
+  static Color getCardColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightCard 
+        : lightCard;
+  }
+
+  static Color getSecondaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextSecondary 
+        : lightTextSecondary;
+  }
+
+  static Color getTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextPrimary 
+        : lightTextPrimary;
+  }
+
+  static Color getDividerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? const Color(0xFF3C3C3C) 
+        : const Color(0xFFE0E0E0);
+  }
+
+  static Color getPrimaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextPrimary 
+        : lightTextPrimary;
+  }
+
+  // ==============No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 4. main_navigation.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 424 سطر
+   الجديد: 425 سطر
+
+📋 محتوى main_navigation.dart القديم:
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/app_drawer.dart';
+import '../../providers/auth_provider.dart';
+import 'home_screen.dart';
+import '../all_ads_screen.dart';
+import '../wallet/wallet_screen.dart';
+import '../chat/chat_screen.dart';
+import '../profile/profile_screen.dart';
+import '../cart/cart_screen.dart';
+import '../map/interactive_map_screen.dart';
+import '../add_ad_screen.dart';
+import '../request_service_screen.dart';
+
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
+  bool _isMenuOpen = false;
+  late AnimationController _rotationController;
+  late Animation<double> _rotationAnimation;
+
+  final List<Widget> _screens = const [
+    HomeScreen(),
+    AllAdsScreen(),
+    InteractiveMapScreen(),
+    WalletScreen(),
+    ChatScreen(),
+    ProfileScreen(),
+  ];
+
+  static const List<String> _icons = [
+    'assets/icons/svg/home.svg',
+    'assets/icons/svg/shop.svg',
+    'assets/icons/svg/location.svg',
+    'assets/icons/svg/wallet.svg',
+    'assets/icons/svg/chat.svg',
+    'assets/icons/svg/profile.svg',
+  ];
+
+  static const List<String> _labels = [
+    'الرئيسية',
+    'المتاجر',
+    'الخريطة',
+    'المحفظة',
+    'الدردشة',
+    'حسابي',
+  ];
+
+  final List<Map<String, dynamic>> _quickActions = [
+    {'icon': Icons.add_circle_outline, 'label': 'إعلان', 'color': AppTheme.serviceBlue, 'route': AddAdScreen},
+    {'icon': Icons.shopping_bag_outlined, 'label': 'منتج', 'color': AppTheme.serviceOrange, 'route': AddAdScreen},
+    {'icon': Icons.handyman_outlined, 'label': 'خدمة', 'color': AppTheme.serviceGreen, 'route': RequestServiceScreen},
+    {'icon': Icons.account_balance_wallet_outlined, 'label': 'حوالة', 'color': Colors.purple, 'route': AddAdScreen},
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _rotationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _rotationAnimation = Tween<double>(begin: 0, end: 0.125).animate(
+      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    if (_isMenuOpen) _toggleMenu();
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void _toggleMenu() {
+    setState(() {
+      _isMenuOpen = !_isMenuOpen;
+      if (_isMenuOpen) {
+        _rotationController.forward();
+      } else {
+        _rotationController.reverse();
+      }
+    });
+  }
+
+  void _executeAction(Map<String, dynamic> action) {
+    _toggleMenu();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => action['route']()),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(bool isDark) {
+    return AppBar(
+      leading: Builder(
+        builder: (context) => IconButton(
+          icon: const Icon(Icons.menu, color: AppTheme.gold),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'القائمة',
+        ),
+      ),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              gradient: AppTheme.goldGradient,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Center(
+              child: Text(
+                'FLX',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            'FLEX YEMEN',
+            style: TextStyle(
+              fontFamily: 'Changa',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+      centerTitle: true,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+      elevation: 0,
+      actions: [
+        Stack(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.gold),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CartScreen()),
+                );
+              },
+              tooltip: 'السلة',
+            ),
+            Positioned(
+              right: 8,
+              top: 8,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                child: Consumer<AuthProvider>(
+                  builder: (context, auth, _) => Text(
+                    '0',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined, color: AppTheme.gold),
+          onPressed: () {},
+          tooltip: 'الإشعارات',
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      key: const Key('main_navigation_scaffold'),
+      drawer: const AppDrawer(),
+      appBar: _buildAppBar(isDark),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: _buildBottomNavBar(isDark),
+      floatingActionButton: _buildGoldenFAB(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Widget _buildBottomNavBar(bool isDark) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(0),
+              _buildNavItem(1),
+              _buildNavItem(2),
+              const SizedBox(width: 70),
+              _buildNavItem(3),
+              _buildNavItem(4),
+              _buildNavItem(5),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index) {
+    final isSelected = _currentIndex == index;
+    final iconPath = _icons[index];
+    final label = _labels[index];
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _onItemTapped(index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? AppTheme.gold.withOpacity(0.15) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: SvgPicture.asset(
+                  iconPath,
+                  key: ValueKey(isSelected),
+                  width: 22,
+                  height: 22,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 200),
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 10,
+                  color: isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+                child: Text(label, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoldenFAB() {
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      children: [
+        if (_isMenuOpen) ...[
+          Positioned(
+            bottom: 70,
+            right: -30,
+            child: _buildCircularMenuItem(_quickActions[0], 0),
+          ),
+          Positioned(
+            bottom: 70,
+            left: -30,
+            child: _buildCircularMenuItem(_quickActions[1], 1),
+          ),
+          Positioned(
+            top: 70,
+            right: -30,
+            child: _buildCircularMenuItem(_quickActions[2], 2),
+          ),
+          Positioned(
+            top: 70,
+            left: -30,
+            child: _buildCircularMenuItem(_quickActions[3], 3),
+          ),
+        ],
+
+        if (_isMenuOpen)
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _toggleMenu,
+              child: Container(
+                color: Colors.black.withOpacity(0.3),
+              ),
+            ),
+          ),
+
+        AnimatedBuilder(
+          animation: _rotationAnimation,
+          builder: (context, child) {
+            return Transform.rotate(
+              angle: _rotationAnimation.value * 3.14159 * 2,
+              child: GestureDetector(
+                onTap: _toggleMenu,
+                child: Container(
+                  width: 65,
+                  height: 65,
+                  decoration: BoxDecoration(
+                    gradient: AppTheme.goldGradient,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.gold.withOpacity(0.5),
+                        blurRadius: 20,
+                        spreadRadius: 2,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: _isMenuOpen
+                        ? const Icon(Icons.close, color: Colors.black, size: 32, key: ValueKey('close'))
+                        : const Icon(Icons.add, color: Colors.black, size: 32, key: ValueKey('add')),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCircularMenuItem(Map<String, dynamic> action, int index) {
+    final color = action['color'] as Color;
+    final icon = action['icon'] as IconData;
+    final label = action['label'] as String;
+
+    return GestureDetector(
+      onTap: () => _executeAction(action),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300 + (index * 50)),
+        curve: Curves.elasticOut,
+        transform: Matrix4.identity()..scale(_isMenuOpen ? 1.0 : 0.0),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppTheme.nightCard
+                : AppTheme.lightCard,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(
+              color: color.withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+📋 محتوى main_navigation.dart الجديد:
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/app_drawer.dart';
+import '../../providers/auth_provider.dart';
+import 'home_screen.dart';
+import '../all_ads_screen.dart';
+import '../wallet/wallet_screen.dart';
+import '../chat/chat_screen.dart';
+import '../profile/profile_screen.dart';
+import '../cart/cart_screen.dart';
+import '../map/interactive_map_screen.dart';
+import '../add_ad_screen.dart';
+import '../request_service_screen.dart';
+
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
+  bool _isMenuOpen = false;
+  late AnimationController _rotationController;
+  late Animation<double> _rotationAnimation;
+
+  final List<Widget> _screens = const [
+    HomeScreen(),
+    AllAdsScreen(),
+    InteractiveMapScreen(),
+    WalletScreen(),
+    ChatScreen(),
+    ProfileScreen(),
+  ];
+
+  static const List<String> _icons = [
+    'assets/icons/svg/home.svg',
+    'assets/icons/svg/shop.svg',
+    'assets/icons/svg/location.svg',
+    'assets/icons/svg/wallet.svg',
+    'assets/icons/svg/chat.svg',
+    'assets/icons/svg/profile.svg',
+  ];
+
+  static const List<String> _labels = [
+    'الرئيسية',
+    'المتاجر',
+    'الخريطة',
+    'المحفظة',
+    'الدردشة',
+    'حسابي',
+  ];
+
+  final List<Map<String, dynamic>> _quickActions = [
+    {'icon': Icons.add_circle_outline, 'label': 'إعلان', 'color': AppTheme.serviceBlue, 'route': AddAdScreen},
+    {'icon': Icons.shopping_bag_outlined, 'label': 'منتج', 'color': AppTheme.serviceOrange, 'route': AddAdScreen},
+    {'icon': Icons.handyman_outlined, 'label': 'خدمة', 'color': AppTheme.serviceGreen, 'route': RequestServiceScreen},
+    {'icon': Icons.account_balance_wallet_outlined, 'label': 'حوالة', 'color': Colors.purple, 'route': AddAdScreen},
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _rotationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _rotationAnimation = Tween<double>(begin: 0, end: 0.125).animate(
+      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    if (_isMenuOpen) _toggleMenu();
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void _toggleMenu() {
+    setState(() {
+      _isMenuOpen = !_isMenuOpen;
+      if (_isMenuOpen) {
+        _rotationController.forward();
+      } else {
+        _rotationController.reverse();
+      }
+    });
+  }
+
+  void _executeAction(Map<String, dynamic> action) {
+    _toggleMenu();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => action['route']()),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(bool isDark) {
+    return AppBar(
+      leading: Builder(
+        builder: (context) => IconButton(
+          icon: const Icon(Icons.menu, color: AppTheme.gold),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'القائمة',
+        ),
+      ),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              gradient: AppTheme.goldGradient,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Center(
+              child: Text(
+                'FLX',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            'FLEX YEMEN',
+            style: TextStyle(
+              fontFamily: 'Changa',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+      centerTitle: true,
+      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+      elevation: 0,
+      actions: [
+        Stack(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.gold),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CartScreen()),
+                );
+              },
+              tooltip: 'السلة',
+            ),
+            Positioned(
+              right: 8,
+              top: 8,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                child: Consumer<AuthProvider>(
+                  builder: (context, auth, _) => Text(
+                    '0',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined, color: AppTheme.gold),
+          onPressed: () {},
+          tooltip: 'الإشعارات',
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      key: const Key('main_navigation_scaffold'),
+      drawer: const AppDrawer(),
+      appBar: _buildAppBar(isDark),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: _buildBottomNavBar(isDark),
+      floatingActionButton: _buildGoldenFAB(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Widget _buildBottomNavBar(bool isDark) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(0),
+              _buildNavItem(1),
+              _buildNavItem(2),
+              const SizedBox(width: 70),
+              _buildNavItem(3),
+              _buildNavItem(4),
+              _buildNavItem(5),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index) {
+    final isSelected = _currentIndex == index;
+    final iconPath = _icons[index];
+    final label = _labels[index];
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _onItemTapped(index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? AppTheme.gold.withOpacity(0.15) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: SvgPicture.asset(
+                  iconPath,
+                  key: ValueKey(isSelected),
+                  width: 22,
+                  height: 22,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 200),
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 10,
+                  color: isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+                child: Text(label, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoldenFAB() {
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      children: [
+        if (_isMenuOpen) ...[
+          Positioned(
+            bottom: 70,
+            right: -30,
+            child: _buildCircularMenuItem(_quickActions[0], 0),
+          ),
+          Positioned(
+            bottom: 70,
+            left: -30,
+            child: _buildCircularMenuItem(_quickActions[1], 1),
+          ),
+          Positioned(
+            top: 70,
+            right: -30,
+            child: _buildCircularMenuItem(_quickActions[2], 2),
+          ),
+          Positioned(
+            top: 70,
+            left: -30,
+            child: _buildCircularMenuItem(_quickActions[3], 3),
+          ),
+        ],
+
+        if (_isMenuOpen)
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _toggleMenu,
+              child: Container(
+                color: Colors.black.withOpacity(0.3),
+              ),
+            ),
+          ),
+
+        AnimatedBuilder(
+          animation: _rotationAnimation,
+          builder: (context, child) {
+            return Transform.rotate(
+              angle: _rotationAnimation.value * 3.14159 * 2,
+              child: GestureDetector(
+                onTap: _toggleMenu,
+                child: Container(
+                  width: 65,
+                  height: 65,
+                  decoration: BoxDecoration(
+                    gradient: AppTheme.goldGradient,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.gold.withOpacity(0.5),
+                        blurRadius: 20,
+                        spreadRadius: 2,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: _isMenuOpen
+                        ? const Icon(Icons.close, color: Colors.black, size: 32, key: ValueKey('close'))
+                        : const Icon(Icons.add, color: Colors.black, size: 32, key: ValueKey('add')),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCircularMenuItem(Map<String, dynamic> action, int index) {
+    final color = action['color'] as Color;
+    final icon = action['icon'] as IconData;
+    final label = action['label'] as String;
+
+    return GestureDetector(
+      onTap: () => _executeAction(action),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300 + (index * 50)),
+        curve: Curves.elasticOut,
+        transform: Matrix4.identity()..scale(_isMenuOpen ? 1.0 : 0.0),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppTheme.nightCard
+                : AppTheme.lightCard,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(
+              color: color.withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 5. home_screen.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 232 سطر
+   الجديد: 562 سطر
+
+📋 محتوى home_screen.dart القديم (أول 100 سطر):
+import 'package:flutter/material.dart';
+import '../../theme/app_theme.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'FLEX',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.gold,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'YEMEN',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.goldLight,
+                  ),
+                ),
+              ],
+            ),
+            centerTitle: true,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                // حقل البحث
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'إبحث عن المنتجات...',
+                    hintStyle: const TextStyle(fontFamily: 'Changa'),
+                    prefixIcon: const Icon(Icons.search, color: AppTheme.gold),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.nightCard
+                        : AppTheme.lightCard,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // رسالة الترحيب
+                Text(
+                  'أهلاً بك في Flex Yemen',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.getPrimaryTextColor(context),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // قسم الفئات
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الفئات',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.getPrimaryTextColor(context),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'عرض الكل',
+                        style: TextStyle(
+                          fontFamily: 'Changa',
+                          color: AppTheme.gold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+📋 محتوى home_screen.dart الجديد (أول 100 سطر):
+import 'package:flutter/material.dart';
+import '../../theme/app_theme.dart';
+import '../../models/market_model.dart';
+import '../../models/product_model.dart';
+import '../../widgets/market_table.dart';
+import '../../widgets/vip_banner.dart';
+import '../../widgets/countdown_timer.dart';
+import '../../widgets/stock_badge.dart';
+import '../market_detail_screen.dart';
+import '../vip_subscription_screen.dart';
+import '../flash_sale_screen.dart';
+import '../new_arrivals_screen.dart';
+import '../product_detail_screen.dart';
+import '../search_screen.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'FLEX',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.gold,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'YEMEN',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.goldLight,
+                  ),
+                ),
+              ],
+            ),
+            centerTitle: true,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.search, color: AppTheme.gold),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SearchScreen()),
+                ),
+              ),
+            ],
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                // =================== VIP BANNER ===================
+                VipBanner(
+                  isCompact: true,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const VipSubscriptionScreen()),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // =================== MARKETS TABLE (Binance Style) ===================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الأسواق',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.getPrimaryTextColor(context),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0ECB81).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.trending_up, size: 14, color: Color(0xFF0ECB81)),
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 6. login_screen.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 390 سطر
+   الجديد: 391 سطر
+
+📋 وجود TabBar في القديم:
+2
+📋 وجود TabBar في الجديد:
+2
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 7. register_screen.dart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 الإحصائيات:
+   القديم: 399 سطر
+   الجديد: 400 سطر
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 8. الموديلات الجديدة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 الموديلات الموجودة في الجديد فقط:
+-rw-------. 1 u0_a523 u0_a523  4216 Apr 20 16:58 market_model.dart
+-rw-------. 1 u0_a523 u0_a523  3750 Apr 20 17:02 subscription_model.dart
+-rw-------. 1 u0_a523 u0_a523  4517 Apr 20 16:58 user_stats_model.dart
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 9. الـ Providers الجديدة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Providers الموجودة في الجديد فقط:
+-rw-------. 1 u0_a523 u0_a523 1110 Apr 20 16:59 market_provider.dart
+-rw-------. 1 u0_a523 u0_a523 1752 Apr 20 16:59 subscription_provider.dart
+-rw-------. 1 u0_a523 u0_a523 2221 Apr 20 16:59 user_stats_provider.dart
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 10. الـ Widgets الجديدة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Widgets الموجودة في الجديد فقط:
+-rw-------. 1 u0_a523 u0_a523 11492 Apr 20 16:34 app_drawer.dart
+-rw-------. 1 u0_a523 u0_a523  3038 Apr 20 17:01 countdown_timer.dart
+-rw-------. 1 u0_a523 u0_a523  6559 Apr 20 17:01 market_table.dart
+-rw-------. 1 u0_a523 u0_a523  3778 Apr 20 17:01 social_proof.dart
+-rw-------. 1 u0_a523 u0_a523  3304 Apr 20 17:01 stock_badge.dart
+-rw-------. 1 u0_a523 u0_a523  3450 Apr 20 17:01 upgrade_card.dart
+-rw-------. 1 u0_a523 u0_a523  5096 Apr 20 17:01 vip_banner.dart
+No command # found, did you mean:
+ Command c in package c-script
+ Command [ in package coreutils
+ Command k in package kona
+ Command o in package orbiton
+ Command q in package q-dns-client
+ Command X in package xorg-server
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 11. الشاشات الجديدة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 الشاشات الجديدة المضافة:
+-rw-------.  1 u0_a523 u0_a523  9888 Apr 20 17:04 flash_sale_screen.dart
+-rw-------.  1 u0_a523 u0_a523  4729 Apr 20 17:06 language_settings_screen.dart
+-rw-------.  1 u0_a523 u0_a523  7863 Apr 20 17:02 market_detail_screen.dart
+-rw-------.  1 u0_a523 u0_a523  5855 Apr 20 17:04 new_arrivals_screen.dart
+-rw-------.  1 u0_a523 u0_a523  8419 Apr 20 17:09 notifications_settings_screen.dart
+-rw-------.  1 u0_a523 u0_a523  7840 Apr 20 17:09 privacy_settings_screen.dart
+-rw-------.  1 u0_a523 u0_a523  7053 Apr 20 17:06 security_settings_screen.dart
+-rw-------.  1 u0_a523 u0_a523  9391 Apr 20 17:06 seller_dashboard.dart
+-rw-------.  1 u0_a523 u0_a523  9391 Apr 20 17:31 seller_dashboard_screen.dart
+-rw-------.  1 u0_a523 u0_a523  9712 Apr 20 17:04 user_dashboard.dart
+-rw-------.  1 u0_a523 u0_a523  9712 Apr 20 17:31 user_dashboard_screen.dart
+-rw-------.  1 u0_a523 u0_a523  8484 Apr 20 17:02 vip_subscription_screen.dart
+
+═══════════════════════════════════════════════════════════════════════════
+✅ انتهى التقرير الشامل
+═══════════════════════════════════════════════════════════════════════════

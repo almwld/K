@@ -1,5 +1,0 @@
-[33m5d09571[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m ✅ تكبير تبويبات عميل/تاجر في شاشة التسجيل
-[33m5996816[m ✅ تفعيل أيقونات الاتصال في LoginScreen
-[33m3527735[m ✅ إصلاح مسارات Terms و Privacy في RegisterScreen
-[33m8c18a6f[m ✅ إصلاح HomeScreen - جميع Navigator.push داخل onPressed/onTap
-[33mad1326c[m ✅ الانتقال مباشرة للمنصة + أزرار تسجيل الدخول وإنشاء حساب في الرئيسية

@@ -257,3 +257,4 @@ class _BiometricScreenState extends State<BiometricScreen> {
     );
   }
 }
+

@@ -65,3 +65,4 @@ class ThemeService {
     return primaryColors[mode]!;
   }
 }
+

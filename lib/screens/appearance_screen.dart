@@ -55,3 +55,4 @@ class AppearanceScreen extends StatelessWidget {
     );
   }
 }
+

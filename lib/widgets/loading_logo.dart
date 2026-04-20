@@ -47,3 +47,4 @@ class LoadingLogo extends StatelessWidget {
     );
   }
 }
+

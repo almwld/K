@@ -274,3 +274,4 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
     );
   }
 }
+

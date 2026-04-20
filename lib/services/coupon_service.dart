@@ -244,3 +244,4 @@ class CouponValidationResult {
     required this.message,
   });
 }
+

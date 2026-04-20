@@ -1,0 +1,72 @@
+=================
+  Widget _buildSubCategoryBar(ThemeData theme, bool isDark) {
+    if (_selectedMainCategory == null) return const SizedBox.shrink();
+    
+    final subCategories = _selectedMainCategory!.subCategories;
+    
+    return Container(
+      height: 50,
+      color: theme.scaffoldBackgroundColor,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        itemCount: subCategories.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            // زر "الكل"
+            final isSelected = _selectedSubCategory == null;
+            return _buildSubCategoryChip(
+              'الكل',
+              isSelected,
+              theme,
+              () {
+                setState(() => _selectedSubCategory = null);
+              },
+            );
+          }
+          
+          final sub = subCategories[index - 1];
+          final isSelected = _selectedSubCategory?.id == sub.id;
+          
+          return _buildSubCategoryChip(
+            sub.name,
+            isSelected,
+            theme,
+            () {
+              setState(() => _selectedSubCategory = sub);
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSubCategoryChip(String label, bool isSelected, ThemeData theme, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.gold.withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? AppTheme.gold : Colors.grey.withOpacity(0.3),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Changa',
+              fontSize: 12,
+              color: isSelected ? AppTheme.gold : theme.textTheme.bodySmall?.color,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // =================

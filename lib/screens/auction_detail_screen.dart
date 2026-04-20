@@ -265,3 +265,4 @@ class _AuctionDetailScreenState extends State<AuctionDetailScreen> {
     );
   }
 }
+

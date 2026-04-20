@@ -1,0 +1,22 @@
+=======
+  Future<AuthResponse> signUp(String email, String password, Map<String, dynamic> userData) async {
+    return await client.auth.signUp(
+      email: email,
+      password: password,
+      data: userData,
+    );
+  }
+
+  Future<Session?> signIn(String email, String password) async {
+    final response = await client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+    return response.session;
+  }
+
+  Future<void> signOut() async {
+    await client.auth.signOut();
+  }
+  
+  // =======

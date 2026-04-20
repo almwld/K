@@ -83,3 +83,4 @@ class _MapNearbyScreenState extends State<MapNearbyScreen> {
     );
   }
 }
+

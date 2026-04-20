@@ -1,0 +1,56 @@
+=================
+  Widget _buildViewToggle(ThemeData theme, bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _showVendors = false),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: !_showVendors ? AppTheme.gold : Colors.transparent,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'المنتجات',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    color: !_showVendors ? Colors.black : theme.textTheme.bodyMedium?.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _showVendors = true),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: _showVendors ? AppTheme.gold : Colors.transparent,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'المتاجر',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    color: _showVendors ? Colors.black : theme.textTheme.bodyMedium?.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // =================

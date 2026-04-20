@@ -94,3 +94,4 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen> {
     );
   }
 }
+

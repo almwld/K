@@ -67,3 +67,4 @@ class VendorTermsScreen extends StatelessWidget {
     );
   }
 }
+

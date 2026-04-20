@@ -1,0 +1,42 @@
+==============
+  static ThemeData get darkTheme {
+    final scheme = const ColorScheme.dark(
+      primary: gold,
+      secondary: goldDark,
+      background: nightBackground,
+      surface: nightSurface,
+      error: error,
+      onPrimary: Colors.black,
+      onSecondary: Colors.black,
+      onBackground: Colors.white,
+      onSurface: Colors.white,
+      onError: Colors.white,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      fontFamily: 'Changa',
+      colorScheme: scheme,
+      scaffoldBackgroundColor: scheme.background,
+      appBarTheme: AppBarTheme(
+        backgroundColor: scheme.surface.withOpacity(0.95),
+        foregroundColor: scheme.onSurface,
+        elevation: 0,
+        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        titleTextStyle: const TextStyle(fontFamily: 'Changa', fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        iconTheme: const IconThemeData(color: gold),
+      ),
+      cardTheme: CardTheme(
+        color: nightCard,
+        elevation: 6,
+        shadowColor: Colors.black.withOpacity(0.3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: gold.withOpacity(0.08))),
+      ),
+      splashColor: gold.withOpacity(0.2),
+      highlightColor: gold.withOpacity(0.1),
+    );
+  }
+
+  // ==============

@@ -42,3 +42,4 @@ class ElectricalToolsScreen extends StatelessWidget {
     );
   }
 }
+

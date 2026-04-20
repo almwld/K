@@ -15,3 +15,4 @@ class StoresData {
     return getAllStores().where((store) => store.category == category).toList();
   }
 }
+

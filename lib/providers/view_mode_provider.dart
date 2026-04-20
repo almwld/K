@@ -19,3 +19,4 @@ class ViewModeProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+

@@ -269,3 +269,4 @@ class AdCardHorizontal extends StatelessWidget {
     );
   }
 }
+

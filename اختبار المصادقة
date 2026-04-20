@@ -1,0 +1,24 @@
+');
+    try {
+      final response = await Supabase.instance.client.auth.signInWithPassword(
+        email: 'test@flexyemen.com',
+        password: 'test123456',
+      );
+      print('✅ المصادقة تعمل (تم إرسال الطلب)');
+    } catch (e) {
+      print('⚠️ المصادقة: $e (هذا طبيعي إذا كان المستخدم غير موجود)');
+    }
+    
+  } catch (e) {
+    print('❌ فشل الاتصال: $e');
+  }
+  
+  runApp(const MaterialApp(
+    home: Scaffold(
+      body: Center(
+        child: Text('اختبار الاتصال - انظر إلى terminal'),
+      ),
+    ),
+  ));
+}
+

@@ -42,3 +42,4 @@ class LuxuryItemsScreen extends StatelessWidget {
     );
   }
 }
+

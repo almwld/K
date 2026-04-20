@@ -32,3 +32,4 @@ class StoreDetailScreen extends StatelessWidget {
     );
   }
 }
+

@@ -248,3 +248,4 @@ class _IdentityInfoScreenState extends State<IdentityInfoScreen> {
     );
   }
 }
+

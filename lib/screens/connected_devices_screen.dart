@@ -119,3 +119,4 @@ class _ConnectedDevicesScreenState extends State<ConnectedDevicesScreen> {
     );
   }
 }
+

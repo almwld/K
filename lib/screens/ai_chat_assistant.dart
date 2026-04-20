@@ -428,3 +428,4 @@ class _AIChatAssistantState extends State<AIChatAssistant> {
     );
   }
 }
+

@@ -108,3 +108,4 @@ class ShimmerEffect extends StatelessWidget {
     return CustomShimmer(width: width, height: height, borderRadius: borderRadius);
   }
 }
+

@@ -13,3 +13,4 @@ class UserModel {
     this.avatarUrl,
   });
 }
+

@@ -46,3 +46,4 @@ class MessageModel {
   bool get isMine => senderId == currentUserId;
   static String currentUserId = '';
 }
+

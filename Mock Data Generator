@@ -1,0 +1,43 @@
+=================
+  static List<MainCategory> _generateMockCategories() {
+    // 45 فئة رئيسية مع بيانات وهمية
+    return [
+      MainCategory(
+        id: 1,
+        name: 'الإلكترونيات',
+        iconUrl: 'https://via.placeholder.com/50',
+        subCategories: ['جوالات', 'كمبيوترات', 'أجهزة لوحية', 'سماعات', 'شواحن', 'ملحقات']
+            .map((e) => SubCategory(id: 1, name: e, mainCategoryId: 1))
+            .toList(),
+        malls: [
+          Mall(id: 1, name: 'مول التقنية', imageUrl: 'https://via.placeholder.com/100', storesCount: 45, mainCategoryId: 1),
+          Mall(id: 2, name: 'معرض الإلكترونيات', imageUrl: 'https://via.placeholder.com/100', storesCount: 32, mainCategoryId: 1),
+        ],
+        vendors: List.generate(10, (i) => Vendor(
+          id: 'v$i',
+          name: 'متجر إلكترونيات ${i + 1}',
+          logoUrl: 'https://via.placeholder.com/100',
+          productsCount: 50 + i * 10,
+          rating: 4.0 + (i % 2) * 0.5,
+          isVerified: i % 3 == 0,
+        )),
+        products: List.generate(20, (i) => Product(
+          id: 'p$i',
+          name: 'منتج إلكتروني ${i + 1}',
+          price: 500 + (i * 100).toDouble(),
+          oldPrice: i % 3 == 0 ? 700 + (i * 100).toDouble() : null,
+          imageUrl: 'https://via.placeholder.com/200',
+          vendorName: 'متجر الإلكترونيات',
+          vendorId: 'v1',
+          rating: 4.5,
+          reviewsCount: 100 + i,
+          stockQuantity: 10 + i,
+          categoryKey: 'electronics',
+        )),
+      ),
+      // ... أضف باقي الفئات الـ 45 هنا
+    ];
+  }
+}
+
+// =================

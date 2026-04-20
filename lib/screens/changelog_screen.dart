@@ -27,3 +27,4 @@ class ChangelogScreen extends StatelessWidget {
     );
   }
 }
+

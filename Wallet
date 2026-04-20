@@ -1,0 +1,11 @@
+=======
+  Future<Map<String, dynamic>?> getWallet() async {
+    final uid = requireUserId;
+    return await client
+        .from('wallets')
+        .select()
+        .eq('user_id', uid)
+        .maybeSingle();
+  }
+  
+  // =======

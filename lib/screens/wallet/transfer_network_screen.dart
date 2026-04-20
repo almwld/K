@@ -164,3 +164,4 @@ class _TransferNetworkScreenState extends State<TransferNetworkScreen> {
     );
   }
 }
+

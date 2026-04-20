@@ -1,0 +1,9 @@
+=======
+  Future<List<Map<String, dynamic>>> getProducts() async {
+    return await client
+        .from('products')
+        .select('*, profiles(name, avatar_url)')
+        .order('created_at', ascending: false);
+  }
+  
+  // =======

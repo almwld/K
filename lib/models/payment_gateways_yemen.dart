@@ -151,3 +151,4 @@ class YemenWalletsData {
     return getAllWallets().where((w) => w.feePercentage == 0 && w.fixedFee == 0).toList();
   }
 }
+

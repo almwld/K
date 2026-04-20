@@ -34,3 +34,4 @@ class ThemeManager extends ChangeNotifier {
     }
   }
 }
+

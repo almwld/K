@@ -27,3 +27,4 @@ class OffersScreen extends StatelessWidget {
     );
   }
 }
+

@@ -53,3 +53,4 @@ class SecurityService {
     await prefs.remove(_sessionKey);
   }
 }
+

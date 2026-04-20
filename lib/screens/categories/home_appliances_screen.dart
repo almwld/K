@@ -42,3 +42,4 @@ class HomeAppliancesScreen extends StatelessWidget {
     );
   }
 }
+

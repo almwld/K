@@ -132,3 +132,4 @@ class CachedNetworkImageWidget extends StatelessWidget {
     );
   }
 }
+

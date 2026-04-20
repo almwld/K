@@ -237,3 +237,4 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('جاري مشاركة الإعلان...')));
   }
 }
+

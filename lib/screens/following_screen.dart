@@ -115,3 +115,4 @@ class _FollowingScreenState extends State<FollowingScreen> {
     );
   }
 }
+

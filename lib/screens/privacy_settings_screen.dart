@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
+import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
@@ -11,133 +10,207 @@ class PrivacySettingsScreen extends StatefulWidget {
 }
 
 class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
-  bool _showProfile = true;
+  bool _showProfileToAll = true;
+  bool _showPhoneNumber = false;
   bool _showEmail = false;
-  bool _showPhone = true;
-  bool _showLocation = false;
   bool _allowMessages = true;
-  bool _allowComments = true;
-  bool _dataSharing = false;
-  bool _personalizedAds = true;
-  
+  bool _showOnlineStatus = true;
+  bool _shareActivity = false;
+  bool _allowSearchByPhone = false;
+  bool _dataAnalytics = true;
+
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const SimpleAppBar(title: 'إعدادات الخصوصية'),
       body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          _buildSection('من يمكنه رؤية معلوماتي'),
-          _buildSwitch('الملف الشخصي', 'عرض معلوماتك الشخصية', _showProfile, (v) => setState(() => _showProfile = v)),
-          _buildSwitch('البريد الإلكتروني', 'عرض بريدك الإلكتروني', _showEmail, (v) => setState(() => _showEmail = v)),
-          _buildSwitch('رقم الهاتف', 'عرض رقم هاتفك', _showPhone, (v) => setState(() => _showPhone = v)),
-          _buildSwitch('الموقع', 'عرض موقعك الجغرافي', _showLocation, (v) => setState(() => _showLocation = v)),
-          
-          _buildSection('التفاعل مع الآخرين'),
-          _buildSwitch('الرسائل الخاصة', 'السماح للآخرين بإرسال رسائل لك', _allowMessages, (v) => setState(() => _allowMessages = v)),
-          _buildSwitch('التعليقات', 'السماح بالتعليقات على إعلاناتك', _allowComments, (v) => setState(() => _allowComments = v)),
-          
-          _buildSection('البيانات والإعلانات'),
-          _buildSwitch('مشاركة البيانات', 'السماح بمشاركة بياناتك لتحسين الخدمة', _dataSharing, (v) => setState(() => _dataSharing = v)),
-          _buildSwitch('إعلانات مخصصة', 'عرض إعلانات مخصصة بناءً على اهتماماتك', _personalizedAds, (v) => setState(() => _personalizedAds = v)),
-          
-          _buildSection('البيانات المحفوظة'),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.download, color: AppTheme.gold),
+          // Profile Visibility
+          _sectionTitle('رؤية الملف الشخصي'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.visibility,
+              title: 'عرض الملف للجميع',
+              subtitle: 'السماح للمستخدمين برؤية ملفك',
+              value: _showProfileToAll,
+              onChanged: (v) => setState(() => _showProfileToAll = v),
             ),
-            title: const Text('تحميل بياناتي'),
-            subtitle: const Text('احصل على نسخة من بياناتك'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('جاري تحضير بياناتك...'), backgroundColor: AppTheme.gold),
-              );
-            },
-          ),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.delete_forever, color: Colors.red),
+          ]),
+          const SizedBox(height: 20),
+
+          // Contact Info
+          _sectionTitle('معلومات التواصل'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.phone,
+              title: 'عرض رقم الهاتف',
+              subtitle: 'السماح برؤية رقمك',
+              value: _showPhoneNumber,
+              onChanged: (v) => setState(() => _showPhoneNumber = v),
             ),
-            title: const Text('حذف حسابي', style: TextStyle(color: Colors.red)),
-            subtitle: const Text('حذف حسابك وجميع بياناتك نهائياً'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.red),
-            onTap: () => _showDeleteAccountDialog(),
-          ),
-          
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('تم حفظ إعدادات الخصوصية'), backgroundColor: Colors.green),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.gold,
-                foregroundColor: Colors.black,
-                minimumSize: const Size(double.infinity, 50),
+            _buildSwitchTile(
+              icon: Icons.email,
+              title: 'عرض البريد الإلكتروني',
+              subtitle: 'السماح برؤية بريدك',
+              value: _showEmail,
+              onChanged: (v) => setState(() => _showEmail = v),
+            ),
+            _buildSwitchTile(
+              icon: Icons.message,
+              title: 'السماح بالرسائل',
+              subtitle: 'استقبال رسائل من المستخدمين',
+              value: _allowMessages,
+              onChanged: (v) => setState(() => _allowMessages = v),
+            ),
+          ]),
+          const SizedBox(height: 20),
+
+          // Online Status
+          _sectionTitle('الحالة والنشاط'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.circle,
+              title: 'عرض حالة الاتصال',
+              subtitle: 'إظهار أنك متصل',
+              value: _showOnlineStatus,
+              onChanged: (v) => setState(() => _showOnlineStatus = v),
+            ),
+            _buildSwitchTile(
+              icon: Icons.share,
+              title: 'مشاركة النشاط',
+              subtitle: 'إظهار مشترياتك وتقييماتك',
+              value: _shareActivity,
+              onChanged: (v) => setState(() => _shareActivity = v),
+            ),
+            _buildSwitchTile(
+              icon: Icons.search,
+              title: 'البحث برقم الهاتف',
+              subtitle: 'السماح بالعثور عليك برقمك',
+              value: _allowSearchByPhone,
+              onChanged: (v) => setState(() => _allowSearchByPhone = v),
+            ),
+          ]),
+          const SizedBox(height: 20),
+
+          // Data & Analytics
+          _sectionTitle('البيانات والتحليلات'),
+          _buildCard([
+            _buildSwitchTile(
+              icon: Icons.analytics,
+              title: 'تحليلات البيانات',
+              subtitle: 'تحسين التجربة باستخدام بياناتك',
+              value: _dataAnalytics,
+              onChanged: (v) => setState(() => _dataAnalytics = v),
+            ),
+          ]),
+          const SizedBox(height: 20),
+
+          // Danger Zone
+          _sectionTitle('منطقة الخطر'),
+          _buildCard([
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF6465D).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.delete_forever, color: Color(0xFFF6465D), size: 22),
               ),
-              child: const Text('حفظ الإعدادات'),
+              title: const Text(
+                'حذف البيانات',
+                style: TextStyle(color: Color(0xFFF6465D), fontWeight: FontWeight.w600),
+              ),
+              subtitle: const Text('حذف جميع بياناتك نهائياً', style: TextStyle(fontSize: 12, color: Color(0xFF9CA3AF))),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFFF6465D)),
+              onTap: () => _showDeleteDialog(context),
             ),
-          ),
+          ]),
         ],
       ),
     );
   }
-  
-  void _showDeleteAccountDialog() {
+
+  Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12, right: 8),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontFamily: 'Changa',
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFFF0B90B),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard(List<Widget> children) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2329),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  Widget _buildSwitchTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return SwitchListTile(
+      secondary: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0B90B).withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, color: const Color(0xFFF0B90B), size: 22),
+      ),
+      title: Text(title, style: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.w600)),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12, color: Color(0xFF9CA3AF))),
+      value: value,
+      onChanged: onChanged,
+      activeColor: const Color(0xFFF0B90B),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('حذف الحساب', style: TextStyle(color: Colors.red)),
+        backgroundColor: const Color(0xFF1E2329),
+        title: const Text('حذف البيانات', style: TextStyle(fontFamily: 'Changa', color: Color(0xFFF6465D))),
         content: const Text(
-          'هل أنت متأكد من رغبتك في حذف حسابك؟\n\n'
-          'سيتم حذف جميع بياناتك بشكل نهائي:\n'
-          '• المنتجات والإعلانات\n'
-          '• الطلبات والسجل\n'
-          '• المحفظة والرصيد\n'
-          '• المحادثات والرسائل\n\n'
-          'هذا الإجراء لا يمكن التراجع عنه.',
+          'هل أنت متأكد من حذف جميع بياناتك؟ هذا الإجراء لا يمكن التراجع عنه.',
+          style: TextStyle(color: Colors.white70),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('إلغاء', style: TextStyle(color: Color(0xFF9CA3AF))),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('جاري حذف الحساب...'), backgroundColor: Colors.red),
+                const SnackBar(
+                  content: Text('تم إرسال طلب الحذف', style: TextStyle(fontFamily: 'Changa')),
+                ),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('تأكيد الحذف'),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFF6465D)),
+            child: const Text('حذف', style: TextStyle(fontFamily: 'Changa')),
           ),
         ],
       ),
-    );
-  }
-  
-  Widget _buildSection(String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-      child: Text(title, style: const TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold, fontSize: 14)),
-    );
-  }
-  
-  Widget _buildSwitch(String title, String subtitle, bool value, Function(bool) onChanged) {
-    return SwitchListTile(
-      title: Text(title),
-      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
-      value: value,
-      onChanged: onChanged,
-      activeColor: AppTheme.gold,
     );
   }
 }

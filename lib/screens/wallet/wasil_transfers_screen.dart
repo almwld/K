@@ -573,3 +573,4 @@ class _WasilTransfersScreenState extends State<WasilTransfersScreen> {
     );
   }
 }
+

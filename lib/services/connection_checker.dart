@@ -88,3 +88,4 @@ class OfflineIndicator extends StatelessWidget {
     );
   }
 }
+

@@ -79,3 +79,4 @@ class AllCategoriesScreen extends StatelessWidget {
     );
   }
 }
+

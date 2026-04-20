@@ -27,3 +27,4 @@ class SellerProfileScreen extends StatelessWidget {
     );
   }
 }
+

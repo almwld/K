@@ -84,3 +84,4 @@ class AboutScreen extends StatelessWidget {
     );
   }
 }
+

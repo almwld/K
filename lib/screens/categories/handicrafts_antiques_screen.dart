@@ -42,3 +42,4 @@ class HandicraftsAntiquesScreen extends StatelessWidget {
     );
   }
 }
+

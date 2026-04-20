@@ -10,3 +10,4 @@
         <domain includeSubdomains="true">supabase.co</domain>
     </domain-config>
 </network-security-config>
+

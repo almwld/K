@@ -314,3 +314,4 @@ class RewardModel {
 }
 
 enum RewardType { coupon, freeShipping, gift, cashback, voucher }
+

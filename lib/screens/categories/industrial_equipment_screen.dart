@@ -42,3 +42,4 @@ class IndustrialEquipmentScreen extends StatelessWidget {
     );
   }
 }
+

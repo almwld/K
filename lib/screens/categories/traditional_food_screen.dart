@@ -42,3 +42,4 @@ class TraditionalFoodScreen extends StatelessWidget {
     );
   }
 }
+

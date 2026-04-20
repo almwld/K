@@ -26,3 +26,4 @@ class PaymentMethodsScreen extends StatelessWidget {
     );
   }
 }
+

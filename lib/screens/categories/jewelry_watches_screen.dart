@@ -42,3 +42,4 @@ class JewelryWatchesScreen extends StatelessWidget {
     );
   }
 }
+

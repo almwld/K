@@ -42,3 +42,4 @@ class CurrencyScreen extends StatelessWidget {
     );
   }
 }
+

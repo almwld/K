@@ -90,3 +90,4 @@ class SettingsScreen extends StatelessWidget {
       MaterialPageRoute(builder: (_) => const ThemeSelectionScreen()),
     );
   }
+

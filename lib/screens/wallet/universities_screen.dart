@@ -26,3 +26,4 @@ class UniversitiesScreen extends StatelessWidget {
     );
   }
 }
+

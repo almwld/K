@@ -27,3 +27,4 @@ class EarningsScreen extends StatelessWidget {
     );
   }
 }
+

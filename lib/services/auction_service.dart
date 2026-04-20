@@ -375,3 +375,4 @@ class BidResult {
     this.isBuyNow = false,
   });
 }
+

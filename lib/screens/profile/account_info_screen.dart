@@ -12,3 +12,4 @@ class AccountInfoScreen extends StatelessWidget {
     );
   }
 }
+

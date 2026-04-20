@@ -258,3 +258,4 @@ class _LocalTransferNetworksScreenState extends State<LocalTransferNetworksScree
     );
   }
 }
+

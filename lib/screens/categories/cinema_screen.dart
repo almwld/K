@@ -42,3 +42,4 @@ class CinemaScreen extends StatelessWidget {
     );
   }
 }
+

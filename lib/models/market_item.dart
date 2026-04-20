@@ -21,3 +21,4 @@ class MarketItem {
   String get formattedPrice => '${price.toStringAsFixed(2)} ريال';
   String get formattedChange => '${isPositive ? '+' : ''}${change24h.toStringAsFixed(1)}%';
 }
+

@@ -42,3 +42,4 @@ class LuxuryFurnitureScreen extends StatelessWidget {
     );
   }
 }
+

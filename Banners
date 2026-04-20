@@ -1,0 +1,10 @@
+=======
+  Future<List<Map<String, dynamic>>> getActiveBanners() async {
+    return await client
+        .from('banners')
+        .select()
+        .eq('is_active', true)
+        .order('order', ascending: true);
+  }
+}
+

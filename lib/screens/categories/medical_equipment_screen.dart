@@ -42,3 +42,4 @@ class MedicalEquipmentScreen extends StatelessWidget {
     );
   }
 }
+

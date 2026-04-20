@@ -42,3 +42,4 @@ class SeafoodScreen extends StatelessWidget {
     );
   }
 }
+

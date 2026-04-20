@@ -244,3 +244,4 @@ class _TransfersHistoryScreenState extends State<TransfersHistoryScreen> {
     );
   }
 }
+

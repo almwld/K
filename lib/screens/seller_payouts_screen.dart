@@ -27,3 +27,4 @@ class SellerPayoutsScreen extends StatelessWidget {
     );
   }
 }
+

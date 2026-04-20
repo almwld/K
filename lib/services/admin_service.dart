@@ -67,3 +67,4 @@ class AdminService {
     return [AdminActivityLog(id: '1', adminId: 'admin1', adminName: 'مدير المنصة', action: 'approve_verification', targetType: 'verification', createdAt: DateTime.now())];
   }
 }
+

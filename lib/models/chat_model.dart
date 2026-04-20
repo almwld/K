@@ -130,3 +130,4 @@ class MessageModel {
 }
 
 enum MessageType { text, image, product, order }
+

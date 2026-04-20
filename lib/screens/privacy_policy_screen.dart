@@ -4,3 +4,4 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: const Text('سياسة الخصوصية')), body: const Center(child: Text('سياسة الخصوصية')));
 }
+

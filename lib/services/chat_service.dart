@@ -198,3 +198,4 @@ class ChatService {
     _messagesController.close();
   }
 }
+

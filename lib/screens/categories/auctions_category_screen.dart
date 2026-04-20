@@ -42,3 +42,4 @@ class AuctionsCategoryScreen extends StatelessWidget {
     );
   }
 }
+

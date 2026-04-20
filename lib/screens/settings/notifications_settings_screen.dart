@@ -68,3 +68,4 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
     );
   }
 }
+

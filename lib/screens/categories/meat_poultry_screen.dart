@@ -42,3 +42,4 @@ class MeatPoultryScreen extends StatelessWidget {
     );
   }
 }
+

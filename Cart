@@ -1,0 +1,10 @@
+=======
+  Future<List<Map<String, dynamic>>> getCart() async {
+    final uid = requireUserId;
+    return await client
+        .from('cart')
+        .select('*, products(*)')
+        .eq('user_id', uid);
+  }
+  
+  // =======

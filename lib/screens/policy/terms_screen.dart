@@ -60,3 +60,4 @@ class TermsScreen extends StatelessWidget {
     );
   }
 }
+

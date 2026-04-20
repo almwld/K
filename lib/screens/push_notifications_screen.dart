@@ -103,3 +103,4 @@ class _PushNotificationsScreenState extends State<PushNotificationsScreen> {
     );
   }
 }
+

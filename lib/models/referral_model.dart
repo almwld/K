@@ -210,3 +210,4 @@ class ReferralProgramConfig {
     return ReferralProgramConfig();
   }
 }
+

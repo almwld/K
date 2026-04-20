@@ -508,3 +508,4 @@ class YemenCity {
     required this.type,
   });
 }
+

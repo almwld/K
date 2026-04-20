@@ -27,3 +27,4 @@ class WalkthroughScreen extends StatelessWidget {
     );
   }
 }
+

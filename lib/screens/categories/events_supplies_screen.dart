@@ -42,3 +42,4 @@ class EventsSuppliesScreen extends StatelessWidget {
     );
   }
 }
+

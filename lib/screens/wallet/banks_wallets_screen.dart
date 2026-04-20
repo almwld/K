@@ -292,3 +292,4 @@ class _BanksWalletsScreenState extends State<BanksWalletsScreen> {
     );
   }
 }
+

@@ -27,3 +27,4 @@ class BiometricAuthScreen extends StatelessWidget {
     );
   }
 }
+

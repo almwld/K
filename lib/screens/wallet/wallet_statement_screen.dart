@@ -400,3 +400,4 @@ class _WalletStatementScreenState extends State<WalletStatementScreen> {
     );
   }
 }
+

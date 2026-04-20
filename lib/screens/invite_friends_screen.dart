@@ -61,3 +61,4 @@ class InviteFriendsScreen extends StatelessWidget {
     );
   }
 }
+

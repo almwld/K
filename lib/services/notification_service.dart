@@ -72,3 +72,4 @@ class NotificationModel {
   factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(id: json['id'], title: json['title'], body: json['body'], type: json['type'], data: json['data'], createdAt: DateTime.parse(json['createdAt']), isRead: json['isRead'] ?? false);
   String get timeAgo { final diff = DateTime.now().difference(createdAt); if (diff.inDays > 0) return '${diff.inDays} يوم'; if (diff.inHours > 0) return '${diff.inHours} ساعة'; if (diff.inMinutes > 0) return '${diff.inMinutes} دقيقة'; return 'الآن'; }
 }
+

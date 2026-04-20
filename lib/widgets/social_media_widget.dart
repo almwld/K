@@ -255,3 +255,4 @@ class SocialMediaCompactWidget extends StatelessWidget {
     );
   }
 }
+
