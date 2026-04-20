@@ -212,4 +212,3 @@ class MarketDetailScreen extends StatelessWidget {
     }
   }
 }
-import '../models/market_model.dart';

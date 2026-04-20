@@ -228,4 +228,3 @@ class VipSubscriptionScreen extends StatelessWidget {
     );
   }
 }
-import '../models/subscription_model.dart';

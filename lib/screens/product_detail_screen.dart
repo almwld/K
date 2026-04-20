@@ -317,3 +317,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 }
 
+
+  factory ProductDetailScreen.fromProduct(dynamic product) {
+    if (product is ProductModel) {
+      return ProductDetailScreen(
+        id: product.id,
+        title: product.title,
+        image: product.images.isNotEmpty ? product.images[0] : '',
+        price: product.price,
+        description: product.description,
+        sellerName: product.sellerName ?? 'غير معروف',
+        rating: product.rating ?? 0.0,
+        reviewCount: product.reviewCount ?? 0,
+        images: product.images,
+        inStock: product.stock > 0,
+      );
+    }
+    return ProductDetailScreen(
+      id: '',
+      title: '',
+      image: '',
+      price: 0,
+      description: '',
+      sellerName: '',
+      rating: 0,
+      reviewCount: 0,
+      images: [],
+      inStock: false,
+    );
+  }

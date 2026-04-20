@@ -16,9 +16,9 @@ extension ProductNavigation on BuildContext {
       image = product.images.isNotEmpty ? product.images[0] : '';
       price = product.price;
       description = product.description;
-      sellerName = product.sellerName;
-      rating = product.rating;
-      reviewCount = product.reviewCount;
+      sellerName = product.sellerName ?? 'غير معروف';
+      rating = product.rating ?? 0.0;
+      reviewCount = product.reviewCount ?? 0;
       images = product.images;
       inStock = product.stock > 0;
     } else if (product is Map<String, dynamic>) {
