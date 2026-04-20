@@ -9,7 +9,7 @@ class CategoriesScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final List<Map<String, dynamic>> categories = [
-      {'icon': Icons.electronics, 'name': 'إلكترونيات', 'color': Colors.blue},
+      {'icon': Icons.devices, 'name': 'إلكترونيات', 'color': Colors.blue},
       {'icon': Icons.checkroom, 'name': 'أزياء', 'color': Colors.pink},
       {'icon': Icons.directions_car, 'name': 'سيارات', 'color': Colors.red},
       {'icon': Icons.home, 'name': 'عقارات', 'color': Colors.green},
@@ -17,7 +17,7 @@ class CategoriesScreen extends StatelessWidget {
       {'icon': Icons.phone_android, 'name': 'جوالات', 'color': Colors.purple},
       {'icon': Icons.computer, 'name': 'كمبيوتر', 'color': Colors.teal},
       {'icon': Icons.watch, 'name': 'ساعات', 'color': Colors.amber},
-      {'icon': Icons.book, 'name': 'كتب', 'color': Colors.brown},
+      {'icon': Icons.menu_book, 'name': 'كتب', 'color': Colors.brown},
       {'icon': Icons.sports_soccer, 'name': 'رياضة', 'color': Colors.indigo},
       {'icon': Icons.toys, 'name': 'ألعاب', 'color': Colors.cyan},
       {'icon': Icons.pets, 'name': 'حيوانات', 'color': Colors.deepOrange},
