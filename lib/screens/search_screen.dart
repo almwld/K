@@ -1,3 +1,4 @@
+import '../utils/navigation_extensions.dart';
 import '../models/product_model.dart';
 import 'package:flutter/material.dart';
 import '../extensions/product_extensions.dart';
@@ -325,7 +326,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        Navigator.push(context, product.toDetailScreen()),
+        product.navigateToDetail(context),
       ),
       child: Container(
         decoration: BoxDecoration(

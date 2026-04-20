@@ -1,3 +1,4 @@
+import '../utils/navigation_extensions.dart';
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
 import '../theme/app_theme.dart';
@@ -29,7 +30,7 @@ class FlashSaleScreen extends StatelessWidget {
           final item = _flashProducts[index];
           final product = item['product'] as ProductModel;
           return InkWell(
-            onTap: () => Navigator.push(context, product.toDetailScreen()),
+            onTap: () => Navigator.push(context, product.navigateToDetail(context)),
             child: Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(12),
