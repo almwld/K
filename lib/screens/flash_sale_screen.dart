@@ -29,7 +29,7 @@ class FlashSaleScreen extends StatelessWidget {
           final item = _flashProducts[index];
           final product = item['product'] as ProductModel;
           return InkWell(
-            onTap: () => Navigator.push(context, product.toDetailScreen()),
+            onTap: () => product.navigateToDetail(context),
             child: Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(12),
