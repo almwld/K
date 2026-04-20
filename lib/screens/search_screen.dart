@@ -1,3 +1,4 @@
+import '../models/product_model.dart';
 import 'package:flutter/material.dart';
 import '../extensions/product_extensions.dart';
 import '../../extensions/product_extensions.dart';
