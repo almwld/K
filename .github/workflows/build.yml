@@ -327,9 +327,10 @@ jobs:
           flutter pub remove twitter_login 2>/dev/null || true
 
       - name: Get Flutter dependencies
+        run: flutter pub get
+
       - name: Generate launcher icons
         run: flutter pub run flutter_launcher_icons:main
-        run: flutter pub get
 
       - name: Create .env file
         run: |
@@ -340,6 +341,9 @@ jobs:
         run: |
           flutter clean
           flutter pub get
+
+      - name: Generate launcher icons
+        run: flutter pub run flutter_launcher_icons:main
           flutter build apk --release \
             --split-per-abi \
             --obfuscate \
