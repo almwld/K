@@ -27,11 +27,9 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // تسجيل الدخول
   Future<bool> signIn(String email, String password) async {
     try {
       _error = null;
-      // في وضع التطوير - قبول أي بيانات
       await Future.delayed(const Duration(milliseconds: 500));
       
       _isLoggedIn = true;
@@ -39,7 +37,9 @@ class AuthProvider extends ChangeNotifier {
       
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('is_logged_in', true);
-      await prefs.setString('user_name', _userName);
+      if (_userName != null) {
+        await prefs.setString('user_name', _userName!);
+      }
       
       notifyListeners();
       return true;
@@ -50,7 +50,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // تسجيل حساب جديد
   Future<bool> signUp(String phone, String password, {String? name}) async {
     try {
       _error = null;
@@ -63,7 +62,7 @@ class AuthProvider extends ChangeNotifier {
       
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('is_logged_in', true);
-      await prefs.setString('user_name', _userName);
+      await prefs.setString('user_name', _userName!);
       await prefs.setString('user_phone', phone);
       await prefs.setString('user_type', 'customer');
       
@@ -76,12 +75,10 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // إعادة تعيين كلمة المرور
   Future<bool> resetPassword(String phoneOrEmail) async {
     try {
       _error = null;
       await Future.delayed(const Duration(milliseconds: 500));
-      // في وضع التطوير - دائماً ناجح
       return true;
     } catch (e) {
       _error = e.toString();
@@ -90,7 +87,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // الدخول كضيف
   void loginAsGuest() {
     _isLoggedIn = false;
     _userType = 'guest';
@@ -98,7 +94,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // تسجيل الخروج
   Future<void> logout() async {
     _isLoggedIn = false;
     _userType = null;

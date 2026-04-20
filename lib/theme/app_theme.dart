@@ -6,11 +6,15 @@ class AppTheme {
   static const Color nightBackground = Color(0xFF0F172A);
   static const Color nightSurface = Color(0xFF16213E);
   static const Color nightCard = Color(0xFF1A2A44);
+  static const Color nightTextPrimary = Color(0xFFFFFFFF);
+  static const Color nightTextSecondary = Color(0xFFB0B0B0);
 
   // ☀️ Light
   static const Color lightBackground = Color(0xFFF8F9FA);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFF5F5F5);
+  static const Color lightTextPrimary = Color(0xFF1A1A1A);
+  static const Color lightTextSecondary = Color(0xFF757575);
 
   // ✨ Brand
   static const Color gold = Color(0xFFD4AF37);
@@ -28,6 +32,12 @@ class AppTheme {
   static const Color serviceRed = Color(0xFFE53935);
   static const Color serviceGreen = Color(0xFF4CAF50);
 
+  static LinearGradient get goldGradient => const LinearGradient(
+    colors: [gold, goldLight],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
   // دوال مساعدة
   static Color getCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
@@ -37,14 +47,14 @@ class AppTheme {
 
   static Color getSecondaryTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? Colors.white70 
-        : Colors.black54;
+        ? nightTextSecondary 
+        : lightTextSecondary;
   }
 
   static Color getTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark 
-        ? Colors.white 
-        : Colors.black87;
+        ? nightTextPrimary 
+        : lightTextPrimary;
   }
 
   static Color getDividerColor(BuildContext context) {
@@ -53,11 +63,11 @@ class AppTheme {
         : const Color(0xFFE0E0E0);
   }
 
-  static LinearGradient get goldGradient => const LinearGradient(
-    colors: [gold, goldLight],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+  static Color getPrimaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark 
+        ? nightTextPrimary 
+        : lightTextPrimary;
+  }
 
   // ================= DARK =================
   static ThemeData get darkTheme {
@@ -135,28 +145,3 @@ class AppTheme {
     );
   }
 }
-
-  // دوال مساعدة إضافية
-  static Color getPrimaryTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? darkTextPrimary
-        : lightTextPrimary;
-  }
-
-  static Color getSecondaryTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? darkTextSecondary
-        : lightTextSecondary;
-  }
-
-  static Color getDividerColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey.shade800
-        : Colors.grey.shade300;
-  }
-
-  static Color getTextColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? darkTextPrimary
-        : lightTextPrimary;
-  }
