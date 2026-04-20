@@ -326,7 +326,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return GestureDetector(
       onTap: () { 
         context,
-        product.navigateToDetail(context; }
+        product.navigateToDetail(context)
       ; }
       child: Container(
         decoration: BoxDecoration(
