@@ -1,0 +1,1482 @@
+═══════════════════════════════════════════════════════════════════════════
+📁 1. navigation_extensions.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import 'package:flutter/material.dart';
+import '../models/product_model.dart';
+import '../screens/product_detail_screen.dart';
+
+extension ProductNavigation on ProductModel {
+  void navigateToDetail(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProductDetailScreen(
+          id: id,
+          title: title,
+          image: images.isNotEmpty ? images[0] : '',
+          price: price,
+          description: description,
+          sellerName: sellerName ?? 'غير معروف',
+          rating: rating ?? 0.0,
+          reviewCount: reviewCount ?? 0,
+          images: images,
+          inStock: stock > 0,
+        ),
+      ),
+    );
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+📁 2. home_screen.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import '../../utils/navigation_extensions.dart';
+import 'package:flutter/material.dart';
+import '../../extensions/product_extensions.dart';
+import '../../extensions/product_extensions.dart';
+import '../../theme/app_theme.dart';
+import '../../models/market_model.dart';
+import '../../models/product_model.dart';
+import '../../widgets/market_table.dart';
+import '../../widgets/vip_banner.dart';
+import '../../widgets/countdown_timer.dart';
+import '../../widgets/stock_badge.dart';
+import '../market_detail_screen.dart';
+import '../vip_subscription_screen.dart';
+import '../flash_sale_screen.dart';
+import '../new_arrivals_screen.dart';
+import '../product_detail_screen.dart';
+import '../search_screen.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'FLEX',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.gold,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'YEMEN',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.goldLight,
+                  ),
+                ),
+              ],
+            ),
+            centerTitle: true,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.search, color: AppTheme.gold),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SearchScreen()),
+                ),
+              ),
+            ],
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                // =================== VIP BANNER ===================
+                VipBanner(
+                  isCompact: true,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const VipSubscriptionScreen()),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // =================== MARKETS TABLE (Binance Style) ===================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الأسواق',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.getPrimaryTextColor(context),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0ECB81).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.trending_up, size: 14, color: Color(0xFF0ECB81)),
+                          SizedBox(width: 4),
+                          Text(
+                            '+2.5%',
+                            style: TextStyle(
+                              fontFamily: 'Changa',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0ECB81),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                MarketTable(
+                  markets: mockMarkets.take(5).toList(),
+                  onMarketTap: (market) => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => MarketDetailScreen(market: market)),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // =================== FLASH SALE ===================
+                InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const FlashSaleScreen()),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFF6465D), Color(0xFFFF6B6B)],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.flash_on, color: Colors.white, size: 32),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'عروض البرق',
+                                style: TextStyle(
+                                  fontFamily: 'Changa',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const Text(
+                                'خصومات تصل إلى 50%',
+                                style: TextStyle(color: Colors.white70, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const CountdownTimer(
+                          duration: Duration(hours: 6),
+                          showLabel: false,
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // =================== NEW ARRIVALS ===================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'وصل حديثاً',
+                          style: TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.getPrimaryTextColor(context),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF6465D),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            'NEW',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const NewArrivalsScreen()),
+                      ),
+                      child: const Text(
+                        'عرض الكل',
+                        style: TextStyle(fontFamily: 'Changa', color: AppTheme.gold),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: sampleProducts.take(5).length,
+                    itemBuilder: (context, index) {
+                      final product = sampleProducts[index];
+                      return _buildNewArrivalCard(context, product);
+                    },
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // =================== CATEGORIES ===================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الفئات',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.getPrimaryTextColor(context),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'عرض الكل',
+                        style: TextStyle(fontFamily: 'Changa', color: AppTheme.gold),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 100,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      _CategoryChip(label: 'الإلكترونيات', icon: Icons.devices),
+                      _CategoryChip(label: 'الأزياء', icon: Icons.checkroom),
+                      _CategoryChip(label: 'السيارات', icon: Icons.directions_car),
+                      _CategoryChip(label: 'العقارات', icon: Icons.apartment),
+                      _CategoryChip(label: 'المطاعم', icon: Icons.restaurant),
+                      _CategoryChip(label: 'الفنادق', icon: Icons.hotel),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // =================== FEATURED PRODUCTS ===================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'منتجات مميزة',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.getPrimaryTextColor(context),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'عرض الكل',
+                        style: TextStyle(fontFamily: 'Changa', color: AppTheme.gold),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.65,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    final product = sampleProducts[index % sampleProducts.length];
+                    return _buildFeaturedProductCard(context, product);
+                  },
+                ),
+
+                // =================== SAVE MORE ===================
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF0ECB81).withOpacity(0.3),
+                        const Color(0xFF00C853).withOpacity(0.1),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFF0ECB81).withOpacity(0.5)),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF0ECB81).withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.savings,
+                          color: Color(0xFF0ECB81),
+                          size: 28,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'وفر أكثر مع الجملة!',
+                              style: TextStyle(
+                                fontFamily: 'Changa',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'وفر 30%+ عند الشراء بكميات كبيرة',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios,
+                          size: 16, color: Color(0xFF0ECB81)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 100),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNewArrivalCard(BuildContext context, ProductModel product) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        product.navigateToDetail(context),
+      ),
+      child: Container(
+        width: 160,
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppTheme.nightCard
+              : AppTheme.lightCard,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: Image.network(
+                    product.images.isNotEmpty ? product.images[0] : 'https://via.placeholder.com/300',
+                    height: 110,
+                    width: 160,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF6465D),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Text(
+                      'جديد',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Changa',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    product.formattedPrice,
+                    style: const TextStyle(
+                      fontFamily: 'Changa',
+                      color: AppTheme.gold,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturedProductCard(BuildContext context, ProductModel product) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        product.navigateToDetail(context),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppTheme.nightCard
+              : AppTheme.lightCard,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                child: Image.network(
+                  product.images.isNotEmpty ? product.images[0] : 'https://via.placeholder.com/300',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Changa',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        product.formattedPrice,
+                        style: const TextStyle(
+                          fontFamily: 'Changa',
+                          color: AppTheme.gold,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      StockBadge(stock: product.stock),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CategoryChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+
+  const _CategoryChip({required this.label, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              gradient: AppTheme.goldGradient,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(icon, color: Colors.black, size: 28),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              fontFamily: 'Changa',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+📁 3. search_screen.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import '../utils/navigation_extensions.dart';
+import '../models/product_model.dart';
+import 'package:flutter/material.dart';
+import '../extensions/product_extensions.dart';
+import '../../extensions/product_extensions.dart';
+import '../theme/app_theme.dart';
+import 'product_detail_screen.dart';
+
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List<ProductModel> _results = [];
+  bool _hasSearched = false;
+  String _sortBy = 'relevance';
+  double _minPrice = 0;
+  double _maxPrice = 10000000;
+
+  final List<String> _recentSearches = [
+    'تويوتا كامري',
+    'آيفون 15',
+    'عسل يمني',
+    'أثاث منزلي',
+  ];
+
+  final List<String> _popularSearches = [
+    'سيارات 2025',
+    'إلكترونيات',
+    'عقارات صنعاء',
+    'مطاعم',
+    'ملابس',
+    'أجهزة محمولة',
+  ];
+
+  void _performSearch(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _hasSearched = false;
+        _results = [];
+      });
+      return;
+    }
+
+    setState(() {
+      _hasSearched = true;
+      _results = sampleProducts.where((p) {
+        final matchName = p.name.toLowerCase().contains(query.toLowerCase());
+        final matchDesc = p.description.toLowerCase().contains(query.toLowerCase());
+        final matchCategory = p.category.toLowerCase().contains(query.toLowerCase());
+        final matchPrice = p.price >= _minPrice && p.price <= _maxPrice;
+        return (matchName || matchDesc || matchCategory) && matchPrice;
+      }).toList();
+
+      // Sort results
+      switch (_sortBy) {
+        case 'price_low':
+          _results.sort((a, b) => a.price.compareTo(b.price));
+          break;
+        case 'price_high':
+          _results.sort((a, b) => b.price.compareTo(a.price));
+          break;
+        case 'rating':
+          _results.sort((a, b) => (b.rating ?? 0).compareTo(a.rating ?? 0));
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  void _showFilterSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1E2329),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'فلتر البحث',
+                    style: TextStyle(
+                      fontFamily: 'Changa',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('الترتيب حسب:', style: TextStyle(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      _filterChip('الأكثر صلة', 'relevance', setModalState),
+                      _filterChip('الأقل سعراً', 'price_low', setModalState),
+                      _filterChip('الأعلى سعراً', 'price_high', setModalState),
+                      _filterChip('الأعلى تقييماً', 'rating', setModalState),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('نطاق السعر:', style: TextStyle(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'الحد الأدنى',
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (v) => _minPrice = double.tryParse(v) ?? 0,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'الحد الأقصى',
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (v) => _maxPrice = double.tryParse(v) ?? 10000000,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _performSearch(_searchController.text);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.gold,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text(
+                        'تطبيق الفلتر',
+                        style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _filterChip(String label, String value, StateSetter setModalState) {
+    final isSelected = _sortBy == value;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) => setModalState(() => _sortBy = value),
+      selectedColor: const Color(0xFFF0B90B),
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.black : Colors.white,
+        fontFamily: 'Changa',
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: TextField(
+          controller: _searchController,
+          autofocus: true,
+          style: const TextStyle(fontFamily: 'Changa'),
+          decoration: InputDecoration(
+            hintText: 'إبحث عن منتجات...',
+            hintStyle: const TextStyle(fontFamily: 'Changa', color: Color(0xFF9CA3AF)),
+            border: InputBorder.none,
+            suffixIcon: _searchController.text.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear, color: Color(0xFF9CA3AF)),
+                    onPressed: () {
+                      _searchController.clear();
+                      setState(() {
+                        _hasSearched = false;
+                        _results = [];
+                      });
+                    },
+                  )
+                : null,
+          ),
+          onSubmitted: _performSearch,
+          onChanged: (v) => setState(() {}),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.tune),
+            onPressed: _showFilterSheet,
+          ),
+        ],
+      ),
+      body: _hasSearched ? _buildResults() : _buildSuggestions(),
+    );
+  }
+
+  Widget _buildSuggestions() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Recent Searches
+          if (_recentSearches.isNotEmpty) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'عمليات البحث الأخيرة',
+                  style: TextStyle(
+                    fontFamily: 'Changa',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('مسح', style: TextStyle(color: Color(0xFFF6465D))),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            ..._recentSearches.map((s) => ListTile(
+                  leading: const Icon(Icons.history, color: Color(0xFF9CA3AF)),
+                  title: Text(s, style: const TextStyle(fontFamily: 'Changa')),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF9CA3AF)),
+                  onTap: () {
+                    _searchController.text = s;
+                    _performSearch(s);
+                  },
+                )),
+            const Divider(),
+          ],
+          const SizedBox(height: 12),
+          // Popular Searches
+          const Text(
+            'البحث الشائع',
+            style: TextStyle(
+              fontFamily: 'Changa',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _popularSearches.map((s) => ActionChip(
+              label: Text(s, style: const TextStyle(fontFamily: 'Changa', fontSize: 13)),
+              onPressed: () {
+                _searchController.text = s;
+                _performSearch(s);
+              },
+              backgroundColor: const Color(0xFF1E2329),
+            )).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResults() {
+    if (_results.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.search_off, size: 80, color: Colors.grey[700]),
+            const SizedBox(height: 16),
+            const Text(
+              'لا توجد نتائج',
+              style: TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'جرب كلمات بحث مختلفة',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.7,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: _results.length,
+      itemBuilder: (context, index) {
+        final product = _results[index];
+        return _buildProductCard(product);
+      },
+    );
+  }
+
+  Widget _buildProductCard(ProductModel product) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        product.navigateToDetail(context),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E2329),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Image.network(
+                product.images.isNotEmpty ? product.images[0] : 'https://via.placeholder.com/300',
+                height: 130,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.formattedPrice,
+                    style: const TextStyle(
+                      fontFamily: 'Changa',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFF0B90B),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+📁 4. flash_sale_screen.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import '../utils/navigation_extensions.dart';
+import 'package:flutter/material.dart';
+import '../models/product_model.dart';
+import '../theme/app_theme.dart';
+import '../widgets/simple_app_bar.dart';
+import '../widgets/countdown_timer.dart';
+import '../widgets/stock_badge.dart';
+
+class FlashSaleScreen extends StatelessWidget {
+  const FlashSaleScreen({super.key});
+
+  List<Map<String, dynamic>> get _flashProducts {
+    return [
+      {'product': sampleProducts[0], 'discount': 35, 'sold': 78, 'total': 100, 'endTime': DateTime.now().add(const Duration(hours: 6))},
+      {'product': sampleProducts[1], 'discount': 50, 'sold': 45, 'total': 80, 'endTime': DateTime.now().add(const Duration(hours: 4))},
+      {'product': sampleProducts[2], 'discount': 25, 'sold': 120, 'total': 150, 'endTime': DateTime.now().add(const Duration(hours: 8))},
+      {'product': sampleProducts[4], 'discount': 40, 'sold': 200, 'total': 250, 'endTime': DateTime.now().add(const Duration(hours: 2))},
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: const SimpleAppBar(title: 'عروض البرق'),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: _flashProducts.length,
+        itemBuilder: (context, index) {
+          final item = _flashProducts[index];
+          final product = item['product'] as ProductModel;
+          return InkWell(
+            onTap: () => product.navigateToDetail(context),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(16)),
+              child: Row(
+                children: [
+                  ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.network(product.images.isNotEmpty ? product.images[0] : '', width: 80, height: 80, fit: BoxFit.cover)),
+                  const SizedBox(width: 12),
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(product.title, style: const TextStyle(fontWeight: FontWeight.bold)), const SizedBox(height: 4), Text(product.formattedPrice, style: const TextStyle(color: Color(0xFFF0B90B), fontWeight: FontWeight.bold))])),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+📁 5. new_arrivals_screen.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import '../utils/navigation_extensions.dart';
+import 'package:flutter/material.dart';
+import '../models/product_model.dart';
+import '../theme/app_theme.dart';
+import '../widgets/simple_app_bar.dart';
+import '../widgets/stock_badge.dart';
+
+class NewArrivalsScreen extends StatelessWidget {
+  const NewArrivalsScreen({super.key});
+
+  List<ProductModel> get _newProducts => sampleProducts.where((p) => DateTime.now().difference(p.createdAt).inDays <= 3).toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: const SimpleAppBar(title: 'وصل حديثاً'),
+      body: _newProducts.isEmpty
+          ? const Center(child: Text('لا توجد منتجات جديدة'))
+          : GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.65, crossAxisSpacing: 12, mainAxisSpacing: 12),
+              itemCount: _newProducts.length,
+              itemBuilder: (context, index) {
+                final product = _newProducts[index];
+                return GestureDetector(
+                  onTap: () => product.navigateToDetail(context),
+                  child: Container(decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(16)), child: Column(children: [Text(product.title)])),
+                );
+              },
+            ),
+    );
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+📁 6. product_detail_screen.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../theme/app_theme.dart';
+
+class ProductDetailScreen extends StatefulWidget {
+  final String id;
+  final String title;
+  final String image;
+  final double price;
+  final String description;
+  final String sellerName;
+  final double rating;
+  final int reviewCount;
+  final List<String> images;
+  final bool inStock;
+
+  const ProductDetailScreen({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.price,
+    required this.description,
+    required this.sellerName,
+    required this.rating,
+    required this.reviewCount,
+    required this.images,
+    required this.inStock,
+  });
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  int _quantity = 1;
+  int _currentImageIndex = 0;
+  bool _isFavorite = false;
+  final PageController _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: Text(widget.title),
+        backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: CachedNetworkImage(
+                imageUrl: widget.image,
+                height: 250,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => Container(
+                  height: 250,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.image, size: 80),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(widget.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('${widget.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(fontSize: 22, color: AppTheme.gold, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            const Text('الوصف', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(widget.description, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 16),
+            Text('البائع: ${widget.sellerName}', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: widget.inStock ? () {} : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.gold,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: Text(widget.inStock ? 'أضف للسلة' : 'غير متوفر', style: const TextStyle(fontSize: 18)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+═══════════════════════════════════════════════════════════════════════════
+📁 7. product_model.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import 'package:flutter/material.dart';
+import '../screens/product_detail_screen.dart';
+class ProductModel {
+  final String id;
+  final String title;
+  final String name;
+  final String description;
+  final double price;
+  final double? oldPrice;
+  final List<String> images;
+  final String category;
+  final String? sellerId;
+  final String? sellerName;
+  final double? rating;
+  final int? reviewCount;
+  final int stock;
+  final bool isAvailable;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  final String? condition;
+  final String? location;
+  final String? city;
+
+  ProductModel({
+    required this.id,
+    required this.title,
+    required this.name,
+    required this.description,
+    required this.price,
+    this.oldPrice,
+    required this.images,
+    required this.category,
+    this.sellerId,
+    this.sellerName,
+    this.rating,
+    this.reviewCount,
+    required this.stock,
+    required this.isAvailable,
+    required this.createdAt,
+    this.updatedAt,
+    this.condition,
+    this.location,
+    this.city,
+  });
+
+  // دالة لتحويل JSON إلى كائن
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      id: json['id']?.toString() ?? '',
+      title: json['title'] ?? json['name'] ?? '',
+      name: json['name'] ?? json['title'] ?? '',
+      description: json['description'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      oldPrice: json['old_price']?.toDouble(),
+      images: json['images'] != null ? List<String>.from(json['images']) : [],
+      category: json['category'] ?? '',
+      sellerId: json['seller_id']?.toString(),
+      sellerName: json['seller_name'],
+      rating: json['rating']?.toDouble(),
+      reviewCount: json['review_count'],
+      stock: json['stock'] ?? 0,
+      isAvailable: json['is_available'] ?? true,
+      createdAt: json['created_at'] != null 
+          ? DateTime.parse(json['created_at']) 
+          : DateTime.now(),
+      updatedAt: json['updated_at'] != null 
+          ? DateTime.parse(json['updated_at']) 
+          : null,
+      condition: json['condition'],
+      location: json['location'],
+      city: json['city'] ?? json['location'],
+    );
+  }
+
+  // دالة لتحويل كائن إلى JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'name': name,
+      'description': description,
+      'price': price,
+      'old_price': oldPrice,
+      'images': images,
+      'category': category,
+      'seller_id': sellerId,
+      'seller_name': sellerName,
+      'rating': rating,
+      'review_count': reviewCount,
+      'stock': stock,
+      'is_available': isAvailable,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+      'condition': condition,
+      'location': location,
+      'city': city,
+    };
+  }
+
+  // دالة للحصول على سعر منسق
+  String get formattedPrice {
+    return '${price.toStringAsFixed(0)} ريال';
+  }
+
+  // دالة للحصول على نسبة الخصم
+  double? get discountPercentage {
+    if (oldPrice != null && oldPrice! > 0) {
+      return ((oldPrice! - price) / oldPrice!) * 100;
+    }
+    return null;
+  }
+}
+
+// عينات من المنتجات للاختبار - باستخدام الـ constructor الصحيح
+final List<ProductModel> sampleProducts = [
+  ProductModel(
+    id: '1',
+    title: 'تويوتا كامري 2024',
+    name: 'تويوتا كامري 2024',
+    description: 'سيارة جديدة بالكامل، فاخرة وموفرة للوقود',
+    price: 8500000,
+    oldPrice: 9000000,
+    images: ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'],
+    category: 'سيارات',
+    sellerId: 'seller1',
+    sellerName: 'معرض السيارات الحديثة',
+    rating: 4.8,
+    reviewCount: 45,
+    stock: 5,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '2',
+    title: 'ماك بوك برو M3',
+    name: 'ماك بوك برو M3',
+    description: 'أحدث إصدار من أجهزة ماك بوك برو',
+    price: 1800000,
+    oldPrice: 2000000,
+    images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'],
+    category: 'إلكترونيات',
+    sellerId: 'seller2',
+    sellerName: 'متجر التقنية',
+    rating: 4.9,
+    reviewCount: 120,
+    stock: 10,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '3',
+    title: 'ايفون 15 برو',
+    name: 'ايفون 15 برو',
+    description: 'هاتف ذكي من Apple بأحدث التقنيات',
+    price: 450000,
+    oldPrice: 500000,
+    images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400'],
+    category: 'إلكترونيات',
+    sellerId: 'seller2',
+    sellerName: 'متجر التقنية',
+    rating: 4.7,
+    reviewCount: 89,
+    stock: 15,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '4',
+    title: 'فيلا فاخرة صنعاء',
+    name: 'فيلا فاخرة صنعاء',
+    description: 'فيلا فاخرة في موقع ممتاز',
+    price: 45000000,
+    oldPrice: 50000000,
+    images: ['https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'],
+    category: 'عقارات',
+    sellerId: 'seller3',
+    sellerName: 'شركة العقارات اليمنية',
+    rating: 4.6,
+    reviewCount: 12,
+    stock: 1,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '5',
+    title: 'مندي يمني',
+    name: 'مندي يمني',
+    description: 'أشهى المأكولات اليمنية',
+    price: 3500,
+    oldPrice: 4000,
+    images: ['https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'],
+    category: 'مطاعم',
+    sellerId: 'seller4',
+    sellerName: 'مطعم مندي يمني',
+    rating: 4.9,
+    reviewCount: 200,
+    stock: 100,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+  ProductModel(
+    id: '6',
+    title: 'ثوب يمني فاخر',
+    name: 'ثوب يمني فاخر',
+    description: 'ثوب يمني تقليدي فاخر',
+    price: 35000,
+    oldPrice: 45000,
+    images: ['https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400'],
+    category: 'أزياء',
+    sellerId: 'seller5',
+    sellerName: 'متجر الأزياء اليمنية',
+    rating: 4.8,
+    reviewCount: 75,
+    stock: 20,
+    isAvailable: true,
+    createdAt: DateTime.now(),
+    condition: 'جديد',
+    location: 'صنعاء',
+    city: 'صنعاء',
+  ),
+];
+
+
+
+
+═══════════════════════════════════════════════════════════════════════════
+📁 8. main.dart - كامل
+═══════════════════════════════════════════════════════════════════════════
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/theme_manager.dart';
+import 'providers/market_provider.dart';
+import 'providers/subscription_provider.dart';
+import 'providers/user_stats_provider.dart';
+import 'screens/login_screen.dart';
+import 'theme/app_theme.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeManager()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => MarketProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => UserStatsProvider()),
+      ],
+      child: Consumer<ThemeManager>(
+        builder: (context, themeManager, child) {
+          return MaterialApp(
+            title: 'Flex Yemen',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeManager.themeMode,
+            debugShowCheckedModeBanner: false,
+            home: const LoginScreen(), // نبدأ بشاشة تسجيل الدخول
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ انتهى العرض الكامل
+═══════════════════════════════════════════════════════════════════════════
