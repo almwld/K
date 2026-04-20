@@ -1,6 +1,7 @@
-import '../extensions/product_extensions.dart';
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
+import '../extensions/product_extensions.dart';
+import '../../extensions/product_extensions.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../widgets/countdown_timer.dart';
@@ -275,4 +276,3 @@ class FlashSaleScreen extends StatelessWidget {
     );
   }
 }
-import '../models/product_model.dart';

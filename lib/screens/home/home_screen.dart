@@ -1,5 +1,6 @@
-import '../../extensions/product_extensions.dart';
 import 'package:flutter/material.dart';
+import '../extensions/product_extensions.dart';
+import '../../extensions/product_extensions.dart';
 import '../../theme/app_theme.dart';
 import '../../models/market_model.dart';
 import '../../models/product_model.dart';
