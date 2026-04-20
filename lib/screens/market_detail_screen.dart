@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/market_model.dart';
 import '../models/market_model.dart';
+import '../models/market_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../widgets/market_table.dart';
