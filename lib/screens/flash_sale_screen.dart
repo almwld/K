@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/product_helper.dart';
 import '../models/product_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
@@ -30,7 +29,7 @@ class FlashSaleScreen extends StatelessWidget {
           final item = _flashProducts[index];
           final product = item['product'] as ProductModel;
           return InkWell(
-            onTap: () => Navigator.push(context, ProductHelper.buildDetailScreen(product)),
+            onTap: () => Navigator.push(context, product.toDetailScreen()),
             child: Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(12),

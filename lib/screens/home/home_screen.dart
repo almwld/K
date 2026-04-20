@@ -1,4 +1,3 @@
-import '../../utils/product_helper.dart';
 import 'package:flutter/material.dart';
 import '../../extensions/product_extensions.dart';
 import '../../extensions/product_extensions.dart';
@@ -381,7 +380,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        Navigator.push(context, ProductHelper.buildDetailScreen(product)),
+        Navigator.push(context, product.toDetailScreen()),
       ),
       child: Container(
         width: 160,
@@ -465,7 +464,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        Navigator.push(context, ProductHelper.buildDetailScreen(product)),
+        Navigator.push(context, product.toDetailScreen()),
       ),
       child: Container(
         decoration: BoxDecoration(

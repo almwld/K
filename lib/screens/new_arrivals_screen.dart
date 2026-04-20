@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/product_helper.dart';
 import '../models/product_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
@@ -24,7 +23,7 @@ class NewArrivalsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = _newProducts[index];
                 return GestureDetector(
-                  onTap: () => Navigator.push(context, ProductHelper.buildDetailScreen(product)),
+                  onTap: () => Navigator.push(context, product.toDetailScreen()),
                   child: Container(decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(16)), child: Column(children: [Text(product.title)])),
                 );
               },
