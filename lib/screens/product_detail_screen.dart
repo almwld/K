@@ -34,26 +34,11 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _quantity = 1;
-  int _currentImageIndex = 0;
-  bool _isFavorite = false;
-  final PageController _pageController = PageController();
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -66,23 +51,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 height: 250,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorWidget: (_, __, ___) => Container(
-                  height: 250,
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.image, size: 80),
-                ),
               ),
             ),
             const SizedBox(height: 16),
             Text(widget.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text('${widget.price.toStringAsFixed(0)} ر.ي', style: const TextStyle(fontSize: 22, color: AppTheme.gold, fontWeight: FontWeight.bold)),
+            Text('${widget.price.toStringAsFixed(0)} ر.ي',
+                style: const TextStyle(fontSize: 22, color: AppTheme.gold, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             const Text('الوصف', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text(widget.description, style: const TextStyle(fontSize: 16)),
+            Text(widget.description),
             const SizedBox(height: 16),
-            Text('البائع: ${widget.sellerName}', style: const TextStyle(fontSize: 16)),
+            Text('البائع: ${widget.sellerName}'),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
@@ -93,7 +74,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(widget.inStock ? 'أضف للسلة' : 'غير متوفر', style: const TextStyle(fontSize: 18)),
+                child: Text(widget.inStock ? 'أضف للسلة' : 'غير متوفر',
+                    style: const TextStyle(fontSize: 18)),
               ),
             ),
           ],
