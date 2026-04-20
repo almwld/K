@@ -381,7 +381,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        Navigator.push(context, product.toDetailScreen()),
+        product.navigateToDetail(context),
       ),
       child: Container(
         width: 160,
@@ -465,7 +465,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        Navigator.push(context, product.toDetailScreen()),
+        product.navigateToDetail(context),
       ),
       child: Container(
         decoration: BoxDecoration(
