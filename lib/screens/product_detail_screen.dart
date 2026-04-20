@@ -346,3 +346,4 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       inStock: false,
     );
   }
+}
