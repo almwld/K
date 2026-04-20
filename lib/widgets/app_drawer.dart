@@ -207,7 +207,7 @@ class AppDrawer extends StatelessWidget {
                       title: 'لوحة البائع',
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SellerDashboardScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => SellerDashboardScreen()));
                       },
                     ),
                   ],

@@ -62,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _results.sort((a, b) => b.price.compareTo(a.price));
           break;
         case 'rating':
-          _results.sort((a, b) => b.rating.compareTo(a.rating));
+          _results.sort((a, b) => (b.rating ?? 0).compareTo(a.rating ?? 0));
           break;
         default:
           break;
@@ -323,7 +323,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ProductDetailScreen(product: product)),
+        MaterialPageRoute(builder: (_) => ProductDetailScreen(id: product)),
       ),
       child: Container(
         decoration: BoxDecoration(

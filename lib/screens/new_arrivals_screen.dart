@@ -75,7 +75,7 @@ class NewArrivalsScreen extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => ProductDetailScreen(product: product),
+          builder: (_) => ProductDetailScreen(id: product),
         ),
       ),
       child: Container(

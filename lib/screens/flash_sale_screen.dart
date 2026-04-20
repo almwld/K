@@ -155,7 +155,7 @@ class FlashSaleScreen extends StatelessWidget {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ProductDetailScreen(product: product),
+            builder: (_) => ProductDetailScreen(id: product),
           ),
         ),
         borderRadius: BorderRadius.circular(16),
