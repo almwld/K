@@ -135,3 +135,28 @@ class AppTheme {
     );
   }
 }
+
+  // دوال مساعدة إضافية
+  static Color getPrimaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextPrimary
+        : lightTextPrimary;
+  }
+
+  static Color getSecondaryTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextSecondary
+        : lightTextSecondary;
+  }
+
+  static Color getDividerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.grey.shade800
+        : Colors.grey.shade300;
+  }
+
+  static Color getTextColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextPrimary
+        : lightTextPrimary;
+  }
