@@ -24,7 +24,7 @@ class NewArrivalsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = _newProducts[index];
                 return GestureDetector(
-                  onTap: () => product.navigateToDetail(context),
+                  onTap: () => Navigator.push(context, product.toDetailScreen()),
                   child: Container(decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(16)), child: Column(children: [Text(product.title)])),
                 );
               },
