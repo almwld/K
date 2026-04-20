@@ -7,7 +7,7 @@ import '../screens/wallet/wallet_screen.dart';
 import '../screens/auctions_screen.dart';
 import '../screens/offers_screen.dart';
 import '../screens/nearby_stores_screen.dart';
-import '../screens/seller_dashboard.dart';
+import '../screens/seller_dashboard_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/help_support_screen.dart';
 import '../screens/invite_friends_screen.dart';
@@ -207,7 +207,7 @@ class AppDrawer extends StatelessWidget {
                       title: 'لوحة البائع',
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SellerDashboard()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SellerDashboardScreen()));
                       },
                     ),
                   ],

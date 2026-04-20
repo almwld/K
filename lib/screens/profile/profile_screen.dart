@@ -8,8 +8,8 @@ import 'account_info_screen.dart';
 import '../my_ads_screen.dart';
 import '../favorites_screen.dart';
 import '../help_support_screen.dart';
-import '../user_dashboard.dart';
-import '../seller_dashboard.dart';
+import '../user_dashboard_screen.dart';
+import '../seller_dashboard_screen.dart';
 import '../vip_subscription_screen.dart';
 import '../language_settings_screen.dart';
 import '../security_settings_screen.dart';
@@ -157,7 +157,7 @@ class ProfileScreen extends StatelessWidget {
                   'title': 'لوحة التحكم',
                   'icon': Icons.dashboard,
                   'color': const Color(0xFFF0B90B),
-                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UserDashboard())),
+                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UserDashboardScreen())),
                 }, isDark),
                 _buildMenuItem(context, {
                   'title': 'إعلاناتي',
@@ -185,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                   'title': 'لوحة تحكم البائع',
                   'icon': Icons.store,
                   'color': const Color(0xFF0ECB81),
-                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SellerDashboard())),
+                  'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SellerDashboardScreen())),
                 }, isDark),
                 const SizedBox(height: 16),
 

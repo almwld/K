@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
+import 'providers/cart_provider.dart';
 import 'providers/theme_manager.dart';
 import 'providers/market_provider.dart';
 import 'providers/subscription_provider.dart';
