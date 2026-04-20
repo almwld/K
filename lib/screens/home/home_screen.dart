@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                 // =================== VIP BANNER ===================
                 VipBanner(
                   isCompact: true,
-                  onTap: () => Navigator.push(
+                  onTap: () { Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const VipSubscriptionScreen()),
                   ),
@@ -128,7 +128,7 @@ class HomeScreen extends StatelessWidget {
 
                 // =================== FLASH SALE ===================
                 InkWell(
-                  onTap: () => Navigator.push(
+                  onTap: () { Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const FlashSaleScreen()),
                   ),
@@ -379,7 +379,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildNewArrivalCard(BuildContext context, ProductModel product) {
     return GestureDetector(
-      onTap: () => Navigator.push(
+      onTap: () { Navigator.push(
         context,
         Navigator.push(context, MaterialPageRoute(builder: (_) => ProductHelper.buildDetailScreen(product))),
       ),
@@ -463,7 +463,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildFeaturedProductCard(BuildContext context, ProductModel product) {
     return GestureDetector(
-      onTap: () => Navigator.push(
+      onTap: () { Navigator.push(
         context,
         Navigator.push(context, MaterialPageRoute(builder: (_) => ProductHelper.buildDetailScreen(product))),
       ),
