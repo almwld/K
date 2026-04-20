@@ -1,0 +1,1 @@
+/data/data/com.termux/files/home/flutter/bin/internal/shared.sh: line 255: /data/data/com.termux/files/home/flutter/bin/cache/dart-sdk/bin/dart: cannot execute binary file: Exec format error

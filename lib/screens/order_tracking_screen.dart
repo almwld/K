@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import '../theme/app_theme.dart';
 
 class OrderTrackingScreen extends StatelessWidget {
-  final String orderId;
-  const OrderTrackingScreen({super.key, required this.orderId});
+  const OrderTrackingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'تتبع الطلب'),
-      body: Center(child: Text('تتبع الطلب: $orderId')),
+      appBar: AppBar(title: const Text('تتبع الطلب'), centerTitle: true),
+      body: const Center(child: Text('لا توجد طلبات للتتبع')),
     );
   }
 }
