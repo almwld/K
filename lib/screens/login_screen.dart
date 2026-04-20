@@ -238,59 +238,41 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       const SizedBox(height: 40),
+                      // ✅ تعديل: تحسين تنسيق أيقونات الاتصال لتكون أوضح وأكثر ترتيباً
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                         decoration: BoxDecoration(
                           color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GestureDetector(
-                              onTap: _callPhone,
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.phone, size: 18, color: AppTheme.gold),
-                                  SizedBox(width: 8),
-                                  Text('800 123 4567', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                                ],
-                              ),
+                            _buildContactItem(
+                              icon: Icons.support_agent,
+                              label: 'الدعم الفني',
+                              onTap: _openSupport,
                             ),
-                            GestureDetector(
+                            _buildContactItem(
+                              icon: Icons.phone,
+                              label: '800 123 4567',
+                              onTap: _callPhone,
+                            ),
+                            _buildContactItem(
+                              icon: Icons.location_on,
+                              label: 'نقاط الخدمة',
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (_) => const ContactUsScreen()),
                                 );
                               },
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.location_on, size: 18, color: AppTheme.gold),
-                                  SizedBox(width: 8),
-                                  Text('نقاط الخدمة', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                                ],
-                              ),
                             ),
-                            GestureDetector(
-                              onTap: _openSupport,
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.support_agent, size: 18, color: AppTheme.gold),
-                                  SizedBox(width: 8),
-                                  Text('الدعم الفني', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                                ],
-                              ),
-                            ),
-                            GestureDetector(
+                            _buildContactItem(
+                              icon: Icons.chat,
+                              label: 'واتساب',
                               onTap: _openWhatsApp,
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.chat, size: 18, color: Colors.green),
-                                  SizedBox(width: 8),
-                                  Text('واتساب', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
-                                ],
-                              ),
+                              iconColor: Colors.green,
                             ),
                           ],
                         ),
@@ -299,6 +281,43 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _buildContactItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    Color? iconColor,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: (iconColor ?? AppTheme.gold).withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              size: 20,
+              color: iconColor ?? AppTheme.gold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontFamily: 'Changa',
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
