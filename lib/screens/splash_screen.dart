@@ -15,35 +15,21 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
-  late AnimationController _scaleController;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
     
-    // تحكم في التلاشي
+    // تحكم في التلاشي فقط (بدون حركة)
     _fadeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 1000),
     );
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
     );
     
-    // تحكم في الحجم
-    _scaleController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
-    _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 0.3, end: 1.1), weight: 50),
-      TweenSequenceItem(tween: Tween(begin: 1.1, end: 1.0), weight: 50),
-    ]).animate(CurvedAnimation(parent: _scaleController, curve: Curves.elasticOut));
-    
-    // بدء الأنيميشن
     _fadeController.forward();
-    _scaleController.forward();
     
     // الانتقال للشاشة التالية بعد 3 ثواني
     Timer(const Duration(seconds: 3), () {
@@ -56,7 +42,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void dispose() {
     _fadeController.dispose();
-    _scaleController.dispose();
     super.dispose();
   }
 
@@ -78,107 +63,85 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         child: Center(
           child: FadeTransition(
             opacity: _fadeAnimation,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // الشعار الذهبي المتحرك
-                  Container(
-                    width: 180,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFD4AF37).withOpacity(0.3),
-                          blurRadius: 40,
-                          spreadRadius: 10,
-                        ),
-                      ],
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/icons/svg/logo_animated.svg',
-                      width: 180,
-                      height: 180,
-                      fit: BoxFit.contain,
-                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // الشعار الذهبي - أكبر حجماً وبدون ظل وبدون حركة
+                Container(
+                  width: 220,  // تكبير الحجم من 180 إلى 220
+                  height: 220, // تكبير الحجم من 180 إلى 220
+                  child: SvgPicture.asset(
+                    'assets/icons/svg/logo_static.svg',
+                    width: 220,
+                    height: 220,
+                    fit: BoxFit.contain,
+                    // إيقاف الحركة - نستخدم نسخة ثابتة أو نتجاهل animation
                   ),
-                  
-                  const SizedBox(height: 40),
-                  
-                  // نص FLEX YEMEN
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 800),
-                    curve: Curves.easeOut,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'FLEX',
-                          style: TextStyle(
-                            fontFamily: 'Changa',
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFD4AF37),
-                            letterSpacing: 4,
-                            shadows: [
-                              Shadow(
-                                color: Color(0xFFD4AF37),
-                                blurRadius: 20,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'YEMEN',
-                          style: TextStyle(
-                            fontFamily: 'Changa',
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFFD4AF37).withOpacity(0.9),
-                            letterSpacing: 6,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            'منصة التجارة الإلكترونية اليمنية',
-                            style: TextStyle(
-                              fontFamily: 'Changa',
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
+                ),
+                
+                const SizedBox(height: 40),
+                
+                // نص FLEX YEMEN
+                Column(
+                  children: [
+                    const Text(
+                      'FLEX',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 52,  // تكبير الخط
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFD4AF37),
+                        letterSpacing: 6,
+                      ),
                     ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'YEMEN',
+                      style: TextStyle(
+                        fontFamily: 'Changa',
+                        fontSize: 36,  // تكبير الخط
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFFD4AF37).withOpacity(0.9),
+                        letterSpacing: 8,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const Text(
+                        'منصة التجارة الإلكترونية اليمنية',
+                        style: TextStyle(
+                          fontFamily: 'Changa',
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // شريط تحميل ذهبي
+                Container(
+                  width: 250,
+                  height: 3,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  
-                  const SizedBox(height: 60),
-                  
-                  // شريط تحميل ذهبي
-                  Container(
-                    width: 200,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: LinearProgressIndicator(
-                      backgroundColor: const Color(0xFFD4AF37).withOpacity(0.2),
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
-                    ),
+                  child: LinearProgressIndicator(
+                    backgroundColor: const Color(0xFFD4AF37).withOpacity(0.2),
+                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
