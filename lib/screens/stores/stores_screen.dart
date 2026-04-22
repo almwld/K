@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../data/mock_data.dart';
-import '../../widgets/store_card.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
@@ -17,6 +15,18 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
 
   final List<String> _categories = ['الكل', 'إلكترونيات', 'مطاعم', 'أزياء', 'عقارات', 'خدمات'];
 
+  // بيانات مؤقتة للمتاجر
+  final List<Map<String, dynamic>> _stores = [
+    {'name': 'متجر التقنية', 'category': 'إلكترونيات', 'rating': 4.8, 'isOpen': true, 'image': 'tech'},
+    {'name': 'عالم الجوالات', 'category': 'إلكترونيات', 'rating': 4.7, 'isOpen': true, 'image': 'mobile'},
+    {'name': 'كمبيوتر مول', 'category': 'إلكترونيات', 'rating': 4.9, 'isOpen': false, 'image': 'pc'},
+    {'name': 'الأزياء العصرية', 'category': 'أزياء', 'rating': 4.6, 'isOpen': true, 'image': 'fashion'},
+    {'name': 'موضة اليمن', 'category': 'أزياء', 'rating': 4.8, 'isOpen': true, 'image': 'fashion2'},
+    {'name': 'مطعم مندي الملكي', 'category': 'مطاعم', 'rating': 4.9, 'isOpen': true, 'image': 'food'},
+    {'name': 'عقارات فلكس', 'category': 'عقارات', 'rating': 4.7, 'isOpen': true, 'image': 'realestate'},
+    {'name': 'أثاث المنزل', 'category': 'أثاث', 'rating': 4.5, 'isOpen': false, 'image': 'furniture'},
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -30,17 +40,22 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
     super.dispose();
   }
 
+  List<Map<String, dynamic>> get _filteredStores {
+    if (_selectedCategory == 'الكل') return _stores;
+    return _stores.where((s) => s['category'] == _selectedCategory).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.binanceDark,
+      backgroundColor: const Color(0xFF0B0E11),
       appBar: AppBar(
-        backgroundColor: AppTheme.binanceDark,
+        backgroundColor: const Color(0xFF0B0E11),
         elevation: 0,
         title: Container(
           height: 45,
           decoration: BoxDecoration(
-            color: AppTheme.binanceCard,
+            color: const Color(0xFF1E2329),
             borderRadius: BorderRadius.circular(25),
           ),
           child: TextField(
@@ -49,23 +64,22 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
             decoration: InputDecoration(
               hintText: 'ابحث عن متجر...',
               hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
-              prefixIcon: const Icon(Icons.search, color: AppTheme.binanceGold),
+              prefixIcon: const Icon(Icons.search, color: Color(0xFFD4AF37)),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 12),
             ),
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list, color: AppTheme.binanceGold),
-            onPressed: _showFilterSheet,
+            icon: const Icon(Icons.filter_list, color: Color(0xFFD4AF37)),
+            onPressed: () {},
           ),
         ],
         bottom: TabBar(
           controller: _tabController,
-          labelColor: AppTheme.binanceGold,
+          labelColor: const Color(0xFFD4AF37),
           unselectedLabelColor: const Color(0xFF9CA3AF),
-          indicatorColor: AppTheme.binanceGold,
+          indicatorColor: const Color(0xFFD4AF37),
           tabs: const [
             Tab(text: 'جميع المتاجر'),
             Tab(text: 'الأعلى تقييماً'),
@@ -76,15 +90,15 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildStoresList(MockData.stores),
-          _buildStoresList(MockData.stores..sort((a, b) => b.rating.compareTo(a.rating))),
-          _buildStoresList(MockData.stores.where((s) => s.isOpen).toList()),
+          _buildStoresList(_filteredStores),
+          _buildStoresList(_stores..sort((a, b) => (b['rating'] as double).compareTo(a['rating'] as double))),
+          _buildStoresList(_stores.where((s) => s['isOpen'] == true).toList()),
         ],
       ),
     );
   }
 
-  Widget _buildStoresList(List<dynamic> stores) {
+  Widget _buildStoresList(List<Map<String, dynamic>> stores) {
     return Column(
       children: [
         // شريط الفئات الأفقي
@@ -104,7 +118,7 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
                   margin: const EdgeInsets.only(right: 8),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppTheme.binanceGold : AppTheme.binanceCard,
+                    color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF1E2329),
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Text(
@@ -125,65 +139,81 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
             padding: const EdgeInsets.all(16),
             itemCount: stores.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: StoreCard(
-                  store: stores[index],
-                  onTap: () => Navigator.pushNamed(context, '/store/${stores[index].id}'),
+              final store = stores[index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E2329),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFF2B3139)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFD4AF37).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.store, color: Color(0xFFD4AF37), size: 28),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  store['name'] as String,
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                                ),
+                              ),
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: (store['isOpen'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            store['category'] as String,
+                            style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, color: Colors.amber, size: 14),
+                              const SizedBox(width: 4),
+                              Text('${store['rating']}', style: const TextStyle(color: Colors.white, fontSize: 13)),
+                              const SizedBox(width: 8),
+                              Text(
+                                (store['isOpen'] as bool) ? 'مفتوح' : 'مغلق',
+                                style: TextStyle(
+                                  color: (store['isOpen'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D),
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 16),
+                  ],
                 ),
               );
             },
           ),
         ),
       ],
-    );
-  }
-
-  void _showFilterSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.binanceCard,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('تصفية المتاجر', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 20),
-              _buildFilterOption('الأقرب إليك', Icons.location_on),
-              _buildFilterOption('الأعلى تقييماً', Icons.star),
-              _buildFilterOption('مفتوحة الآن', Icons.access_time),
-              _buildFilterOption('الأكثر متابعة', Icons.people),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.binanceGold,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: const Text('تطبيق', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildFilterOption(String title, IconData icon) {
-    return ListTile(
-      leading: Icon(icon, color: AppTheme.binanceGold),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
-      onTap: () => Navigator.pop(context),
     );
   }
 }
