@@ -27,6 +27,22 @@ import 'screens/search_screen.dart';
 import 'screens/orders/orders_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/wallet/wallet_screen.dart';
+import 'screens/wallet/deposit_screen.dart';
+import 'screens/wallet/withdraw_screen.dart';
+import 'screens/wallet/transfer_screen.dart';
+import 'screens/wallet/transactions_screen.dart';
+import 'screens/wallet/banks_wallets_screen.dart';
+import 'screens/wallet/gift_cards_screen.dart';
+import 'screens/wallet/payments_screen.dart';
+import 'screens/wallet/recharge_screen.dart';
+import 'screens/wallet/deposit_screen.dart';
+import 'screens/wallet/withdraw_screen.dart';
+import 'screens/wallet/transfer_screen.dart';
+import 'screens/wallet/transactions_screen.dart';
+import 'screens/wallet/banks_wallets_screen.dart';
+import 'screens/wallet/gift_cards_screen.dart';
+import 'screens/wallet/payments_screen.dart';
+import 'screens/wallet/recharge_screen.dart';
 import 'screens/checkout/checkout_screen.dart';
 import 'screens/track_order_screen.dart';
 import 'screens/add_ad_screen.dart';
@@ -64,6 +80,36 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
+      '/admin': (context) => const AdminDashboard(),
+      '/admin/users': (context) => const AdminUsersScreen(),
+      '/admin/stores': (context) => const AdminStoresScreen(),
+      '/admin/settings': (context) => const AdminSettingsScreen(),
+      '/category/electronics': (context) => const ElectronicsScreen(),
+      '/category/fashion': (context) => const FashionScreen(),
+      '/category/cars': (context) => const CarsScreen(),
+      '/category/realestate': (context) => const RealEstateScreen(),
+      '/category/furniture': (context) => const FurnitureScreen(),
+      '/category/restaurants': (context) => const RestaurantsScreen(),
+      '/category/beauty': (context) => const BeautyScreen(),
+      '/category/sports': (context) => const SportsScreen(),
+      '/category/books': (context) => const BooksScreen(),
+      '/category/games': (context) => const GamesScreen(),
+      '/deposit': (context) => const DepositScreen(),
+      '/withdraw': (context) => const WithdrawScreen(),
+      '/transfer': (context) => const TransferScreen(),
+      '/transactions': (context) => const TransactionsScreen(),
+      '/banks': (context) => const BanksWalletsScreen(),
+      '/gift_cards': (context) => const GiftCardsScreen(),
+      '/payments': (context) => const PaymentsScreen(),
+      '/recharge': (context) => const RechargeScreen(),
+      '/deposit': (context) => const DepositScreen(),
+      '/withdraw': (context) => const WithdrawScreen(),
+      '/transfer': (context) => const TransferScreen(),
+      '/transactions': (context) => const TransactionsScreen(),
+      '/banks': (context) => const BanksWalletsScreen(),
+      '/gift_cards': (context) => const GiftCardsScreen(),
+      '/payments': (context) => const PaymentsScreen(),
+      '/recharge': (context) => const RechargeScreen(),
               '/': (context) => const SplashScreen(),
               '/onboarding': (context) => const OnboardingScreen(),
               '/login': (context) => const LoginScreen(),
@@ -106,3 +152,21 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// شاشات الفئات
+import 'screens/categories/electronics_screen.dart';
+import 'screens/categories/fashion_screen.dart';
+import 'screens/categories/cars_screen.dart';
+import 'screens/categories/realestate_screen.dart';
+import 'screens/categories/furniture_screen.dart';
+import 'screens/categories/restaurants_screen.dart';
+import 'screens/categories/beauty_screen.dart';
+import 'screens/categories/sports_screen.dart';
+import 'screens/categories/books_screen.dart';
+import 'screens/categories/games_screen.dart';
+
+// شاشات الإدارة
+import 'screens/admin/admin_dashboard.dart';
+import 'screens/admin/admin_users_screen.dart';
+import 'screens/admin/admin_stores_screen.dart';
+import 'screens/admin/admin_settings_screen.dart';
