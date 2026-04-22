@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/cart/cart_screen.dart';
@@ -69,7 +70,7 @@ class AppDrawer extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 children: [
                   _buildDrawerItem(
-                    icon: Icons.home_outlined,
+                    icon: 'assets/icons/svg/home.svg',
                     title: 'الرئيسية',
                     onTap: () {
                       Navigator.pop(context);
@@ -77,7 +78,7 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.person_outline,
+                    icon: 'assets/icons/svg/profile.svg',
                     title: 'حسابي',
                     onTap: () {
                       Navigator.pop(context);
@@ -85,15 +86,14 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.shopping_bag_outlined,
+                    icon: 'assets/icons/svg/orders.svg',
                     title: 'طلباتي',
                     onTap: () {
                       Navigator.pop(context);
-                      // TODO: OrdersScreen
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.shopping_cart_outlined,
+                    icon: 'assets/icons/svg/cart.svg',
                     title: 'السلة',
                     onTap: () {
                       Navigator.pop(context);
@@ -101,7 +101,7 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.favorite_border,
+                    icon: 'assets/icons/svg/favorite.svg',
                     title: 'المفضلة',
                     onTap: () {
                       Navigator.pop(context);
@@ -110,7 +110,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   const Divider(color: Color(0xFF2B3139)),
                   _buildDrawerItem(
-                    icon: Icons.store_outlined,
+                    icon: 'assets/icons/svg/store.svg',
                     title: 'المتاجر',
                     onTap: () {
                       Navigator.pop(context);
@@ -118,7 +118,7 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.gavel_outlined,
+                    icon: 'assets/icons/svg/auction.svg',
                     title: 'المزادات',
                     onTap: () {
                       Navigator.pop(context);
@@ -126,16 +126,15 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.local_offer_outlined,
+                    icon: 'assets/icons/svg/discount.svg',
                     title: 'العروض',
                     onTap: () {
                       Navigator.pop(context);
-                      // TODO: OffersScreen
                     },
                   ),
                   const Divider(color: Color(0xFF2B3139)),
                   _buildDrawerItem(
-                    icon: Icons.account_balance_wallet_outlined,
+                    icon: 'assets/icons/svg/wallet.svg',
                     title: 'المحفظة',
                     onTap: () {
                       Navigator.pop(context);
@@ -143,7 +142,7 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.notifications_none,
+                    icon: 'assets/icons/svg/notification.svg',
                     title: 'الإشعارات',
                     onTap: () {
                       Navigator.pop(context);
@@ -151,24 +150,22 @@ class AppDrawer extends StatelessWidget {
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.settings_outlined,
+                    icon: 'assets/icons/svg/settings.svg',
                     title: 'الإعدادات',
                     onTap: () {
                       Navigator.pop(context);
-                      // TODO: SettingsScreen
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.help_outline,
+                    icon: 'assets/icons/svg/help.svg',
                     title: 'المساعدة والدعم',
                     onTap: () {
                       Navigator.pop(context);
-                      // TODO: HelpScreen
                     },
                   ),
                   const Divider(color: Color(0xFF2B3139)),
                   _buildDrawerItem(
-                    icon: Icons.logout,
+                    icon: 'assets/icons/svg/logout.svg',
                     title: 'تسجيل الخروج',
                     color: const Color(0xFFF6465D),
                     onTap: () {
@@ -186,11 +183,16 @@ class AppDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(top: BorderSide(color: const Color(0xFF2B3139))),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.info_outline, size: 16, color: Color(0xFF5E6673)),
-                  SizedBox(width: 8),
-                  Text(
+                  SvgPicture.asset(
+                    'assets/icons/svg/info.svg',
+                    width: 16,
+                    height: 16,
+                    colorFilter: const ColorFilter.mode(Color(0xFF5E6673), BlendMode.srcIn),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
                     'Flex Yemen - الإصدار 1.0.0',
                     style: TextStyle(color: Color(0xFF5E6673), fontSize: 12),
                   ),
@@ -204,13 +206,18 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _buildDrawerItem({
-    required IconData icon,
+    required String icon,
     required String title,
     required VoidCallback onTap,
     Color? color,
   }) {
     return ListTile(
-      leading: Icon(icon, color: color ?? const Color(0xFFD4AF37)),
+      leading: SvgPicture.asset(
+        icon,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(color ?? const Color(0xFFD4AF37), BlendMode.srcIn),
+      ),
       title: Text(
         title,
         style: TextStyle(color: color ?? Colors.white, fontSize: 15),

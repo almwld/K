@@ -20,33 +20,27 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   bool _isFabMenuOpen = false;
 
-  // الشاشات بالترتيب
   final List<Widget> _screens = const [
-    HomeScreen(),        // 0 - الرئيسية
-    StoresScreen(),      // 1 - المتاجر
-    ChatScreen(),        // 2 - الدردشة
-    AuctionsScreen(),    // 3 - المزادات
-    CartScreen(),        // 4 - السلة
-    ProfileScreen(),     // 5 - حسابي
+    HomeScreen(),
+    StoresScreen(),
+    ChatScreen(),
+    AuctionsScreen(),
+    CartScreen(),
+    ProfileScreen(),
   ];
 
-  // أيقونات الشريط السفلي (بدون الزر الذهبي)
+  // استخدام الأيقونات الجديدة
   final List<Map<String, dynamic>> _navItems = [
-    {'icon': 'assets/icons/svg/nav_home.svg', 'label': 'الرئيسية'},
+    {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية'},
     {'icon': 'assets/icons/svg/store.svg', 'label': 'المتاجر'},
-    {'icon': 'assets/icons/svg/nav_chat.svg', 'label': 'الدردشة'},
-    {'icon': 'assets/icons/svg/nav_auctions.svg', 'label': 'المزادات'},
+    {'icon': 'assets/icons/svg/chat.svg', 'label': 'الدردشة'},
+    {'icon': 'assets/icons/svg/auction.svg', 'label': 'المزادات'},
     {'icon': 'assets/icons/svg/cart.svg', 'label': 'السلة'},
-    {'icon': 'assets/icons/svg/nav_profile.svg', 'label': 'حسابي'},
+    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي'},
   ];
 
-  // قائمة الزر الذهبي
   final List<Map<String, dynamic>> _fabMenuItems = [
-    {'icon': Icons.campaign_outlined, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3), 'route': '/add_ad'},
-    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50), 'route': '/add_product'},
-    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': const Color(0xFFFF9800), 'route': '/request_service'},
-
-    {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3)},
+    {'icon': Icons.campaign_outlined, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3)},
     {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50)},
     {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': const Color(0xFFFF9800)},
   ];
@@ -94,15 +88,10 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // أول 3 أيقونات (الرئيسية، المتاجر، الدردشة)
                 _buildNavItem(0),
                 _buildNavItem(1),
                 _buildNavItem(2),
-                
-                // مساحة للزر الذهبي
                 const SizedBox(width: 60),
-                
-                // آخر 3 أيقونات (المزادات، السلة، حسابي)
                 _buildNavItem(3),
                 _buildNavItem(4),
                 _buildNavItem(5),
@@ -205,7 +194,13 @@ class _MainNavigationState extends State<MainNavigation> {
               duration: const Duration(milliseconds: 200),
               child: _isFabMenuOpen
                   ? const Icon(Icons.close, color: Colors.black, size: 28, key: ValueKey('close'))
-                  : const Icon(Icons.add, color: Colors.black, size: 28, key: ValueKey('add')),
+                  : SvgPicture.asset(
+                      'assets/icons/svg/add.svg',
+                      width: 28,
+                      height: 28,
+                      colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                      key: const ValueKey('add'),
+                    ),
             ),
           ),
         ),

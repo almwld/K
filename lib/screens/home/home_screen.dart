@@ -238,9 +238,9 @@ class _HomeScreenState extends State<HomeScreen> {
           const Spacer(),
           Row(
             children: [
-              _buildIconButton(Icons.search),
+              _buildIconButton(SvgPicture.asset("assets/icons/svg/search.svg", width: 24, height: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
               const SizedBox(width: 8),
-              _buildIconButton(Icons.notifications_none),
+              _buildIconButton(SvgPicture.asset("assets/icons/svg/notification.svg", width: 24, height: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
               const SizedBox(width: 8),
               _buildIconButton(Icons.qr_code_scanner),
             ],
