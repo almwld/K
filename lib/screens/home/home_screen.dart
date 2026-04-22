@@ -239,11 +239,11 @@ class _HomeScreenState extends State<HomeScreen> {
           const Spacer(),
           Row(
             children: [
-              _buildIconButton(SvgPicture.asset("assets/icons/svg/search.svg", width: 24, height: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
+              _buildIconButton(SvgPicture.asset("assets/icons/svg/search.svg", width: 24, height: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)), () { Navigator.pushNamed(context, '/search'); }),
               const SizedBox(width: 8),
-              _buildIconButton(SvgPicture.asset("assets/icons/svg/notification.svg", width: 24, height: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
+              _buildIconButton(SvgPicture.asset("assets/icons/svg/notification.svg", width: 24, height: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)), () { Navigator.pushNamed(context, '/notifications'); }),
               const SizedBox(width: 8),
-              _buildIconButton(Icons.qr_code_scanner),
+              _buildIconButton(const Icon(Icons.qr_code_scanner, color: Color(0xFFD4AF37)), () { ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('جاري فتح الماسح...'))); }),
             ],
           ),
         ],
