@@ -962,3 +962,27 @@ extension FullDataExtension on FullData {
     return getAllStores() + getMoreStores();
   }
 }
+
+// دوال مساعدة للتوافق
+class FullData {
+  static List<CategoryModel> getAllCategoriesComplete() {
+    return _categories;
+  }
+  
+  static List<StoreModel> getAllStoresComplete() {
+    return _stores;
+  }
+  
+  static List<ProductModel> getAllProducts() {
+    return _products;
+  }
+  
+  static List<MallModel> getAllMalls() {
+    return _malls;
+  }
+  
+  static final List<CategoryModel> _categories = [];
+  static final List<StoreModel> _stores = [];
+  static final List<ProductModel> _products = [];
+  static final List<MallModel> _malls = [];
+}

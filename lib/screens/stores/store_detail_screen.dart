@@ -201,7 +201,7 @@ class StoreDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('منتج $index', style: TextStyle(color: Colors.white, fontSize: 13)),
+                    Text('منتج $index', style: TextStyle(color: Colors.white, fontSize: 13)),
                     const SizedBox(height: 4),
                     const Text('١٠٠ ريال', style: TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold)),
                   ],
@@ -233,7 +233,7 @@ class StoreDetailScreen extends StatelessWidget {
                 children: [
                   const CircleAvatar(radius: 20, child: Icon(Icons.person, size: 24)),
                   const SizedBox(width: 12),
-                  const Text('مستخدم $index', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text('مستخدم $index', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   const Spacer(),
                   Row(
                     children: List.generate(5, (i) => Icon(Icons.star, color: i < 4 ? Colors.amber : Colors.grey, size: 16)),

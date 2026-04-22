@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
-import '../data/full_data.dart';
+
+class CategoryModel {
+  final String id;
+  final String name;
+  CategoryModel({required this.id, required this.name});
+}
+
+class StoreModel {
+  final String id;
+  final String name;
+  StoreModel({required this.id, required this.name});
+}
+
+class ProductModel {
+  final String id;
+  final String name;
+  ProductModel({required this.id, required this.name});
+}
+
+class MallModel {
+  final String id;
+  final String name;
+  MallModel({required this.id, required this.name});
+}
 
 class AppProvider extends ChangeNotifier {
   List<CategoryModel> _categories = [];
@@ -17,10 +40,29 @@ class AppProvider extends ChangeNotifier {
   }
   
   void loadData() {
-    _categories = FullData.getAllCategoriesComplete();
-    _stores = FullData.getAllStoresComplete();
-    _products = FullData.getAllProducts();
-    _malls = FullData.getAllMalls();
+    _categories = [
+      CategoryModel(id: '1', name: 'إلكترونيات'),
+      CategoryModel(id: '2', name: 'أزياء'),
+      CategoryModel(id: '3', name: 'سيارات'),
+    ];
+    
+    _stores = [
+      StoreModel(id: '1', name: 'متجر التقنية'),
+      StoreModel(id: '2', name: 'عالم الجوالات'),
+      StoreModel(id: '3', name: 'كمبيوتر مول'),
+    ];
+    
+    _products = [
+      ProductModel(id: '1', name: 'iPhone 15 Pro'),
+      ProductModel(id: '2', name: 'MacBook Pro'),
+      ProductModel(id: '3', name: 'ساعة أبل'),
+    ];
+    
+    _malls = [
+      MallModel(id: '1', name: 'اليمن مول'),
+      MallModel(id: '2', name: 'سيتي مول'),
+    ];
+    
     notifyListeners();
   }
   
