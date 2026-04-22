@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../data/full_data.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
@@ -15,10 +14,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _quantity = 1;
   bool _isFavorite = false;
 
+  // بيانات مؤقتة للمنتج
+  final Map<String, dynamic> _product = {
+    'name': 'iPhone 15 Pro',
+    'price': 350000,
+    'oldPrice': 450000,
+    'discount': 22,
+    'rating': 4.8,
+    'reviews': 128,
+    'store': 'متجر التقنية الحديثة',
+    'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300',
+  };
+
   @override
   Widget build(BuildContext context) {
-    final product = FullData.getAllProducts().firstWhere((p) => p.id == widget.productId);
-
     return Scaffold(
       backgroundColor: const Color(0xFF0B0E11),
       body: Stack(
@@ -78,11 +87,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              product.name,
+                              _product['name'] as String,
                               style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          if (product.hasDiscount)
+                          if (_product['discount'] > 0)
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
@@ -91,7 +100,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Text('-${product.discount}%', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              child: Text('-${_product['discount']}%', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                             ),
                         ],
                       ),
@@ -99,25 +108,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Row(
                         children: [
                           ...List.generate(5, (index) => Icon(
-                            index < product.rating.floor() ? Icons.star : Icons.star_border,
+                            index < (_product['rating'] as double).floor() ? Icons.star : Icons.star_border,
                             color: const Color(0xFFF0B90B),
                             size: 20,
                           )),
                           const SizedBox(width: 8),
-                          Text('(${product.reviews}+ تقييم)', style: const TextStyle(color: Color(0xFF9CA3AF))),
+                          Text('(${_product['reviews']}+ تقييم)', style: const TextStyle(color: Color(0xFF9CA3AF))),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Row(
                         children: [
                           Text(
-                            '${product.price} ريال',
+                            '${_product['price']} ريال',
                             style: const TextStyle(color: Color(0xFFF0B90B), fontSize: 28, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(width: 12),
-                          if (product.oldPrice != null)
+                          if (_product['oldPrice'] != null)
                             Text(
-                              '${product.oldPrice} ريال',
+                              '${_product['oldPrice']} ريال',
                               style: const TextStyle(color: Color(0xFF5E6673), decoration: TextDecoration.lineThrough, fontSize: 16),
                             ),
                         ],
@@ -146,7 +155,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(product.store, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                  Text(_product['store'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                   const Row(
                                     children: [
                                       Icon(Icons.verified, color: Color(0xFFD4AF37), size: 14),
