@@ -1,3 +1,6 @@
+import 'screens/wallet/transfer_screen.dart';
+import 'screens/wallet/withdraw_screen.dart';
+import 'screens/wallet/deposit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
@@ -91,9 +94,6 @@ class MyApp extends StatelessWidget {
       '/deposit': (context) => const DepositScreen(),
       '/withdraw': (context) => const WithdrawScreen(),
       '/transfer': (context) => const TransferScreen(),
-      '/transactions': (context) => const TransactionsScreen(),
-      '/banks': (context) => const BanksWalletsScreen(),
-      '/admin': (context) => const AdminDashboard(),
             },
             onGenerateRoute: (settings) {
               if (settings.name == '/product') {
