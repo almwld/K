@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_drawer.dart';
-import '../../providers/auth_provider.dart';
 import 'home_screen.dart';
-import '../all_ads_screen.dart';
-import '../wallet/wallet_screen.dart';
-import '../chat/chat_screen.dart';
-import '../profile/profile_screen.dart';
+import '../stores/stores_screen.dart';
+import '../auctions/auctions_screen.dart';
 import '../cart/cart_screen.dart';
-import '../map/interactive_map_screen.dart';
-import '../add_ad_screen.dart';
-import '../request_service_screen.dart';
+import '../profile/profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -21,273 +14,114 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
-  bool _isMenuOpen = false;
-  late AnimationController _rotationController;
-  late Animation<double> _rotationAnimation;
+  bool _isFabMenuOpen = false;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    AllAdsScreen(),
-    InteractiveMapScreen(),
-    WalletScreen(),
-    ChatScreen(),
-    ProfileScreen(),
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const StoresScreen(),
+    const CartScreen(),
+    const AuctionsScreen(),
+    const ProfileScreen(),
   ];
 
-  static const List<String> _icons = [
-    'assets/icons/svg/home.svg',
-    'assets/icons/svg/shop.svg',
-    'assets/icons/svg/location.svg',
-    'assets/icons/svg/wallet.svg',
-    'assets/icons/svg/chat.svg',
-    'assets/icons/svg/profile.svg',
+  final List<Map<String, dynamic>> _fabMenuItems = [
+    {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3)},
+    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50)},
+    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': const Color(0xFFFF9800)},
   ];
 
-  static const List<String> _labels = [
-    'الرئيسية',
-    'المتاجر',
-    'الخريطة',
-    'المحفظة',
-    'الدردشة',
-    'حسابي',
-  ];
-
-  final List<Map<String, dynamic>> _quickActions = [
-    {'icon': Icons.add_circle_outline, 'label': 'إعلان', 'color': AppTheme.serviceBlue, 'route': AddAdScreen},
-    {'icon': Icons.shopping_bag_outlined, 'label': 'منتج', 'color': AppTheme.serviceOrange, 'route': AddAdScreen},
-    {'icon': Icons.handyman_outlined, 'label': 'خدمة', 'color': AppTheme.serviceGreen, 'route': RequestServiceScreen},
-    {'icon': Icons.account_balance_wallet_outlined, 'label': 'حوالة', 'color': Colors.purple, 'route': AddAdScreen},
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _rotationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _rotationAnimation = Tween<double>(begin: 0, end: 0.125).animate(
-      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _rotationController.dispose();
-    super.dispose();
-  }
-
-  void _onItemTapped(int index) {
-    if (_isMenuOpen) _toggleMenu();
+  void _toggleFabMenu() {
     setState(() {
-      _currentIndex = index;
+      _isFabMenuOpen = !_isFabMenuOpen;
     });
-  }
-
-  void _toggleMenu() {
-    setState(() {
-      _isMenuOpen = !_isMenuOpen;
-      if (_isMenuOpen) {
-        _rotationController.forward();
-      } else {
-        _rotationController.reverse();
-      }
-    });
-  }
-
-  void _executeAction(Map<String, dynamic> action) {
-    _toggleMenu();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => action['route']()),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(bool isDark) {
-    return AppBar(
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: const Icon(Icons.menu, color: AppTheme.gold),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-          tooltip: 'القائمة',
-        ),
-      ),
-      title: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              gradient: AppTheme.goldGradient,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Text(
-                'FLX',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          const Text(
-            'FLEX YEMEN',
-            style: TextStyle(
-              fontFamily: 'Changa',
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-      centerTitle: true,
-      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
-      elevation: 0,
-      actions: [
-        Stack(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.gold),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const CartScreen()),
-                );
-              },
-              tooltip: 'السلة',
-            ),
-            Positioned(
-              right: 8,
-              top: 8,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                ),
-                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                child: Consumer<AuthProvider>(
-                  builder: (context, auth, _) => Text(
-                    '0',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        IconButton(
-          icon: const Icon(Icons.notifications_outlined, color: AppTheme.gold),
-          onPressed: () {},
-          tooltip: 'الإشعارات',
-        ),
-      ],
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      key: const Key('main_navigation_scaffold'),
+      backgroundColor: const Color(0xFF0B0E11),
       drawer: const AppDrawer(),
-      appBar: _buildAppBar(isDark),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: Stack(
+        children: [
+          IndexedStack(
+            index: _currentIndex,
+            children: _screens,
+          ),
+          if (_isFabMenuOpen)
+            GestureDetector(
+              onTap: _toggleFabMenu,
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+        ],
       ),
-      bottomNavigationBar: _buildBottomNavBar(isDark),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF0B0E11),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(0, Icons.home_outlined, 'الرئيسية'),
+                _buildNavItem(1, Icons.store_outlined, 'المتاجر'),
+                const SizedBox(width: 70),
+                _buildNavItem(2, Icons.shopping_cart_outlined, 'السلة'),
+                _buildNavItem(3, Icons.gavel_outlined, 'المزادات'),
+                _buildNavItem(4, Icons.person_outline, 'حسابي'),
+              ],
+            ),
+          ),
+        ),
+      ),
       floatingActionButton: _buildGoldenFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  Widget _buildBottomNavBar(bool isDark) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 20,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(0),
-              _buildNavItem(1),
-              _buildNavItem(2),
-              const SizedBox(width: 70),
-              _buildNavItem(3),
-              _buildNavItem(4),
-              _buildNavItem(5),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(int index) {
+  Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = _currentIndex == index;
-    final iconPath = _icons[index];
-    final label = _labels[index];
-
     return Expanded(
       child: GestureDetector(
-        onTap: () => _onItemTapped(index),
+        onTap: () {
+          if (_isFabMenuOpen) _toggleFabMenu();
+          setState(() => _currentIndex = index);
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.gold.withOpacity(0.15) : Colors.transparent,
+            color: isSelected ? const Color(0xFFD4AF37).withOpacity(0.1) : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: SvgPicture.asset(
-                  iconPath,
-                  key: ValueKey(isSelected),
-                  width: 22,
-                  height: 22,
-                  colorFilter: ColorFilter.mode(
-                    isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
-                    BlendMode.srcIn,
-                  ),
-                ),
+              Icon(
+                icon,
+                color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
+                size: 24,
               ),
               const SizedBox(height: 4),
-              AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 200),
+              Text(
+                label,
                 style: TextStyle(
-                  fontFamily: 'Changa',
-                  fontSize: 10,
-                  color: isSelected ? AppTheme.gold : AppTheme.getSecondaryTextColor(context),
+                  color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
+                  fontSize: 11,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
-                child: Text(label, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
             ],
           ),
@@ -301,125 +135,89 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
-        if (_isMenuOpen) ...[
+        if (_isFabMenuOpen) ...[
           Positioned(
-            bottom: 70,
-            right: -30,
-            child: _buildCircularMenuItem(_quickActions[0], 0),
+            bottom: 80,
+            right: -20,
+            child: _buildFabMenuItem(_fabMenuItems[0]),
           ),
           Positioned(
-            bottom: 70,
-            left: -30,
-            child: _buildCircularMenuItem(_quickActions[1], 1),
+            bottom: 80,
+            left: -20,
+            child: _buildFabMenuItem(_fabMenuItems[1]),
           ),
           Positioned(
-            top: 70,
-            right: -30,
-            child: _buildCircularMenuItem(_quickActions[2], 2),
-          ),
-          Positioned(
-            top: 70,
-            left: -30,
-            child: _buildCircularMenuItem(_quickActions[3], 3),
+            bottom: 150,
+            child: _buildFabMenuItem(_fabMenuItems[2]),
           ),
         ],
-
-        if (_isMenuOpen)
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: _toggleMenu,
-              child: Container(
-                color: Colors.black.withOpacity(0.3),
+        GestureDetector(
+          onTap: _toggleFabMenu,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
               ),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFD4AF37).withOpacity(0.4),
+                  blurRadius: 20,
+                  spreadRadius: 3,
+                ),
+              ],
+            ),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: _isFabMenuOpen
+                  ? const Icon(Icons.close, color: Colors.black, size: 30, key: ValueKey('close'))
+                  : const Icon(Icons.add, color: Colors.black, size: 30, key: ValueKey('add')),
             ),
           ),
-
-        AnimatedBuilder(
-          animation: _rotationAnimation,
-          builder: (context, child) {
-            return Transform.rotate(
-              angle: _rotationAnimation.value * 3.14159 * 2,
-              child: GestureDetector(
-                onTap: _toggleMenu,
-                child: Container(
-                  width: 65,
-                  height: 65,
-                  decoration: BoxDecoration(
-                    gradient: AppTheme.goldGradient,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.gold.withOpacity(0.5),
-                        blurRadius: 20,
-                        spreadRadius: 2,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 200),
-                    child: _isMenuOpen
-                        ? const Icon(Icons.close, color: Colors.black, size: 32, key: ValueKey('close'))
-                        : const Icon(Icons.add, color: Colors.black, size: 32, key: ValueKey('add')),
-                  ),
-                ),
-              ),
-            );
-          },
         ),
       ],
     );
   }
 
-  Widget _buildCircularMenuItem(Map<String, dynamic> action, int index) {
-    final color = action['color'] as Color;
-    final icon = action['icon'] as IconData;
-    final label = action['label'] as String;
-
+  Widget _buildFabMenuItem(Map<String, dynamic> item) {
     return GestureDetector(
-      onTap: () => _executeAction(action),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300 + (index * 50)),
-        curve: Curves.elasticOut,
-        transform: Matrix4.identity()..scale(_isMenuOpen ? 1.0 : 0.0),
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppTheme.nightCard
-                : AppTheme.lightCard,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-            border: Border.all(
-              color: color.withOpacity(0.5),
-              width: 2,
+      onTap: () {
+        _toggleFabMenu();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('جاري ${item['label']}...'),
+            backgroundColor: item['color'],
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E2329),
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: item['color'], width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 10,
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: color, size: 24),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: 'Changa',
-                  fontSize: 9,
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-              ),
-            ],
-          ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(item['icon'], color: item['color'], size: 20),
+            const SizedBox(width: 8),
+            Text(
+              item['label'],
+              style: TextStyle(color: item['color'], fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
