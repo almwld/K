@@ -1,5 +1,5 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -50,7 +50,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       color: Colors.black.withOpacity(0.5),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.arrow_back, color: Colors.white),
+                    child: SvgPicture.asset(
+                      'assets/icons/svg/back.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    ),
                   ),
                 ),
                 actions: [
@@ -63,9 +68,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         color: Colors.black.withOpacity(0.5),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
-                        _isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: _isFavorite ? const Color(0xFFF6465D) : Colors.white,
+                      child: SvgPicture.asset(
+                        'assets/icons/svg/favorite.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: ColorFilter.mode(
+                          _isFavorite ? const Color(0xFFF6465D) : Colors.white,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ),
@@ -79,7 +89,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         _product['image'] as String,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Center(
-                          child: Icon(Icons.smartphone, color: const Color(0xFFD4AF37), size: 100),
+                          child: SvgPicture.asset(
+                            'assets/icons/svg/product.svg',
+                            width: 100,
+                            height: 100,
+                            colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn),
+                          ),
                         ),
                       ),
                     ),
@@ -117,10 +132,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          ...List.generate(5, (index) => Icon(
-                            index < (_product['rating'] as double).floor() ? Icons.star : Icons.star_border,
-                            color: const Color(0xFFF0B90B),
-                            size: 20,
+                          ...List.generate(5, (index) => SvgPicture.asset(
+                            'assets/icons/svg/star_gold.svg',
+                            width: 20,
+                            height: 20,
+                            colorFilter: ColorFilter.mode(
+                              index < (_product['rating'] as double).floor() ? Colors.amber : Colors.grey,
+                              BlendMode.srcIn,
+                            ),
                           )),
                           const SizedBox(width: 8),
                           Text('(${_product['reviews']}+ تقييم)', style: const TextStyle(color: Color(0xFF9CA3AF))),
@@ -158,7 +177,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 color: const Color(0xFFD4AF37).withOpacity(0.1),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.store, color: Color(0xFFD4AF37)),
+                              child: SvgPicture.asset(
+                                'assets/icons/svg/store.svg',
+                                width: 24,
+                                height: 24,
+                                colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn),
+                              ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -166,11 +190,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(_product['store'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                  const Row(
+                                  Row(
                                     children: [
-                                      Icon(Icons.verified, color: Color(0xFFD4AF37), size: 14),
-                                      SizedBox(width: 4),
-                                      Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                                      SvgPicture.asset(
+                                        'assets/icons/svg/verified.svg',
+                                        width: 14,
+                                        height: 14,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      const Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
                                     ],
                                   ),
                                 ],
@@ -217,7 +245,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           IconButton(
                             onPressed: _quantity > 1 ? () => setState(() => _quantity--) : null,
-                            icon: const Icon(Icons.remove, color: Color(0xFFD4AF37)),
+                            icon: SvgPicture.asset(
+                              'assets/icons/svg/remove.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn),
+                            ),
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -225,7 +258,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                           IconButton(
                             onPressed: () => setState(() => _quantity++),
-                            icon: const Icon(Icons.add, color: Color(0xFFD4AF37)),
+                            icon: SvgPicture.asset(
+                              'assets/icons/svg/add.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn),
+                            ),
                           ),
                         ],
                       ),

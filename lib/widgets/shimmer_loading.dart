@@ -72,34 +72,3 @@ class ProductCardShimmer extends StatelessWidget {
     );
   }
 }
-
-class StoreCardShimmer extends StatelessWidget {
-  const StoreCardShimmer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E2329),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          ShimmerLoading(width: 50, height: 50, borderRadius: BorderRadius.circular(10)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShimmerLoading(width: 120, height: 16),
-                const SizedBox(height: 8),
-                ShimmerLoading(width: 80, height: 12),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

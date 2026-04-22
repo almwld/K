@@ -6,7 +6,15 @@ import 'providers/theme_manager.dart';
 import 'providers/market_provider.dart';
 import 'providers/subscription_provider.dart';
 import 'providers/user_stats_provider.dart';
+import 'providers/app_provider.dart';
 import 'screens/splash_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/home/main_navigation.dart';
+import 'screens/product/product_detail_screen.dart';
+import 'screens/stores/store_detail_screen.dart';
+import 'screens/checkout/checkout_screen.dart';
+import 'screens/track_order_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -27,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MarketProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (_) => UserStatsProvider()),
+        ChangeNotifierProvider(create: (_) => AppProvider()),
       ],
       child: Consumer<ThemeManager>(
         builder: (context, themeManager, child) {
@@ -36,7 +45,17 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.darkTheme,
             themeMode: themeManager.themeMode,
             debugShowCheckedModeBanner: false,
-            home: const SplashScreen(), // ✅ شاشة الترحيب الجديدة
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const SplashScreen(),
+              '/login': (context) => const LoginScreen(),
+              '/register': (context) => const RegisterScreen(),
+              '/home': (context) => const MainNavigation(),
+              '/product': (context) => const ProductDetailScreen(productId: ''),
+              '/store': (context) => const StoreDetailScreen(storeId: ''),
+              '/checkout': (context) => const CheckoutScreen(),
+              '/track': (context) => const TrackOrderScreen(),
+            },
           );
         },
       ),
