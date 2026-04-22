@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../models/market_model.dart';
-import '../../widgets/simple_app_bar.dart';
-import '../../widgets/market_table.dart';
-import '../../data/stores_data.dart';
-import '../../models/store_model.dart';
-import 'store_detail_screen.dart';
-import '../market_detail_screen.dart';
+import '../../data/mock_data.dart';
+import '../../widgets/store_card.dart';
 
 class StoresScreen extends StatefulWidget {
-  final String? category;
-  const StoresScreen({super.key, this.category});
+  const StoresScreen({super.key});
 
   @override
   State<StoresScreen> createState() => _StoresScreenState();
@@ -18,92 +12,126 @@ class StoresScreen extends StatefulWidget {
 
 class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  List<StoreModel> _stores = [];
-  String _selectedFilter = 'all';
+  final TextEditingController _searchController = TextEditingController();
+  String _selectedCategory = 'الكل';
+
+  final List<String> _categories = ['الكل', 'إلكترونيات', 'مطاعم', 'أزياء', 'عقارات', 'خدمات'];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    _loadStores();
-  }
-
-  void _loadStores() {
-    if (widget.category != null) {
-      _stores = StoresData.getStoresByCategory(widget.category!);
-    } else {
-      _stores = StoresData.getAllStores();
-    }
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: AppTheme.binanceDark,
       appBar: AppBar(
-        title: Text(
-          widget.category ?? 'المتاجر والأسواق',
-          style: const TextStyle(fontFamily: 'Changa'),
+        backgroundColor: AppTheme.binanceDark,
+        elevation: 0,
+        title: Container(
+          height: 45,
+          decoration: BoxDecoration(
+            color: AppTheme.binanceCard,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: TextField(
+            controller: _searchController,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: 'ابحث عن متجر...',
+              hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+              prefixIcon: const Icon(Icons.search, color: AppTheme.binanceGold),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_list, color: AppTheme.binanceGold),
+            onPressed: _showFilterSheet,
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
-          labelStyle: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold),
-          unselectedLabelStyle: const TextStyle(fontFamily: 'Changa'),
-          indicatorColor: AppTheme.gold,
-          labelColor: AppTheme.gold,
+          labelColor: AppTheme.binanceGold,
+          unselectedLabelColor: const Color(0xFF9CA3AF),
+          indicatorColor: AppTheme.binanceGold,
           tabs: const [
-            Tab(text: 'المتاجر', icon: Icon(Icons.store)),
-            Tab(text: 'الأسواق', icon: Icon(Icons.trending_up)),
+            Tab(text: 'جميع المتاجر'),
+            Tab(text: 'الأعلى تقييماً'),
+            Tab(text: 'مفتوحة الآن'),
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Stores Tab
-          _buildStoresTab(),
-          // Markets Tab
-          _buildMarketsTab(),
+          _buildStoresList(MockData.stores),
+          _buildStoresList(MockData.stores..sort((a, b) => b.rating.compareTo(a.rating))),
+          _buildStoresList(MockData.stores.where((s) => s.isOpen).toList()),
         ],
       ),
     );
   }
 
-  Widget _buildStoresTab() {
+  Widget _buildStoresList(List<dynamic> stores) {
     return Column(
       children: [
-        // Filter Bar
+        // شريط الفئات الأفقي
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: SingleChildScrollView(
+          height: 50,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _filterChip('الكل', 'all'),
-                const SizedBox(width: 8),
-                _filterChip('الأكثر زيارة', 'popular'),
-                const SizedBox(width: 8),
-                _filterChip('الأعلى تقييماً', 'rating'),
-                const SizedBox(width: 8),
-                _filterChip('جديد', 'new'),
-              ],
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _categories.length,
+            itemBuilder: (context, index) {
+              final category = _categories[index];
+              final isSelected = _selectedCategory == category;
+              return GestureDetector(
+                onTap: () => setState(() => _selectedCategory = category),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppTheme.binanceGold : AppTheme.binanceCard,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Text(
+                    category,
+                    style: TextStyle(
+                      color: isSelected ? Colors.black : Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        // Stores List
+        // قائمة المتاجر
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: _stores.length,
+            padding: const EdgeInsets.all(16),
+            itemCount: stores.length,
             itemBuilder: (context, index) {
-              final store = _stores[index];
-              return _buildStoreCard(context, store);
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: StoreCard(
+                  store: stores[index],
+                  onTap: () => Navigator.pushNamed(context, '/store/${stores[index].id}'),
+                ),
+              );
             },
           ),
         ),
@@ -111,171 +139,51 @@ class _StoresScreenState extends State<StoresScreen> with SingleTickerProviderSt
     );
   }
 
-  Widget _filterChip(String label, String value) {
-    final isSelected = _selectedFilter == value;
-    return ChoiceChip(
-      label: Text(label, style: const TextStyle(fontFamily: 'Changa', fontSize: 13)),
-      selected: isSelected,
-      onSelected: (_) => setState(() => _selectedFilter = value),
-      selectedColor: AppTheme.gold,
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.black : Colors.white,
-        fontFamily: 'Changa',
+  void _showFilterSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.binanceCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-    );
-  }
-
-  Widget _buildStoreCard(BuildContext context, StoreModel store) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? AppTheme.nightCard
-            : AppTheme.lightCard,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => StoreDetailScreen(store: store)),
-        ),
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  store.imageUrl,
-                  width: 70,
-                  height: 70,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    width: 70,
-                    height: 70,
-                    color: Colors.grey[800],
-                    child: const Icon(Icons.store, color: Colors.grey),
+              const Text('تصفية المتاجر', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              _buildFilterOption('الأقرب إليك', Icons.location_on),
+              _buildFilterOption('الأعلى تقييماً', Icons.star),
+              _buildFilterOption('مفتوحة الآن', Icons.access_time),
+              _buildFilterOption('الأكثر متابعة', Icons.people),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.binanceGold,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
+                  child: const Text('تطبيق', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      store.name,
-                      style: const TextStyle(
-                        fontFamily: 'Changa',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      store.address,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[600],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, size: 16, color: Color(0xFFF0B90B)),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${store.rating}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0ECB81).withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Text(
-                            'مفتوح',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Color(0xFF0ECB81),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF9CA3AF)),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildMarketsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Markets Overview
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFF0B90B), Color(0xFFFFA000)],
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.trending_up, color: Colors.white, size: 32),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'السوق اليمني',
-                        style: TextStyle(
-                          fontFamily: 'Changa',
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Text(
-                        '+2.5% هذا الأسبوع',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Market Table
-          MarketTable(
-            markets: mockMarkets,
-            onMarketTap: (market) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => MarketDetailScreen(market: market)),
-            ),
-          ),
-        ],
-      ),
+  Widget _buildFilterOption(String title, IconData icon) {
+    return ListTile(
+      leading: Icon(icon, color: AppTheme.binanceGold),
+      title: Text(title, style: const TextStyle(color: Colors.white)),
+      onTap: () => Navigator.pop(context),
     );
   }
 }
