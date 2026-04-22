@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../theme/app_theme.dart';
 import 'login_screen.dart';
@@ -15,24 +16,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, String>> _onboardingData = [
+  final List<Map<String, dynamic>> _onboardingData = [
     {
       'title': 'تسوق بسهولة',
       'description': 'اكتشف آلاف المنتجات من المتاجر المحلية والعالمية',
-      'icon': '🛍️',
-      'color': '#2196F3',
+      'icon': 'cart',
+      'color': const Color(0xFF2196F3),
     },
     {
       'title': 'ادفع بأمان',
       'description': 'طرق دفع متعددة وآمنة تناسب جميع احتياجاتك',
-      'icon': '💳',
-      'color': '#4CAF50',
+      'icon': 'wallet',
+      'color': const Color(0xFF4CAF50),
     },
     {
       'title': 'توصيل سريع',
       'description': 'نوصل طلباتك إلى باب منزلك في أسرع وقت',
-      'icon': '🚚',
-      'color': '#FF9800',
+      'icon': 'shipping',
+      'color': const Color(0xFFFF9800),
     },
   ];
 
@@ -81,21 +82,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           shape: BoxShape.circle,
                           gradient: LinearGradient(
                             colors: [
-                              Color(int.parse(data['color']!.replaceFirst('#', '0xFF'))),
-                              Color(int.parse(data['color']!.replaceFirst('#', '0xFF'))).withOpacity(0.5),
+                              data['color'] as Color,
+                              (data['color'] as Color).withOpacity(0.5),
                             ],
                           ),
                         ),
                         child: Center(
-                          child: Text(
-                            data['icon']!,
-                            style: const TextStyle(fontSize: 80),
+                          child: SvgPicture.asset(
+                            'assets/icons/svg/${data['icon']}.svg',
+                            width: 80,
+                            height: 80,
+                            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                           ),
                         ),
                       ),
                       const SizedBox(height: 40),
                       Text(
-                        data['title']!,
+                        data['title'] as String,
                         style: const TextStyle(
                           fontFamily: 'Changa',
                           fontSize: 28,
@@ -107,7 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: Text(
-                          data['description']!,
+                          data['description'] as String,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontFamily: 'Changa',

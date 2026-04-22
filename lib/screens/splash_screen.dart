@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import '../theme/app_theme.dart';
-import 'home/main_navigation.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -78,6 +78,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // شعار Flex Yemen
                   Container(
                     width: 180,
                     height: 180,
@@ -86,15 +87,20 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       gradient: const LinearGradient(
                         colors: [Color(0xFFD4AF37), Color(0xFFF4E4A6), Color(0xFFAA8C2C)],
                       ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'F',
-                        style: TextStyle(
-                          fontSize: 80,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFD4AF37).withOpacity(0.3),
+                          blurRadius: 30,
+                          spreadRadius: 5,
                         ),
+                      ],
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icons/svg/crown.svg',
+                        width: 80,
+                        height: 80,
+                        colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                       ),
                     ),
                   ),
@@ -107,6 +113,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       fontWeight: FontWeight.bold,
                       color: Color(0xFFD4AF37),
                       letterSpacing: 6,
+                      shadows: [
+                        Shadow(
+                          color: Color(0xFFD4AF37),
+                          blurRadius: 20,
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 8),

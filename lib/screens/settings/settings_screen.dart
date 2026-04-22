@@ -1,5 +1,5 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -27,51 +27,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           _buildSection('الحساب', [
-            _buildListTile(Icons.person_outline, 'تعديل الملف الشخصي'),
-            _buildListTile(Icons.lock_outline, 'تغيير كلمة المرور'),
-            _buildListTile(Icons.phone_outlined, 'رقم الجوال'),
+            _buildListTile('profile', 'تعديل الملف الشخصي'),
+            _buildListTile('security', 'تغيير كلمة المرور'),
+            _buildListTile('phone', 'رقم الجوال'),
           ]),
           _buildSection('التفضيلات', [
             SwitchListTile(
               title: const Text('الإشعارات', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('تفعيل إشعارات التطبيق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
               value: _notificationsEnabled,
               activeColor: const Color(0xFFD4AF37),
-              onChanged: (value) => setState(() => _notificationsEnabled = value),
+              onChanged: (v) => setState(() => _notificationsEnabled = v),
             ),
             SwitchListTile(
               title: const Text('الوضع الداكن', style: TextStyle(color: Colors.white)),
               value: _darkMode,
               activeColor: const Color(0xFFD4AF37),
-              onChanged: (value) => setState(() => _darkMode = value),
+              onChanged: (v) => setState(() => _darkMode = v),
             ),
             SwitchListTile(
               title: const Text('توفير البيانات', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('تقليل استهلاك البيانات', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
               value: _saveData,
               activeColor: const Color(0xFFD4AF37),
-              onChanged: (value) => setState(() => _saveData = value),
+              onChanged: (v) => setState(() => _saveData = v),
             ),
           ]),
           _buildSection('اللغة', [
             ListTile(
-              leading: const Icon(Icons.language, color: Color(0xFFD4AF37)),
+              leading: SvgPicture.asset('assets/icons/svg/language.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
               title: const Text('اللغة', style: TextStyle(color: Colors.white)),
-              subtitle: Text(_language, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              subtitle: Text(_language, style: const TextStyle(color: Color(0xFF9CA3AF))),
               trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 14),
-              onTap: () => _showLanguageDialog(),
+              onTap: _showLanguageDialog,
             ),
           ]),
           _buildSection('الدعم', [
-            _buildListTile(Icons.help_outline, 'مركز المساعدة'),
-            _buildListTile(Icons.chat_outlined, 'تواصل معنا'),
-            _buildListTile(Icons.info_outline, 'عن التطبيق'),
+            _buildListTile('help', 'مركز المساعدة'),
+            _buildListTile('chat', 'تواصل معنا'),
+            _buildListTile('about', 'عن التطبيق'),
           ]),
           _buildSection('', [
             ListTile(
-              leading: const Icon(Icons.logout, color: Color(0xFFF6465D)),
+              leading: SvgPicture.asset('assets/icons/svg/logout.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFF6465D), BlendMode.srcIn)),
               title: const Text('تسجيل الخروج', style: TextStyle(color: Color(0xFFF6465D))),
-              onTap: () => _showLogoutDialog(),
+              onTap: _showLogoutDialog,
             ),
           ]),
           const SizedBox(height: 20),
@@ -99,9 +97,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildListTile(IconData icon, String title) {
+  Widget _buildListTile(String icon, String title) {
     return ListTile(
-      leading: Icon(icon, color: const Color(0xFFD4AF37)),
+      leading: SvgPicture.asset('assets/icons/svg/$icon.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
       title: Text(title, style: const TextStyle(color: Colors.white)),
       trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 14),
       onTap: () {},
@@ -122,14 +120,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: 'العربية',
               groupValue: _language,
               activeColor: const Color(0xFFD4AF37),
-              onChanged: (value) => setState(() => _language = value.toString()),
+              onChanged: (v) => setState(() => _language = v.toString()),
             ),
             RadioListTile(
               title: const Text('English', style: TextStyle(color: Colors.white)),
               value: 'English',
               groupValue: _language,
               activeColor: const Color(0xFFD4AF37),
-              onChanged: (value) => setState(() => _language = value.toString()),
+              onChanged: (v) => setState(() => _language = v.toString()),
             ),
           ],
         ),

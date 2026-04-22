@@ -1,5 +1,5 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 
 class OffersScreen extends StatelessWidget {
@@ -17,36 +17,18 @@ class OffersScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildOfferCard(
-            'خصم 50% على الإلكترونيات',
-            'استخدم كود ELECTRO50',
-            const Color(0xFF2196F3),
-            Icons.devices,
-          ),
-          _buildOfferCard(
-            'عرض VIP - خصم 25%',
-            'للأعضاء الجدد فقط',
-            const Color(0xFFD4AF37),
-            Icons.workspace_premium,
-          ),
-          _buildOfferCard(
-            'توصيل مجاني',
-            'للطلبات فوق 500 ريال',
-            const Color(0xFF0ECB81),
-            Icons.local_shipping,
-          ),
-          _buildOfferCard(
-            'عروض البرق',
-            'خصومات تصل إلى 70%',
-            const Color(0xFFF6465D),
-            Icons.flash_on,
-          ),
+          _buildOfferCard('خصم 50% على الإلكترونيات', 'استخدم كود ELECTRO50', const Color(0xFF2196F3), 'electronics'),
+          _buildOfferCard('عرض VIP - خصم 25%', 'للأعضاء الجدد فقط', const Color(0xFFD4AF37), 'vip'),
+          _buildOfferCard('توصيل مجاني', 'للطلبات فوق 500 ريال', const Color(0xFF0ECB81), 'shipping'),
+          _buildOfferCard('عروض البرق', 'خصومات تصل إلى 70%', const Color(0xFFF6465D), 'discount'),
+          _buildOfferCard('خصم 30% على المطاعم', 'استخدم كود FOOD30', const Color(0xFFFF9800), 'restaurants'),
+          _buildOfferCard('عروض الجمعة', 'خصومات خاصة نهاية الأسبوع', const Color(0xFF9C27B0), 'sale'),
         ],
       ),
     );
   }
 
-  Widget _buildOfferCard(String title, String subtitle, Color color, IconData icon) {
+  Widget _buildOfferCard(String title, String subtitle, Color color, String icon) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
@@ -67,7 +49,12 @@ class OffersScreen extends StatelessWidget {
               color: color.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: color, size: 32),
+            child: SvgPicture.asset(
+              'assets/icons/svg/$icon.svg',
+              width: 32,
+              height: 32,
+              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -80,7 +67,14 @@ class OffersScreen extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Text('نسخ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
         ],
       ),
     );
