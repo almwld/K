@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   
                   // بالقرب منك
-                  _buildSectionHeader(context, 'بالقرب منك', onSeeAll: () => Navigator.pushNamed(context, '/nearby')),
+                  _buildSectionHeader(context, 'بالقرب منك', onSeeAll: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NearbyScreen()))),
                   _buildNearby(),
                   const SizedBox(height: 20),
                   
