@@ -42,6 +42,10 @@ class _MainNavigationState extends State<MainNavigation> {
 
   // قائمة الزر الذهبي
   final List<Map<String, dynamic>> _fabMenuItems = [
+    {'icon': Icons.campaign_outlined, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3), 'route': '/add_ad'},
+    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50), 'route': '/add_product'},
+    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': const Color(0xFFFF9800), 'route': '/request_service'},
+
     {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3)},
     {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50)},
     {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': const Color(0xFFFF9800)},
