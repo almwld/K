@@ -23,13 +23,14 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   bool _isFabMenuOpen = false;
 
+  // الترتيب: الرئيسية - المتاجر - الدردشة - المزادات - السلة - حسابي
   final List<Widget> _screens = const [
-    HomeScreen(),
-    StoresScreen(),
-    ChatScreen(),
-    AuctionsScreen(),
-    CartScreen(),
-    ProfileScreen(),
+    HomeScreen(),        // 0 - الرئيسية
+    StoresScreen(),      // 1 - المتاجر
+    ChatScreen(),        // 2 - الدردشة
+    AuctionsScreen(),    // 3 - المزادات
+    CartScreen(),        // 4 - السلة
+    ProfileScreen(),     // 5 - حسابي
   ];
 
   final List<Map<String, dynamic>> _navItems = [
@@ -68,9 +69,13 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(0), _buildNavItem(1), _buildNavItem(2),
-                const SizedBox(width: 60),
-                _buildNavItem(3), _buildNavItem(4), _buildNavItem(5),
+                _buildNavItem(0), // الرئيسية
+                _buildNavItem(1), // المتاجر
+                _buildNavItem(2), // الدردشة
+                const SizedBox(width: 60), // مساحة للزر الذهبي
+                _buildNavItem(3), // المزادات
+                _buildNavItem(4), // السلة
+                _buildNavItem(5), // حسابي
               ],
             ),
           ),
@@ -143,15 +148,8 @@ class _MainNavigationState extends State<MainNavigation> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(25), border: Border.all(color: item['color'] ?? const Color(0xFFD4AF37), width: 1.5), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)]),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(item['icon'], color: item['color'], size: 18),
-            const SizedBox(width: 6),
-            Text(item['label'], style: TextStyle(color: item['color'], fontWeight: FontWeight.w600, fontSize: 12)),
-          ],
-        ),
+        decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(25), border: Border.all(color: const Color(0xFFD4AF37), width: 1.5), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)]),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(item['icon'], size: 18, color: const Color(0xFFD4AF37)), const SizedBox(width: 6), Text(item['label'], style: const TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.w600, fontSize: 12))]),
       ),
     );
   }
