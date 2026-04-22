@@ -113,27 +113,27 @@ class _HomeScreenState extends State<HomeScreen> {
         _buildQuickActions(context),
         const SizedBox(height: 20),
         _buildSectionHeader('متابعاتك', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowingScreen()))),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         _buildFollowingsList(),
         const SizedBox(height: 20),
         _buildSectionHeader('متاجر مميزة', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StoresScreen()))),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         _buildFeaturedStores(),
         const SizedBox(height: 20),
         _buildSectionHeader('العروض الرائجة', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OffersScreen()))),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         _buildTrendingOffers(),
         const SizedBox(height: 20),
         _buildSectionHeader('الأسواق الرائجة', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MarketsScreen()))),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         _buildMarkets(),
         const SizedBox(height: 20),
         _buildSectionHeader('بالقرب منك', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NearbyScreen()))),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         _buildNearby(),
         const SizedBox(height: 20),
         _buildSectionHeader('منتجات مميزة', onTap: () {}),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         _buildProductsGrid(),
         const SizedBox(height: 20),
       ],
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
         AnimatedSmoothIndicator(activeIndex: _carouselIndex, count: _carouselItems.length, effect: ExpandingDotsEffect(activeDotColor: const Color(0xFFD4AF37), dotColor: const Color(0xFF2B3139), dotHeight: 8, dotWidth: 8)),
       ],
     );
@@ -214,13 +214,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFollowingsList() {
-    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: 4, itemBuilder: (c, i) => Container(width: 140, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Container(width: 30, height: 30, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Icon(Icons.store, color: Color(0xFFD4AF37), size: 18)), const SizedBox(width: 8), Expanded(child: Text('متجر ${i+1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))]), const SizedBox(height: 8), Text('منتج جديد', style: TextStyle(color: const Color(0xFFD4AF37), fontSize: 11)), Text('قبل ساعة', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 10))]))));
+    return SizedBox(height: 100, child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: 4, itemBuilder: (c, i) => Container(width: 140, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Container(width: 30, height: 30, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Icon(Icons.store, color: Color(0xFFD4AF37), size: 18)), const SizedBox(width: 8), Expanded(child: Text('متجر ${i+1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))]), const SizedBox(height: 8), Text('منتج جديد', style: TextStyle(color: const Color(0xFFD4AF37), fontSize: 11)), Text('قبل ساعة', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 10))]))));
   }
 
   Widget _buildFeaturedStores() {
     return SizedBox(height: 120, child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: _featuredStores.length, itemBuilder: (c, i) => GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreDetailScreen(storeId: '$i'))),
-      child: Container(width: 160, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Container(width: 30, height: 30, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Icon(Icons.store, color: Color(0xFFD4AF37), size: 18)), const SizedBox(width: 8), Expanded(child: Text(_featuredStores[i]['name']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))), Container(width: 6, height: 6, decoration: BoxDecoration(shape: BoxShape.circle, color: (_featuredStores[i]['isOpen'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D)))]), const SizedBox(height: 6), Text(_featuredStores[i]['category']!, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)), const SizedBox(height: 4), Row(children: [const Icon(Icons.star, color: Colors.amber, size: 12), const SizedBox(width: 2), Text('${_featuredStores[i]['rating']}', style: const TextStyle(color: Colors.white, fontSize: 11)), const Spacer(), Text((_featuredStores[i]['isOpen'] as bool) ? 'مفتوح' : 'مغلق', style: TextStyle(color: (_featuredStores[i]['isOpen'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), fontSize: 10))])])),
+      child: Container(width: 160, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Container(width: 30, height: 30, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Icon(Icons.store, color: Color(0xFFD4AF37), size: 18)), const SizedBox(width: 8), Expanded(child: Text(_featuredStores[i]['name']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))), Container(width: 6, height: 6, decoration: BoxDecoration(shape: BoxShape.circle, color: (_featuredStores[i]['isOpen'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D)))]), const SizedBox(height: 6), Text(_featuredStores[i]['category']!, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)), const SizedBox(height: 4), Row(children: [const Icon(Icons.star, color: Colors.amber, size: 12), const SizedBox(width: 2), Text('${_featuredStores[i]['rating']}', style: const TextStyle(color: Colors.white, fontSize: 11)), const Spacer(), Text((_featuredStores[i]['isOpen'] as bool) ? 'مفتوح' : 'مغلق', style: TextStyle(color: (_featuredStores[i]['isOpen'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), fontSize: 10))])])),
     )));
   }
 
