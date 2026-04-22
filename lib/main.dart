@@ -6,7 +6,7 @@ import 'providers/theme_manager.dart';
 import 'providers/market_provider.dart';
 import 'providers/subscription_provider.dart';
 import 'providers/user_stats_provider.dart';
-import 'screens/login_screen.dart';
+import 'screens/splash_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -36,11 +36,10 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.darkTheme,
             themeMode: themeManager.themeMode,
             debugShowCheckedModeBanner: false,
-            home: const LoginScreen(), // نبدأ بشاشة تسجيل الدخول
+            home: const SplashScreen(), // ✅ شاشة الترحيب الجديدة
           );
         },
       ),
     );
   }
 }
-

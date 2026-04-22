@@ -1,8 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:async';
 import '../theme/app_theme.dart';
 import 'home/main_navigation.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,159 +12,173 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
+  late AnimationController _scaleController;
   late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+    
+    // تحكم في التلاشي
+    _fadeController = AnimationController(
       vsync: this,
+      duration: const Duration(milliseconds: 800),
     );
-
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0, 0.5, curve: Curves.easeIn),
-      ),
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
     );
-
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.elasticOut,
-      ),
+    
+    // تحكم في الحجم
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
     );
-
-    _controller.forward();
-    _navigateToNextScreen();
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.3, end: 1.1), weight: 50),
+      TweenSequenceItem(tween: Tween(begin: 1.1, end: 1.0), weight: 50),
+    ]).animate(CurvedAnimation(parent: _scaleController, curve: Curves.elasticOut));
+    
+    // بدء الأنيميشن
+    _fadeController.forward();
+    _scaleController.forward();
+    
+    // الانتقال للشاشة التالية بعد 3 ثواني
+    Timer(const Duration(seconds: 3), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+    });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _fadeController.dispose();
+    _scaleController.dispose();
     super.dispose();
-  }
-
-  Future<void> _navigateToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
-
-    if (!mounted) return;
-
-    // ✅ الانتقال مباشرة للمنصة الرئيسية (بدون تسجيل دخول)
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const MainNavigation()),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+      backgroundColor: const Color(0xFF0F172A), // كحلي داكن فاخر
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+          gradient: RadialGradient(
+            center: Alignment.center,
+            radius: 1.5,
             colors: [
-              isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
-              isDark ? AppTheme.nightSurface : AppTheme.lightSurface,
+              const Color(0xFF1A2A44),
+              const Color(0xFF0F172A),
             ],
           ),
         ),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: ScaleTransition(
-                      scale: _scaleAnimation,
-                      child: Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          gradient: AppTheme.goldGradient,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppTheme.gold.withOpacity(0.4),
-                              blurRadius: 30,
-                              spreadRadius: 5,
-                            ),
-                          ],
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // الشعار الذهبي المتحرك
+                  Container(
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFD4AF37).withOpacity(0.3),
+                          blurRadius: 40,
+                          spreadRadius: 10,
                         ),
-                        child: const Icon(
-                          Icons.shopping_bag,
-                          size: 80,
-                          color: Colors.black,
-                        ),
-                      ),
+                      ],
                     ),
-                  );
-                },
-              ),
-              const SizedBox(height: 40),
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'FLEX',
-                      style: TextStyle(
-                        fontFamily: 'Changa',
-                        fontSize: 42,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.gold,
-                      ),
+                    child: SvgPicture.asset(
+                      'assets/icons/svg/logo_animated.svg',
+                      width: 180,
+                      height: 180,
+                      fit: BoxFit.contain,
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'YEMEN',
-                      style: TextStyle(
-                        fontFamily: 'Changa',
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.goldLight,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: Text(
-                  'منصة التجارة الإلكترونية اليمنية',
-                  style: TextStyle(
-                    fontFamily: 'Changa',
-                    fontSize: 16,
-                    color: AppTheme.getSecondaryTextColor(context),
                   ),
-                ),
+                  
+                  const SizedBox(height: 40),
+                  
+                  // نص FLEX YEMEN
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.easeOut,
+                    child: Column(
+                      children: [
+                        const Text(
+                          'FLEX',
+                          style: TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFD4AF37),
+                            letterSpacing: 4,
+                            shadows: [
+                              Shadow(
+                                color: Color(0xFFD4AF37),
+                                blurRadius: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'YEMEN',
+                          style: TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 32,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFFD4AF37).withOpacity(0.9),
+                            letterSpacing: 6,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            'منصة التجارة الإلكترونية اليمنية',
+                            style: TextStyle(
+                              fontFamily: 'Changa',
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 60),
+                  
+                  // شريط تحميل ذهبي
+                  Container(
+                    width: 200,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: LinearProgressIndicator(
+                      backgroundColor: const Color(0xFFD4AF37).withOpacity(0.2),
+                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4AF37)),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 60),
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
-                strokeWidth: 3,
-              ),
-            ].animate(
-              interval: const Duration(milliseconds: 100),
-            ).fadeIn().slideY(
-              begin: 0.3,
-              end: 0,
-              duration: const Duration(milliseconds: 600),
             ),
           ),
         ),
@@ -171,4 +186,3 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-
