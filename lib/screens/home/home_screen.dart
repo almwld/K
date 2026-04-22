@@ -251,16 +251,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildIconButton(IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E2329),
-        shape: BoxShape.circle,
-      ),
-      child: Icon(icon, color: const Color(0xFFF0B90B), size: 20),
-    );
-  }
 
   Widget _buildStatsCard() {
     return Container(
@@ -851,6 +841,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildIconButton(Widget icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E2329),
+          shape: BoxShape.circle,
+        ),
+        child: icon,
       ),
     );
   }
