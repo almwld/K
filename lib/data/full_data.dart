@@ -565,3 +565,400 @@ class FullData {
     };
   }
 }
+
+// ==================== إكمال الفئات (45 فئة) ====================
+
+extension FullDataExtension on FullData {
+  
+  // تكملة الفئات من 21 إلى 45
+  static List<CategoryModel> getRemainingCategories() {
+    return [
+      // 21. شاشات
+      CategoryModel(
+        id: 'tvs_full', name: 'شاشات', nameEn: 'TVs & Screens',
+        icon: Icons.tv, color: Colors.cyan,
+        imageUrl: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'samsung_tv', name: 'سامسونج', nameEn: 'Samsung', productCount: 67),
+          SubcategoryModel(id: 'lg_tv', name: 'إل جي', nameEn: 'LG', productCount: 45),
+          SubcategoryModel(id: 'sony_tv', name: 'سوني', nameEn: 'Sony', productCount: 34),
+          SubcategoryModel(id: 'tcl_tv', name: 'تي سي إل', nameEn: 'TCL', productCount: 23),
+        ],
+      ),
+      // 22. أجهزة منزلية
+      CategoryModel(
+        id: 'appliances', name: 'أجهزة منزلية', nameEn: 'Home Appliances',
+        icon: Icons.kitchen, color: Colors.lightGreen,
+        imageUrl: 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=300',
+        productCount: 456, subcategories: [
+          SubcategoryModel(id: 'refrigerators', name: 'ثلاجات', nameEn: 'Refrigerators', productCount: 89),
+          SubcategoryModel(id: 'washing', name: 'غسالات', nameEn: 'Washing Machines', productCount: 78),
+          SubcategoryModel(id: 'ac', name: 'مكيفات', nameEn: 'AC', productCount: 123),
+          SubcategoryModel(id: 'ovens', name: 'أفران', nameEn: 'Ovens', productCount: 56),
+        ],
+      ),
+      // 23. أدوات مطبخ
+      CategoryModel(
+        id: 'kitchen_tools', name: 'أدوات مطبخ', nameEn: 'Kitchen Tools',
+        icon: Icons.coffee_maker, color: Colors.brown,
+        imageUrl: 'https://images.unsplash.com/photo-1556909114-44e3ef1e0d71?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'cookware', name: 'قدور ومقالي', nameEn: 'Cookware', productCount: 123),
+          SubcategoryModel(id: 'utensils', name: 'أدوات', nameEn: 'Utensils', productCount: 89),
+          SubcategoryModel(id: 'cutlery', name: 'سكاكين', nameEn: 'Cutlery', productCount: 45),
+        ],
+      ),
+      // 24. مواد غذائية
+      CategoryModel(
+        id: 'groceries_full', name: 'مواد غذائية', nameEn: 'Groceries',
+        icon: Icons.local_grocery_store, color: Colors.green,
+        imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300',
+        productCount: 890, subcategories: [
+          SubcategoryModel(id: 'rice', name: 'أرز وحبوب', nameEn: 'Rice & Grains', productCount: 234),
+          SubcategoryModel(id: 'oil', name: 'زيوت', nameEn: 'Oils', productCount: 156),
+          SubcategoryModel(id: 'sugar', name: 'سكر', nameEn: 'Sugar', productCount: 89),
+        ],
+      ),
+      // 25. خضروات وفواكه
+      CategoryModel(
+        id: 'vegetables', name: 'خضروات وفواكه', nameEn: 'Vegetables & Fruits',
+        icon: Icons.eco, color: Colors.green,
+        imageUrl: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=300',
+        productCount: 567, subcategories: [
+          SubcategoryModel(id: 'fresh_veg', name: 'خضروات طازجة', nameEn: 'Fresh Vegetables', productCount: 234),
+          SubcategoryModel(id: 'fresh_fruit', name: 'فواكه طازجة', nameEn: 'Fresh Fruits', productCount: 189),
+        ],
+      ),
+      // 26. لحوم ودواجن
+      CategoryModel(
+        id: 'meat', name: 'لحوم ودواجن', nameEn: 'Meat & Poultry',
+        icon: Icons.agriculture, color: Colors.red,
+        imageUrl: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=300',
+        productCount: 345, subcategories: [
+          SubcategoryModel(id: 'beef', name: 'لحم بقري', nameEn: 'Beef', productCount: 89),
+          SubcategoryModel(id: 'chicken', name: 'دجاج', nameEn: 'Chicken', productCount: 156),
+          SubcategoryModel(id: 'lamb', name: 'لحم غنم', nameEn: 'Lamb', productCount: 67),
+        ],
+      ),
+      // 27. أسماك ومأكولات بحرية
+      CategoryModel(
+        id: 'seafood', name: 'أسماك ومأكولات بحرية', nameEn: 'Seafood',
+        icon: Icons.set_meal, color: Colors.blue,
+        imageUrl: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'fish', name: 'أسماك', nameEn: 'Fish', productCount: 123),
+          SubcategoryModel(id: 'shrimp', name: 'جمبري', nameEn: 'Shrimp', productCount: 67),
+        ],
+      ),
+      // 28. منتجات ألبان
+      CategoryModel(
+        id: 'dairy', name: 'منتجات ألبان', nameEn: 'Dairy',
+        icon: Icons.breakfast_dining, color: Colors.lightBlue,
+        imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300',
+        productCount: 345, subcategories: [
+          SubcategoryModel(id: 'milk', name: 'حليب', nameEn: 'Milk', productCount: 89),
+          SubcategoryModel(id: 'cheese', name: 'جبن', nameEn: 'Cheese', productCount: 123),
+          SubcategoryModel(id: 'yogurt', name: 'زبادي', nameEn: 'Yogurt', productCount: 78),
+        ],
+      ),
+      // 29. مخبوزات
+      CategoryModel(
+        id: 'bakery', name: 'مخبوزات', nameEn: 'Bakery',
+        icon: Icons.bakery_dining, color: Colors.orange,
+        imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'bread', name: 'خبز', nameEn: 'Bread', productCount: 123),
+          SubcategoryModel(id: 'pastries', name: 'معجنات', nameEn: 'Pastries', productCount: 89),
+        ],
+      ),
+      // 30. حلويات
+      CategoryModel(
+        id: 'desserts', name: 'حلويات', nameEn: 'Desserts',
+        icon: Icons.cake, color: Colors.pink,
+        imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300',
+        productCount: 345, subcategories: [
+          SubcategoryModel(id: 'cakes', name: 'كيك', nameEn: 'Cakes', productCount: 123),
+          SubcategoryModel(id: 'arabic_sweets', name: 'حلويات عربية', nameEn: 'Arabic Sweets', productCount: 156),
+        ],
+      ),
+      // 31. مشروبات
+      CategoryModel(
+        id: 'beverages', name: 'مشروبات', nameEn: 'Beverages',
+        icon: Icons.local_drink, color: Colors.blue,
+        imageUrl: 'https://images.unsplash.com/photo-1527960471264-932f39eb5846?w=300',
+        productCount: 456, subcategories: [
+          SubcategoryModel(id: 'soft_drinks', name: 'مشروبات غازية', nameEn: 'Soft Drinks', productCount: 234),
+          SubcategoryModel(id: 'juices', name: 'عصائر', nameEn: 'Juices', productCount: 123),
+          SubcategoryModel(id: 'water', name: 'مياه', nameEn: 'Water', productCount: 67),
+        ],
+      ),
+      // 32. قهوة وشاي
+      CategoryModel(
+        id: 'coffee', name: 'قهوة وشاي', nameEn: 'Coffee & Tea',
+        icon: Icons.coffee, color: Colors.brown,
+        imageUrl: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'coffee_beans', name: 'بن', nameEn: 'Coffee Beans', productCount: 89),
+          SubcategoryModel(id: 'tea', name: 'شاي', nameEn: 'Tea', productCount: 123),
+        ],
+      ),
+      // 33. تمور وعسل
+      CategoryModel(
+        id: 'dates_honey', name: 'تمور وعسل', nameEn: 'Dates & Honey',
+        icon: Icons.date_range, color: Colors.amber,
+        imageUrl: 'https://images.unsplash.com/photo-1604671801908-29f0cb3b6162?w=300',
+        productCount: 345, subcategories: [
+          SubcategoryModel(id: 'dates', name: 'تمور', nameEn: 'Dates', productCount: 234),
+          SubcategoryModel(id: 'honey', name: 'عسل', nameEn: 'Honey', productCount: 89),
+        ],
+      ),
+      // 34. بهارات وتوابل
+      CategoryModel(
+        id: 'spices', name: 'بهارات وتوابل', nameEn: 'Spices',
+        icon: Icons.grass, color: Colors.orange,
+        imageUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'mixed_spices', name: 'بهارات مشكلة', nameEn: 'Mixed Spices', productCount: 123),
+          SubcategoryModel(id: 'single_spices', name: 'بهارات مفردة', nameEn: 'Single Spices', productCount: 89),
+        ],
+      ),
+      // 35. زيوت ودهون
+      CategoryModel(
+        id: 'oils', name: 'زيوت ودهون', nameEn: 'Oils & Fats',
+        icon: Icons.opacity, color: Colors.yellow,
+        imageUrl: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'olive_oil', name: 'زيت زيتون', nameEn: 'Olive Oil', productCount: 89),
+          SubcategoryModel(id: 'vegetable_oil', name: 'زيت نباتي', nameEn: 'Vegetable Oil', productCount: 123),
+        ],
+      ),
+      // 36. مواد بناء
+      CategoryModel(
+        id: 'construction', name: 'مواد بناء', nameEn: 'Construction',
+        icon: Icons.construction, color: Colors.grey,
+        imageUrl: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=300',
+        productCount: 567, subcategories: [
+          SubcategoryModel(id: 'cement', name: 'اسمنت', nameEn: 'Cement', productCount: 234),
+          SubcategoryModel(id: 'steel', name: 'حديد', nameEn: 'Steel', productCount: 189),
+          SubcategoryModel(id: 'bricks', name: 'طوب', nameEn: 'Bricks', productCount: 123),
+        ],
+      ),
+      // 37. أدوات كهربائية
+      CategoryModel(
+        id: 'electrical', name: 'أدوات كهربائية', nameEn: 'Electrical Tools',
+        icon: Icons.electrical_services, color: Colors.yellow,
+        imageUrl: 'https://images.unsplash.com/photo-1581147036323-c68037e363f7?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'wires', name: 'أسلاك', nameEn: 'Wires', productCount: 89),
+          SubcategoryModel(id: 'switches', name: 'مفاتيح', nameEn: 'Switches', productCount: 123),
+        ],
+      ),
+      // 38. أدوات سباكة
+      CategoryModel(
+        id: 'plumbing', name: 'أدوات سباكة', nameEn: 'Plumbing',
+        icon: Icons.plumbing, color: Colors.blue,
+        imageUrl: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'pipes', name: 'مواسير', nameEn: 'Pipes', productCount: 89),
+          SubcategoryModel(id: 'faucets', name: 'خلاطات', nameEn: 'Faucets', productCount: 123),
+        ],
+      ),
+      // 39. أدوات نجارة
+      CategoryModel(
+        id: 'carpentry', name: 'أدوات نجارة', nameEn: 'Carpentry',
+        icon: Icons.handyman, color: Colors.brown,
+        imageUrl: 'https://images.unsplash.com/photo-1581147036323-c68037e363f7?w=300',
+        productCount: 123, subcategories: [
+          SubcategoryModel(id: 'wood', name: 'أخشاب', nameEn: 'Wood', productCount: 67),
+          SubcategoryModel(id: 'tools', name: 'أدوات', nameEn: 'Tools', productCount: 45),
+        ],
+      ),
+      // 40. أدوات حدادة
+      CategoryModel(
+        id: 'blacksmith', name: 'أدوات حدادة', nameEn: 'Blacksmith',
+        icon: Icons.build, color: Colors.grey,
+        imageUrl: 'https://images.unsplash.com/photo-1581147036323-c68037e363f7?w=300',
+        productCount: 89, subcategories: [
+          SubcategoryModel(id: 'metal', name: 'معادن', nameEn: 'Metal', productCount: 45),
+          SubcategoryModel(id: 'welding', name: 'لحام', nameEn: 'Welding', productCount: 34),
+        ],
+      ),
+      // 41. معدات طبية
+      CategoryModel(
+        id: 'medical', name: 'معدات طبية', nameEn: 'Medical Equipment',
+        icon: Icons.medical_services, color: Colors.red,
+        imageUrl: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=300',
+        productCount: 234, subcategories: [
+          SubcategoryModel(id: 'devices', name: 'أجهزة', nameEn: 'Devices', productCount: 89),
+          SubcategoryModel(id: 'supplies', name: 'مستلزمات', nameEn: 'Supplies', productCount: 123),
+        ],
+      ),
+      // 42. معدات صناعية
+      CategoryModel(
+        id: 'industrial', name: 'معدات صناعية', nameEn: 'Industrial',
+        icon: Icons.factory, color: Colors.blueGrey,
+        imageUrl: 'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=300',
+        productCount: 345, subcategories: [
+          SubcategoryModel(id: 'machinery', name: 'آلات', nameEn: 'Machinery', productCount: 123),
+          SubcategoryModel(id: 'parts', name: 'قطع غيار', nameEn: 'Parts', productCount: 234),
+        ],
+      ),
+      // 43. مستلزمات مدرسية
+      CategoryModel(
+        id: 'stationery', name: 'مستلزمات مدرسية', nameEn: 'Stationery',
+        icon: Icons.edit, color: Colors.blue,
+        imageUrl: 'https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=300',
+        productCount: 567, subcategories: [
+          SubcategoryModel(id: 'notebooks', name: 'دفاتر', nameEn: 'Notebooks', productCount: 234),
+          SubcategoryModel(id: 'pens', name: 'أقلام', nameEn: 'Pens', productCount: 345),
+        ],
+      ),
+      // 44. هدايا
+      CategoryModel(
+        id: 'gifts', name: 'هدايا', nameEn: 'Gifts',
+        icon: Icons.card_giftcard, color: Colors.pink,
+        imageUrl: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300',
+        productCount: 345, subcategories: [
+          SubcategoryModel(id: 'occasions', name: 'مناسبات', nameEn: 'Occasions', productCount: 234),
+          SubcategoryModel(id: 'wrapping', name: 'تغليف', nameEn: 'Wrapping', productCount: 89),
+        ],
+      ),
+      // 45. تحف وأنتيكات
+      CategoryModel(
+        id: 'antiques', name: 'تحف وأنتيكات', nameEn: 'Antiques',
+        icon: Icons.history, color: Colors.brown,
+        imageUrl: 'https://images.unsplash.com/photo-1561124738-67dab8f6146a?w=300',
+        productCount: 123, subcategories: [
+          SubcategoryModel(id: 'coins', name: 'عملات', nameEn: 'Coins', productCount: 45),
+          SubcategoryModel(id: 'artifacts', name: 'قطع أثرية', nameEn: 'Artifacts', productCount: 34),
+        ],
+      ),
+    ];
+  }
+  
+  // ==================== إكمال المتاجر (200+ متجر) ====================
+  
+  static List<StoreModel> getMoreStores() {
+    List<StoreModel> stores = [];
+    
+    // إلكترونيات (15 متجر إضافي)
+    List<String> electronicsNames = ['عالم الإلكترونيات', 'تك ستور', 'ديجيتال مول', 'إلكترونيات المستقبل', 'البرق للتقنية', 'سامسونج ستور', 'آبل ستور اليمن', 'هواوي ستور', 'شاومي ستور', 'لابتوب كينج', 'كمبيوتر سيتي', 'جيمنج ورلد', 'صوتيات احترافية', 'كاميرات برو', 'طابعات اليمن'];
+    for (int i = 0; i < electronicsNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_elec_$i', name: electronicsNames[i], category: 'إلكترونيات', subcategory: 'إلكترونيات',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع الستين، صنعاء', city: 'صنعاء',
+        phone: '777${i}23456', description: 'متجر ${electronicsNames[i]} للإلكترونيات',
+      ));
+    }
+    
+    // أزياء (25 متجر إضافي)
+    List<String> fashionNames = ['عالم الموضة', 'أناقة', 'فاشن مول', 'ملابس العصر', 'ثياب يمنية', 'عبايات فاخرة', 'بدل رجالية', 'أزياء نسائية', 'ملابس أطفال', 'أحذية عصرية', 'شنط ماركات', 'إكسسوارات', 'ساعات فاخرة', 'نظارات شمسية', 'مجوهرات', 'ذهب اليمن', 'فضة', 'ألماس', 'لؤلؤ', 'عطور شرقية', 'عطور غربية', 'بخور', 'عود', 'دهن عود', 'مباخر'];
+    for (int i = 0; i < fashionNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_fashion_$i', name: fashionNames[i], category: 'أزياء', subcategory: 'أزياء',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع التحرير، صنعاء', city: 'صنعاء',
+        phone: '777${i}34567', description: 'متجر ${fashionNames[i]} للأزياء',
+      ));
+    }
+    
+    // سيارات (15 متجر إضافي)
+    List<String> carsNames = ['معرض السيارات', 'سيارات فاخرة', 'سيارات اقتصادية', 'سيارات مستعملة', 'قطع غيار', 'إطارات', 'زيوت', 'بطاريات', 'زجاج سيارات', 'دهانات سيارات', 'تلميع', 'صيانة', 'كهرباء سيارات', 'ميكانيكا', 'سمكرة ودوكو'];
+    for (int i = 0; i < carsNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_cars_$i', name: carsNames[i], category: 'سيارات', subcategory: 'سيارات',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع الستين، صنعاء', city: 'صنعاء',
+        phone: '777${i}45678', description: 'متجر ${carsNames[i]} للسيارات',
+      ));
+    }
+    
+    // عقارات (10 متاجر إضافية)
+    List<String> realEstateNames = ['عقارات', 'فلل', 'شقق', 'أراضي', 'محلات', 'مكاتب', 'مستودعات', 'استثمار عقاري', 'تمليك', 'إيجار'];
+    for (int i = 0; i < realEstateNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_real_$i', name: realEstateNames[i], category: 'عقارات', subcategory: 'عقارات',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع الزراعة، صنعاء', city: 'صنعاء',
+        phone: '777${i}56789', description: 'متجر ${realEstateNames[i]} للعقارات',
+      ));
+    }
+    
+    // أثاث (15 متجر إضافي)
+    List<String> furnitureNames = ['أثاث', 'غرف نوم', 'مجالس', 'صالات', 'مطابخ', 'حمامات', 'ديكور', 'ستائر', 'سجاد', 'موكيت', 'إضاءة', 'ثريات', 'مرايا', 'لوحات', 'تحف'];
+    for (int i = 0; i < furnitureNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_furniture_$i', name: furnitureNames[i], category: 'أثاث', subcategory: 'أثاث',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع حدة، صنعاء', city: 'صنعاء',
+        phone: '777${i}67890', description: 'متجر ${furnitureNames[i]} للأثاث',
+      ));
+    }
+    
+    // مطاعم (20 متجر إضافي)
+    List<String> restaurantNames = ['مطعم', 'مندي', 'زربيان', 'مظبي', 'حنيذ', 'شاورما', 'برجر', 'بيتزا', 'فول وتميس', 'فطور', 'عصائر', 'قهوة', 'حلويات', 'معجنات', 'فطائر', 'مشاوي', 'أسماك', 'باستا', 'سلطات', 'ساندويتشات'];
+    for (int i = 0; i < restaurantNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_rest_$i', name: restaurantNames[i], category: 'مطاعم', subcategory: 'مطاعم',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع الستين، صنعاء', city: 'صنعاء',
+        phone: '777${i}78901', description: '${restaurantNames[i]} يمني',
+      ));
+    }
+    
+    // خدمات (15 متجر إضافي)
+    List<String> serviceNames = ['خدمات', 'تنظيف', 'صيانة', 'سباكة', 'كهرباء', 'دهان', 'نجارة', 'حدادة', 'تكييف', 'تبريد', 'ستلايت', 'كمبيوتر', 'جوالات', 'تصميم', 'طباعة'];
+    for (int i = 0; i < serviceNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_service_$i', name: serviceNames[i], category: 'خدمات', subcategory: 'خدمات',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع التحرير، صنعاء', city: 'صنعاء',
+        phone: '777${i}89012', description: '${serviceNames[i]} منزلية',
+      ));
+    }
+    
+    // صحة وجمال (10 متاجر إضافية)
+    List<String> beautyNames = ['صالون', 'تجميل', 'عناية بالبشرة', 'عناية بالشعر', 'مكياج', 'مانيكير', 'بديكير', 'مساج', 'حمام مغربي', 'رياضة'];
+    for (int i = 0; i < beautyNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_beauty_$i', name: beautyNames[i], category: 'صحة وجمال', subcategory: 'صحة وجمال',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع حدة، صنعاء', city: 'صنعاء',
+        phone: '777${i}90123', description: '${beautyNames[i]} تجميل',
+      ));
+    }
+    
+    // مواد غذائية (10 متاجر إضافية)
+    List<String> groceryNames = ['سوبر ماركت', 'بقالة', 'تموينات', 'خضار', 'فواكه', 'لحوم', 'دواجن', 'أسماك', 'مخبز', 'حلويات'];
+    for (int i = 0; i < groceryNames.length; i++) {
+      stores.add(StoreModel(
+        id: 'store_grocery_$i', name: groceryNames[i], category: 'مواد غذائية', subcategory: 'مواد غذائية',
+        rating: 4.0 + (i % 10) / 10, reviews: 100 + i * 10, products: 50 + i * 5, followers: 500 + i * 50,
+        isOpen: i % 3 != 0, isVerified: i % 2 == 0,
+        address: 'شارع الستين، صنعاء', city: 'صنعاء',
+        phone: '777${i}01234', description: '${groceryNames[i]}',
+      ));
+    }
+    
+    return stores;
+  }
+  
+  // دالة موحدة للحصول على جميع الفئات
+  static List<CategoryModel> getAllCategoriesComplete() {
+    return getAllCategories() + getRemainingCategories();
+  }
+  
+  // دالة موحدة للحصول على جميع المتاجر
+  static List<StoreModel> getAllStoresComplete() {
+    return getAllStores() + getMoreStores();
+  }
+}
