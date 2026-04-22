@@ -1,58 +1,81 @@
-import '../theme_selection_screen.dart';
-import '../../widgets/social_media_widget.dart';
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/simple_app_bar.dart';
-import '../appearance_screen.dart';
-import '../notifications_settings_screen.dart';
-import '../language_screen.dart';
-import '../privacy_settings_screen.dart';
-import '../security_settings_screen.dart';
-import '../help_support_screen.dart';
-import '../about_app_screen.dart';
-import '../policy/privacy_policy_screen.dart';
-import '../policy/terms_screen.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
 
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notificationsEnabled = true;
+  bool _darkMode = true;
+  bool _saveData = false;
+  String _language = 'العربية';
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'الإعدادات'),
+      backgroundColor: const Color(0xFF0B0E11),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0B0E11),
+        elevation: 0,
+        title: const Text('الإعدادات', style: TextStyle(color: Colors.white)),
+      ),
       body: ListView(
         children: [
-          const SizedBox(height: 16),
-          _buildSectionHeader('المظهر'),
-          _buildSettingTile(context, Icons.palette_outlined, 'المظهر', 'فاتح / داكن', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AppearanceScreen()))),
-          _buildSettingTile(context, Icons.language_outlined, 'اللغة', 'العربية', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageScreen()))),
-          
-          const SizedBox(height: 16),
-          _buildSectionHeader('الإشعارات'),
-          _buildSettingTile(context, Icons.notifications_outlined, 'إعدادات الإشعارات', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsSettingsScreen()))),
-          
-          const SizedBox(height: 16),
-          _buildSectionHeader('الخصوصية والأمان'),
-          _buildSettingTile(context, Icons.lock_outline, 'الخصوصية', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacySettingsScreen()))),
-          _buildSettingTile(context, Icons.security_outlined, 'الأمان', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SecuritySettingsScreen()))),
-          
-          const SizedBox(height: 16),
-          _buildSectionHeader('الدعم والمساعدة'),
-          _buildSettingTile(context, Icons.help_outline, 'المساعدة والدعم', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HelpSupportScreen()))),
-          _buildSettingTile(context, Icons.info_outline, 'عن التطبيق', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutAppScreen()))),
-          
-          const SizedBox(height: 16),
-          _buildSectionHeader('القانونية'),
-          _buildSettingTile(context, Icons.privacy_tip_outlined, 'سياسة الخصوصية', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()))),
-          _buildSettingTile(context, Icons.description_outlined, 'الشروط والأحكام', '', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TermsScreen()))),
-          
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('الإصدار 2.0.0', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+          _buildSection('الحساب', [
+            _buildListTile(Icons.person_outline, 'تعديل الملف الشخصي'),
+            _buildListTile(Icons.lock_outline, 'تغيير كلمة المرور'),
+            _buildListTile(Icons.phone_outlined, 'رقم الجوال'),
+          ]),
+          _buildSection('التفضيلات', [
+            SwitchListTile(
+              title: const Text('الإشعارات', style: TextStyle(color: Colors.white)),
+              subtitle: const Text('تفعيل إشعارات التطبيق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              value: _notificationsEnabled,
+              activeColor: const Color(0xFFD4AF37),
+              onChanged: (value) => setState(() => _notificationsEnabled = value),
+            ),
+            SwitchListTile(
+              title: const Text('الوضع الداكن', style: TextStyle(color: Colors.white)),
+              value: _darkMode,
+              activeColor: const Color(0xFFD4AF37),
+              onChanged: (value) => setState(() => _darkMode = value),
+            ),
+            SwitchListTile(
+              title: const Text('توفير البيانات', style: TextStyle(color: Colors.white)),
+              subtitle: const Text('تقليل استهلاك البيانات', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              value: _saveData,
+              activeColor: const Color(0xFFD4AF37),
+              onChanged: (value) => setState(() => _saveData = value),
+            ),
+          ]),
+          _buildSection('اللغة', [
+            ListTile(
+              leading: const Icon(Icons.language, color: Color(0xFFD4AF37)),
+              title: const Text('اللغة', style: TextStyle(color: Colors.white)),
+              subtitle: Text(_language, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 14),
+              onTap: () => _showLanguageDialog(),
+            ),
+          ]),
+          _buildSection('الدعم', [
+            _buildListTile(Icons.help_outline, 'مركز المساعدة'),
+            _buildListTile(Icons.chat_outlined, 'تواصل معنا'),
+            _buildListTile(Icons.info_outline, 'عن التطبيق'),
+          ]),
+          _buildSection('', [
+            ListTile(
+              leading: const Icon(Icons.logout, color: Color(0xFFF6465D)),
+              title: const Text('تسجيل الخروج', style: TextStyle(color: Color(0xFFF6465D))),
+              onTap: () => _showLogoutDialog(),
+            ),
+          ]),
+          const SizedBox(height: 20),
+          const Center(
+            child: Text('Flex Yemen - الإصدار 1.0.0', style: TextStyle(color: Color(0xFF5E6673), fontSize: 12)),
           ),
           const SizedBox(height: 20),
         ],
@@ -60,34 +83,87 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Text(title, style: TextStyle(color: AppTheme.gold, fontWeight: FontWeight.bold, fontSize: 14)),
+  Widget _buildSection(String title, List<Widget> children) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (title.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Text(title, style: const TextStyle(color: Color(0xFFD4AF37), fontSize: 14, fontWeight: FontWeight.bold)),
+          ),
+        ...children,
+        const Divider(color: Color(0xFF2B3139)),
+      ],
     );
   }
 
-  Widget _buildSettingTile(BuildContext context, IconData icon, String title, String subtitle, VoidCallback onTap) {
+  Widget _buildListTile(IconData icon, String title) {
     return ListTile(
-      onTap: onTap,
-      leading: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: AppTheme.gold.withOpacity(0.1), borderRadius: BorderRadius.circular(10)), child: Icon(icon, color: AppTheme.gold, size: 20)),
-      title: Text(title),
-      subtitle: subtitle.isNotEmpty ? Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey[600])) : null,
-      trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+      leading: Icon(icon, color: const Color(0xFFD4AF37)),
+      title: Text(title, style: const TextStyle(color: Colors.white)),
+      trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 14),
+      onTap: () {},
+    );
+  }
+
+  void _showLanguageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E2329),
+        title: const Text('اختر اللغة', style: TextStyle(color: Colors.white)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile(
+              title: const Text('العربية', style: TextStyle(color: Colors.white)),
+              value: 'العربية',
+              groupValue: _language,
+              activeColor: const Color(0xFFD4AF37),
+              onChanged: (value) => setState(() => _language = value.toString()),
+            ),
+            RadioListTile(
+              title: const Text('English', style: TextStyle(color: Colors.white)),
+              value: 'English',
+              groupValue: _language,
+              activeColor: const Color(0xFFD4AF37),
+              onChanged: (value) => setState(() => _language = value.toString()),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('موافق', style: TextStyle(color: Color(0xFFD4AF37))),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E2329),
+        title: const Text('تسجيل الخروج', style: TextStyle(color: Colors.white)),
+        content: const Text('هل أنت متأكد من تسجيل الخروج؟', style: TextStyle(color: Color(0xFF9CA3AF))),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('إلغاء', style: TextStyle(color: Color(0xFF9CA3AF))),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFF6465D)),
+            child: const Text('تسجيل الخروج'),
+          ),
+        ],
+      ),
     );
   }
 }
-
-// إضافة قسم مواقع التواصل الاجتماعي
-
-// أضف هذا في نهاية Column قبل SizedBox الأخير
-// const SocialMediaWidget(),
-
-// إضافة في قائمة الإعدادات
-  void _openThemeSelection(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ThemeSelectionScreen()),
-    );
-  }
-
