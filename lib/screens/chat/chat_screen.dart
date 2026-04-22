@@ -7,48 +7,78 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0B0E11),
       appBar: AppBar(
-        title: const Text('المحادثات'),
+        backgroundColor: const Color(0xFF0B0E11),
+        elevation: 0,
+        title: const Text('الدردشة', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit, color: Color(0xFFD4AF37)),
+            onPressed: () {},
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: AppTheme.gold.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.chat_bubble_outline,
-                size: 60,
-                color: AppTheme.gold,
-              ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: 8,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E2329),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFF2B3139)),
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'لا توجد محادثات',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'متجر ${index + 1}',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${index + 1}:${(index * 7) % 60}',
+                            style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'آخر رسالة في المحادثة...',
+                        style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 13),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            Text(
-              'ابدأ محادثة مع البائعين',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 14,
-                color: AppTheme.getSecondaryTextColor(context),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
-

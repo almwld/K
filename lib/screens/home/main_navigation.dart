@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_drawer.dart';
 import 'home_screen.dart';
 import '../stores/stores_screen.dart';
+import '../chat/chat_screen.dart';
 import '../auctions/auctions_screen.dart';
 import '../cart/cart_screen.dart';
 import '../profile/profile_screen.dart';
@@ -18,14 +20,27 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   bool _isFabMenuOpen = false;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const StoresScreen(),
-    const CartScreen(),
-    const AuctionsScreen(),
-    const ProfileScreen(),
+  // الشاشات بالترتيب
+  final List<Widget> _screens = const [
+    HomeScreen(),        // 0 - الرئيسية
+    StoresScreen(),      // 1 - المتاجر
+    ChatScreen(),        // 2 - الدردشة
+    AuctionsScreen(),    // 3 - المزادات
+    CartScreen(),        // 4 - السلة
+    ProfileScreen(),     // 5 - حسابي
   ];
 
+  // أيقونات الشريط السفلي (بدون الزر الذهبي)
+  final List<Map<String, dynamic>> _navItems = [
+    {'icon': 'assets/icons/svg/nav_home.svg', 'label': 'الرئيسية'},
+    {'icon': 'assets/icons/svg/store.svg', 'label': 'المتاجر'},
+    {'icon': 'assets/icons/svg/nav_chat.svg', 'label': 'الدردشة'},
+    {'icon': 'assets/icons/svg/nav_auctions.svg', 'label': 'المزادات'},
+    {'icon': 'assets/icons/svg/cart.svg', 'label': 'السلة'},
+    {'icon': 'assets/icons/svg/nav_profile.svg', 'label': 'حسابي'},
+  ];
+
+  // قائمة الزر الذهبي
   final List<Map<String, dynamic>> _fabMenuItems = [
     {'icon': Icons.add_circle_outline, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3)},
     {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50)},
@@ -75,12 +90,18 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(0, Icons.home_outlined, 'الرئيسية'),
-                _buildNavItem(1, Icons.store_outlined, 'المتاجر'),
-                const SizedBox(width: 70),
-                _buildNavItem(2, Icons.shopping_cart_outlined, 'السلة'),
-                _buildNavItem(3, Icons.gavel_outlined, 'المزادات'),
-                _buildNavItem(4, Icons.person_outline, 'حسابي'),
+                // أول 3 أيقونات (الرئيسية، المتاجر، الدردشة)
+                _buildNavItem(0),
+                _buildNavItem(1),
+                _buildNavItem(2),
+                
+                // مساحة للزر الذهبي
+                const SizedBox(width: 60),
+                
+                // آخر 3 أيقونات (المزادات، السلة، حسابي)
+                _buildNavItem(3),
+                _buildNavItem(4),
+                _buildNavItem(5),
               ],
             ),
           ),
@@ -91,8 +112,10 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  Widget _buildNavItem(int index) {
     final isSelected = _currentIndex == index;
+    final item = _navItems[index];
+    
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -109,14 +132,18 @@ class _MainNavigationState extends State<MainNavigation> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
-                size: 24,
+              SvgPicture.asset(
+                item['icon'] as String,
+                width: 24,
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                  isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
+                  BlendMode.srcIn,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
-                label,
+                item['label'] as String,
                 style: TextStyle(
                   color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
                   fontSize: 11,
@@ -138,12 +165,12 @@ class _MainNavigationState extends State<MainNavigation> {
         if (_isFabMenuOpen) ...[
           Positioned(
             bottom: 80,
-            right: -20,
+            right: -10,
             child: _buildFabMenuItem(_fabMenuItems[0]),
           ),
           Positioned(
             bottom: 80,
-            left: -20,
+            left: -10,
             child: _buildFabMenuItem(_fabMenuItems[1]),
           ),
           Positioned(
@@ -155,8 +182,8 @@ class _MainNavigationState extends State<MainNavigation> {
           onTap: _toggleFabMenu,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            width: 60,
-            height: 60,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
@@ -173,8 +200,8 @@ class _MainNavigationState extends State<MainNavigation> {
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: _isFabMenuOpen
-                  ? const Icon(Icons.close, color: Colors.black, size: 30, key: ValueKey('close'))
-                  : const Icon(Icons.add, color: Colors.black, size: 30, key: ValueKey('add')),
+                  ? const Icon(Icons.close, color: Colors.black, size: 28, key: ValueKey('close'))
+                  : const Icon(Icons.add, color: Colors.black, size: 28, key: ValueKey('add')),
             ),
           ),
         ),
@@ -194,10 +221,10 @@ class _MainNavigationState extends State<MainNavigation> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: const Color(0xFF1E2329),
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(25),
           border: Border.all(color: item['color'], width: 1.5),
           boxShadow: [
             BoxShadow(
@@ -209,11 +236,11 @@ class _MainNavigationState extends State<MainNavigation> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(item['icon'], color: item['color'], size: 20),
-            const SizedBox(width: 8),
+            Icon(item['icon'], color: item['color'], size: 18),
+            const SizedBox(width: 6),
             Text(
               item['label'],
-              style: TextStyle(color: item['color'], fontWeight: FontWeight.w600),
+              style: TextStyle(color: item['color'], fontWeight: FontWeight.w600, fontSize: 12),
             ),
           ],
         ),
