@@ -1,3 +1,8 @@
+import 'screens/markets_screen.dart';
+import 'screens/nearby_screen.dart';
+import 'screens/recommended_screen.dart';
+import 'screens/explore_screen.dart';
+import 'screens/following_screen.dart';
 import 'screens/wallet/transfer_screen.dart';
 import 'screens/wallet/withdraw_screen.dart';
 import 'screens/wallet/deposit_screen.dart';
@@ -91,6 +96,11 @@ class MyApp extends StatelessWidget {
               '/add_ad': (context) => const AddAdScreen(),
               '/add_product': (context) => const AddProductScreen(),
               '/request_service': (context) => const RequestServiceScreen(),
+      '/following': (context) => const FollowingScreen(),
+      '/explore': (context) => const ExploreScreen(),
+      '/recommended': (context) => const RecommendedScreen(),
+      '/nearby': (context) => const NearbyScreen(),
+      '/markets': (context) => const MarketsScreen(),
       '/deposit': (context) => const DepositScreen(),
       '/withdraw': (context) => const WithdrawScreen(),
       '/transfer': (context) => const TransferScreen(),
