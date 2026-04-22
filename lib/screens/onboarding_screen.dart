@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
-import 'home/main_navigation.dart';
+import '../theme/app_theme.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -16,24 +15,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, dynamic>> _onboardingData = [
+  final List<Map<String, String>> _onboardingData = [
     {
-      'title': 'مرحباً بك في فلكس يمن',
-      'description': 'أول منصة يمنية تجمع بين التجارة الإلكترونية والمحفظة الرقمية',
-      'icon': Icons.shopping_bag,
-      'color': 0xFFD4AF37,
+      'title': 'تسوق بسهولة',
+      'description': 'اكتشف آلاف المنتجات من المتاجر المحلية والعالمية',
+      'icon': '🛍️',
+      'color': '#2196F3',
     },
     {
-      'title': 'تسوق بكل سهولة',
-      'description': 'تصفح آلاف المنتجات من مختلف الفئات وأضفها إلى سلة التسوق',
-      'icon': Icons.search,
-      'color': 0xFF4CAF50,
+      'title': 'ادفع بأمان',
+      'description': 'طرق دفع متعددة وآمنة تناسب جميع احتياجاتك',
+      'icon': '💳',
+      'color': '#4CAF50',
     },
     {
-      'title': 'محفظة رقمية متكاملة',
-      'description': 'حول الأموال، ادفع الفواتير، واشحن الرصيد بسهولة وأمان',
-      'icon': Icons.account_balance_wallet,
-      'color': 0xFF2196F3,
+      'title': 'توصيل سريع',
+      'description': 'نوصل طلباتك إلى باب منزلك في أسرع وقت',
+      'icon': '🚚',
+      'color': '#FF9800',
     },
   ];
 
@@ -45,19 +44,81 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
+      backgroundColor: const Color(0xFF0B0E11),
       body: SafeArea(
         child: Column(
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
+                },
+                child: const Text(
+                  'تخطي',
+                  style: TextStyle(color: Color(0xFFD4AF37), fontSize: 16),
+                ),
+              ),
+            ),
             Expanded(
-              flex: 4,
-              child: PageView(
+              child: PageView.builder(
                 controller: _pageController,
-                onPageChanged: (index) => setState(() => _currentPage = index),
-                children: _onboardingData.map((data) => _buildOnboardingPage(data)).toList(),
+                onPageChanged: (page) => setState(() => _currentPage = page),
+                itemCount: _onboardingData.length,
+                itemBuilder: (context, index) {
+                  final data = _onboardingData[index];
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(int.parse(data['color']!.replaceFirst('#', '0xFF'))),
+                              Color(int.parse(data['color']!.replaceFirst('#', '0xFF'))).withOpacity(0.5),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            data['icon']!,
+                            style: const TextStyle(fontSize: 80),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      Text(
+                        data['title']!,
+                        style: const TextStyle(
+                          fontFamily: 'Changa',
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Text(
+                          data['description']!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'Changa',
+                            fontSize: 16,
+                            color: Color(0xFF9CA3AF),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             SmoothPageIndicator(
@@ -66,106 +127,56 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               effect: WormEffect(
                 dotWidth: 10,
                 dotHeight: 10,
-                activeDotColor: AppTheme.gold,
-                dotColor: Colors.grey[400]!,
+                activeDotColor: const Color(0xFFD4AF37),
+                dotColor: Colors.grey.shade700,
+              ),
+            ),
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFFD4AF37)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      ),
+                      child: const Text('إنشاء حساب', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 16)),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFD4AF37),
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      ),
+                      child: const Text('تسجيل الدخول', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 20),
-            _buildButtons(),
-            const SizedBox(height: 30),
           ],
         ),
       ),
     );
   }
-
-  Widget _buildOnboardingPage(Map<String, dynamic> data) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(data['color']).withOpacity(0.1),
-            ),
-            child: Icon(data['icon'], size: 100, color: Color(data['color'])),
-          ),
-          const SizedBox(height: 40),
-          Text(data['title'], style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-          const SizedBox(height: 20),
-          Text(data['description'], style: TextStyle(fontSize: 16, color: Colors.grey[600], height: 1.5), textAlign: TextAlign.center),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (_currentPage > 0)
-            TextButton(
-              onPressed: () => _pageController.previousPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease,
-              ),
-              child: const Text('السابق'),
-            )
-          else
-            const SizedBox(width: 60),
-          
-          if (_currentPage == _onboardingData.length - 1)
-            ElevatedButton(
-              onPressed: _completeOnboarding,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.gold,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
-              child: const Text('ابدأ الآن', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-            )
-          else
-            ElevatedButton(
-              onPressed: () => _pageController.nextPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease,
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.gold,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
-              child: const Text('التالي', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-            ),
-          
-          if (_currentPage < _onboardingData.length - 1)
-            TextButton(onPressed: _skipOnboarding, child: const Text('تخطي'))
-          else
-            const SizedBox(width: 60),
-        ],
-      ),
-    );
-  }
-
-  void _skipOnboarding() async {
-    await _setOnboardingSeen();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainNavigation()));
-  }
-
-  void _completeOnboarding() async {
-    await _setOnboardingSeen();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainNavigation()));
-  }
-
-  Future<void> _setOnboardingSeen() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_seen', true);
-  }
 }
-

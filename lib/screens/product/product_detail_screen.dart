@@ -3,8 +3,9 @@ import '../../theme/app_theme.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
+  final String? heroTag;
 
-  const ProductDetailScreen({super.key, required this.productId});
+  const ProductDetailScreen({super.key, required this.productId, this.heroTag});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -14,7 +15,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _quantity = 1;
   bool _isFavorite = false;
 
-  // بيانات مؤقتة للمنتج
   final Map<String, dynamic> _product = {
     'name': 'iPhone 15 Pro',
     'price': 350000,
@@ -23,11 +23,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     'rating': 4.8,
     'reviews': 128,
     'store': 'متجر التقنية الحديثة',
-    'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300',
+    'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400',
   };
 
   @override
   Widget build(BuildContext context) {
+    final heroTag = widget.heroTag ?? 'product_${widget.productId}';
+
     return Scaffold(
       backgroundColor: const Color(0xFF0B0E11),
       body: Stack(
@@ -68,10 +70,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    color: const Color(0xFFD4AF37).withOpacity(0.1),
-                    child: Center(
-                      child: Icon(Icons.smartphone, color: const Color(0xFFD4AF37), size: 100),
+                  background: Hero(
+                    tag: heroTag,
+                    child: Container(
+                      color: const Color(0xFFD4AF37).withOpacity(0.1),
+                      child: Image.network(
+                        _product['image'] as String,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Center(
+                          child: Icon(Icons.smartphone, color: const Color(0xFFD4AF37), size: 100),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -165,14 +174,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ),
                                 ],
                               ),
-                            ),
-                            OutlinedButton(
-                              onPressed: () {},
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Color(0xFFD4AF37)),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                              ),
-                              child: const Text('عرض المتجر', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 11)),
                             ),
                           ],
                         ),
