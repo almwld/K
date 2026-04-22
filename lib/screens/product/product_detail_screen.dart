@@ -50,7 +50,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           children: [
                             Container(width: 40, height: 40, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), shape: BoxShape.circle), child: SvgPicture.asset('assets/icons/svg/store.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
                             const SizedBox(width: 12),
-                            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('متجر التقنية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Row(children: [SvgPicture.asset('assets/icons/svg/verified.svg', width: 14), const SizedBox(width: 4), const Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11))])])),
+                            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('متجر التقنية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Row(children: [SvgPicture.asset('assets/icons/svg/verified.svg', width: 14), const SizedBox(width: 4), const Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11))])])),
                             OutlinedButton(onPressed: () {}, style: OutlinedButton.styleFrom(side: const BorderSide(color: Color(0xFFD4AF37))), child: const Text('عرض المتجر', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 11))),
                           ],
                         ),
