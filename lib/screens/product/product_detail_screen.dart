@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../data/mock_data.dart';
+import '../../data/full_data.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
@@ -17,7 +17,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final product = MockData.products.firstWhere((p) => p.id == widget.productId);
+    final product = FullData.getAllProducts().firstWhere((p) => p.id == widget.productId);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0B0E11),
@@ -104,7 +104,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             size: 20,
                           )),
                           const SizedBox(width: 8),
-                          Text('(${product.salesCount}+ تقييم)', style: const TextStyle(color: Color(0xFF9CA3AF))),
+                          Text('(${product.reviews}+ تقييم)', style: const TextStyle(color: Color(0xFF9CA3AF))),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -142,12 +142,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: const Icon(Icons.store, color: Color(0xFFD4AF37)),
                             ),
                             const SizedBox(width: 12),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('متجر التقنية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                  Row(
+                                  Text(product.store, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                  const Row(
                                     children: [
                                       Icon(Icons.verified, color: Color(0xFFD4AF37), size: 14),
                                       SizedBox(width: 4),
@@ -172,7 +172,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       const Text('الوصف', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       const Text(
-                        'هذا المنتج يأتي بمواصفات عالية الجودة ومناسب لجميع الاستخدامات. يتميز بتصميم أنيق وأداء ممتاز.',
+                        'هذا المنتج يأتي بمواصفات عالية الجودة ومناسب لجميع الاستخدامات.',
                         style: TextStyle(color: Color(0xFF9CA3AF), height: 1.6),
                       ),
                       const SizedBox(height: 100),

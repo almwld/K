@@ -7,18 +7,18 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.binanceDark,
+      backgroundColor: const Color(0xFF0B0E11),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
-            backgroundColor: AppTheme.binanceDark,
+            backgroundColor: const Color(0xFF0B0E11),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppTheme.binanceGold.withOpacity(0.3), AppTheme.binanceDark],
+                    colors: [const Color(0xFFD4AF37).withOpacity(0.3), const Color(0xFF0B0E11)],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -31,8 +31,10 @@ class ProfileScreen extends StatelessWidget {
                       height: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppTheme.binanceGold, width: 3),
-                        gradient: AppTheme.goldGradient,
+                        border: Border.all(color: const Color(0xFFD4AF37), width: 3),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)],
+                        ),
                       ),
                       child: const Center(
                         child: Icon(Icons.person, color: Colors.white, size: 60),
@@ -45,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     Text(
                       '@ahmed_flex',
-                      style: TextStyle(color: AppTheme.binanceGold, fontSize: 14),
+                      style: TextStyle(color: const Color(0xFFD4AF37), fontSize: 14),
                     ),
                   ],
                 ),
@@ -53,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.settings_outlined, color: AppTheme.binanceGold),
+                icon: const Icon(Icons.settings_outlined, color: Color(0xFFD4AF37)),
                 onPressed: () {},
               ),
             ],
@@ -68,17 +70,17 @@ class ProfileScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppTheme.binanceCard,
+                      color: const Color(0xFF1E2329),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppTheme.binanceBorder),
+                      border: Border.all(color: const Color(0xFF2B3139)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _buildStatItem('المتابعون', '1,234'),
-                        Container(width: 1, height: 30, color: AppTheme.binanceBorder),
+                        Container(width: 1, height: 30, color: const Color(0xFF2B3139)),
                         _buildStatItem('المتابَعون', '567'),
-                        Container(width: 1, height: 30, color: AppTheme.binanceBorder),
+                        Container(width: 1, height: 30, color: const Color(0xFF2B3139)),
                         _buildStatItem('النقاط', '8,900'),
                       ],
                     ),
@@ -104,11 +106,11 @@ class ProfileScreen extends StatelessWidget {
                     child: OutlinedButton(
                       onPressed: () {},
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppTheme.binanceRed),
+                        side: const BorderSide(color: Color(0xFFF6465D)),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: Text('تسجيل الخروج', style: TextStyle(color: AppTheme.binanceRed, fontWeight: FontWeight.bold)),
+                      child: const Text('تسجيل الخروج', style: TextStyle(color: Color(0xFFF6465D), fontWeight: FontWeight.bold)),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -131,9 +133,9 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(String icon, String title) {
+  Widget _buildMenuItem(IconData icon, String title) {
     return ListTile(
-      leading: Icon(icon, color: AppTheme.binanceGold),
+      leading: Icon(icon, color: const Color(0xFFD4AF37)),
       title: Text(title, style: const TextStyle(color: Colors.white)),
       trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 14),
       onTap: () {},
