@@ -145,3 +145,17 @@ class AppTheme {
     );
   }
 }
+
+  // ألوان إضافية للتوافق
+  static const Color binanceDark = Color(0xFF0B0E11);
+  static const Color binanceCard = Color(0xFF1E2329);
+  static const Color binanceBorder = Color(0xFF2B3139);
+  static const Color binanceGold = Color(0xFFF0B90B);
+  static const Color binanceGreen = Color(0xFF0ECB81);
+  static const Color binanceRed = Color(0xFFF6465D);
+  
+  static const LinearGradient redGradient = LinearGradient(
+    colors: [Color(0xFFF6465D), Color(0xFFE53935)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );

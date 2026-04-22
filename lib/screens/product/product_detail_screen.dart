@@ -13,7 +13,6 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _quantity = 1;
-  int _currentImageIndex = 0;
   bool _isFavorite = false;
 
   @override
@@ -21,7 +20,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final product = MockData.products.firstWhere((p) => p.id == widget.productId);
 
     return Scaffold(
-      backgroundColor: AppTheme.binanceDark,
+      backgroundColor: const Color(0xFF0B0E11),
       body: Stack(
         children: [
           CustomScrollView(
@@ -29,7 +28,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               SliverAppBar(
                 expandedHeight: 350,
                 pinned: true,
-                backgroundColor: AppTheme.binanceDark,
+                backgroundColor: const Color(0xFF0B0E11),
                 leading: GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Container(
@@ -54,16 +53,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       child: Icon(
                         _isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: _isFavorite ? AppTheme.binanceRed : Colors.white,
+                        color: _isFavorite ? const Color(0xFFF6465D) : Colors.white,
                       ),
                     ),
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
-                    color: AppTheme.binanceGold.withOpacity(0.1),
+                    color: const Color(0xFFD4AF37).withOpacity(0.1),
                     child: Center(
-                      child: Icon(Icons.smartphone, color: AppTheme.binanceGold, size: 100),
+                      child: Icon(Icons.smartphone, color: const Color(0xFFD4AF37), size: 100),
                     ),
                   ),
                 ),
@@ -87,7 +86,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                gradient: AppTheme.redGradient,
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFFF6465D), Color(0xFFE53935)],
+                                ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text('-${product.discount}%', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -99,7 +100,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           ...List.generate(5, (index) => Icon(
                             index < product.rating.floor() ? Icons.star : Icons.star_border,
-                            color: AppTheme.binanceGold,
+                            color: const Color(0xFFF0B90B),
                             size: 20,
                           )),
                           const SizedBox(width: 8),
@@ -111,7 +112,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           Text(
                             '${product.price} ريال',
-                            style: const TextStyle(color: AppTheme.binanceGold, fontSize: 28, fontWeight: FontWeight.bold),
+                            style: const TextStyle(color: Color(0xFFF0B90B), fontSize: 28, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(width: 12),
                           if (product.oldPrice != null)
@@ -125,9 +126,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: AppTheme.binanceCard,
+                          color: const Color(0xFF1E2329),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppTheme.binanceBorder),
+                          border: Border.all(color: const Color(0xFF2B3139)),
                         ),
                         child: Row(
                           children: [
@@ -135,10 +136,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: AppTheme.binanceGold.withOpacity(0.1),
+                                color: const Color(0xFFD4AF37).withOpacity(0.1),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.store, color: AppTheme.binanceGold),
+                              child: const Icon(Icons.store, color: Color(0xFFD4AF37)),
                             ),
                             const SizedBox(width: 12),
                             const Expanded(
@@ -148,7 +149,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   Text('متجر التقنية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                   Row(
                                     children: [
-                                      Icon(Icons.verified, color: AppTheme.binanceGold, size: 14),
+                                      Icon(Icons.verified, color: Color(0xFFD4AF37), size: 14),
                                       SizedBox(width: 4),
                                       Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
                                     ],
@@ -159,10 +160,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             OutlinedButton(
                               onPressed: () {},
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: AppTheme.binanceGold),
+                                side: const BorderSide(color: Color(0xFFD4AF37)),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                               ),
-                              child: const Text('عرض المتجر', style: TextStyle(color: AppTheme.binanceGold, fontSize: 11)),
+                              child: const Text('عرض المتجر', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 11)),
                             ),
                           ],
                         ),
@@ -189,23 +190,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.binanceDark,
+                color: const Color(0xFF0B0E11),
                 boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)],
-                border: Border(top: BorderSide(color: AppTheme.binanceBorder)),
+                border: Border(top: BorderSide(color: const Color(0xFF2B3139))),
               ),
               child: SafeArea(
                 child: Row(
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppTheme.binanceBorder),
+                        border: Border.all(color: const Color(0xFF2B3139)),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
                           IconButton(
                             onPressed: _quantity > 1 ? () => setState(() => _quantity--) : null,
-                            icon: const Icon(Icons.remove, color: AppTheme.binanceGold),
+                            icon: const Icon(Icons.remove, color: Color(0xFFD4AF37)),
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -213,7 +214,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                           IconButton(
                             onPressed: () => setState(() => _quantity++),
-                            icon: const Icon(Icons.add, color: AppTheme.binanceGold),
+                            icon: const Icon(Icons.add, color: Color(0xFFD4AF37)),
                           ),
                         ],
                       ),
@@ -227,7 +228,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.binanceGold,
+                          backgroundColor: const Color(0xFFD4AF37),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
