@@ -11,7 +11,6 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int _selectedPayment = 0;
-  String _selectedAddress = 'المنزل';
   String _couponCode = '';
 
   final List<Map<String, dynamic>> _paymentMethods = [
@@ -33,13 +32,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           // عنوان الشحن
-          _buildSection('عنوان الشحن', Icons.location_on, () {}),
+          _buildSection('عنوان الشحن'),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF1E2329),
-              borderRadius: BorderRadius.circular(12),
-            ),
+            decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)),
             child: Row(
               children: [
                 SvgPicture.asset('assets/icons/svg/location.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
@@ -52,24 +48,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           const SizedBox(height: 20),
 
           // المنتجات
-          _buildSection('المنتجات', Icons.shopping_bag, () {}),
+          _buildSection('المنتجات'),
           ...List.generate(2, (index) => Container(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)),
             child: Row(
               children: [
-                Container(width: 50, height: 50, color: const Color(0xFFD4AF37).withOpacity(0.1)),
+                Container(width: 50, height: 50, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: SvgPicture.asset('assets/icons/svg/product.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
                 const SizedBox(width: 12),
-                const Expanded(child: Text('منتج ${1}', style: TextStyle(color: Colors.white))),
-                Text('${100 + index * 50} ريال', style: const TextStyle(color: Color(0xFFD4AF37))),
+                Expanded(child: Text('منتج ${index + 1}', style: const TextStyle(color: Colors.white))),
+                Text('${100 + index * 50} ريال', style: const TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold)),
               ],
             ),
           )),
           const SizedBox(height: 20),
 
           // كوبون خصم
-          _buildSection('كوبون خصم', Icons.discount, () {}),
+          _buildSection('كوبون خصم'),
           Row(
             children: [
               Expanded(
@@ -78,6 +74,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'أدخل الكود',
+                    hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
                     filled: true,
                     fillColor: const Color(0xFF1E2329),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
@@ -86,7 +83,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               const SizedBox(width: 12),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم تطبيق الكوبون')));
+                },
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD4AF37), padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16)),
                 child: const Text('تطبيق', style: TextStyle(color: Colors.black)),
               ),
@@ -95,15 +94,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           const SizedBox(height: 20),
 
           // طريقة الدفع
-          _buildSection('طريقة الدفع', Icons.payment, () {}),
+          _buildSection('طريقة الدفع'),
           ..._paymentMethods.asMap().entries.map((entry) {
-            final index = entry.key;
-            final method = entry.value;
             return RadioListTile(
-              value: index,
+              value: entry.key,
               groupValue: _selectedPayment,
               onChanged: (v) => setState(() => _selectedPayment = v!),
-              title: Text(method['name'], style: const TextStyle(color: Colors.white)),
+              title: Text(entry.value['name'], style: const TextStyle(color: Colors.white)),
               activeColor: const Color(0xFFD4AF37),
             );
           }),
@@ -143,10 +140,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildSection(String title, IconData icon, VoidCallback onTap) {
+  Widget _buildSection(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Row(children: [Icon(icon, color: const Color(0xFFD4AF37), size: 20), const SizedBox(width: 8), Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))]),
+      child: Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
     );
   }
 

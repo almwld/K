@@ -1,5 +1,5 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
 
 class StoreDetailScreen extends StatelessWidget {
@@ -25,11 +25,11 @@ class StoreDetailScreen extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.share, color: Color(0xFFD4AF37)),
+                  icon: SvgPicture.asset('assets/icons/svg/share.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: const Icon(Icons.favorite_border, color: Color(0xFFD4AF37)),
+                  icon: SvgPicture.asset('assets/icons/svg/favorite.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
                   onPressed: () {},
                 ),
               ],
@@ -60,18 +60,15 @@ class StoreDetailScreen extends StatelessWidget {
                               border: Border.all(color: const Color(0xFFD4AF37), width: 3),
                               color: const Color(0xFF1E2329),
                             ),
-                            child: const Icon(Icons.store, color: Color(0xFFD4AF37), size: 40),
+                            child: SvgPicture.asset('assets/icons/svg/store.svg', width: 40, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
                           ),
                           const SizedBox(height: 12),
-                          const Text(
-                            'متجر التقنية الحديثة',
-                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
+                          const Text('متجر التقنية الحديثة', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 4),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.verified, color: Color(0xFFD4AF37), size: 16),
+                              SvgPicture.asset('assets/icons/svg/verified.svg', width: 16),
                               const SizedBox(width: 4),
                               const Text('متجر موثق', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 12)),
                               const SizedBox(width: 16),
@@ -83,14 +80,7 @@ class StoreDetailScreen extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: [
-                                    Container(
-                                      width: 6,
-                                      height: 6,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xFF0ECB81),
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
+                                    Container(width: 6, height: 6, decoration: const BoxDecoration(color: Color(0xFF0ECB81), shape: BoxShape.circle)),
                                     const SizedBox(width: 4),
                                     const Text('مفتوح', style: TextStyle(color: Color(0xFF0ECB81), fontSize: 11)),
                                   ],
@@ -115,7 +105,6 @@ class StoreDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
             SliverFillRemaining(
               child: TabBarView(
                 children: [
@@ -193,7 +182,7 @@ class StoreDetailScreen extends StatelessWidget {
                     color: const Color(0xFFD4AF37).withOpacity(0.1),
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                   ),
-                  child: const Center(child: Icon(Icons.shopping_bag, color: Color(0xFFD4AF37), size: 40)),
+                  child: Center(child: SvgPicture.asset('assets/icons/svg/product.svg', width: 40, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
                 ),
               ),
               Padding(
@@ -201,7 +190,7 @@ class StoreDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('منتج $index', style: TextStyle(color: Colors.white, fontSize: 13)),
+                    Text('منتج ${index + 1}', style: const TextStyle(color: Colors.white, fontSize: 13)),
                     const SizedBox(height: 4),
                     const Text('١٠٠ ريال', style: TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold)),
                   ],
@@ -233,10 +222,10 @@ class StoreDetailScreen extends StatelessWidget {
                 children: [
                   const CircleAvatar(radius: 20, child: Icon(Icons.person, size: 24)),
                   const SizedBox(width: 12),
-                  Text('مستخدم $index', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text('مستخدم ${index + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   const Spacer(),
                   Row(
-                    children: List.generate(5, (i) => Icon(Icons.star, color: i < 4 ? Colors.amber : Colors.grey, size: 16)),
+                    children: List.generate(5, (i) => SvgPicture.asset('assets/icons/svg/star_gold.svg', width: 16, colorFilter: ColorFilter.mode(i < 4 ? Colors.amber : Colors.grey, BlendMode.srcIn))),
                   ),
                 ],
               ),
@@ -255,10 +244,10 @@ class StoreDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow(Icons.location_on, 'العنوان', 'شارع الستين، صنعاء'),
-          _buildInfoRow(Icons.phone, 'الهاتف', '777123456'),
-          _buildInfoRow(Icons.email, 'البريد', 'store@flexyemen.com'),
-          _buildInfoRow(Icons.access_time, 'ساعات العمل', '٩ صباحاً - ١٠ مساءً'),
+          _buildInfoRow('location', 'العنوان', 'شارع الستين، صنعاء'),
+          _buildInfoRow('phone', 'الهاتف', '777123456'),
+          _buildInfoRow('email', 'البريد', 'store@flexyemen.com'),
+          _buildInfoRow('timer', 'ساعات العمل', '٩ صباحاً - ١٠ مساءً'),
           const SizedBox(height: 16),
           const Text('عن المتجر', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
@@ -268,12 +257,12 @@ class StoreDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value) {
+  Widget _buildInfoRow(String icon, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFFD4AF37), size: 20),
+          SvgPicture.asset('assets/icons/svg/$icon.svg', width: 20, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
           const SizedBox(width: 12),
           Text('$label: ', style: const TextStyle(color: Color(0xFF9CA3AF))),
           Text(value, style: const TextStyle(color: Colors.white)),

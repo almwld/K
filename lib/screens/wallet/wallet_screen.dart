@@ -1,5 +1,5 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
 
 class WalletScreen extends StatelessWidget {
@@ -13,6 +13,12 @@ class WalletScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF0B0E11),
         elevation: 0,
         title: const Text('المحفظة', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/svg/qr.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -38,11 +44,11 @@ class WalletScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildActionButton(Icons.add, 'إيداع'),
+                      _buildActionButton('deposit', 'إيداع'),
                       const SizedBox(width: 24),
-                      _buildActionButton(Icons.send, 'تحويل'),
+                      _buildActionButton('transfer', 'تحويل'),
                       const SizedBox(width: 24),
-                      _buildActionButton(Icons.payment, 'دفع'),
+                      _buildActionButton('withdraw', 'سحب'),
                     ],
                   ),
                 ],
@@ -64,16 +70,48 @@ class WalletScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('الحركات الأخيرة', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('عرض الكل', style: TextStyle(color: Color(0xFFD4AF37))),
-                      ),
+                      TextButton(onPressed: () {}, child: const Text('عرض الكل', style: TextStyle(color: Color(0xFFD4AF37)))),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildTransactionItem('شراء منتج', '- 350 ريال', Icons.shopping_cart, const Color(0xFFF6465D)),
-                  _buildTransactionItem('إيداع', '+ 5,000 ريال', Icons.add_circle, const Color(0xFF0ECB81)),
-                  _buildTransactionItem('تحويل', '- 1,000 ريال', Icons.send, const Color(0xFFF6465D)),
+                  _buildTransactionItem('شراء منتج', '- 350 ريال', 'cart', const Color(0xFFF6465D)),
+                  _buildTransactionItem('إيداع', '+ 5,000 ريال', 'deposit', const Color(0xFF0ECB81)),
+                  _buildTransactionItem('تحويل', '- 1,000 ريال', 'transfer', const Color(0xFFF6465D)),
+                  _buildTransactionItem('استرداد', '+ 200 ريال', 'receive', const Color(0xFF0ECB81)),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // خدمات المحفظة
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E2329),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('خدمات المحفظة', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 1.2,
+                    children: [
+                      _buildServiceItem('qr', 'مسح QR'),
+                      _buildServiceItem('send', 'إرسال'),
+                      _buildServiceItem('receive', 'استلام'),
+                      _buildServiceItem('bill', 'فواتير'),
+                      _buildServiceItem('card', 'بطاقات'),
+                      _buildServiceItem('more', 'المزيد'),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -83,7 +121,7 @@ class WalletScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(IconData icon, String label) {
+  Widget _buildActionButton(String icon, String label) {
     return Column(
       children: [
         Container(
@@ -92,7 +130,7 @@ class WalletScreen extends StatelessWidget {
             color: Colors.black.withOpacity(0.2),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: Colors.black, size: 24),
+          child: SvgPicture.asset('assets/icons/svg/$icon.svg', width: 24, colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn)),
         ),
         const SizedBox(height: 4),
         Text(label, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
@@ -100,7 +138,7 @@ class WalletScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionItem(String title, String amount, IconData icon, Color color) {
+  Widget _buildTransactionItem(String title, String amount, String icon, Color color) {
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
@@ -108,10 +146,27 @@ class WalletScreen extends StatelessWidget {
           color: color.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: color, size: 18),
+        child: SvgPicture.asset('assets/icons/svg/$icon.svg', width: 18, colorFilter: ColorFilter.mode(color, BlendMode.srcIn)),
       ),
       title: Text(title, style: const TextStyle(color: Colors.white)),
       trailing: Text(amount, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+    );
+  }
+
+  Widget _buildServiceItem(String icon, String label) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFFD4AF37).withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: SvgPicture.asset('assets/icons/svg/$icon.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
+        ),
+        const SizedBox(height: 6),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 12)),
+      ],
     );
   }
 }
