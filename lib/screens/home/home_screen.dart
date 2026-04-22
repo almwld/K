@@ -63,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // محاكاة تحميل البيانات
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) setState(() => _isLoading = false);
     });
@@ -163,31 +162,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildStatsCard() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [const Color(0xFF1E2329), const Color(0xFF0B0E11)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildStat('المبيعات', '1,234', Icons.trending_up, const Color(0xFF0ECB81)),
-          _buildStat('المنتجات', '156', Icons.shopping_bag, const Color(0xFFD4AF37)),
-          _buildStat('المتابعون', '8.9K', Icons.people, const Color(0xFF2196F3)),
-        ],
-      ),
+      decoration: BoxDecoration(gradient: LinearGradient(colors: [const Color(0xFF1E2329), const Color(0xFF0B0E11)], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.3))),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [_buildStat('المبيعات', '1,234', Icons.trending_up, const Color(0xFF0ECB81)), _buildStat('المنتجات', '156', Icons.shopping_bag, const Color(0xFFD4AF37)), _buildStat('المتابعون', '8.9K', Icons.people, const Color(0xFF2196F3))]),
     );
   }
 
   Widget _buildStat(String label, String value, IconData icon, Color color) {
-    return Column(
-      children: [
-        Icon(icon, color: color, size: 20),
-        const SizedBox(height: 4),
-        Text(value, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-        Text(label, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
-      ],
-    );
+    return Column(children: [Icon(icon, color: color, size: 20), const SizedBox(height: 4), Text(value, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)), Text(label, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11))]);
   }
 
   Widget _buildCarousel() {
@@ -206,10 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Positioned(right: 20, top: 30, child: Text(item['title']!, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold))),
                   Positioned(right: 20, top: 65, child: Text(item['subtitle']!, style: const TextStyle(color: Colors.white70, fontSize: 14))),
-                  Positioned(right: 20, bottom: 20, child: GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OffersScreen())),
-                    child: Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)), child: const Text('تسوق الآن', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
-                  )),
+                  Positioned(right: 20, bottom: 20, child: GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OffersScreen())), child: Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)), child: const Text('تسوق الآن', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))))),
                 ],
               ),
             );
@@ -257,7 +235,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMarkets() {
-    return Column(children: _markets.map((m) => Container(padding: const EdgeInsets.symmetric(vertical: 8), decoration: BoxDecoration(border: Border(bottom: BorderSide(color: const Color(0xFF2B3139).withOpacity(0.5)))), child: Row(children: [Expanded(flex: 3, child: Text(m['name']!, style: const TextStyle(color: Colors.white))), Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: (m['isUp'] as bool) ? const Color(0xFF0ECB81).withOpacity(0.1) : const Color(0xFFF6465D).withOpacity(0.1), borderRadius: BorderRadius.circular(4)), child: Row(children: [Icon((m['isUp'] as bool) ? Icons.trending_up : Icons.trending_down, color: (m['isUp'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), size: 10), const SizedBox(width: 2), Text(m['change']!, style: TextStyle(color: (m['isUp'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), fontSize: 10))])), const SizedBox(width: 12), Text(m['volume']!, style: const TextStyle(color: Color(0xFF9CA3AF)))])).toList()));
+    return Column(
+      children: _markets.map((m) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: const Color(0xFF2B3139).withOpacity(0.5)))),
+          child: Row(
+            children: [
+              Expanded(flex: 3, child: Text(m['name']!, style: const TextStyle(color: Colors.white))),
+              Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: (m['isUp'] as bool) ? const Color(0xFF0ECB81).withOpacity(0.1) : const Color(0xFFF6465D).withOpacity(0.1), borderRadius: BorderRadius.circular(4)), child: Row(children: [Icon((m['isUp'] as bool) ? Icons.trending_up : Icons.trending_down, color: (m['isUp'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), size: 10), const SizedBox(width: 2), Text(m['change']!, style: TextStyle(color: (m['isUp'] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), fontSize: 10))])),
+              const SizedBox(width: 12),
+              Text(m['volume']!, style: const TextStyle(color: Color(0xFF9CA3AF))),
+            ],
+          ),
+        );
+      }).toList(),
+    );
   }
 
   Widget _buildNearby() {

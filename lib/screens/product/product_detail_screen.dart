@@ -43,7 +43,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       const SizedBox(height: 16),
                       Row(children: [const Text('350,000 ريال', style: TextStyle(color: Color(0xFFF0B90B), fontSize: 28, fontWeight: FontWeight.bold)), const SizedBox(width: 12), const Text('450,000 ريال', style: TextStyle(color: Color(0xFF5E6673), decoration: TextDecoration.lineThrough, fontSize: 16))]),
                       const SizedBox(height: 20),
-                      Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: Row(children: [Container(width: 40, height: 40, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), shape: BoxShape.circle), child: SvgPicture.asset('assets/icons/svg/store.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))), const SizedBox(width: 12), const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('متجر التقنية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Row(children: [SvgPicture.asset('assets/icons/svg/verified.svg', width: 14), const SizedBox(width: 4), const Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11))])])), OutlinedButton(onPressed: () {}, style: OutlinedButton.styleFrom(side: const BorderSide(color: Color(0xFFD4AF37))), child: const Text('عرض المتجر', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 11)))])),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          children: [
+                            Container(width: 40, height: 40, decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), shape: BoxShape.circle), child: SvgPicture.asset('assets/icons/svg/store.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
+                            const SizedBox(width: 12),
+                            const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('متجر التقنية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), Row(children: [SvgPicture.asset('assets/icons/svg/verified.svg', width: 14), const SizedBox(width: 4), const Text('بائع موثوق', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 11))])])),
+                            OutlinedButton(onPressed: () {}, style: OutlinedButton.styleFrom(side: const BorderSide(color: Color(0xFFD4AF37))), child: const Text('عرض المتجر', style: TextStyle(color: Color(0xFFD4AF37), fontSize: 11))),
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 20),
                       const Text('الوصف', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
