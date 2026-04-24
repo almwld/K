@@ -1,11 +1,3 @@
-import 'screens/nearby_screen.dart';
-import 'screens/markets_screen.dart';
-import 'screens/following_screen.dart';
-import 'screens/nearby_screen.dart';
-import 'screens/markets_screen.dart';
-import 'screens/wallet/transfer_screen.dart';
-import 'screens/wallet/withdraw_screen.dart';
-import 'screens/wallet/deposit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
@@ -40,6 +32,9 @@ import 'screens/track_order_screen.dart';
 import 'screens/add_ad_screen.dart';
 import 'screens/add_product_screen.dart';
 import 'screens/request_service_screen.dart';
+import 'screens/following_screen.dart';
+import 'screens/markets_screen.dart';
+import 'screens/nearby_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -96,26 +91,9 @@ class MyApp extends StatelessWidget {
               '/add_ad': (context) => const AddAdScreen(),
               '/add_product': (context) => const AddProductScreen(),
               '/request_service': (context) => const RequestServiceScreen(),
-      '/following': (context) => const FollowingScreen(),
-      '/markets': (context) => const MarketsScreen(),
-      '/nearby': (context) => const NearbyScreen(),
-      '/following': (context) => const FollowingScreen(),
-      '/markets': (context) => const MarketsScreen(),
-      '/nearby': (context) => const NearbyScreen(),
-      '/deposit': (context) => const DepositScreen(),
-      '/withdraw': (context) => const WithdrawScreen(),
-      '/transfer': (context) => const TransferScreen(),
-            },
-            onGenerateRoute: (settings) {
-              if (settings.name == '/product') {
-                final productId = settings.arguments as String? ?? '';
-                return MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId));
-              }
-              if (settings.name == '/store_detail') {
-                final storeId = settings.arguments as String? ?? '';
-                return MaterialPageRoute(builder: (_) => StoreDetailScreen(storeId: storeId));
-              }
-              return null;
+              '/following': (context) => const FollowingScreen(),
+              '/markets': (context) => const MarketsScreen(),
+              '/nearby': (context) => const NearbyScreen(),
             },
           );
         },
