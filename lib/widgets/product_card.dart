@@ -1,104 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../theme/app_theme.dart';
 
-class ProductCard extends StatefulWidget {
-  final String id;
-  final String title;
-  final String image;
-  final double price;
-  final bool isAvailable;
-  final VoidCallback onTap;
+class ProductCard extends StatelessWidget {
+  final Map<String, dynamic> product;
+  final VoidCallback? onTap;
+  final VoidCallback? onAddToCart;
 
   const ProductCard({
     super.key,
-    required this.id,
-    required this.title,
-    required this.image,
-    required this.price,
-    required this.isAvailable,
-    required this.onTap,
+    required this.product,
+    this.onTap,
+    this.onAddToCart,
   });
 
   @override
-  State<ProductCard> createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<ProductCard> {
-  double scale = 1.0;
-
-  void _down(_) => setState(() => scale = 0.96);
-  void _up(_) => setState(() => scale = 1.0);
-
-  @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return GestureDetector(
-      onTap: widget.onTap,
-      onTapDown: _down,
-      onTapUp: _up,
-      onTapCancel: () => _up(null),
-      child: AnimatedScale(
-        scale: scale,
-        duration: const Duration(milliseconds: 120),
-        child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(18),
-                ),
-                child: Hero(
-                  tag: widget.id,
-                  child: Image.network(
-                    widget.image,
-                    height: 140,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 140,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.image, size: 50, color: Colors.grey),
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.binanceCard,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.binanceBorder),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    child: CachedNetworkImage(
+                      imageUrl: product['image'] as String,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) => Container(color: AppTheme.binanceCard),
+                      errorWidget: (_, __, ___) => Container(
+                        color: AppTheme.binanceGold.withOpacity(0.1),
+                        child: Center(child: Icon(Icons.image, color: AppTheme.binanceGold, size: 40)),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      "${widget.price.toStringAsFixed(0)} ر.ي",
-                      style: TextStyle(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                  Positioned(
+                    bottom: 8,
+                    left: 8,
+                    child: GestureDetector(
+                      onTap: onAddToCart,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.binanceGold,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [BoxShadow(color: AppTheme.binanceGold.withOpacity(0.4), blurRadius: 8)],
+                        ),
+                        child: const Icon(Icons.add_shopping_cart, color: Colors.black, size: 18),
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      widget.isAvailable ? "متوفر" : "غير متوفر",
-                      style: TextStyle(
-                        color: widget.isAvailable
-                            ? Colors.green
-                            : theme.colorScheme.error,
-                        fontSize: 12,
+                  ),
+                  if (product['discount'] != null)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(color: AppTheme.binanceRed, borderRadius: BorderRadius.circular(4)),
+                        child: Text('-${product['discount']}%', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(product['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text('${product['price']} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 13)),
+                      const Spacer(),
+                      if (product['rating'] != null)
+                        Row(
+                          children: [
+                            const Icon(Icons.star, color: Colors.amber, size: 12),
+                            const SizedBox(width: 2),
+                            Text('${product['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                          ],
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
