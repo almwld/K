@@ -8,9 +8,6 @@ import '../chat/chat_screen.dart';
 import '../auctions/auctions_screen.dart';
 import '../cart/cart_screen.dart';
 import '../profile/profile_screen.dart';
-import '../add_ad_screen.dart';
-import '../add_product_screen.dart';
-import '../request_service_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -21,68 +18,47 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
-  bool _isFabMenuOpen = false;
 
-  // الترتيب المعكوس: حسابي - السلة - المزادات - الدردشة - المتاجر - الرئيسية
   final List<Widget> _screens = const [
-    ProfileScreen(),     // 0 - حسابي
-    CartScreen(),        // 1 - السلة
-    AuctionsScreen(),    // 2 - المزادات
-    ChatScreen(),        // 3 - الدردشة
-    StoresScreen(),      // 4 - المتاجر
-    HomeScreen(),        // 5 - الرئيسية
+    HomeScreen(),
+    StoresScreen(),
+    ChatScreen(),
+    AuctionsScreen(),
+    CartScreen(),
+    ProfileScreen(),
   ];
 
   final List<Map<String, dynamic>> _navItems = [
-    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي'},
-    {'icon': 'assets/icons/svg/cart.svg', 'label': 'السلة'},
-    {'icon': 'assets/icons/svg/auction.svg', 'label': 'المزادات'},
-    {'icon': 'assets/icons/svg/chat.svg', 'label': 'الدردشة'},
-    {'icon': 'assets/icons/svg/store.svg', 'label': 'المتاجر'},
     {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية'},
+    {'icon': 'assets/icons/svg/store.svg', 'label': 'المتاجر'},
+    {'icon': 'assets/icons/svg/chat.svg', 'label': 'الدردشة'},
+    {'icon': 'assets/icons/svg/auction.svg', 'label': 'المزادات'},
+    {'icon': 'assets/icons/svg/cart.svg', 'label': 'السلة'},
+    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي'},
   ];
-
-  final List<Map<String, dynamic>> _fabMenuItems = [
-    {'icon': Icons.campaign_outlined, 'label': 'إضافة إعلان', 'screen': const AddAdScreen(), 'color': const Color(0xFF2196F3)},
-    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'screen': const AddProductScreen(), 'color': const Color(0xFF4CAF50)},
-    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'screen': const RequestServiceScreen(), 'color': const Color(0xFFFF9800)},
-  ];
-
-  void _toggleFabMenu() => setState(() => _isFabMenuOpen = !_isFabMenuOpen);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0B0E11),
       drawer: const AppDrawer(),
-      body: Stack(
-        children: [
-          IndexedStack(index: _currentIndex, children: _screens),
-          if (_isFabMenuOpen) GestureDetector(onTap: _toggleFabMenu, child: Container(color: Colors.black.withOpacity(0.5))),
-        ],
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: const Color(0xFF0B0E11), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, -5))]),
+        height: 60, // 👈 نفس ارتفاع AppBar تقريباً
+        decoration: BoxDecoration(
+          color: const Color(0xFF0B0E11),
+          border: Border(top: BorderSide(color: const Color(0xFF2B3139).withOpacity(0.3))),
+        ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4), // 👈 padding أقل
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(0), // حسابي
-                _buildNavItem(1), // السلة
-                _buildNavItem(2), // المزادات
-                const SizedBox(width: 60), // مساحة للزر الذهبي
-                _buildNavItem(3), // الدردشة
-                _buildNavItem(4), // المتاجر
-                _buildNavItem(5), // الرئيسية
-              ],
+              children: List.generate(_navItems.length, (index) => _buildNavItem(index)),
             ),
           ),
         ),
       ),
-      floatingActionButton: _buildGoldenFAB(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -91,41 +67,40 @@ class _MainNavigationState extends State<MainNavigation> {
     final item = _navItems[index];
     return Expanded(
       child: GestureDetector(
-        onTap: () { if (_isFabMenuOpen) _toggleFabMenu(); setState(() => _currentIndex = index); },
+        onTap: () => setState(() => _currentIndex = index),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          decoration: BoxDecoration(color: isSelected ? const Color(0xFFD4AF37).withOpacity(0.1) : Colors.transparent, borderRadius: BorderRadius.circular(12)),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset(item['icon'] as String, width: 24, height: 24, colorFilter: ColorFilter.mode(isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673), BlendMode.srcIn)), const SizedBox(height: 4), Text(item['label'] as String, style: TextStyle(color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673), fontSize: 11, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal))]),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGoldenFAB() {
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: [
-        if (_isFabMenuOpen) ...[Positioned(bottom: 80, right: -10, child: _buildFabMenuItem(_fabMenuItems[0])), Positioned(bottom: 80, left: -10, child: _buildFabMenuItem(_fabMenuItems[1])), Positioned(bottom: 150, child: _buildFabMenuItem(_fabMenuItems[2]))],
-        GestureDetector(
-          onTap: _toggleFabMenu,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: 56, height: 56,
-            decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFFD4AF37), Color(0xFFAA8C2C)]), shape: BoxShape.circle, boxShadow: [BoxShadow(color: const Color(0xFFD4AF37).withOpacity(0.4), blurRadius: 20, spreadRadius: 3)]),
-            // ✅ استخدام أيقونة + بدلاً من SVG
-            child: AnimatedSwitcher(duration: const Duration(milliseconds: 200), child: _isFabMenuOpen ? const Icon(Icons.close, color: Colors.black, size: 28, key: ValueKey('close')) : const Icon(Icons.add, color: Colors.black, size: 32, key: ValueKey('add'))),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2), // 👈 padding أصغر
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFD4AF37).withOpacity(0.1) : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                item['icon'] as String,
+                width: 20, // 👈 أيقونة أصغر
+                height: 20,
+                colorFilter: ColorFilter.mode(
+                  isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
+                  BlendMode.srcIn,
+                ),
+              ),
+              const SizedBox(height: 2), // 👈 مسافة أقل
+              Text(
+                item['label'] as String,
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFFD4AF37) : const Color(0xFF5E6673),
+                  fontSize: 9, // 👈 خط أصغر
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ],
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildFabMenuItem(Map<String, dynamic> item) {
-    return GestureDetector(
-      onTap: () { _toggleFabMenu(); Navigator.push(context, MaterialPageRoute(builder: (_) => item['screen'] as Widget)); },
-      child: Container(padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(25), border: Border.all(color: item['color'] ?? const Color(0xFFD4AF37), width: 1.5), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)]), child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(item['icon'], size: 18, color: item['color'] ?? const Color(0xFFD4AF37)), const SizedBox(width: 6), Text(item['label'], style: TextStyle(color: item['color'] ?? const Color(0xFFD4AF37), fontWeight: FontWeight.w600, fontSize: 12))])),
+      ),
     );
   }
 }
