@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildEmpty() {
     return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Container(padding: const EdgeInsets.all(30), decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), shape: BoxShape.circle), child: SvgPicture.asset('assets/icons/svg/cart.svg', width: 80, height: 80, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
+      Container(padding: const EdgeInsets.all(30), decoration: BoxDecoration(color: const Color(0xFFD4AF37).withOpacity(0.1), shape: BoxShape.circle), child: SvgPicture.asset('assets/icons/svg/cart.svg', width: 80, height: 80, colorFilter: ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn))),
       const SizedBox(height: 24), const Text('السلة فارغة', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
       const SizedBox(height: 8), const Text('استكشف المنتجات وأضف ما يعجبك', style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14)),
       const SizedBox(height: 24), ElevatedButton(onPressed: () => Navigator.pop(context), style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD4AF37), padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))), child: const Text('تصفح المنتجات', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
@@ -54,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
           Container(padding: const EdgeInsets.symmetric(horizontal: 8), child: Text('${item['quantity']}', style: const TextStyle(color: Colors.white, fontSize: 14))),
           GestureDetector(onTap: () => setState(() => item['quantity']++), child: Container(padding: const EdgeInsets.all(6), child: const Icon(Icons.add, color: Color(0xFFD4AF37), size: 16))),
         ])),
-        GestureDetector(onTap: () => setState(() => _cartItems.removeAt(i)), child: Container(padding: const EdgeInsets.all(8), margin: const EdgeInsets.only(left: 4), child: SvgPicture.asset('assets/icons/svg/delete.svg', width: 20, colorFilter: const ColorFilter.mode(Color(0xFFF6465D), BlendMode.srcIn))),
+        GestureDetector(onTap: () => setState(() => _cartItems.removeAt(i)), child: Container(padding: const EdgeInsets.all(8), margin: const EdgeInsets.only(left: 4), child: SvgPicture.asset('assets/icons/svg/delete.svg', width: 20, colorFilter: ColorFilter.mode(Color(0xFFF6465D), BlendMode.srcIn))),
       ]));
     });
   }
