@@ -23,14 +23,13 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   bool _isFabOpen = false;
 
-  // الترتيب: الرئيسية - المتجر - دردشة - مزادات - سلة - حسابي
   final List<Widget> _screens = const [
-    HomeScreen(),        // 0 - الرئيسية
-    AllAdsScreen(),      // 1 - المتجر
-    ChatScreen(),        // 2 - دردشة
-    AuctionsScreen(),    // 3 - مزادات
-    CartScreen(),        // 4 - سلة
-    ProfileScreen(),     // 5 - حسابي
+    HomeScreen(),
+    AllAdsScreen(),
+    ChatScreen(),
+    AuctionsScreen(),
+    CartScreen(),
+    ProfileScreen(),
   ];
 
   final List<Map<String, dynamic>> _navItems = [
@@ -42,14 +41,23 @@ class _MainNavigationState extends State<MainNavigation> {
     {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي'},
   ];
 
-  // قائمة الزر الذهبي
-  final List<Map<String, dynamic>> _fabItems = [
-    {'icon': Icons.campaign_outlined, 'label': 'إضافة إعلان', 'color': const Color(0xFF2196F3), 'screen': const AddAdScreen()},
-    {'icon': Icons.shopping_bag_outlined, 'label': 'إضافة منتج', 'color': const Color(0xFF4CAF50), 'screen': const AddProductScreen()},
-    {'icon': Icons.handyman_outlined, 'label': 'طلب خدمة', 'color': const Color(0xFFFF9800), 'screen': const RequestServiceScreen()},
-  ];
-
   void _toggleFab() => setState(() => _isFabOpen = !_isFabOpen);
+
+  // دوال منفصلة للتنقل لكل خيار
+  void _openAddAd() {
+    _toggleFab();
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const AddAdScreen()));
+  }
+
+  void _openAddProduct() {
+    _toggleFab();
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const AddProductScreen()));
+  }
+
+  void _openRequestService() {
+    _toggleFab();
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const RequestServiceScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,18 +76,11 @@ class _MainNavigationState extends State<MainNavigation> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(0), // الرئيسية
-                _buildNavItem(1), // المتجر
-                _buildNavItem(2), // دردشة
-                const SizedBox(width: 48), // زر ذهبي في المنتصف
-                _buildNavItem(3), // مزادات
-                _buildNavItem(4), // سلة
-                _buildNavItem(5), // حسابي
-              ],
-            ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              _buildNavItem(0), _buildNavItem(1), _buildNavItem(2),
+              const SizedBox(width: 48),
+              _buildNavItem(3), _buildNavItem(4), _buildNavItem(5),
+            ]),
           ),
         ),
       ),
@@ -108,13 +109,11 @@ class _MainNavigationState extends State<MainNavigation> {
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
-        // القائمة المنبثقة للأعلى
         if (_isFabOpen) ...[
-          Positioned(bottom: 140, child: _buildFabItem(_fabItems[0])),
-          Positioned(bottom: 90, child: _buildFabItem(_fabItems[1])),
-          Positioned(bottom: 40, child: _buildFabItem(_fabItems[2])),
+          Positioned(bottom: 140, child: _buildFabItem(Icons.campaign_outlined, 'إضافة إعلان', const Color(0xFF2196F3), _openAddAd)),
+          Positioned(bottom: 90, child: _buildFabItem(Icons.shopping_bag_outlined, 'إضافة منتج', const Color(0xFF4CAF50), _openAddProduct)),
+          Positioned(bottom: 40, child: _buildFabItem(Icons.handyman_outlined, 'طلب خدمة', const Color(0xFFFF9800), _openRequestService)),
         ],
-        // الزر الذهبي
         GestureDetector(
           onTap: _toggleFab,
           child: Container(
@@ -127,16 +126,13 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  Widget _buildFabItem(Map<String, dynamic> item) {
+  Widget _buildFabItem(IconData icon, String label, Color color, VoidCallback onTap) {
     return GestureDetector(
-      onTap: () {
-        _toggleFab();
-        Navigator.push(context, MaterialPageRoute(builder: (_) => item['screen'] as Widget));
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(25), border: Border.all(color: item['color'] as Color, width: 1.5), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 8)]),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(item['icon'], size: 18, color: item['color']), const SizedBox(width: 8), Text(item['label'] as String, style: TextStyle(color: item['color'] as Color, fontWeight: FontWeight.w600, fontSize: 13))]),
+        decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(25), border: Border.all(color: color, width: 1.5), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 8)]),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(icon, size: 18, color: color), const SizedBox(width: 8), Text(label, style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13))]),
       ),
     );
   }
