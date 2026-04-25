@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       'items': [
         {'icon': Icons.person_outline, 'title': 'الملف الشخصي', 'subtitle': 'تعديل المعلومات الشخصية', 'route': '/profile'},
         {'icon': Icons.lock_outline, 'title': 'الأمان', 'subtitle': 'كلمة المرور، المصادقة', 'route': '/security'},
-        {'icon': Icons.location_on_outline, 'title': 'العناوين', 'subtitle': 'إدارة عناوين الشحن', 'route': '/addresses'},
+        {'icon': Icons.location_on_outlined, 'title': 'العناوين', 'subtitle': 'إدارة عناوين الشحن', 'route': '/addresses'},
       ],
     },
     {
@@ -55,7 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
   final List<Map<String, dynamic>> _currencies = [
     {'code': 'YER', 'name': 'ريال يمني', 'symbol': 'ر.ي'},
-    {'code': 'USD', 'name': 'دولار أمريكي', 'symbol': '$'},
+    {'code': 'USD', 'name': 'دولار أمريكي', 'symbol': 'USD'},
     {'code': 'SAR', 'name': 'ريال سعودي', 'symbol': 'ر.س'},
   ];
 
@@ -105,7 +105,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: AppTheme.cardGradient,
+        gradient: const LinearGradient(colors: [Color(0xFF1E2329), Color(0xFF16213E)]),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppTheme.binanceBorder),
       ),

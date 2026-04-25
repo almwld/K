@@ -1,3 +1,5 @@
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -158,7 +160,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        gradient: AppTheme.cardGradient,
+        gradient: const LinearGradient(colors: [Color(0xFF1E2329), Color(0xFF16213E)]),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: isUrgent ? AppTheme.binanceRed.withOpacity(0.3) : AppTheme.binanceBorder),
       ),

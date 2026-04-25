@@ -1,3 +1,5 @@
+import "package:flutter/material.dart";
+import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
@@ -415,7 +417,7 @@ class _WalletScreenState extends State<WalletScreen> with SingleTickerProviderSt
         decoration: BoxDecoration(
           color: AppTheme.binanceCard,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppTheme.binanceBorder, style: BorderStyle.dashed),
+          border: Border.all(color: AppTheme.binanceBorder, style: BorderStyle.solid),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

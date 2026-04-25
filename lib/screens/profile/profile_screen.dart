@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   final List<Map<String, dynamic>> _stats = [
     {'value': '24', 'label': 'طلبات', 'icon': Icons.shopping_bag_outlined, 'color': AppTheme.binanceGold},
     {'value': '12', 'label': 'متابِع', 'icon': Icons.people_outline, 'color': AppTheme.binanceGreen},
-    {'value': '156', 'label': 'متابَع', 'icon': Icons.person_add_alt_outlined, 'color': AppTheme.serviceBlue},
+    {'value': '156', 'label': 'متابَع', 'icon': Icons.person_add_alt_rounded, 'color': AppTheme.serviceBlue},
     {'value': '4.8', 'label': 'تقييم', 'icon': Icons.star_outline, 'color': Colors.amber},
   ];
 
