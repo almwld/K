@@ -6,29 +6,30 @@ class ConsultationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      {'title': 'استشارة قانونية', 'desc': 'كيف يمكنني تسجيل علامتي التجارية؟', 'city': 'صنعاء', 'replies': 24, 'views': '1.2K', 'hot': true},
-      {'title': 'استشارة تقنية', 'desc': 'أفضل منصة لإنشاء متجر إلكتروني؟', 'city': 'عدن', 'replies': 12, 'views': '567', 'hot': false},
-      {'title': 'استشارة تسويقية', 'desc': 'كيف أزيد مبيعاتي في رمضان؟', 'city': 'تعز', 'replies': 45, 'views': '3.4K', 'hot': true},
+      {'title': 'استشارة قانونية', 'desc': 'كيف يمكنني تسجيل علامتي التجارية؟', 'city': 'صنعاء', 'replies': '24', 'views': '1.2K', 'hot': true},
+      {'title': 'استشارة تقنية', 'desc': 'أفضل منصة لإنشاء متجر إلكتروني؟', 'city': 'عدن', 'replies': '12', 'views': '567', 'hot': false},
+      {'title': 'استشارة تسويقية', 'desc': 'كيف أزيد مبيعاتي في رمضان؟', 'city': 'تعز', 'replies': '45', 'views': '3.4K', 'hot': true},
     ];
     return Scaffold(
       backgroundColor: const Color(0xFF0B0E11),
       appBar: AppBar(title: const Text('الاستشارات', style: TextStyle(color: Colors.white)), backgroundColor: const Color(0xFF0B0E11)),
-      body: Column(children: [
-        Padding(padding: const EdgeInsets.all(16), child: TextField(style: const TextStyle(color: Colors.white), decoration: InputDecoration(hintText: 'ابحث عن استشارة...', hintStyle: const TextStyle(color: Color(0xFF9CA3AF)), prefixIcon: const Icon(Icons.search, color: Color(0xFFD4AF37)), filled: true, fillColor: const Color(0xFF1E2329), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none)))),
-        Expanded(child: ListView.builder(padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: items.length, itemBuilder: (_, i) {
-          final item = items[i];
-          return Container(
-            margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(16)),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(children: [Expanded(child: Text(item['title']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))), if (item['hot'] as bool) Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: const Color(0xFFF6465D).withOpacity(0.2), borderRadius: BorderRadius.circular(4)), child: const Text('🔥 رائجة', style: TextStyle(color: Color(0xFFF6465D), fontSize: 10)))]),
-              const SizedBox(height: 8), Text(item['desc']!, style: const TextStyle(color: Color(0xFF9CA3AF))),
-              const SizedBox(height: 8), Row(children: [Icon(Icons.location_on, color: const Color(0xFFD4AF37), size: 14), const SizedBox(width: 4), Text('📍 ${item['city']}', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11)), const SizedBox(width: 16), const Icon(Icons.chat_bubble, color: Color(0xFFD4AF37), size: 14), const SizedBox(width: 4), Text('💬 ${item['replies']} رد', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11)), const SizedBox(width: 16), const Icon(Icons.visibility, color: Color(0xFFD4AF37), size: 14), const SizedBox(width: 4), Text('👁 ${item['views']} مشاهدة', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11))]),
-            ]),
-          );
-        })),
-        Container(padding: const EdgeInsets.all(16), child: ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.add, color: Colors.black), label: const Text('طرح استشارة جديدة', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD4AF37), padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))))),
-      ]),
+      body: ListView.builder(padding: const EdgeInsets.all(16), itemCount: items.length, itemBuilder: (_, i) {
+        final title = items[i]['title'] as String;
+        final desc = items[i]['desc'] as String;
+        final city = items[i]['city'] as String;
+        final replies = items[i]['replies'] as String;
+        final views = items[i]['views'] as String;
+        final hot = items[i]['hot'] as bool;
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(16)),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(children: [Expanded(child: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))), if (hot) Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: const Color(0xFFF6465D).withOpacity(0.2), borderRadius: BorderRadius.circular(4)), child: const Text('رائجة', style: TextStyle(color: Color(0xFFF6465D), fontSize: 10)))]),
+            const SizedBox(height: 8), Text(desc, style: const TextStyle(color: Color(0xFF9CA3AF))),
+            const SizedBox(height: 8), Row(children: [const Icon(Icons.location_on, color: Color(0xFFD4AF37), size: 14), const SizedBox(width: 4), Text(city, style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11)), const SizedBox(width: 16), const Icon(Icons.chat_bubble, color: Color(0xFFD4AF37), size: 14), const SizedBox(width: 4), Text('$replies رد', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11)), const SizedBox(width: 16), const Icon(Icons.visibility, color: Color(0xFFD4AF37), size: 14), const SizedBox(width: 4), Text('$views مشاهدة', style: const TextStyle(color: Color(0xFF5E6673), fontSize: 11))]),
+          ]),
+        );
+      }),
     );
   }
 }
