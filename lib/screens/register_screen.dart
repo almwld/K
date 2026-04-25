@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
         child: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.binanceGold),
                 ),
               )
             : SingleChildScrollView(
@@ -143,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         child: TabBar(
                           controller: _tabController,
                           indicator: BoxDecoration(
-                            gradient: AppTheme.goldGradient,
+                            gradient: AppTheme.binanceGoldGradient,
                             borderRadius: BorderRadius.circular(40),
                           ),
                           indicatorSize: TabBarIndicatorSize.tab,
@@ -286,7 +286,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                 _agreeToTerms = value ?? false;
                               });
                             },
-                            activeColor: AppTheme.gold,
+                            activeColor: AppTheme.binanceGold,
                           ),
                           Expanded(
                             child: Wrap(
@@ -306,7 +306,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                     'الشروط والأحكام',
                                     style: TextStyle(
                                       fontFamily: 'Changa',
-                                      color: AppTheme.gold,
+                                      color: AppTheme.binanceGold,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -326,7 +326,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                     'سياسة الخصوصية',
                                     style: TextStyle(
                                       fontFamily: 'Changa',
-                                      color: AppTheme.gold,
+                                      color: AppTheme.binanceGold,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -342,7 +342,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       ElevatedButton(
                         onPressed: _handleRegister,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.gold,
+                          backgroundColor: AppTheme.binanceGold,
                           foregroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
@@ -382,7 +382,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                               'تسجيل الدخول',
                               style: TextStyle(
                                 fontFamily: 'Changa',
-                                color: AppTheme.gold,
+                                color: AppTheme.binanceGold,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

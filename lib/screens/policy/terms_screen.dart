@@ -31,7 +31,7 @@ class TermsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.gold.withOpacity(0.1),
+                color: AppTheme.binanceGold.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Text(
@@ -52,7 +52,7 @@ class TermsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.gold)),
+          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.binanceGold)),
           const SizedBox(height: 8),
           Text(content, style: const TextStyle(height: 1.5)),
         ],

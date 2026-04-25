@@ -66,7 +66,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         title: const Text('نسيت كلمة المرور'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: AppTheme.gold,
+        foregroundColor: AppTheme.binanceGold,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -83,12 +83,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppTheme.gold.withOpacity(0.1),
+                        color: AppTheme.binanceGold.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.lock_reset,
-                        color: AppTheme.gold,
+                        color: AppTheme.binanceGold,
                         size: 40,
                       ),
                     ),
@@ -127,7 +127,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     decoration: InputDecoration(
                       labelText: 'رقم الجوال',
                       hintText: 'مثال: 777123456',
-                      prefixIcon: const Icon(Icons.phone, color: AppTheme.gold),
+                      prefixIcon: const Icon(Icons.phone, color: AppTheme.binanceGold),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide.none,
@@ -154,7 +154,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _handleResetPassword,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.gold,
+                      backgroundColor: AppTheme.binanceGold,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -222,14 +222,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      side: BorderSide(color: AppTheme.gold),
+                      side: BorderSide(color: AppTheme.binanceGold),
                     ),
                     child: Text(
                       'العودة لتسجيل الدخول',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.gold,
+                        color: AppTheme.binanceGold,
                       ),
                     ),
                   ),

@@ -144,12 +144,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.gold.withOpacity(0.1),
+                color: AppTheme.binanceGold.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.access_time, color: AppTheme.gold),
+                  const Icon(Icons.access_time, color: AppTheme.binanceGold),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(

@@ -59,7 +59,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.gold.withOpacity(0.1),
+                color: AppTheme.binanceGold.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Text(
@@ -80,7 +80,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.gold)),
+          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.binanceGold)),
           const SizedBox(height: 8),
           Text(content, style: const TextStyle(height: 1.5)),
         ],
@@ -94,12 +94,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.gold)),
+          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.binanceGold)),
           const SizedBox(height: 8),
           ...items.map((item) => Padding(
             padding: const EdgeInsets.only(bottom: 4, right: 16),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('• ', style: TextStyle(fontSize: 16, color: AppTheme.gold)),
+              const Text('• ', style: TextStyle(fontSize: 16, color: AppTheme.binanceGold)),
               Expanded(child: Text(item)),
             ]),
           )),

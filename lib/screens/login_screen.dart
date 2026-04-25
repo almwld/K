@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         child: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.gold),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.binanceGold),
                 ),
               )
             : SingleChildScrollView(
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               fontFamily: 'Changa',
                               fontSize: 42,
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.gold,
+                              color: AppTheme.binanceGold,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               fontFamily: 'Changa',
                               fontSize: 28,
                               fontWeight: FontWeight.w600,
-                              color: AppTheme.goldLight,
+                              color: AppTheme.binanceGoldLight,
                             ),
                           ),
                         ],
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         child: TabBar(
                           controller: _tabController,
                           indicator: BoxDecoration(
-                            gradient: AppTheme.goldGradient,
+                            gradient: AppTheme.binanceGoldGradient,
                             borderRadius: BorderRadius.circular(30),
                           ),
                           indicatorSize: TabBarIndicatorSize.tab,
@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               'نسيت كلمة المرور؟',
                               style: TextStyle(
                                 fontFamily: 'Changa',
-                                color: AppTheme.gold,
+                                color: AppTheme.binanceGold,
                               ),
                             ),
                           ),
@@ -263,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               'الدخول كضيف',
                               style: TextStyle(
                                 fontFamily: 'Changa',
-                                color: AppTheme.gold,
+                                color: AppTheme.binanceGold,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -297,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               'إنشاء حساب جديد',
                               style: TextStyle(
                                 fontFamily: 'Changa',
-                                color: AppTheme.gold,
+                                color: AppTheme.binanceGold,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -365,13 +365,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: (iconColor ?? AppTheme.gold).withOpacity(0.1),
+              color: (iconColor ?? AppTheme.binanceGold).withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
               icon,
               size: 20,
-              color: iconColor ?? AppTheme.gold,
+              color: iconColor ?? AppTheme.binanceGold,
             ),
           ),
           const SizedBox(height: 4),

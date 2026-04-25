@@ -199,7 +199,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                     onPressed: () => _navigateTo(city),
                     icon: const Icon(Icons.navigation),
                     label: const Text('توجيه'),
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -226,7 +226,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
       case 'موقع تراثي': return Colors.purple;
       case 'مدينة دينية': return Colors.teal;
       case 'جزيرة': return Colors.green;
-      default: return AppTheme.gold;
+      default: return AppTheme.binanceGold;
     }
   }
 
@@ -258,7 +258,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('خريطة اليمن'),
-        backgroundColor: AppTheme.gold,
+        backgroundColor: AppTheme.binanceGold,
         foregroundColor: Colors.black,
         actions: [
           // اختيار طبقة الخريطة
@@ -398,7 +398,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                   onPressed: () {
                     _mapController.move(_mapController.camera.center, _mapController.camera.zoom + 1);
                   },
-                  backgroundColor: AppTheme.gold,
+                  backgroundColor: AppTheme.binanceGold,
                   child: const Icon(Icons.add),
                 ),
                 const SizedBox(height: 8),
@@ -408,7 +408,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                   onPressed: () {
                     _mapController.move(_mapController.camera.center, _mapController.camera.zoom - 1);
                   },
-                  backgroundColor: AppTheme.gold,
+                  backgroundColor: AppTheme.binanceGold,
                   child: const Icon(Icons.remove),
                 ),
               ],
@@ -422,7 +422,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
             child: FloatingActionButton(
               heroTag: 'my_location',
               onPressed: _goToCurrentLocation,
-              backgroundColor: AppTheme.gold,
+              backgroundColor: AppTheme.binanceGold,
               child: const Icon(Icons.my_location),
             ),
           ),

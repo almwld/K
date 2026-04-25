@@ -34,7 +34,7 @@ class HelpSupportScreen extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [AppTheme.gold, AppTheme.goldLight],
+                  colors: [AppTheme.binanceGold, AppTheme.binanceGoldLight],
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -82,10 +82,10 @@ class HelpSupportScreen extends StatelessWidget {
                   leading: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.gold.withOpacity(0.1),
+                      color: AppTheme.binanceGold.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(option['icon'] as IconData, color: AppTheme.gold),
+                    child: Icon(option['icon'] as IconData, color: AppTheme.binanceGold),
                   ),
                   title: Text(option['title'] as String),
                   subtitle: Text(option['subtitle'] as String),
