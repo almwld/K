@@ -1,3 +1,8 @@
+import 'screens/create_offer_screen.dart';
+import 'screens/consultation_screen.dart';
+import 'screens/create_store_screen.dart';
+import 'screens/create_product_screen.dart';
+import 'screens/create_ad_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
@@ -91,6 +96,11 @@ class MyApp extends StatelessWidget {
               '/add_ad': (context) => const AddAdScreen(),
               '/add_product': (context) => const AddProductScreen(),
               '/request_service': (context) => const RequestServiceScreen(),
+      '/create_ad': (context) => const CreateAdScreen(),
+      '/create_product': (context) => const CreateProductScreen(),
+      '/create_store': (context) => const CreateStoreScreen(),
+      '/consultations': (context) => const ConsultationScreen(),
+      '/create_offer': (context) => const CreateOfferScreen(),
               '/following': (context) => const FollowingScreen(),
               '/markets': (context) => const MarketsScreen(),
               '/nearby': (context) => const NearbyScreen(),
