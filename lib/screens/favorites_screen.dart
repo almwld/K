@@ -1,100 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../theme/app_theme.dart';
+import '../widgets/product_card.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final favorites = [
-      {'name': 'iPhone 15 Pro', 'price': '350,000', 'store': 'متجر التقنية', 'rating': 4.8},
-      {'name': 'MacBook Pro M3', 'price': '1,800,000', 'store': 'كمبيوتر مول', 'rating': 4.9},
-      {'name': 'ثوب يمني فاخر', 'price': '35,000', 'store': 'الأزياء العصرية', 'rating': 4.6},
-      {'name': 'مندي يمني', 'price': '3,500', 'store': 'مطعم مندي الملكي', 'rating': 4.8},
-    ];
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
 
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  List<Map<String, dynamic>> _favorites = [
+    {'id': '1', 'name': 'iPhone 15 Pro', 'price': '350,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'rating': 4.8, 'discount': 22, 'seller': 'متجر التقنية'},
+    {'id': '2', 'name': 'ساعة أبل الترا', 'price': '45,000', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400', 'rating': 4.8, 'discount': 15, 'seller': 'متجر التقنية'},
+    {'id': '3', 'name': 'سماعات ايربودز', 'price': '35,000', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=400', 'rating': 4.7, 'discount': 22, 'seller': 'عالم الجوالات'},
+  ];
+
+  void _removeFavorite(String id) {
+    setState(() {
+      _favorites.removeWhere((item) => item['id'] == id);
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تمت إزالة المنتج من المفضلة'), backgroundColor: AppTheme.binanceGreen),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0E11),
+      backgroundColor: AppTheme.binanceDark,
       appBar: AppBar(
-        title: const Text('المفضلة', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF0B0E11),
+        backgroundColor: AppTheme.binanceDark,
         elevation: 0,
+        title: const Text('المفضلة', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        centerTitle: true,
         actions: [
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/svg/delete.svg', width: 24, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
-            onPressed: () {},
-          ),
+          if (_favorites.isNotEmpty)
+            TextButton(
+              onPressed: () => setState(() => _favorites.clear()),
+              child: const Text('مسح الكل', style: TextStyle(color: AppTheme.binanceRed)),
+            ),
         ],
       ),
-      body: favorites.isEmpty
+      body: _favorites.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset('assets/icons/svg/favorite.svg', width: 80, height: 80, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
+                  SvgPicture.asset('assets/icons/svg/favorite.svg', width: 80, height: 80, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
                   const SizedBox(height: 16),
-                  const Text('لا توجد منتجات في المفضلة', style: TextStyle(color: Color(0xFF9CA3AF))),
+                  const Text('لا توجد منتجات مفضلة', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  const Text('أضف منتجاتك المفضلة هنا', style: TextStyle(color: Color(0xFF9CA3AF))),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold, padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                    child: const Text('تسوق الآن', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                  ),
                 ],
               ),
             )
-          : ListView.builder(
+          : GridView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: favorites.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              itemCount: _favorites.length,
               itemBuilder: (context, index) {
-                final name = favorites[index]['name'] as String;
-                final price = favorites[index]['price'] as String;
-                final store = favorites[index]['store'] as String;
-                final rating = favorites[index]['rating'] as double;
-                
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E2329),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 60, height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFD4AF37).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: SvgPicture.asset('assets/icons/svg/product.svg', width: 30, colorFilter: const ColorFilter.mode(Color(0xFFD4AF37), BlendMode.srcIn)),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 4),
-                            Text(store, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Text('$price ريال', style: const TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold)),
-                                const SizedBox(width: 12),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset('assets/icons/svg/star_gold.svg', width: 12),
-                                    const SizedBox(width: 4),
-                                    Text('$rating', style: const TextStyle(color: Color(0xFF9CA3AF))),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                final product = _favorites[index];
+                return Stack(
+                  children: [
+                    ProductCard(
+                      product: product,
+                      onTap: () {},
+                      onAddToCart: () {},
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: () => _removeFavorite(product['id'] as String),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(color: Colors.black.withOpacity(0.5), shape: BoxShape.circle),
+                          child: const Icon(Icons.close, color: Colors.white, size: 16),
                         ),
                       ),
-                      IconButton(
-                        icon: SvgPicture.asset('assets/icons/svg/favorite.svg', width: 20, colorFilter: const ColorFilter.mode(Color(0xFFF6465D), BlendMode.srcIn)),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
             ),

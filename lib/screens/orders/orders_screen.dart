@@ -1,4 +1,3 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 
@@ -13,10 +12,9 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
   late TabController _tabController;
 
   final List<Map<String, dynamic>> _orders = [
-    {'id': '#12345', 'status': 'قيد التجهيز', 'date': '2024-01-15', 'total': '350 ريال', 'items': 2, 'color': const Color(0xFFFF9800)},
-    {'id': '#12344', 'status': 'تم الشحن', 'date': '2024-01-14', 'total': '1,200 ريال', 'items': 1, 'color': const Color(0xFF2196F3)},
-    {'id': '#12343', 'status': 'تم التوصيل', 'date': '2024-01-10', 'total': '500 ريال', 'items': 3, 'color': const Color(0xFF0ECB81)},
-    {'id': '#12342', 'status': 'ملغي', 'date': '2024-01-05', 'total': '200 ريال', 'items': 1, 'color': const Color(0xFFF6465D)},
+    {'id': 'ORD-001', 'date': '2024-04-20', 'total': 350000, 'status': 'delivered', 'statusText': 'تم التوصيل', 'items': 2, 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=100'},
+    {'id': 'ORD-002', 'date': '2024-04-18', 'total': 45000, 'status': 'shipped', 'statusText': 'تم الشحن', 'items': 1, 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=100'},
+    {'id': 'ORD-003', 'date': '2024-04-15', 'total': 150000, 'status': 'pending', 'statusText': 'قيد المعالجة', 'items': 3, 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=100'},
   ];
 
   @override
@@ -34,17 +32,17 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0E11),
+      backgroundColor: AppTheme.binanceDark,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0B0E11),
+        backgroundColor: AppTheme.binanceDark,
         elevation: 0,
-        title: const Text('طلباتي', style: TextStyle(color: Colors.white)),
+        title: const Text('طلباتي', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
-          isScrollable: true,
-          labelColor: const Color(0xFFD4AF37),
+          labelColor: AppTheme.binanceGold,
           unselectedLabelColor: const Color(0xFF9CA3AF),
-          indicatorColor: const Color(0xFFD4AF37),
+          indicatorColor: AppTheme.binanceGold,
           tabs: const [
             Tab(text: 'الكل'),
             Tab(text: 'قيد التجهيز'),
@@ -57,9 +55,9 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
         controller: _tabController,
         children: [
           _buildOrdersList(_orders),
-          _buildOrdersList(_orders.where((o) => o['status'] == 'قيد التجهيز').toList()),
-          _buildOrdersList(_orders.where((o) => o['status'] == 'تم الشحن').toList()),
-          _buildOrdersList(_orders.where((o) => o['status'] == 'تم التوصيل').toList()),
+          _buildOrdersList(_orders.where((o) => o['status'] == 'pending').toList()),
+          _buildOrdersList(_orders.where((o) => o['status'] == 'shipped').toList()),
+          _buildOrdersList(_orders.where((o) => o['status'] == 'delivered').toList()),
         ],
       ),
     );
@@ -67,66 +65,112 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
 
   Widget _buildOrdersList(List<Map<String, dynamic>> orders) {
     if (orders.isEmpty) {
-      return const Center(child: Text('لا توجد طلبات', style: TextStyle(color: Color(0xFF9CA3AF))));
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.inbox, size: 80, color: AppTheme.binanceGold.withOpacity(0.3)),
+            const SizedBox(height: 16),
+            const Text('لا توجد طلبات', style: TextStyle(color: Color(0xFF9CA3AF))),
+          ],
+        ),
+      );
     }
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E2329),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
+      itemBuilder: (_, i) => _buildOrderCard(orders[i]),
+    );
+  }
+
+  Widget _buildOrderCard(Map<String, dynamic> order) {
+    Color statusColor;
+    IconData statusIcon;
+    switch (order['status'] as String) {
+      case 'delivered':
+        statusColor = AppTheme.binanceGreen;
+        statusIcon = Icons.check_circle;
+        break;
+      case 'shipped':
+        statusColor = AppTheme.serviceBlue;
+        statusIcon = Icons.local_shipping;
+        break;
+      default:
+        statusColor = AppTheme.serviceOrange;
+        statusIcon = Icons.hourglass_empty;
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppTheme.binanceCard,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.binanceBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Text(order['id'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: (order['color'] as Color).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      order['status'],
-                      style: TextStyle(color: order['color'], fontSize: 12),
-                    ),
-                  ),
-                ],
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(imageUrl: order['image'] as String, width: 50, height: 50, fit: BoxFit.cover),
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(Icons.calendar_today, color: Color(0xFF9CA3AF), size: 14),
-                  const SizedBox(width: 4),
-                  Text(order['date'], style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
-                  const Spacer(),
-                  Text('${order['items']} منتجات', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
-                ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(order['id'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text(order['date'] as String, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                  ],
+                ),
               ),
-              const Divider(color: Color(0xFF2B3139)),
-              Row(
-                children: [
-                  const Text('الإجمالي:', style: TextStyle(color: Color(0xFF9CA3AF))),
-                  const SizedBox(width: 8),
-                  Text(order['total'], style: const TextStyle(color: Color(0xFFD4AF37), fontWeight: FontWeight.bold)),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('تتبع الطلب', style: TextStyle(color: Color(0xFFD4AF37))),
-                  ),
-                ],
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(color: statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+                child: Row(
+                  children: [
+                    Icon(statusIcon, color: statusColor, size: 12),
+                    const SizedBox(width: 4),
+                    Text(order['statusText'] as String, style: TextStyle(color: statusColor, fontSize: 11)),
+                  ],
+                ),
               ),
             ],
           ),
-        );
-      },
+          const Divider(color: AppTheme.binanceBorder),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('${order['items']} منتجات', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              Text('${order['total']} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(side: BorderSide(color: AppTheme.binanceGold), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  child: const Text('تتبع الطلب', style: TextStyle(color: AppTheme.binanceGold)),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  child: const Text('تقييم', style: TextStyle(color: Colors.black)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
