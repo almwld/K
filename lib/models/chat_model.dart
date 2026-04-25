@@ -1,133 +1,68 @@
-class ConversationModel {
+import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
+
+enum ChatType { store, user, group, broadcast, ai }
+
+class ChatModel {
   final String id;
-  final String customerId;
-  final String customerName;
-  final String customerAvatar;
-  final String merchantId;
-  final String merchantName;
-  final String merchantAvatar;
+  final String name;
+  final ChatType type;
   final String lastMessage;
   final DateTime lastMessageTime;
   final int unreadCount;
-  final String? productId;
-  final String? productName;
-  final String? productImage;
+  final bool isPinned;
+  final bool isOnline;
+  final IconData avatar;
+  final Color avatarColor;
+  final bool lastMessageIsMine;
 
-  ConversationModel({
+  ChatModel({
     required this.id,
-    required this.customerId,
-    required this.customerName,
-    required this.customerAvatar,
-    required this.merchantId,
-    required this.merchantName,
-    required this.merchantAvatar,
+    required this.name,
+    required this.type,
     required this.lastMessage,
     required this.lastMessageTime,
-    this.unreadCount = 0,
-    this.productId,
-    this.productName,
-    this.productImage,
+    required this.unreadCount,
+    required this.isPinned,
+    required this.isOnline,
+    required this.avatar,
+    required this.avatarColor,
+    required this.lastMessageIsMine,
   });
 
-  factory ConversationModel.fromJson(Map<String, dynamic> json) {
-    return ConversationModel(
-      id: json['id'] ?? '',
-      customerId: json['customer_id'] ?? '',
-      customerName: json['customer_name'] ?? 'عميل',
-      customerAvatar: json['customer_avatar'] ?? 'https://ui-avatars.com/api/?name=Customer&background=D4AF37&color=fff',
-      merchantId: json['merchant_id'] ?? '',
-      merchantName: json['merchant_name'] ?? 'تاجر',
-      merchantAvatar: json['merchant_avatar'] ?? 'https://ui-avatars.com/api/?name=Merchant&background=2196F3&color=fff',
-      lastMessage: json['last_message'] ?? '',
-      lastMessageTime: json['last_message_time'] != null 
-          ? DateTime.parse(json['last_message_time']) 
-          : DateTime.now(),
-      unreadCount: json['unread_count'] ?? 0,
-      productId: json['product_id'],
-      productName: json['product_name'],
-      productImage: json['product_image'],
-    );
+  String get formattedTime {
+    final now = DateTime.now();
+    final diff = now.difference(lastMessageTime);
+    if (diff.inMinutes < 1) return 'الآن';
+    if (diff.inHours < 1) return 'منذ ${diff.inMinutes} دقيقة';
+    if (diff.inDays < 1) return 'منذ ${diff.inHours} ساعة';
+    if (diff.inDays < 7) return 'منذ ${diff.inDays} يوم';
+    return '${lastMessageTime.day}/${lastMessageTime.month}';
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'customer_id': customerId,
-      'customer_name': customerName,
-      'customer_avatar': customerAvatar,
-      'merchant_id': merchantId,
-      'merchant_name': merchantName,
-      'merchant_avatar': merchantAvatar,
-      'last_message': lastMessage,
-      'last_message_time': lastMessageTime.toIso8601String(),
-      'unread_count': unreadCount,
-      'product_id': productId,
-      'product_name': productName,
-      'product_image': productImage,
-    };
+  String get statusText {
+    if (isOnline && type != ChatType.ai) return 'متصل الآن';
+    if (type == ChatType.ai) return 'مساعد ذكي';
+    if (type == ChatType.broadcast) return 'قناة إعلانية';
+    return '';
+  }
+
+  Color get statusColor {
+    if (isOnline && type != ChatType.ai) return const Color(0xFF0ECB81);
+    if (type == ChatType.ai) return const Color(0xFFF0B90B);
+    if (type == ChatType.broadcast) return const Color(0xFFFF9800);
+    return const Color(0xFF5E6673);
   }
 }
+
+enum MessageStatus { sent, delivered, read }
 
 class MessageModel {
   final String id;
-  final String conversationId;
-  final String senderId;
-  final String senderName;
-  final String senderAvatar;
-  final String content;
-  final DateTime timestamp;
-  final bool isRead;
-  final MessageType type;
-  final String? imageUrl;
+  final String text;
+  final bool isMine;
+  final DateTime time;
+  final MessageStatus status;
 
-  MessageModel({
-    required this.id,
-    required this.conversationId,
-    required this.senderId,
-    required this.senderName,
-    required this.senderAvatar,
-    required this.content,
-    required this.timestamp,
-    this.isRead = false,
-    this.type = MessageType.text,
-    this.imageUrl,
-  });
-
-  factory MessageModel.fromJson(Map<String, dynamic> json) {
-    return MessageModel(
-      id: json['id'] ?? '',
-      conversationId: json['conversation_id'] ?? '',
-      senderId: json['sender_id'] ?? '',
-      senderName: json['sender_name'] ?? '',
-      senderAvatar: json['sender_avatar'] ?? '',
-      content: json['content'] ?? '',
-      timestamp: json['created_at'] != null 
-          ? DateTime.parse(json['created_at']) 
-          : DateTime.now(),
-      isRead: json['is_read'] ?? false,
-      type: MessageType.values.firstWhere(
-        (e) => e.name == json['type'],
-        orElse: () => MessageType.text,
-      ),
-      imageUrl: json['image_url'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'conversation_id': conversationId,
-      'sender_id': senderId,
-      'sender_name': senderName,
-      'sender_avatar': senderAvatar,
-      'content': content,
-      'created_at': timestamp.toIso8601String(),
-      'is_read': isRead,
-      'type': type.name,
-      'image_url': imageUrl,
-    };
-  }
+  MessageModel({required this.id, required this.text, required this.isMine, required this.time, required this.status});
 }
-
-enum MessageType { text, image, product, order }
-
