@@ -174,6 +174,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+  Widget _buildMarkets() {
+    return Column(
+      children: _markets.map((m) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: const Color(0xFF2B3139).withOpacity(0.5)))),
+          child: Row(
+            children: [
+              Expanded(flex: 3, child: Text(m["name"]!, style: const TextStyle(color: Colors.white))),
+              Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: (m["isUp"] as bool) ? const Color(0xFF0ECB81).withOpacity(0.1) : const Color(0xFFF6465D).withOpacity(0.1), borderRadius: BorderRadius.circular(4)), child: Row(children: [Icon((m["isUp"] as bool) ? Icons.trending_up : Icons.trending_down, color: (m["isUp"] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), size: 10), const SizedBox(width: 2), Text(m["change"]!, style: TextStyle(color: (m["isUp"] as bool) ? const Color(0xFF0ECB81) : const Color(0xFFF6465D), fontSize: 10))])),
+              const SizedBox(width: 12),
+              Text(m["volume"]!, style: const TextStyle(color: Color(0xFF9CA3AF))),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildNearby() {
     return GridView.count(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), crossAxisCount: 2, childAspectRatio: 2.5, crossAxisSpacing: 12, mainAxisSpacing: 12, children: _nearby.map((n) => Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: Row(children: [ClipRRect(borderRadius: BorderRadius.circular(8), child: CachedNetworkImage(imageUrl: n['image']!, width: 35, height: 35, fit: BoxFit.cover)), const SizedBox(width: 10), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [Text(n['name']!, style: const TextStyle(color: Colors.white, fontSize: 12)), Row(children: [Text(n['distance']!, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)), const SizedBox(width: 8), const Icon(Icons.star, size: 10, color: Colors.amber), Text('${n['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10))])])),]))).toList());
   }
