@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -116,7 +117,13 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(imageUrl: order['image'] as String, width: 50, height: 50, fit: BoxFit.cover),
+                child: Image.network(
+                  order['image'] as String,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(width: 50, height: 50, color: AppTheme.binanceCard),
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(

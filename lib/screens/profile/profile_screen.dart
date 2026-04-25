@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
-import '../cart/cart_screen.dart';
-import '../orders/orders_screen.dart';
-import '../favorites_screen.dart';
-import '../wallet/wallet_screen.dart';
-import '../settings/settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,7 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     'name': 'أحمد محمد',
     'email': 'ahmed@flexyemen.com',
     'phone': '+967 777 123 456',
-    'avatar': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200',
+    'avatar': 'https://randomuser.me/api/portraits/men/1.jpg',
     'cover': 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=600',
     'joinDate': '2024-01-15',
     'level': 'ذهبي',
@@ -32,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   final List<Map<String, dynamic>> _stats = [
     {'value': '24', 'label': 'طلبات', 'icon': Icons.shopping_bag_outlined, 'color': AppTheme.binanceGold},
     {'value': '12', 'label': 'متابِع', 'icon': Icons.people_outline, 'color': AppTheme.binanceGreen},
-    {'value': '156', 'label': 'متابَع', 'icon': Icons.person_add_outline, 'color': AppTheme.serviceBlue},
+    {'value': '156', 'label': 'متابَع', 'icon': Icons.person_add_alt_outlined, 'color': AppTheme.serviceBlue},
     {'value': '4.8', 'label': 'تقييم', 'icon': Icons.star_outline, 'color': Colors.amber},
   ];
 
@@ -96,11 +92,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         background: Stack(
           fit: StackFit.expand,
           children: [
-            CachedNetworkImage(
-              imageUrl: _user['cover'] as String,
+            Image.network(
+              _user['cover'] as String,
               fit: BoxFit.cover,
-              placeholder: (_, __) => Container(color: AppTheme.binanceCard),
-              errorWidget: (_, __, ___) => Container(color: AppTheme.binanceCard, child: Icon(Icons.cover, color: AppTheme.binanceGold, size: 50)),
+              errorBuilder: (_, __, ___) => Container(color: AppTheme.binanceCard),
             ),
             Container(color: Colors.black.withOpacity(0.3)),
             Positioned(
@@ -118,11 +113,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(45),
-                    child: CachedNetworkImage(
-                      imageUrl: _user['avatar'] as String,
+                    child: Image.network(
+                      _user['avatar'] as String,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) => Container(color: AppTheme.binanceCard),
-                      errorWidget: (_, __, ___) => Container(color: AppTheme.binanceGold.withOpacity(0.2), child: const Icon(Icons.person, color: AppTheme.binanceGold, size: 45)),
+                      errorBuilder: (_, __, ___) => Container(color: AppTheme.binanceGold.withOpacity(0.2), child: const Icon(Icons.person, color: AppTheme.binanceGold, size: 45)),
                     ),
                   ),
                 ),
@@ -190,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         margin: const EdgeInsets.all(16),
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          gradient: AppTheme.cardGradient,
+          gradient: const LinearGradient(colors: [Color(0xFF1E2329), Color(0xFF16213E)]),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppTheme.binanceBorder),
         ),
@@ -342,14 +336,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     child: Text('${item['badge']}', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
                   ),
                 const SizedBox(width: 8),
-                Icon(isLogout ? Icons.logout : Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 16),
+                Icon(isLogout ? Icons.logout : Icons.arrow_forward_ios, color: const Color(0xFF5E6673), size: 16),
               ],
             ),
             onTap: () {
               if (isLogout) {
                 _showLogoutDialog();
               } else {
-                Navigator.pushNamed(context, item['route'] as String);
+                // Navigator.pushNamed(context, item['route'] as String);
               }
             },
           );

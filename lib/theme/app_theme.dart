@@ -159,3 +159,9 @@ class AppTheme {
     end: Alignment.bottomRight,
   );
 }
+
+  // إضافة serviceBlue, serviceOrange المفقودة
+  static const Color serviceBlue = Color(0xFF2196F3);
+  static const Color serviceGreen = Color(0xFF4CAF50);
+  static const Color serviceOrange = Color(0xFFFF9800);
+  static const Color binanceServiceBlue = Color(0xFF2196F3);
