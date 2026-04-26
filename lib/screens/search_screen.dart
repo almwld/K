@@ -49,7 +49,10 @@ class _SearchScreenState extends State<SearchScreen> {
         title: const Text('البحث', style: TextStyle(color: Colors.white)),
         backgroundColor: AppTheme.binanceDark,
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.arrow_back, color: AppTheme.binanceGold), onPressed: () => Navigator.pop(context)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppTheme.binanceGold),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Column(
         children: [
@@ -66,11 +69,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 hintStyle: const TextStyle(color: Color(0xFF5E6673)),
                 prefixIcon: const Icon(Icons.search, color: AppTheme.binanceGold),
                 suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(icon: const Icon(Icons.clear, color: Color(0xFF5E6673)), onPressed: () { _searchController.clear(); _performSearch(''); })
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, color: Color(0xFF5E6673)),
+                        onPressed: () {
+                          _searchController.clear();
+                          _performSearch('');
+                        },
+                      )
                     : null,
                 filled: true,
                 fillColor: AppTheme.binanceCard,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
           ),
@@ -95,31 +107,43 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 const Text('عمليات البحث الأخيرة', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 if (_recentSearches.isNotEmpty)
-                  TextButton(onPressed: _clearRecent, child: const Text('مسح الكل', style: TextStyle(color: AppTheme.binanceRed))),
+                  TextButton(
+                    onPressed: _clearRecent,
+                    child: const Text('مسح الكل', style: TextStyle(color: AppTheme.binanceRed)),
+                  ),
               ],
             ),
           ),
           const SizedBox(height: 8),
-          Wrap(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            spacing: 8,
-            runSpacing: 8,
-            children: _recentSearches.map((search) => GestureDetector(
-              onTap: () {
-                _searchController.text = search;
-                _performSearch(search);
-                _addToRecent(search);
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(20), border: Border.all(color: AppTheme.binanceBorder)),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.history, size: 14, color: AppTheme.binanceGold),
-                  const SizedBox(width: 6),
-                  Text(search, style: const TextStyle(color: Colors.white, fontSize: 12)),
-                ]),
-              ),
-            )).toList(),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: _recentSearches.map((search) => GestureDetector(
+                onTap: () {
+                  _searchController.text = search;
+                  _performSearch(search);
+                  _addToRecent(search);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppTheme.binanceCard,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppTheme.binanceBorder),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.history, size: 14, color: AppTheme.binanceGold),
+                      const SizedBox(width: 6),
+                      Text(search, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                ),
+              )).toList(),
+            ),
           ),
         ],
       ),
@@ -130,11 +154,14 @@ class _SearchScreenState extends State<SearchScreen> {
     if (_searchResults.isEmpty) {
       return Expanded(
         child: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Icon(Icons.search_off, size: 64, color: AppTheme.binanceGold.withOpacity(0.3)),
-            const SizedBox(height: 16),
-            const Text('لا توجد نتائج', style: TextStyle(color: Color(0xFF9CA3AF))),
-          ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.search_off, size: 64, color: AppTheme.binanceGold.withOpacity(0.3)),
+              const SizedBox(height: 16),
+              const Text('لا توجد نتائج', style: TextStyle(color: Color(0xFF9CA3AF))),
+            ],
+          ),
         ),
       );
     }
@@ -146,18 +173,47 @@ class _SearchScreenState extends State<SearchScreen> {
         itemBuilder: (context, index) => Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+            color: AppTheme.binanceCard,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Row(
             children: [
-              ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(_searchResults[index]['image'], width: 60, height: 60, fit: BoxFit.cover)),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  _searchResults[index]['image'],
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: 60,
+                    height: 60,
+                    color: AppTheme.binanceGold.withOpacity(0.1),
+                    child: const Icon(Icons.image, color: AppTheme.binanceGold),
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(_searchResults[index]['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  Text(_searchResults[index]['category'], style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
-                  Text('${_searchResults[index]['price']} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold)),
-                ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _searchResults[index]['name'],
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _searchResults[index]['category'],
+                      style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
+                    ),
+                    Text(
+                      '${_searchResults[index]['price']} ريال',
+                      style: const TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
               const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 16),
             ],
