@@ -395,3 +395,197 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 }
+
+  // ==================== قسم المولات والمعارض ====================
+  Widget _buildMallsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final malls = FullMarketData.malls;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('المولات والمعارض', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 180,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: malls.length,
+            itemBuilder: (context, index) {
+              final mall = malls[index];
+              return Container(
+                width: 280,
+                margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                      child: CachedNetworkImage(
+                        imageUrl: mall['image'],
+                        height: 100,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => Container(color: AppTheme.binanceCard),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            mall['name'],
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on, size: 12, color: AppTheme.binanceGold),
+                              const SizedBox(width: 4),
+                              Text(mall['city'], style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                              const SizedBox(width: 12),
+                              const Icon(Icons.store, size: 12, color: AppTheme.binanceGold),
+                              const SizedBox(width: 4),
+                              Text('${mall['stores']} متجر', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                              const SizedBox(width: 12),
+                              const Icon(Icons.star, size: 12, color: Colors.amber),
+                              const SizedBox(width: 4),
+                              Text('${mall['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== جدول المنتجات الشبكي (29 منتج) ====================
+  Widget _buildProductsGrid() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final products = FullMarketData.products;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('أفضل المنتجات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.7,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/product/${product['id']}'),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                            child: CachedNetworkImage(
+                              imageUrl: product['image'],
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              placeholder: (_, __) => Container(color: AppTheme.binanceCard),
+                            ),
+                          ),
+                          if (product['oldPrice'] != null)
+                            Positioned(
+                              top: 8,
+                              left: 8,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(color: AppTheme.binanceRed, borderRadius: BorderRadius.circular(4)),
+                                child: Text(
+                                  '${((double.parse(product['price'].replaceAll(',', '')) / double.parse(product['oldPrice'].replaceAll(',', '')) * 100).toStringAsFixed(0)}%',
+                                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product['name'],
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Text(
+                                product['price'],
+                                style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              if (product['oldPrice'] != null) ...[
+                                const SizedBox(width: 4),
+                                Text(
+                                  product['oldPrice'],
+                                  style: const TextStyle(color: Color(0xFF5E6673), decoration: TextDecoration.lineThrough, fontSize: 10),
+                                ),
+                              ],
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, size: 10, color: Colors.amber),
+                              const SizedBox(width: 2),
+                              Text('${product['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)),
+                              const Spacer(),
+                              Text('${product['sales']}', style: TextStyle(color: AppTheme.binanceGold, fontSize: 10)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
