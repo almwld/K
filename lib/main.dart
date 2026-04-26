@@ -8,12 +8,18 @@ import 'screens/wallet/wallet_screen.dart';
 import 'screens/cart/cart_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/profile/profile_screen.dart';
+import 'screens/chat/chat_screen.dart';
+import 'screens/ai_assistant_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/offers_screen.dart';
 import 'screens/favorites_screen.dart';
 import 'screens/orders/orders_screen.dart';
-import 'screens/product/product_detail_screen.dart';
+import 'screens/addresses_screen.dart';
+import 'screens/help_support_screen.dart';
+import 'screens/markets_screen.dart';
+import 'screens/nearby_screen.dart';
+import 'screens/categories/all_categories_screen.dart';
 
 void main() {
   runApp(const FlexYemenApp());
@@ -40,18 +46,18 @@ class FlexYemenApp extends StatelessWidget {
         '/cart': (context) => const CartScreen(),
         '/settings': (context) => const SettingsScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/chat': (context) => const ChatScreen(),
+        '/ai_assistant': (context) => const AIAssistantScreen(),
         '/search': (context) => const SearchScreen(),
         '/notifications': (context) => const NotificationsScreen(),
         '/offers': (context) => const OffersScreen(),
         '/favorites': (context) => const FavoritesScreen(),
         '/orders': (context) => const OrdersScreen(),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name?.startsWith('/product/') == true) {
-          final productId = settings.name!.split('/').last;
-          return MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId));
-        }
-        return null;
+        '/addresses': (context) => const AddressesScreen(),
+        '/help': (context) => const HelpSupportScreen(),
+        '/markets': (context) => const MarketsScreen(),
+        '/nearby': (context) => const NearbyScreen(),
+        '/categories': (context) => const AllCategoriesScreen(),
       },
     );
   }

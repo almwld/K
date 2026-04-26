@@ -1,105 +1,164 @@
 import 'package:flutter/material.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import '../theme/app_theme.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
 
-  final List<Map<String, dynamic>> _supportOptions = const [
-    {'icon': Icons.chat_bubble_outline, 'title': 'الدردشة المباشرة', 'subtitle': 'تحدث مع فريق الدعم', 'route': '/live_support'},
-    {'icon': Icons.smart_toy, 'title': 'الدعم الذكي', 'subtitle': 'بوت ذكي يجيب على أسئلتك', 'route': '/smart_support'},
-    {'icon': Icons.bolt, 'title': 'AI مساعد ذكي', 'subtitle': 'اسأل عن المنتجات والخدمات', 'route': '/ai_chat'},
-    {'icon': Icons.email_outlined, 'title': 'البريد الإلكتروني', 'subtitle': 'support@flexyemen.com', 'route': null},
-    {'icon': Icons.phone_outlined, 'title': 'الهاتف', 'subtitle': '777-123-456', 'route': null},
-    {'icon': Icons.help_outline, 'title': 'الأسئلة الشائعة', 'subtitle': 'إجابات على أسئلتك', 'route': '/faq'},
-    {'icon': Icons.confirmation_number_outlined, 'title': 'تذاكر الدعم', 'subtitle': 'تتبع طلباتك', 'route': '/support_tickets'},
-    {'icon': Icons.report_problem_outlined, 'title': 'الإبلاغ عن مشكلة', 'subtitle': 'أبلغ عن مشكلة', 'route': '/report_problem'},
+  final List<Map<String, dynamic>> _faqs = const [
+    {'question': 'كيف يمكنني تتبع طلبي؟', 'answer': 'يمكنك تتبع طلبك من قسم "طلباتي" في الملف الشخصي، ستجد جميع تفاصيل الطلب وحالة الشحن.'},
+    {'question': 'ما هي طرق الدفع المتاحة؟', 'answer': 'نقبل الدفع عند الاستلام، البطاقات الائتمانية، والمحافظ الإلكترونية (كاش، جوالي، جيب).'},
+    {'question': 'كم تستغرق عملية التوصيل؟', 'answer': 'خدمة التوصيل تغطي جميع محافظات اليمن خلال 24-48 ساعة، والتوصيل مجاني للطلبات فوق 200,000 ريال.'},
+    {'question': 'كيف يمكنني إرجاع منتج؟', 'answer': 'يمكنك إرجاع المنتج خلال 14 يوم من الاستلام مع الحفاظ على العبوة الأصلية.'},
+    {'question': 'كيف يمكنني التواصل مع البائع؟', 'answer': 'يمكنك التواصل مع البائع من خلال زر "تواصل" في صفحة تفاصيل المنتج أو من شاشة الدردشة.'),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'المساعدة والدعم'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: AppTheme.binanceDark,
+      appBar: AppBar(
+        title: const Text('مركز المساعدة', style: TextStyle(color: Colors.white)),
+        backgroundColor: AppTheme.binanceDark,
+        centerTitle: true,
+      ),
+      body: DefaultTabController(
+        length: 2,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppTheme.binanceGold, AppTheme.binanceGoldLight],
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
+            TabBar(
+              tabs: const [
+                Tab(text: 'الأسئلة الشائعة'),
+                Tab(text: 'تواصل معنا'),
+              ],
+              labelColor: AppTheme.binanceGold,
+              unselectedLabelColor: const Color(0xFF9CA3AF),
+              indicatorColor: AppTheme.binanceGold,
+            ),
+            Expanded(
+              child: TabBarView(
                 children: [
-                  const Icon(Icons.support_agent, size: 64, color: Colors.black),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'كيف يمكننا مساعدتك؟',
-                    style: TextStyle(
-                      fontFamily: 'Changa',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'فريق الدعم متواجد على مدار الساعة',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                  ),
+                  _buildFaqsList(),
+                  _buildContactForm(),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'خيارات الدعم',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ..._supportOptions.map((option) {
-              return Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ListTile(
-                  leading: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppTheme.binanceGold.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(option['icon'] as IconData, color: AppTheme.binanceGold),
-                  ),
-                  title: Text(option['title'] as String),
-                  subtitle: Text(option['subtitle'] as String),
-                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: option['route'] != null
-                      ? () => Navigator.pushNamed(context, option['route'] as String)
-                      : null,
-                ),
-              );
-            }),
           ],
         ),
       ),
     );
   }
-}
 
+  Widget _buildFaqsList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _faqs.length,
+      itemBuilder: (context, index) => ExpansionTile(
+        backgroundColor: AppTheme.binanceCard,
+        collapsedBackgroundColor: AppTheme.binanceCard,
+        title: Text(
+          _faqs[index]['question'] as String,
+          style: const TextStyle(color: Colors.white),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              _faqs[index]['answer'] as String,
+              style: const TextStyle(color: Color(0xFF9CA3AF)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactForm() {
+    final messageController = TextEditingController();
+    
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const CircleAvatar(
+            radius: 40,
+            backgroundColor: Color(0xFF1E2329),
+            child: Icon(Icons.support_agent, size: 40, color: AppTheme.binanceGold),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'فريق الدعم',
+            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'نحن هنا لمساعدتك 24/7',
+            style: TextStyle(color: Color(0xFF9CA3AF)),
+          ),
+          const SizedBox(height: 20),
+          TextField(
+            controller: messageController,
+            maxLines: 5,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: 'اكتب رسالتك هنا...',
+              hintStyle: const TextStyle(color: Color(0xFF5E6673)),
+              filled: true,
+              fillColor: AppTheme.binanceCard,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('تم إرسال رسالتك، سنرد عليك قريباً'), backgroundColor: AppTheme.binanceGreen),
+                );
+                messageController.clear();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.binanceGold,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text('إرسال', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildContactIcon(Icons.phone, 'اتصال', () {}),
+              _buildContactIcon(Icons.chat, 'واتساب', () {}),
+              _buildContactIcon(Icons.email, 'بريد', () {}),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactIcon(IconData icon, String label, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppTheme.binanceCard,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: AppTheme.binanceGold, size: 24),
+          ),
+          const SizedBox(height: 8),
+          Text(label, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+        ],
+      ),
+    );
+  }
+}
