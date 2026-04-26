@@ -1,205 +1,219 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
-class AIAssistantScreen extends StatelessWidget {
+class AIAssistantScreen extends StatefulWidget {
   const AIAssistantScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primaryColor = AppTheme.gold;
+  State<AIAssistantScreen> createState() => _AIAssistantScreenState();
+}
 
+class _AIAssistantScreenState extends State<AIAssistantScreen> {
+  final TextEditingController _controller = TextEditingController();
+  final List<Map<String, String>> _messages = [];
+  bool _isLoading = false;
+
+  final List<String> _suggestions = [
+    'ما هي المنتجات المتوفرة؟',
+    'كيف أتابع طلبي؟',
+    'طرق الدفع المتاحة',
+    'خدمة التوصيل',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _messages.add({
+      'role': 'assistant',
+      'content': 'مرحباً! 👋\nأنا مساعد فلكس الذكي. كيف يمكنني مساعدتك اليوم؟'
+    });
+  }
+
+  void _sendMessage(String message) async {
+    if (message.trim().isEmpty) return;
+
+    setState(() {
+      _messages.add({'role': 'user', 'content': message});
+      _isLoading = true;
+    });
+    _controller.clear();
+
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    String response = _getResponse(message);
+    
+    setState(() {
+      _messages.add({'role': 'assistant', 'content': response});
+      _isLoading = false;
+    });
+  }
+
+  String _getResponse(String message) {
+    final lowerMsg = message.toLowerCase();
+    if (lowerMsg.contains('مرحب') || lowerMsg.contains('السلام')) {
+      return 'وعليكم السلام! 👋\nأهلاً بك في فلكس يمن. كيف可以帮助ك؟';
+    }
+    if (lowerMsg.contains('منتج') || lowerMsg.contains('متجر')) {
+      return '🛍️ يمكنك تصفح المنتجات من الصفحة الرئيسية أو من قسم "المتاجر". هل تبحث عن شيء محدد؟';
+    }
+    if (lowerMsg.contains('طلب') || lowerMsg.contains('تتبع')) {
+      return '📦 يمكنك تتبع طلباتك من قسم "طلباتي" في الملف الشخصي.';
+    }
+    if (lowerMsg.contains('دفع') || lowerMsg.contains('سلة')) {
+      return '💳 طرق الدفع المتاحة:\n• الدفع عند الاستلام\n• بطاقات الائتمان\n• المحافظ الإلكترونية (كاش، جوالي، جيب)';
+    }
+    if (lowerMsg.contains('توصيل') || lowerMsg.contains('شحن')) {
+      return '🚚 خدمة التوصيل تغطي جميع محافظات اليمن خلال 24-48 ساعة. للطلبات فوق 200,000 ريال التوصيل مجاني!';
+    }
+    if (lowerMsg.contains('في آي بي') || lowerMsg.contains('vip')) {
+      return '👑 برنامج VIP يمنحك خصم 25% إضافي وشحن مجاني! سجل الآن من ملفك الشخصي.';
+    }
+    return 'شكراً لسؤالك! 😊\nيمكنك مراسلة الدعم الفني على الرقم 777123456 للمساعدة الفورية.';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.binanceDark,
       appBar: AppBar(
-        title: const Text('المساعد الذكي'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(16),
+              width: 32,
+              height: 32,
               decoration: BoxDecoration(
-                color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: primaryColor.withOpacity(0.3)),
+                gradient: AppTheme.goldGradient,
+                shape: BoxShape.circle,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
+              child: const Center(
+                child: Icon(Icons.smart_toy, color: Colors.black, size: 18),
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Text('مساعد فلكس الذكي', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        backgroundColor: AppTheme.binanceDark,
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: AppTheme.binanceGold),
+            onPressed: () {
+              setState(() {
+                _messages.clear();
+                _messages.add({
+                  'role': 'assistant',
+                  'content': 'مرحباً! 👋\nأنا مساعد فلكس الذكي. كيف يمكنني مساعدتك اليوم؟'
+                });
+              });
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _suggestions.length,
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () => _sendMessage(_suggestions[index]),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.binanceCard,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppTheme.binanceBorder),
+                  ),
+                  child: Text(
+                    _suggestions[index],
+                    style: const TextStyle(color: AppTheme.binanceGold, fontSize: 12),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              reverse: true,
+              padding: const EdgeInsets.all(16),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final msg = _messages[_messages.length - 1 - index];
+                final isUser = msg['role'] == 'user';
+                return Align(
+                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.75,
+                    ),
                     decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
+                      gradient: isUser ? AppTheme.goldGradient : null,
+                      color: isUser ? null : AppTheme.binanceCard,
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Icon(Icons.smart_toy, color: primaryColor, size: 28),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
                     child: Text(
-                      'مرحباً! أنا مساعد Flex الذكي. كيف يمكنني مساعدتك اليوم؟',
-                      style: TextStyle(
-                        fontFamily: 'Changa',
-                        fontSize: 14,
-                      ),
+                      msg['content']!,
+                      style: TextStyle(color: isUser ? Colors.black : Colors.white),
                     ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-            const SizedBox(height: 24),
-            Text(
-              'اقتراحات للأسئلة',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getPrimaryTextColor(context),
-              ),
+          ),
+          if (_isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8),
+              child: CircularProgressIndicator(color: AppTheme.binanceGold),
             ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                _buildSuggestionChip(context, 'كيف أضيف إعلان؟', primaryColor),
-                _buildSuggestionChip(context, 'طرق الدفع المتاحة', primaryColor),
-                _buildSuggestionChip(context, 'كيف أتواصل مع البائع؟', primaryColor),
-                _buildSuggestionChip(context, 'سياسة الإرجاع', primaryColor),
-                _buildSuggestionChip(context, 'خدمة التوصيل', primaryColor),
-                _buildSuggestionChip(context, 'المزادات', primaryColor),
-              ],
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.binanceCard,
+              border: Border(top: BorderSide(color: AppTheme.binanceBorder)),
             ),
-            const SizedBox(height: 24),
-            Text(
-              'المحادثات الأخيرة',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getPrimaryTextColor(context),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildChatItem(context, 'كيف أبيع منتج؟', 'منذ ساعتين', primaryColor),
-                  _buildChatItem(context, 'رسوم المنصة', 'أمس', primaryColor),
-                  _buildChatItem(context, 'تفعيل المحفظة', 'منذ 3 أيام', primaryColor),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
+            child: Row(
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _controller,
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: 'اكتب سؤالك هنا...',
-                      hintStyle: const TextStyle(fontFamily: 'Changa'),
+                      hintStyle: const TextStyle(color: Color(0xFF5E6673)),
                       filled: true,
-                      fillColor: isDark ? AppTheme.nightCard : AppTheme.lightCard,
+                      fillColor: AppTheme.binanceDark,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(24),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                     ),
+                    onSubmitted: (_) => _sendMessage(_controller.text),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: AppTheme.goldGradient,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.black),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('سيتم الرد عليك قريباً'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    },
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () => _sendMessage(_controller.text),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      gradient: AppTheme.goldGradient,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.send, color: Colors.black),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSuggestionChip(BuildContext context, String label, Color primaryColor) {
-    return GestureDetector(
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('سؤال: $label'),
-            duration: const Duration(seconds: 1),
           ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppTheme.nightCard
-              : AppTheme.lightCard,
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: primaryColor.withOpacity(0.3)),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'Changa',
-            fontSize: 13,
-            color: AppTheme.getTextColor(context),
-          ),
-        ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildChatItem(BuildContext context, String question, String time, Color primaryColor) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: primaryColor.withOpacity(0.1),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.chat_bubble_outline, color: primaryColor, size: 20),
-      ),
-      title: Text(
-        question,
-        style: const TextStyle(
-          fontFamily: 'Changa',
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      subtitle: Text(
-        time,
-        style: TextStyle(
-          fontFamily: 'Changa',
-          fontSize: 12,
-          color: Colors.grey[500],
-        ),
-      ),
-      trailing: const Icon(Icons.chevron_right, size: 20),
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('جاري فتح المحادثة...')),
-        );
-      },
     );
   }
 }
-
