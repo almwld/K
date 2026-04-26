@@ -275,7 +275,7 @@ class _StoresScreenState extends State<StoresScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset('assets/icons/svg/store.svg', width: 60, height: 60, colorFilter: const ColorFilter.mode(AppTheme.binanceGold.withOpacity(0.3), BlendMode.srcIn)),
+                        SvgPicture.asset('assets/icons/svg/store.svg', width: 60, height: 60, colorFilter: ColorFilter.mode(AppTheme.binanceGold.withOpacity(0.3), BlendMode.srcIn)),
                         const SizedBox(height: 16),
                         Text('لا توجد متاجر', style: TextStyle(color: AppTheme.binanceGold.withOpacity(0.5))),
                       ],
