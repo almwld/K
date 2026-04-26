@@ -19,6 +19,10 @@ import 'screens/addresses_screen.dart';
 import 'screens/help_support_screen.dart';
 import 'screens/markets_screen.dart';
 import 'screens/nearby_screen.dart';
+import 'screens/following_screen.dart';
+import 'screens/order_detail_screen.dart';
+import 'screens/order_tracking_screen.dart';
+import 'screens/about_screen.dart';
 import 'screens/categories/all_categories_screen.dart';
 
 void main() {
@@ -37,6 +41,13 @@ class FlexYemenApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
       initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name?.startsWith('/order/') == true) {
+          final orderId = settings.name!.split('/').last;
+          return MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: orderId));
+        }
+        return null;
+      },
       routes: {
         '/': (context) => const MainNavigation(),
         '/home': (context) => const HomeScreen(),
@@ -57,6 +68,9 @@ class FlexYemenApp extends StatelessWidget {
         '/help': (context) => const HelpSupportScreen(),
         '/markets': (context) => const MarketsScreen(),
         '/nearby': (context) => const NearbyScreen(),
+        '/following': (context) => const FollowingScreen(),
+        '/tracking': (context) => const OrderTrackingScreen(),
+        '/about': (context) => const AboutScreen(),
         '/categories': (context) => const AllCategoriesScreen(),
       },
     );
