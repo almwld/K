@@ -8,6 +8,8 @@ import '../following_screen.dart';
 import '../offers_screen.dart';
 import '../all_ads_screen.dart';
 import '../markets_screen.dart';
+import '../discover_screen.dart';
+import '../news_screen.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
@@ -68,7 +70,7 @@ class _StoresScreenState extends State<StoresScreen> {
     setState(() => _selectedTopBar = index);
     switch (index) {
       case 0:
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const MarketsScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const DiscoverScreen()));
         break;
       case 1:
         Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowingScreen()));
@@ -78,6 +80,9 @@ class _StoresScreenState extends State<StoresScreen> {
         break;
       case 3:
         Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen()));
+        break;
+      case 4:
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const NewsScreen()));
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('قريباً'), backgroundColor: AppTheme.binanceGold));
@@ -116,36 +121,38 @@ class _StoresScreenState extends State<StoresScreen> {
         actions: [
           IconButton(
             icon: SvgPicture.asset('assets/icons/svg/search.svg', width: 22, height: 22),
-            onPressed: () => _showSearchDialog(context),
+            onPressed: () => _showSearchDialog(),
           ),
         ],
       ),
       body: Column(
         children: [
-          _buildSearchBar(context, isDark),
-          _buildCategoriesRow(context, isDark),
-          _buildFilterButtons(context),
-          _buildStickyHeader(context, isDark),
+          _buildSearchBar(isDark),
+          _buildCategoriesRow(isDark),
+          _buildFilterButtons(),
+          _buildStickyHeader(isDark),
           Expanded(
             child: filteredStores.isEmpty
-                ? _buildEmptyState(context, isDark)
+                ? _buildEmptyState()
                 : ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(12),
                     itemCount: filteredStores.length,
-                    itemBuilder: (context, index) => _buildStoreCard(context, filteredStores[index], isDark),
+                    itemBuilder: (context, index) => _buildStoreCard(filteredStores[index], isDark),
                   ),
           ),
+          _buildMallsSection(),
+          _buildProductsGrid(),
         ],
       ),
     );
   }
 
-  Widget _buildSearchBar(BuildContext context, bool isDark) {
+  Widget _buildSearchBar(bool isDark) {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: GestureDetector(
-        onTap: () => _showSearchDialog(context),
+        onTap: _showSearchDialog,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
@@ -165,7 +172,7 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  Widget _buildCategoriesRow(BuildContext context, bool isDark) {
+  Widget _buildCategoriesRow(bool isDark) {
     return SizedBox(
       height: 45,
       child: ListView.builder(
@@ -200,7 +207,7 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  Widget _buildFilterButtons(BuildContext context) {
+  Widget _buildFilterButtons() {
     return Container(
       height: 45,
       margin: const EdgeInsets.only(top: 4),
@@ -236,7 +243,7 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  Widget _buildStickyHeader(BuildContext context, bool isDark) {
+  Widget _buildStickyHeader(bool isDark) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       height: _scrollOffset > 50 ? 45 : 0,
@@ -278,14 +285,9 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, bool isDark) {
+  Widget _buildEmptyState() {
     return Center(
       child: Column(
-          _buildMallsSection(context),
-          const SizedBox(height: 8),
-          _buildProductsGrid(context),
-          const SizedBox(height: 8),
-
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset('assets/icons/svg/store.svg', width: 60, height: 60),
@@ -296,7 +298,7 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  Widget _buildStoreCard(BuildContext context, Map<String, dynamic> store, bool isDark) {
+  Widget _buildStoreCard(Map<String, dynamic> store, bool isDark) {
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreDetailScreen(storeId: store['id']))),
       child: Container(
@@ -322,11 +324,6 @@ class _StoresScreenState extends State<StoresScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Column(
-          _buildMallsSection(context),
-          const SizedBox(height: 8),
-          _buildProductsGrid(context),
-          const SizedBox(height: 8),
-
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -371,44 +368,7 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  void _showSearchDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.binanceCard,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('البحث عن متجر', style: TextStyle(color: Colors.white)),
-        content: TextField(
-          autofocus: true,
-          onChanged: (value) => setState(() => _searchQuery = value),
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: 'اسم المتجر...',
-            hintStyle: const TextStyle(color: Color(0xFF5E6673)),
-            prefixIcon: Icon(Icons.search, color: AppTheme.binanceGold),
-            filled: true,
-            fillColor: AppTheme.binanceDark,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-          ),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء', style: TextStyle(color: Color(0xFF9CA3AF)))),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {});
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold),
-            child: const Text('بحث', style: TextStyle(color: Colors.black)),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-  // ==================== قسم المولات والمعارض ====================
-  Widget _buildMallsSection(BuildContext context) {
+  Widget _buildMallsSection() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final malls = FullMarketData.malls;
     
@@ -436,11 +396,6 @@ class _StoresScreenState extends State<StoresScreen> {
                   border: Border.all(color: AppTheme.binanceBorder),
                 ),
                 child: Column(
-          _buildMallsSection(context),
-          const SizedBox(height: 8),
-          _buildProductsGrid(context),
-          const SizedBox(height: 8),
-
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
@@ -456,11 +411,6 @@ class _StoresScreenState extends State<StoresScreen> {
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
-          _buildMallsSection(context),
-          const SizedBox(height: 8),
-          _buildProductsGrid(context),
-          const SizedBox(height: 8),
-
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -497,8 +447,7 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  // ==================== جدول المنتجات الشبكي (29 منتج) ====================
-  Widget _buildProductsGrid(BuildContext context) {
+  Widget _buildProductsGrid() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final products = FullMarketData.products;
     
@@ -531,11 +480,6 @@ class _StoresScreenState extends State<StoresScreen> {
                   border: Border.all(color: AppTheme.binanceBorder),
                 ),
                 child: Column(
-          _buildMallsSection(context),
-          const SizedBox(height: 8),
-          _buildProductsGrid(context),
-          const SizedBox(height: 8),
-
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
@@ -569,11 +513,6 @@ class _StoresScreenState extends State<StoresScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: Column(
-          _buildMallsSection(context),
-          const SizedBox(height: 8),
-          _buildProductsGrid(context),
-          const SizedBox(height: 8),
-
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -621,13 +560,50 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  String _calculateDiscount(String price, String oldPrice) {
+  String _calculateDiscount(String price, String? oldPrice) {
+    if (oldPrice == null) return 'جديد';
     try {
       double p = double.parse(price.replaceAll(',', ''));
       double op = double.parse(oldPrice.replaceAll(',', ''));
       int discount = ((op - p) / op * 100).round();
       return '-$discount%';
     } catch (e) {
-      return '-0%';
+      return 'جديد';
     }
   }
+
+  void _showSearchDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.binanceCard,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('البحث عن متجر', style: TextStyle(color: Colors.white)),
+        content: TextField(
+          autofocus: true,
+          onChanged: (value) => setState(() => _searchQuery = value),
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: 'اسم المتجر...',
+            hintStyle: const TextStyle(color: Color(0xFF5E6673)),
+            prefixIcon: Icon(Icons.search, color: AppTheme.binanceGold),
+            filled: true,
+            fillColor: AppTheme.binanceDark,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء', style: TextStyle(color: Color(0xFF9CA3AF)))),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold),
+            child: const Text('بحث', style: TextStyle(color: Colors.black)),
+          ),
+        ],
+      ),
+    );
+  }
+}
