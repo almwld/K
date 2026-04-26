@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), child: Text('الحالات', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500))),
-                StoriesWidget(stories: _stories, onAddStory: () {}),
+                StoriesWidget(stories: _stories, onAddStory: _addStory),
               ],
             ),
           ),
@@ -359,3 +359,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+  void _addStory() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AddStoryScreen()),
+    );
+  }
