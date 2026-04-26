@@ -282,7 +282,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       Text(message.time, style: TextStyle(color: isMine ? Colors.black54 : const Color(0xFF9CA3AF), fontSize: 10)),
                       if (isMine) ...[
                         const SizedBox(width: 4),
-                        SvgPicture.asset('assets/icons/svg/done_all.svg', width: 12, height: 12, colorFilter: const ColorFilter.mode(message.isRead ? AppTheme.binanceGold : Color(0xFF9CA3AF), BlendMode.srcIn)),
+                        SvgPicture.asset('assets/icons/svg/done_all.svg', width: 12, height: 12, colorFilter: ColorFilter.mode(message.isRead ? AppTheme.binanceGold : const Color(0xFF9CA3AF), BlendMode.srcIn)),
                       ],
                     ],
                   ),

@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/stories_widget.dart';
+import '../../widgets/stories_widget.dart' show StoryModel;
 import '../categories/all_categories_screen.dart';
 import '../stores/stores_screen.dart';
 import '../auctions/auctions_screen.dart';
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
           SliverToBoxAdapter(child: _buildQuickActions()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          SliverToBoxAdapter(child: _buildSectionHeader('متابعاتك', 'مشاهدة الكل', onTap: () => _navigateTo(const AllStoresScreen()))),
+          SliverToBoxAdapter(child: _buildSectionHeader('متابعاتك', 'مشاهدة الكل', onTap: () => _navigateTo(const FollowingScreen()))),
           SliverToBoxAdapter(child: _buildFollowingsList()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
           SliverToBoxAdapter(child: _buildSectionHeader('العروض الرائجة', 'تسوق الآن', onTap: () => _navigateTo(const OffersScreen()))),
@@ -250,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       height: 100,
       child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: _followings.length, itemBuilder: (_, i) => GestureDetector(
-        onTap: () => _navigateTo(const AllStoresScreen()),
+        onTap: () => _navigateTo(const FollowingScreen()),
         child: Container(width: 150, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(12)), child: Row(children: [
           CircleAvatar(radius: 20, backgroundColor: AppTheme.binanceGold.withOpacity(0.2), child: Icon(Icons.store, color: AppTheme.binanceGold, size: 20)),
           const SizedBox(width: 8),
@@ -360,10 +361,3 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class StoryModel {
-  final String id, name, imageUrl, time;
-  final bool isViewed;
-  final bool isUser;
-
-  StoryModel({required this.id, required this.name, required this.imageUrl, required this.time, this.isViewed = false, this.isUser = false});
-}
