@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
+import '../../data/full_market_data.dart';
 import 'store_detail_screen.dart';
 import '../following_screen.dart';
 import '../offers_screen.dart';
 import '../all_ads_screen.dart';
 import '../notifications_screen.dart';
+import '../markets_screen.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
@@ -33,26 +35,16 @@ class _StoresScreenState extends State<StoresScreen> {
     'المفضلات', 'رائج', 'VIP', 'جديدة', 'الأعلى بيعاً!!!'
   ];
   
-  // الفئات الرئيسية
-  final List<String> _categories = [
-    'الكل', 'إلكترونيات', 'أزياء', 'سيارات', 'عقارات', 'أثاث', 'مطاعم',
-    'صحة وجمال', 'رياضة', 'كتب', 'ألعاب', 'أطفال', 'حيوانات'
-  ];
+  // الفئات الرئيسية (جميع الـ 45 فئة)
+  List<String> get _categories {
+    List<String> cats = ['الكل'];
+    cats.addAll(FullMarketData.mainCategories.map((c) => c['name'] as String).toList());
+    return cats;
+  }
   
-  // المتاجر
-  final List<Map<String, dynamic>> _stores = [
-    {'id': '1', 'name': 'متجر التقنية', 'category': 'إلكترونيات', 'rating': 4.8, 'sales': '1.2K', 'isFollowing': false, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200', 'products': 156},
-    {'id': '2', 'name': 'عالم الجوالات', 'category': 'إلكترونيات', 'rating': 4.7, 'sales': '2.3K', 'isFollowing': true, 'image': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200', 'products': 234},
-    {'id': '3', 'name': 'الأزياء العصرية', 'category': 'أزياء', 'rating': 4.6, 'sales': '3.4K', 'isFollowing': false, 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200', 'products': 456},
-    {'id': '4', 'name': 'معرض السيارات الحديثة', 'category': 'سيارات', 'rating': 4.8, 'sales': '456', 'isFollowing': false, 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=200', 'products': 45},
-    {'id': '5', 'name': 'عقارات فلكس', 'category': 'عقارات', 'rating': 4.7, 'sales': '234', 'isFollowing': false, 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200', 'products': 45},
-    {'id': '6', 'name': 'أثاث المنزل', 'category': 'أثاث', 'rating': 4.5, 'sales': '1.1K', 'isFollowing': false, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200', 'products': 156},
-    {'id': '7', 'name': 'مطعم مندي الملكي', 'category': 'مطاعم', 'rating': 4.9, 'sales': '2.1K', 'isFollowing': true, 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200', 'products': 34},
-    {'id': '8', 'name': 'صيدلية الحياة', 'category': 'صحة وجمال', 'rating': 4.6, 'sales': '987', 'isFollowing': false, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200', 'products': 345},
-  ];
-
+  // المتاجر المفلترة
   List<Map<String, dynamic>> get _filteredStores {
-    var stores = List<Map<String, dynamic>>.from(_stores);
+    var stores = List<Map<String, dynamic>>.from(FullMarketData.stores);
     
     if (_selectedCategory != 'الكل') {
       stores = stores.where((s) => s['category'] == _selectedCategory).toList();
@@ -79,13 +71,13 @@ class _StoresScreenState extends State<StoresScreen> {
     setState(() => _selectedTopBar = index);
     switch (index) {
       case 0: // اكتشف
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('اكتشف - قريباً'), backgroundColor: AppTheme.binanceGold));
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const MarketsScreen()));
         break;
       case 1: // المتابعات
         Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowingScreen()));
         break;
       case 2: // رائج
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('الرائج - قريباً'), backgroundColor: AppTheme.binanceGold));
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const OffersScreen()));
         break;
       case 3: // الإعلانات
         Navigator.push(context, MaterialPageRoute(builder: (_) => const AllAdsScreen()));
@@ -158,7 +150,7 @@ class _StoresScreenState extends State<StoresScreen> {
             ),
           ),
           
-          // الفئات (Horizontal Scroll)
+          // الفئات (Horizontal Scroll - 45 فئة)
           SizedBox(
             height: 45,
             child: ListView.builder(
@@ -267,6 +259,14 @@ class _StoresScreenState extends State<StoresScreen> {
                   )
                 : const SizedBox(),
           ),
+          
+          // قسم المولات والمعارض
+          // جدول المنتجات الشبكي
+          _buildProductsGrid(),
+          const SizedBox(height: 8),
+          
+          _buildMallsSection(),
+          const SizedBox(height: 8),
           
           // قائمة المتاجر
           Expanded(
@@ -398,3 +398,197 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 }
+
+  // ==================== قسم المولات والمعارض ====================
+  Widget _buildMallsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final malls = FullMarketData.malls;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('المولات والمعارض', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 180,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: malls.length,
+            itemBuilder: (context, index) {
+              final mall = malls[index];
+              return Container(
+                width: 280,
+                margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                      child: CachedNetworkImage(
+                        imageUrl: mall['image'],
+                        height: 100,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => Container(color: AppTheme.binanceCard),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            mall['name'],
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on, size: 12, color: AppTheme.binanceGold),
+                              const SizedBox(width: 4),
+                              Text(mall['city'], style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                              const SizedBox(width: 12),
+                              const Icon(Icons.store, size: 12, color: AppTheme.binanceGold),
+                              const SizedBox(width: 4),
+                              Text('${mall['stores']} متجر', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                              const SizedBox(width: 12),
+                              const Icon(Icons.star, size: 12, color: Colors.amber),
+                              const SizedBox(width: 4),
+                              Text('${mall['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== جدول المنتجات الشبكي (29 منتج) ====================
+  Widget _buildProductsGrid() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final products = FullMarketData.products;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('أفضل المنتجات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.7,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/product/${product['id']}'),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                            child: CachedNetworkImage(
+                              imageUrl: product['image'],
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              placeholder: (_, __) => Container(color: AppTheme.binanceCard),
+                            ),
+                          ),
+                          if (product['oldPrice'] != null)
+                            Positioned(
+                              top: 8,
+                              left: 8,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(color: AppTheme.binanceRed, borderRadius: BorderRadius.circular(4)),
+                                child: Text(
+                                  '${((double.parse(product['price'].replaceAll(',', '')) / double.parse(product['oldPrice'].replaceAll(',', '')) * 100).toStringAsFixed(0)}%',
+                                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product['name'],
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Text(
+                                product['price'],
+                                style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              if (product['oldPrice'] != null) ...[
+                                const SizedBox(width: 4),
+                                Text(
+                                  product['oldPrice'],
+                                  style: const TextStyle(color: Color(0xFF5E6673), decoration: TextDecoration.lineThrough, fontSize: 10),
+                                ),
+                              ],
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, size: 10, color: Colors.amber),
+                              const SizedBox(width: 2),
+                              Text('${product['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)),
+                              const Spacer(),
+                              Text('${product['sales']}', style: TextStyle(color: AppTheme.binanceGold, fontSize: 10)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
