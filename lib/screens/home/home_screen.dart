@@ -13,7 +13,7 @@ import '../wallet/wallet_screen.dart';
 import '../stats/sales_stats_screen.dart';
 import '../stats/loyalty_points_screen.dart';
 import '../stats/orders_stats_screen.dart';
-import '../following_screen.dart';
+import '../all_stores_screen.dart';
 import '../markets_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,18 +35,26 @@ class _HomeScreenState extends State<HomeScreen> {
     {'title': 'عروض العيد', 'subtitle': 'خصومات تصل إلى 60%', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600', 'gradient': [AppTheme.binanceRed, AppTheme.binanceRed.withOpacity(0.7)], 'buttonText': 'استفد الآن', 'badge': 'عرض خاص', 'discount': '60%'},
   ];
 
+  // بيانات الحالات (Stories)
+  final List<StoryModel> _stories = [
+    StoryModel(id: 'user', name: 'إضافة حالة', imageUrl: '', time: '', isUser: true),
+    StoryModel(id: '1', name: 'أحمد محمد', imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg', time: 'منذ 5 دقائق', isViewed: false),
+    StoryModel(id: '2', name: 'متجر التقنية', imageUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200', time: 'منذ ساعة', isViewed: false),
+    StoryModel(id: '3', name: 'سارة علي', imageUrl: 'https://randomuser.me/api/portraits/women/1.jpg', time: 'منذ 3 ساعات', isViewed: true),
+  ];
+
   // 10 فئات مع صور حقيقية
   final List<Map<String, dynamic>> _categories = [
-    {'name': 'إلكترونيات', 'icon': Icons.devices, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200', 'color': const Color(0xFF2196F3), 'route': '/categories/electronics'},
-    {'name': 'أزياء', 'icon': Icons.checkroom, 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200', 'color': const Color(0xFFE91E63), 'route': '/categories/fashion'},
-    {'name': 'سيارات', 'icon': Icons.directions_car, 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200', 'color': const Color(0xFFF6465D), 'route': '/categories/cars'},
-    {'name': 'عقارات', 'icon': Icons.home, 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200', 'color': const Color(0xFF4CAF50), 'route': '/categories/realestate'},
-    {'name': 'أثاث', 'icon': Icons.chair, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200', 'color': const Color(0xFFFF9800), 'route': '/categories/furniture'},
-    {'name': 'مطاعم', 'icon': Icons.restaurant, 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200', 'color': const Color(0xFF9C27B0), 'route': '/categories/restaurants'},
-    {'name': 'مقاهي', 'icon': Icons.coffee, 'image': 'https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=200', 'color': const Color(0xFF795548), 'route': '/categories/cafes'},
-    {'name': 'مستحضرات تجميل', 'icon': Icons.face, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200', 'color': const Color(0xFFE91E63), 'route': '/categories/beauty'},
-    {'name': 'رياضة', 'icon': Icons.sports_soccer, 'image': 'https://images.unsplash.com/photo-1461896836934-ffe807baa261?w=200', 'color': const Color(0xFF4CAF50), 'route': '/categories/sports'},
-    {'name': 'كتب', 'icon': Icons.menu_book, 'image': 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200', 'color': const Color(0xFF795548), 'route': '/categories/books'},
+    {'name': 'إلكترونيات', 'icon': Icons.devices, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200', 'color': const Color(0xFF2196F3)},
+    {'name': 'أزياء', 'icon': Icons.checkroom, 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200', 'color': const Color(0xFFE91E63)},
+    {'name': 'سيارات', 'icon': Icons.directions_car, 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200', 'color': const Color(0xFFF6465D)},
+    {'name': 'عقارات', 'icon': Icons.home, 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200', 'color': const Color(0xFF4CAF50)},
+    {'name': 'أثاث', 'icon': Icons.chair, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200', 'color': const Color(0xFFFF9800)},
+    {'name': 'مطاعم', 'icon': Icons.restaurant, 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200', 'color': const Color(0xFF9C27B0)},
+    {'name': 'مقاهي', 'icon': Icons.coffee, 'image': 'https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=200', 'color': const Color(0xFF795548)},
+    {'name': 'مستحضرات تجميل', 'icon': Icons.face, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200', 'color': const Color(0xFFE91E63)},
+    {'name': 'رياضة', 'icon': Icons.sports_soccer, 'image': 'https://images.unsplash.com/photo-1461896836934-ffe807baa261?w=200', 'color': const Color(0xFF4CAF50)},
+    {'name': 'كتب', 'icon': Icons.menu_book, 'image': 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200', 'color': const Color(0xFF795548)},
   ];
 
   // المتابعات (التجار)
@@ -57,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'عطور الشرق', 'update': 'وصل حديثاً', 'time': 'منذ ساعتين', 'avatar': 'https://randomuser.me/api/portraits/men/3.jpg', 'storeId': '4'},
   ];
 
-  // العروض الرائجة مع زر + وتأثير طيران
+  // العروض الرائجة
   final List<Map<String, dynamic>> _trendingOffers = [
     {'name': 'iPhone 15 Pro', 'price': '350,000', 'old': '450,000', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400', 'discount': 22, 'productId': '1'},
     {'name': 'ساعة أبل الترا', 'price': '45,000', 'old': '60,000', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400', 'discount': 25, 'productId': '2'},
@@ -73,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'الفنادق', 'change': '-0.5%', 'volume': '456K', 'items': 95, 'isUp': false, 'description': 'فنادق فاخرة'},
   ];
 
-  // منتجات مميزة (موصى به، مفضلات، أقل سعر، اشتر الآن)
+  // منتجات مميزة
   final List<Map<String, dynamic>> _featuredProducts = [
     {'name': 'آيباد برو', 'price': '280,000', 'oldPrice': null, 'image': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400', 'discount': 0, 'rating': 4.9, 'tag': 'موصى به'},
     {'name': 'سماعات سوني', 'price': '45,000', 'oldPrice': '60,000', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=400', 'discount': 25, 'rating': 4.8, 'tag': 'مفضلات'},
@@ -125,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
           SliverToBoxAdapter(child: _buildQuickActions()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          SliverToBoxAdapter(child: _buildSectionHeader('متابعاتك', 'مشاهدة الكل', onTap: () => _navigateTo(const FollowingScreen()))),
+          SliverToBoxAdapter(child: _buildSectionHeader('متابعاتك', 'مشاهدة الكل', onTap: () => _navigateTo(const AllStoresScreen()))),
           SliverToBoxAdapter(child: _buildFollowingsList()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
           SliverToBoxAdapter(child: _buildSectionHeader('العروض الرائجة', 'تسوق الآن', onTap: () => _navigateTo(const OffersScreen()))),
@@ -242,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       height: 100,
       child: ListView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: _followings.length, itemBuilder: (_, i) => GestureDetector(
-        onTap: () => _navigateTo(StoreDetailScreen(storeId: _followings[i]['storeId'] as String)),
+        onTap: () => _navigateTo(const AllStoresScreen()),
         child: Container(width: 150, margin: const EdgeInsets.only(right: 12), padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(12)), child: Row(children: [
           CircleAvatar(radius: 20, backgroundColor: AppTheme.binanceGold.withOpacity(0.2), child: Icon(Icons.store, color: AppTheme.binanceGold, size: 20)),
           const SizedBox(width: 8),
@@ -308,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GridView.count(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), crossAxisCount: 5, childAspectRatio: 0.9, children: _categories.map((cat) => GestureDetector(
-        onTap: () => _navigateTo(AllCategoriesScreen()),
+        onTap: () => _navigateTo(const AllCategoriesScreen()),
         child: Column(children: [
           ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.network(cat['image'] as String, height: 50, width: 50, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(height: 50, width: 50, color: (cat['color'] as Color).withOpacity(0.2), child: Icon(cat['icon'] as IconData, color: cat['color'] as Color, size: 24)))),
           const SizedBox(height: 4), Text(cat['name'] as String, style: const TextStyle(color: Colors.white, fontSize: 10), textAlign: TextAlign.center, maxLines: 2),
@@ -350,4 +358,12 @@ class _HomeScreenState extends State<HomeScreen> {
       }),
     );
   }
+}
+
+class StoryModel {
+  final String id, name, imageUrl, time;
+  final bool isViewed;
+  final bool isUser;
+
+  StoryModel({required this.id, required this.name, required this.imageUrl, required this.time, this.isViewed = false, this.isUser = false});
 }
