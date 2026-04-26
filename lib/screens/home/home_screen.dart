@@ -250,3 +250,4 @@ class StoryModel {
 
   StoryModel({required this.id, required this.name, required this.imageUrl, required this.time, this.isViewed = false, this.isUser = false});
 }
+
