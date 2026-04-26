@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
+import '../order_tracking_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -14,16 +15,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool _couponApplied = false;
   final TextEditingController _couponController = TextEditingController();
 
-  final List<Map<String, dynamic>> _deliveryServices = [
-    {'name': 'توصيل فلكس', 'price': 1500, 'time': '24-48 ساعة', 'color': AppTheme.binanceGold},
-    {'name': 'اطلبني', 'price': 2000, 'time': '1-3 ساعات', 'color': const Color(0xFFE91E63)},
-    {'name': 'ناس', 'price': 1800, 'time': '2-4 ساعات', 'color': const Color(0xFF4CAF50)},
+  final List<Map<String, dynamic>> _paymentMethods = [
+    {'name': 'الدفع عند الاستلام', 'icon': Icons.handshake, 'desc': 'ادفع عند استلام طلبك', 'color': AppTheme.binanceGreen},
+    {'name': 'بطاقة ائتمان', 'icon': Icons.credit_card, 'desc': 'فيزا، ماستركارد', 'color': AppTheme.serviceBlue},
+    {'name': 'محفظة كاش', 'icon': Icons.account_balance_wallet, 'desc': 'محفظة كاش الإلكترونية', 'color': AppTheme.binanceGold},
+    {'name': 'جوالي', 'icon': Icons.phone_android, 'desc': 'خدمات جوالي - يمن موبايل', 'color': const Color(0xFFE31E24)},
   ];
 
-  final List<Map<String, dynamic>> _paymentMethods = [
-    {'name': 'الدفع عند الاستلام', 'desc': 'ادفع عند استلام طلبك', 'icon': Icons.handshake},
-    {'name': 'بطاقة ائتمان', 'desc': 'فيزا، ماستركارد', 'icon': Icons.credit_card},
-    {'name': 'محفظة إلكترونية', 'desc': 'جميع المحافظ اليمنية', 'icon': Icons.account_balance_wallet},
+  final List<Map<String, dynamic>> _deliveryServices = [
+    {'name': 'توصيل فلكس', 'price': 1500, 'time': '24-48 ساعة', 'icon': Icons.local_shipping, 'color': AppTheme.binanceGold},
+    {'name': 'اطلبني', 'price': 2000, 'time': '1-3 ساعات', 'icon': Icons.flash_on, 'color': const Color(0xFFE91E63)},
+    {'name': 'ناس', 'price': 1800, 'time': '2-4 ساعات', 'icon': Icons.motorcycle, 'color': const Color(0xFF4CAF50)},
   ];
 
   int get _subtotal => 250;
@@ -36,9 +38,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Scaffold(
       backgroundColor: AppTheme.binanceDark,
       appBar: AppBar(
-        backgroundColor: AppTheme.binanceDark,
-        elevation: 0,
         title: const Text('إتمام الشراء', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: AppTheme.binanceDark,
         centerTitle: true,
       ),
       body: ListView(
@@ -46,6 +47,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           _buildSection('📍 عنوان الشحن'),
           _buildAddressCard(),
+          const SizedBox(height: 20),
+          _buildSection('🛍️ المنتجات'),
+          _buildProductItem('iPhone 15 Pro', 1, 350000),
+          _buildProductItem('ساعة أبل الترا', 2, 90000),
           const SizedBox(height: 20),
           _buildSection('🚚 خدمات التوصيل'),
           ..._buildDeliveryList(),
@@ -84,6 +89,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
+  Widget _buildProductItem(String name, int quantity, int price) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(12)),
+      child: Row(
+        children: [
+          Container(width: 50, height: 50, decoration: BoxDecoration(color: AppTheme.binanceGold.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Icon(Icons.shopping_bag, color: AppTheme.binanceGold)),
+          const SizedBox(width: 12),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            Text('الكمية: $quantity', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+          ])),
+          Text('$price ريال', style: const TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+
   List<Widget> _buildDeliveryList() {
     return List.generate(_deliveryServices.length, (i) {
       final service = _deliveryServices[i];
@@ -95,21 +119,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           decoration: BoxDecoration(
             color: AppTheme.binanceCard,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: _selectedDelivery == i ? AppTheme.binanceGold : AppTheme.binanceBorder, width: _selectedDelivery == i ? 2 : 1),
+            border: Border.all(color: _selectedDelivery == i ? service['color'] as Color : AppTheme.binanceBorder, width: _selectedDelivery == i ? 2 : 1),
           ),
           child: Row(
             children: [
-              Container(width: 45, height: 45, decoration: BoxDecoration(color: service['color'].withOpacity(0.1), borderRadius: BorderRadius.circular(22)), child: const Icon(Icons.local_shipping, color: AppTheme.binanceGold)),
+              Container(width: 45, height: 45, decoration: BoxDecoration(color: (service['color'] as Color).withOpacity(0.1), borderRadius: BorderRadius.circular(22)), child: Icon(service['icon'] as IconData, color: service['color'] as Color)),
               const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(service['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text('${service['price']} ريال - ${service['time']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
-                  ],
-                ),
-              ),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(service['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                Text('${service['price']} ريال - ${service['time']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              ])),
               if (_selectedDelivery == i) const Icon(Icons.check_circle, color: AppTheme.binanceGold),
             ],
           ),
@@ -121,25 +140,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   List<Widget> _buildPaymentList() {
     return List.generate(_paymentMethods.length, (i) {
       final method = _paymentMethods[i];
-      return Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(12), border: Border.all(color: _selectedPayment == i ? AppTheme.binanceGold : AppTheme.binanceBorder)),
-        child: Row(
-          children: [
-            Icon(method['icon'] as IconData, color: AppTheme.binanceGold),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(method['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text(method['desc'] as String, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
-                ],
-              ),
-            ),
-            Radio(value: i, groupValue: _selectedPayment, onChanged: (v) => setState(() => _selectedPayment = v!), activeColor: AppTheme.binanceGold),
-          ],
+      return GestureDetector(
+        onTap: () => setState(() => _selectedPayment = i),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppTheme.binanceCard,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: _selectedPayment == i ? method['color'] as Color : AppTheme.binanceBorder, width: _selectedPayment == i ? 2 : 1),
+          ),
+          child: Row(
+            children: [
+              Icon(method['icon'] as IconData, color: method['color'] as Color, size: 24),
+              const SizedBox(width: 12),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(method['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                Text(method['desc'] as String, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+              ])),
+              if (_selectedPayment == i) const Icon(Icons.check_circle, color: AppTheme.binanceGold),
+            ],
+          ),
         ),
       );
     });
@@ -164,7 +185,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         const SizedBox(width: 12),
         ElevatedButton(
           onPressed: () {
-            if (_couponController.text.toUpperCase() == 'FLEX30') {
+            if (_couponController.text.toUpperCase() == 'FLEX10') {
               setState(() => _couponApplied = true);
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم تطبيق الخصم!'), backgroundColor: AppTheme.binanceGreen));
             } else {
@@ -213,7 +234,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('جاري تحويلك لبوابة الدفع...'), backgroundColor: AppTheme.binanceGreen)),
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('جاري معالجة الدفع...'), backgroundColor: AppTheme.binanceGreen));
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const OrderTrackingScreen()));
+          });
+        },
         style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
         child: const Text('💳 دفع الآن', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18)),
       ),
