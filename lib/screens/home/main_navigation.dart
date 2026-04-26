@@ -12,6 +12,8 @@ import '../add_ad_screen.dart';
 import '../add_product_screen.dart';
 import '../request_service_screen.dart';
 import '../receive_transfer_request_screen.dart';
+import '../notifications_screen.dart';
+import '../search_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -26,7 +28,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
 
-  // ترتيب الشاشات حسب الطلب الجديد
   final List<Widget> _screens = const [
     ProfileScreen(),        // 0: حسابي
     ChatScreen(),           // 1: مساعد
@@ -105,6 +106,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
     return Scaffold(
       appBar: AppBar(
+        // عرض اسم المنصة مرة واحدة فقط
         title: const Text(
           'FLEX YEMEN',
           style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: AppTheme.binanceGold),
@@ -112,9 +114,29 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         centerTitle: true,
         elevation: 0,
         backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+        // إضافة أيقونة القائمة (ثلاث شرطات) في الجهة اليسرى
+        leading: IconButton(
+          icon: SvgPicture.asset('assets/icons/svg/menu.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'القائمة',
+        ),
+        // إضافة أيقونات البحث والإشعارات في الجهة اليمنى
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold), onPressed: () {}),
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/svg/search.svg', width: 22, height: 22, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen())),
+            tooltip: 'بحث',
+          ),
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/svg/notification.svg', width: 22, height: 22, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())),
+            tooltip: 'الإشعارات',
+          ),
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/svg/wallet.svg', width: 22, height: 22, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WalletScreen())),
+            tooltip: 'المحفظة',
+          ),
         ],
       ),
       body: _screens[_currentIndex],
