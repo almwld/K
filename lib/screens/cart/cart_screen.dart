@@ -45,12 +45,19 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: AppTheme.binanceDark,
       appBar: AppBar(
-        title: Row(children: [const Text('سلة التسوق', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), const SizedBox(width: 8), Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.binanceGold, borderRadius: BorderRadius.circular(12)), child: Text('${_cartItems.length}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)))]),
+        title: Row(children: [
+          const Text('سلة التسوق', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          const SizedBox(width: 8),
+          Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: AppTheme.binanceGold, borderRadius: BorderRadius.circular(12)), child: Text('${_cartItems.length}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12))),
+        ]),
         backgroundColor: AppTheme.binanceDark,
         centerTitle: true,
         actions: [if (_cartItems.isNotEmpty) TextButton(onPressed: () => setState(() => _cartItems.clear()), child: const Text('مسح الكل', style: TextStyle(color: AppTheme.binanceRed)))],
       ),
-      body: _cartItems.isEmpty ? _buildEmptyCart() : Column(children: [Expanded(child: ListView.builder(padding: const EdgeInsets.all(16), itemCount: _cartItems.length, itemBuilder: (context, index) => _buildCartItem(_cartItems[index]))), _buildOrderSummary()]),
+      body: _cartItems.isEmpty ? _buildEmptyCart() : Column(children: [
+        Expanded(child: ListView.builder(padding: const EdgeInsets.all(16), itemCount: _cartItems.length, itemBuilder: (context, index) => _buildCartItem(_cartItems[index]))),
+        _buildOrderSummary(),
+      ]),
     );
   }
 
@@ -68,11 +75,12 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildCartItem(CartItem item) {
     return Dismissible(
-      key: Key(item.id), direction: DismissDirection.endToStart,
+      key: Key(item.id),
+      direction: DismissDirection.endToStart,
       background: Container(margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: AppTheme.binanceRed, borderRadius: BorderRadius.circular(16)), alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: 20), child: const Icon(Icons.delete, color: Colors.white)),
       onDismissed: (_) => _removeItem(item.id),
       child: Container(margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: AppTheme.binanceCard, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppTheme.binanceBorder)), child: Row(children: [
-        ClipRRect(borderRadius: BorderRadius.circular(12), child: CachedNetworkImage(imageUrl: item.image, width: 80, height: 80, fit: BoxFit.cover)),
+        ClipRRect(borderRadius: BorderRadius.circular(12), child: CachedNetworkImage(imageUrl: item.image, width: 80, height: 80, fit: BoxFit.cover, placeholder: (_, __) => Container(color: AppTheme.binanceCard))),
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(item.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), maxLines: 2),
@@ -80,13 +88,20 @@ class _CartScreenState extends State<CartScreen> {
           Text(item.seller, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
           const SizedBox(height: 8),
           Row(children: [
-            if (item.discount > 0) ...[Text('${(item.price * (100 - item.discount) ~/ 100).toString()} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(width: 6), Text('${item.price} ريال', style: const TextStyle(color: Color(0xFF5E6673), decoration: TextDecoration.lineThrough, fontSize: 11))],
-            else Text('${item.price} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 14)),
+            if (item.discount > 0) ...[
+              Text('${(item.price * (100 - item.discount) ~/ 100).toString()} ريال', style: const TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 14)),
+              const SizedBox(width: 6),
+              Text('${item.price} ريال', style: const TextStyle(color: Color(0xFF5E6673), decoration: TextDecoration.lineThrough, fontSize: 11)),
+            ] else ...[
+              Text('${item.price} ريال', style: const TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 14)),
+            ],
           ]),
         ])),
         Column(children: [
           Row(children: [
-            _buildQuantityButton(Icons.remove, () => _updateQuantity(item.id, -1)), Container(width: 35, alignment: Alignment.center, child: Text('${item.quantity}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))), _buildQuantityButton(Icons.add, () => _updateQuantity(item.id, 1)),
+            _buildQuantityButton(Icons.remove, () => _updateQuantity(item.id, -1)),
+            Container(width: 35, alignment: Alignment.center, child: Text('${item.quantity}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+            _buildQuantityButton(Icons.add, () => _updateQuantity(item.id, 1)),
           ]),
           const SizedBox(height: 8),
           Text('${item.price * item.quantity} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 12)),
@@ -120,7 +135,10 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildSummaryRow(String label, String value, {Color? color, bool isTotal = false}) {
-    return Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(label, style: TextStyle(color: isTotal ? Colors.white : Colors.grey[400], fontSize: isTotal ? 16 : 14)), Text(value, style: TextStyle(color: color ?? Colors.white, fontSize: isTotal ? 18 : 14, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal))]));
+    return Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Text(label, style: TextStyle(color: isTotal ? Colors.white : Colors.grey[400], fontSize: isTotal ? 16 : 14)),
+      Text(value, style: TextStyle(color: color ?? Colors.white, fontSize: isTotal ? 18 : 14, fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
+    ]));
   }
 }
 
