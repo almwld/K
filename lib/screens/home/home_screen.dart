@@ -4,7 +4,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/stories_widget.dart';
-import '../../widgets/product_card.dart';
 import '../categories/all_categories_screen.dart';
 import '../stores/stores_screen.dart';
 import '../auctions/auctions_screen.dart';
@@ -25,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _carouselIndex = 0;
 
-  // قائمة السلايدرات (5 سلايدرات)
+  // قائمة السلايدرات (5 سلايدرات - تم استبدال عرض رمضان)
   final List<Map<String, dynamic>> _carouselItems = [
     {
       'title': 'عروض الإلكترونيات',
@@ -33,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600',
       'gradient': [AppTheme.serviceBlue, AppTheme.serviceBlue.withOpacity(0.7)],
       'buttonText': 'تسوق الآن',
-      'buttonRoute': '/categories/electronics',
       'badge': 'عرض محدود',
       'discount': '50%',
     },
@@ -43,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600',
       'gradient': [AppTheme.binanceGreen, AppTheme.binanceGreen.withOpacity(0.7)],
       'buttonText': 'اشترك الآن',
-      'buttonRoute': '/auctions',
       'badge': 'مزاد حي',
       'discount': '75%',
     },
@@ -53,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600',
       'gradient': [AppTheme.binanceGold, AppTheme.binanceGold.withOpacity(0.7)],
       'buttonText': 'انضم الآن',
-      'buttonRoute': '/vip',
       'badge': 'VIP فقط',
       'discount': '25%',
     },
@@ -63,19 +59,17 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600',
       'gradient': [AppTheme.serviceOrange, AppTheme.serviceOrange.withOpacity(0.7)],
       'buttonText': 'اطلب الآن',
-      'buttonRoute': '/cart',
       'badge': 'شحن مجاني',
       'discount': '100%',
     },
     {
-      'title': 'عروح رمضان',
-      'subtitle': 'خصومات تصل إلى 70% على جميع المنتجات',
+      'title': 'عروض العيد',
+      'subtitle': 'خصومات تصل إلى 60% على جميع المنتجات',
       'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600',
       'gradient': [AppTheme.binanceRed, AppTheme.binanceRed.withOpacity(0.7)],
       'buttonText': 'استفد الآن',
-      'buttonRoute': '/offers',
       'badge': 'عرض خاص',
-      'discount': '70%',
+      'discount': '60%',
     },
   ];
 
@@ -148,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addStory() {
-    // Navigator.push(context, MaterialPageRoute(builder: (_) => const AddStoryScreen()));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('إضافة حالة - قريباً'), backgroundColor: AppTheme.binanceGold),
     );
@@ -180,13 +173,13 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
           SliverToBoxAdapter(child: _buildQuickActions()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          SliverToBoxAdapter(child: _buildSectionHeader('🔥 العروض الرائجة', 'عرض الكل', onTap: () {})),
+          SliverToBoxAdapter(child: _buildSectionHeader('العروض الرائجة', 'عرض الكل', onTap: () {})),
           SliverToBoxAdapter(child: _buildTrendingOffers()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          SliverToBoxAdapter(child: _buildSectionHeader('📊 الأسواق الرائجة', 'عرض الكل', onTap: () {})),
+          SliverToBoxAdapter(child: _buildSectionHeader('الأسواق الرائجة', 'عرض الكل', onTap: () {})),
           SliverToBoxAdapter(child: _buildMarkets()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          SliverToBoxAdapter(child: _buildSectionHeader('⭐ الفئات', 'عرض الكل', onTap: () => _navigateTo(const AllCategoriesScreen()))),
+          SliverToBoxAdapter(child: _buildSectionHeader('الفئات', 'عرض الكل', onTap: () => _navigateTo(const AllCategoriesScreen()))),
           SliverToBoxAdapter(child: _buildCategoriesGrid()),
           const SliverToBoxAdapter(child: SizedBox(height: 80)),
         ],
@@ -279,7 +272,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Stack(
                   children: [
-                    // الخلفية (صورة مع تعتيم)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
@@ -300,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    // شارة الخصم/العرض
                     Positioned(
                       top: 12,
                       left: 12,
@@ -319,7 +310,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    // نسبة الخصم
                     Positioned(
                       top: 12,
                       right: 12,
@@ -335,7 +325,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    // النص الرئيسي
                     Positioned(
                       right: 20,
                       top: 50,
@@ -355,7 +344,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    // زر الإجراء
                     Positioned(
                       right: 20,
                       bottom: 20,
