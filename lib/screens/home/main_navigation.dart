@@ -7,6 +7,7 @@ import '../map/interactive_map_screen.dart';
 import '../auctions/auctions_screen.dart';
 import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
+import '../wallet/wallet_screen.dart';
 import '../add_ad_screen.dart';
 import '../add_product_screen.dart';
 import '../request_service_screen.dart';
@@ -24,15 +25,17 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   bool _isMenuOpen = false;
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
+  
+  final TextEditingController _searchController = TextEditingController();
 
   final List<Widget> _screens = const [
-    HomeScreen(),           // 0: الرئيسية
-    AllAdsScreen(),         // 1: متاجر
-    InteractiveMapScreen(), // 2: بجانبك
-    SizedBox(),             // 3: الزر الذهبي
-    AuctionsScreen(),       // 4: مزاد
-    ChatScreen(),           // 5: مساعد
-    ProfileScreen(),        // 6: حسابي
+    HomeScreen(),
+    AllAdsScreen(),
+    InteractiveMapScreen(),
+    SizedBox(),
+    AuctionsScreen(),
+    ChatScreen(),
+    ProfileScreen(),
   ];
 
   final List<Map<String, dynamic>> _navItems = [
@@ -67,6 +70,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void dispose() {
     _rotationController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -97,22 +101,80 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 
+  void _showVoiceSearch() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('البحث الصوتي قريباً...'), backgroundColor: AppTheme.binanceGold),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'FLEX YEMEN',
-          style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: AppTheme.binanceGold),
-        ),
-        centerTitle: true,
+        title: null, // إزالة اسم المنصة من الشريط
+        centerTitle: false,
         elevation: 0,
         backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+        // الجهة اليسرى: زر القائمة (ثلاث شرطات) + زر المحفظة
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu, color: AppTheme.binanceGold),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              tooltip: 'القائمة',
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/svg/wallet.svg',
+                width: 22,
+                height: 22,
+                colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn),
+              ),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const WalletScreen()),
+              ),
+              tooltip: 'المحفظة',
+            ),
+          ],
+        ),
+        // الجهة اليمنى: شريط البحث + زر البحث الصوتي
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold), onPressed: () {}),
+          Container(
+            width: 200,
+            height: 40,
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.binanceCard : Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: AppTheme.binanceGold.withOpacity(0.3)),
+            ),
+            child: TextField(
+              controller: _searchController,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 13),
+              decoration: InputDecoration(
+                hintText: 'ابحث...',
+                hintStyle: TextStyle(color: isDark ? Colors.grey.shade500 : Colors.grey.shade600, fontSize: 12),
+                prefixIcon: Icon(Icons.search, color: AppTheme.binanceGold, size: 18),
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              ),
+              onSubmitted: (value) {
+                // تنفيذ البحث
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('البحث عن: $value'), backgroundColor: AppTheme.binanceGold),
+                );
+              },
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.mic, color: AppTheme.binanceGold),
+            onPressed: _showVoiceSearch,
+            tooltip: 'بحث صوتي',
+          ),
         ],
       ),
       body: _screens[_currentIndex],
@@ -209,7 +271,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           ),
         ),
       ),
-      floatingActionButton: null, // تم تضمين الزر في الشريط السفلي
     );
   }
 }
