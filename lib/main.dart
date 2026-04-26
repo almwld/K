@@ -24,6 +24,11 @@ import 'screens/order_detail_screen.dart';
 import 'screens/order_tracking_screen.dart';
 import 'screens/about_screen.dart';
 import 'screens/categories/all_categories_screen.dart';
+import 'screens/product/product_detail_screen.dart';
+import 'screens/checkout/checkout_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/forgot_password_screen.dart';
 
 void main() {
   runApp(const FlexYemenApp());
@@ -42,6 +47,10 @@ class FlexYemenApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       initialRoute: '/',
       onGenerateRoute: (settings) {
+        if (settings.name?.startsWith('/product/') == true) {
+          final productId = settings.name!.split('/').last;
+          return MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId));
+        }
         if (settings.name?.startsWith('/order/') == true) {
           final orderId = settings.name!.split('/').last;
           return MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: orderId));
@@ -72,6 +81,10 @@ class FlexYemenApp extends StatelessWidget {
         '/tracking': (context) => const OrderTrackingScreen(),
         '/about': (context) => const AboutScreen(),
         '/categories': (context) => const AllCategoriesScreen(),
+        '/checkout': (context) => const CheckoutScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/forgot_password': (context) => const ForgotPasswordScreen(),
       },
     );
   }
