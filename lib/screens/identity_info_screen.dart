@@ -3,7 +3,7 @@ import '../../providers/theme_manager.dart';
 import '../../theme/app_theme.dart';
 import '../widgets/simple_app_bar.dart';
 import '../widgets/custom_button.dart';
-import 'home_screen.dart';
+import 'home/home_screen.dart';
 
 class IdentityInfoScreen extends StatefulWidget {
   final dynamic userData;

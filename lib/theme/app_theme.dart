@@ -20,6 +20,7 @@ class AppTheme {
   static const Color gold = Color(0xFFD4AF37);
   static const Color goldDark = Color(0xFFB8962E);
   static const Color goldLight = Color(0xFFF4E4A6);
+  static const Color binanceGoldLight = Color(0xFFF4E4A6);
   
   // ألوان خدمية
   static const Color serviceBlue = Color(0xFF2196F3);
@@ -41,6 +42,12 @@ class AppTheme {
   
   static const LinearGradient cardGradient = LinearGradient(
     colors: [Color(0xFF1E2329), Color(0xFF16213E)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  
+  static const LinearGradient binanceGoldGradient = LinearGradient(
+    colors: [Color(0xFFF4E4A6), Color(0xFFD4AF37), Color(0xFFAA8C2C)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
@@ -77,15 +84,15 @@ class AppTheme {
     return Theme.of(context).brightness == Brightness.dark ? textSecondary : Colors.grey.shade600;
   }
   
+  static Color getTextColor(BuildContext context) {
+    return getPrimaryTextColor(context);
+  }
+  
+  static Color getDividerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? binanceBorder : Colors.grey.shade300;
+  }
+  
   static Color getCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark ? binanceCard : lightCard;
   }
 }
-
-  // ألوان إضافية
-  static const Color binanceGoldLight = Color(0xFFF4E4A6);
-  static const LinearGradient binanceGoldGradient = LinearGradient(
-    colors: [Color(0xFFF4E4A6), Color(0xFFD4AF37), Color(0xFFAA8C2C)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );

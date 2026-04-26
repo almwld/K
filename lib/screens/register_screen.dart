@@ -143,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         child: TabBar(
                           controller: _tabController,
                           indicator: BoxDecoration(
-                            gradient: AppTheme.binanceGoldGradient,
+                            gradient: AppTheme.goldGradient,
                             borderRadius: BorderRadius.circular(40),
                           ),
                           indicatorSize: TabBarIndicatorSize.tab,

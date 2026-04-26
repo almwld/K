@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               fontFamily: 'Changa',
                               fontSize: 28,
                               fontWeight: FontWeight.w600,
-                              color: AppTheme.binanceGoldLight,
+                              color: AppTheme.goldLight,
                             ),
                           ),
                         ],
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         child: TabBar(
                           controller: _tabController,
                           indicator: BoxDecoration(
-                            gradient: AppTheme.binanceGoldGradient,
+                            gradient: AppTheme.goldGradient,
                             borderRadius: BorderRadius.circular(30),
                           ),
                           indicatorSize: TabBarIndicatorSize.tab,

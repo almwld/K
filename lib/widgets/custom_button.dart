@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
         child: OutlinedButton(
           onPressed: isLoading ? null : onPressed,
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: AppTheme.binanceGold, width: 2),
+            side: const BorderSide(color: AppTheme.gold, width: 2),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
           child: isLoading
@@ -46,14 +46,14 @@ class CustomButton extends StatelessWidget {
                   height: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation(AppTheme.binanceGold),
+                    valueColor: AlwaysStoppedAnimation(AppTheme.gold),
                   ),
                 )
               : Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (icon != null) ...[
-                      Icon(icon, color: AppTheme.binanceGold),
+                      Icon(icon, color: AppTheme.gold),
                       const SizedBox(width: 8),
                     ],
                     Text(
@@ -61,7 +61,7 @@ class CustomButton extends StatelessWidget {
                       style: const TextStyle(
                         fontFamily: 'Changa',
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.binanceGold,
+                        color: AppTheme.gold,
                       ),
                     ),
                   ],
@@ -76,7 +76,7 @@ class CustomButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: onPressed != null
             ? const LinearGradient(
-                colors: [AppTheme.binanceGold, AppTheme.binanceGoldLight],
+                colors: [AppTheme.gold, AppTheme.goldLight],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               )
@@ -90,7 +90,7 @@ class CustomButton extends StatelessWidget {
         boxShadow: onPressed != null
             ? [
                 BoxShadow(
-                  color: AppTheme.binanceGold.withOpacity(0.3),
+                  color: AppTheme.gold.withOpacity(0.3),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -158,11 +158,11 @@ class IconButtonCustom extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: backgroundColor ?? AppTheme.binanceGold.withOpacity(0.1),
+            color: backgroundColor ?? AppTheme.gold.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: IconButton(
-            icon: Icon(icon, color: iconColor ?? AppTheme.binanceGold),
+            icon: Icon(icon, color: iconColor ?? AppTheme.gold),
             onPressed: onPressed,
           ),
         ),
