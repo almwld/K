@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/stories_widget.dart';
 import '../wallet/wallet_screen.dart';
 import '../chat/chat_screen.dart';
 import '../ai_assistant_screen.dart';
@@ -13,7 +14,6 @@ import '../stores/stores_screen.dart';
 import '../auctions/auctions_screen.dart';
 import '../offers_screen.dart';
 import '../cart/cart_screen.dart';
-import '../search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +24,45 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _carouselIndex = 0;
+  
+  // بيانات الحالات (Stories)
+  final List<StoryModel> _stories = [
+    StoryModel(
+      id: 'user',
+      name: 'إضافة حالة',
+      imageUrl: '',
+      time: '',
+      isUser: true,
+    ),
+    StoryModel(
+      id: '1',
+      name: 'أحمد محمد',
+      imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
+      time: 'منذ 5 دقائق',
+      isViewed: false,
+    ),
+    StoryModel(
+      id: '2',
+      name: 'متجر التقنية',
+      imageUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200',
+      time: 'منذ ساعة',
+      isViewed: false,
+    ),
+    StoryModel(
+      id: '3',
+      name: 'سارة علي',
+      imageUrl: 'https://randomuser.me/api/portraits/women/1.jpg',
+      time: 'منذ 3 ساعات',
+      isViewed: true,
+    ),
+    StoryModel(
+      id: '4',
+      name: 'مطعم فلكس',
+      imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200',
+      time: 'منذ 5 ساعات',
+      isViewed: false,
+    ),
+  ];
 
   final List<Map<String, String>> _carouselItems = [
     {'title': 'عرض خاص', 'subtitle': 'خصم 50% على الإلكترونيات', 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600'},
@@ -64,6 +103,22 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _buildAppBar(),
       body: CustomScrollView(
         slivers: [
+          // قسم الحالات (Stories)
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('الحالات', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500)),
+                ),
+                StoriesWidget(
+                  stories: _stories,
+                  onAddStory: () {},
+                ),
+              ],
+            ),
+          ),
           SliverToBoxAdapter(child: const SizedBox(height: 8)),
           SliverToBoxAdapter(child: _buildStatsCard()),
           SliverToBoxAdapter(child: const SizedBox(height: 16)),
@@ -85,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ==================== AppBar مع أيقونات المحفظة والدردشة والمساعد ====================
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: AppTheme.binanceDark,
@@ -100,72 +154,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       centerTitle: true,
       actions: [
-        // 1. أيقونة المحفظة
-        GestureDetector(
-          onTap: () => _navigateTo(const WalletScreen()),
-          child: Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.binanceCard,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.account_balance_wallet_outlined, color: AppTheme.binanceGold, size: 20),
-          ),
-        ),
-        // 2. أيقونة الدردشة
-        GestureDetector(
-          onTap: () => _navigateTo(const ChatScreen()),
-          child: Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.binanceCard,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.chat_bubble_outline, color: AppTheme.binanceGold, size: 20),
-          ),
-        ),
-        // 3. أيقونة المساعد الذكي
-        GestureDetector(
-          onTap: () => _navigateTo(const AIAssistantScreen()),
-          child: Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.binanceCard,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.smart_toy_outlined, color: AppTheme.binanceGold, size: 20),
-          ),
-        ),
-        // 4. أيقونة الإشعارات
-        GestureDetector(
-          onTap: () => _navigateTo(const NotificationsScreen()),
-          child: Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.binanceCard,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.notifications_none, color: AppTheme.binanceGold, size: 20),
-          ),
-        ),
-        // 5. أيقونة الملف الشخصي
-        GestureDetector(
-          onTap: () => _navigateTo(const ProfileScreen()),
-          child: Container(
-            margin: const EdgeInsets.only(right: 4),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.binanceCard,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.person_outline, color: AppTheme.binanceGold, size: 20),
-          ),
-        ),
+        _buildIconButton(Icons.account_balance_wallet_outlined, () => _navigateTo(const WalletScreen())),
+        _buildIconButton(Icons.chat_bubble_outline, () => _navigateTo(const ChatScreen())),
+        _buildIconButton(Icons.smart_toy_outlined, () => _navigateTo(const AIAssistantScreen())),
+        _buildIconButton(Icons.notifications_none, () => _navigateTo(const NotificationsScreen())),
+        _buildIconButton(Icons.person_outline, () => _navigateTo(const ProfileScreen())),
       ],
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppTheme.binanceCard,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: AppTheme.binanceGold, size: 20),
+      ),
     );
   }
 
@@ -188,7 +197,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildStatItem(String label, String value, Color color) {
-    return Column(children: [Text(value, style: TextStyle(color: color, fontSize: 16, fontWeight: FontWeight.bold)), const SizedBox(height: 4), Text(label, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10))]);
+    return Column(children: [
+      Text(value, style: TextStyle(color: color, fontSize: 16, fontWeight: FontWeight.bold)),
+      const SizedBox(height: 4),
+      Text(label, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)),
+    ]);
   }
 
   Widget _buildCarousel() {
