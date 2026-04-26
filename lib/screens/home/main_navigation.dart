@@ -8,12 +8,13 @@ import '../auctions/auctions_screen.dart';
 import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
 import '../wallet/wallet_screen.dart';
+import '../more_screen.dart';
+import '../discover_screen.dart';
+import '../news_screen.dart';
 import '../add_ad_screen.dart';
 import '../add_product_screen.dart';
 import '../request_service_screen.dart';
 import '../receive_transfer_request_screen.dart';
-import '../notifications_screen.dart';
-import '../search_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -29,23 +30,23 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   late Animation<double> _rotationAnimation;
 
   final List<Widget> _screens = const [
-    ProfileScreen(),        // 0: حسابي
-    ChatScreen(),           // 1: مساعد
-    AuctionsScreen(),       // 2: مزاد
-    SizedBox(),             // 3: الزر الذهبي
-    InteractiveMapScreen(), // 4: مول بجوارك
-    AllAdsScreen(),         // 5: متاجر
-    HomeScreen(),           // 6: الرئيسية
+    HomeScreen(),
+    AllAdsScreen(),
+    InteractiveMapScreen(),
+    SizedBox(),
+    AuctionsScreen(),
+    ChatScreen(),
+    MoreScreen(),
   ];
 
   final List<Map<String, dynamic>> _navItems = [
-    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي', 'index': 0},
-    {'icon': 'assets/icons/svg/chat.svg', 'label': 'مساعد', 'index': 1},
-    {'icon': 'assets/icons/svg/auction.svg', 'label': 'مزاد', 'index': 2},
+    {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية', 'index': 0},
+    {'icon': 'assets/icons/svg/merchant.svg', 'label': 'متاجر', 'index': 1},
+    {'icon': 'assets/icons/svg/location.svg', 'label': 'مول بجوارك', 'index': 2},
     {'icon': null, 'label': '', 'index': 3, 'isFAB': true},
-    {'icon': 'assets/icons/svg/location.svg', 'label': 'مول بجوارك', 'index': 4},
-    {'icon': 'assets/icons/svg/merchant.svg', 'label': 'متاجر', 'index': 5},
-    {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية', 'index': 6},
+    {'icon': 'assets/icons/svg/auction.svg', 'label': 'مزاد', 'index': 4},
+    {'icon': 'assets/icons/svg/chat.svg', 'label': 'مساعد', 'index': 5},
+    {'icon': 'assets/icons/svg/more.svg', 'label': 'المزيد', 'index': 6},
   ];
 
   final List<Map<String, dynamic>> _quickActions = [
@@ -106,7 +107,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
     return Scaffold(
       appBar: AppBar(
-        // عرض اسم المنصة مرة واحدة فقط
         title: const Text(
           'FLEX YEMEN',
           style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: AppTheme.binanceGold),
@@ -114,29 +114,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         centerTitle: true,
         elevation: 0,
         backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
-        // إضافة أيقونة القائمة (ثلاث شرطات) في الجهة اليسرى
-        leading: IconButton(
-          icon: SvgPicture.asset('assets/icons/svg/menu.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-          tooltip: 'القائمة',
-        ),
-        // إضافة أيقونات البحث والإشعارات في الجهة اليمنى
         actions: [
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/svg/search.svg', width: 22, height: 22, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen())),
-            tooltip: 'بحث',
-          ),
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/svg/notification.svg', width: 22, height: 22, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())),
-            tooltip: 'الإشعارات',
-          ),
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/svg/wallet.svg', width: 22, height: 22, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WalletScreen())),
-            tooltip: 'المحفظة',
-          ),
+          IconButton(icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold), onPressed: () {}),
         ],
       ),
       body: _screens[_currentIndex],
