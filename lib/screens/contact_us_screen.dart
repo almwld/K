@@ -1,173 +1,146 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../providers/theme_manager.dart';
 import '../../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
-import '../widgets/custom_button.dart';
 
-class ContactUsScreen extends StatefulWidget {
+class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
 
-  @override
-  State<ContactUsScreen> createState() => _ContactUsScreenState();
-}
-
-class _ContactUsScreenState extends State<ContactUsScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _messageController = TextEditingController();
-  bool _isSubmitting = false;
-  
-  final List<Map<String, dynamic>> _contactMethods = [
-    {'icon': Icons.phone, 'title': 'الهاتف', 'value': '+967 777 123 456', 'color': 0xFF4CAF50, 'action': 'tel:+967777123456'},
-    {'icon': Icons.email, 'title': 'البريد الإلكتروني', 'value': 'support@flexyemen.com', 'color': 0xFF2196F3, 'action': 'mailto:support@flexyemen.com'},
-    {'icon': Icons.chat, 'title': 'واتساب', 'value': '+967 777 123 456', 'color': 0xFF25D366, 'action': 'https://wa.me/967777123456'},
-    {'icon': Icons.location_on, 'title': 'العنوان', 'value': 'صنعاء، اليمن', 'color': 0xFFFF9800, 'action': null},
+  final List<Map<String, dynamic>> _contactMethods = const [
+    {'icon': Icons.phone, 'title': 'اتصال', 'value': '+967 777 123 456', 'color': 0xFF4CAF50, 'action': 'tel'},
+    {'icon': Icons.chat, 'title': 'واتساب', 'value': '+967 777 123 456', 'color': 0xFF25D366, 'action': 'whatsapp'},
+    {'icon': Icons.email, 'title': 'بريد إلكتروني', 'value': 'info@flexyemen.com', 'color': 0xFFD4AF37, 'action': 'mail'},
+    {'icon': Icons.location_on, 'title': 'العنوان', 'value': 'صنعاء، الستين', 'color': 0xFF2196F3, 'action': 'map'},
   ];
-  
-  Future<void> _launchUrl(String url) async {
+
+  final List<Map<String, dynamic>> _socialMedia = const [
+    {'icon': Icons.facebook, 'name': 'فيسبوك', 'url': 'https://facebook.com/flexyemen', 'color': 0xFF1877F2},
+    {'icon': Icons.camera_alt, 'name': 'انستغرام', 'url': 'https://instagram.com/flexyemen', 'color': 0xFFE4405F},
+    {'icon': Icons.chat, 'name': 'تويتر', 'url': 'https://twitter.com/flexyemen', 'color': 0xFF1DA1F2},
+    {'icon': Icons.play_circle, 'name': 'يوتيوب', 'url': 'https://youtube.com/flexyemen', 'color': 0xFFFF0000},
+  ];
+
+  Future<void> _launchAction(Map<String, dynamic> method) async {
+    String url;
+    switch (method['action']) {
+      case 'tel':
+        url = 'tel:${method['value'].replaceAll(' ', '')}';
+        break;
+      case 'whatsapp':
+        url = 'https://wa.me/${method['value'].replaceAll(' ', '').replaceAll('+', '')}';
+        break;
+      case 'mail':
+        url = 'mailto:${method['value']}';
+        break;
+      case 'map':
+        url = 'https://maps.google.com/?q=${method['value']}';
+        break;
+      default:
+        return;
+    }
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     }
   }
-  
-  Future<void> _submitForm() async {
-    if (!_formKey.currentState!.validate()) return;
-    
-    setState(() => _isSubmitting = true);
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() => _isSubmitting = false);
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً'), backgroundColor: Colors.green),
-    );
-    _nameController.clear();
-    _emailController.clear();
-    _messageController.clear();
-  }
-  
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'اتصل بنا'),
+      backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+      appBar: AppBar(
+        title: const Text('تواصل معنا', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // طرق التواصل
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: _contactMethods.length,
-              itemBuilder: (context, index) {
-                final method = _contactMethods[index];
-                return GestureDetector(
-                  onTap: method['action'] != null ? () => _launchUrl(method['action']) : null,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Color(method['color']).withOpacity(0.3)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(method['icon'], color: Color(method['color']), size: 32),
-                        const SizedBox(height: 8),
-                        Text(method['title'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        Text(method['value'], style: const TextStyle(fontSize: 10), textAlign: TextAlign.center),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 24),
-            
-            // نموذج الاتصال
+            const SizedBox(height: 20),
             Container(
-              padding: const EdgeInsets.all(16),
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(16),
+                gradient: AppTheme.goldGradient,
+                shape: BoxShape.circle,
               ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const Text('أرسل لنا رسالة', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(labelText: 'الاسم الكامل', border: OutlineInputBorder()),
-                      validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                    ),
-                    const SizedBox(height: 12),
-                    TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(labelText: 'البريد الإلكتروني', border: OutlineInputBorder()),
-                      validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                    ),
-                    const SizedBox(height: 12),
-                    TextFormField(
-                      controller: _messageController,
-                      maxLines: 4,
-                      decoration: const InputDecoration(labelText: 'الرسالة', border: OutlineInputBorder()),
-                      validator: (v) => v?.isEmpty == true ? 'مطلوب' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    CustomButton(
-                      text: 'إرسال',
-                      onPressed: _submitForm,
-                      isLoading: _isSubmitting,
-                    ),
-                  ],
-                ),
+              child: const Center(
+                child: Text('FLX', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black)),
               ),
             ),
-            const SizedBox(height: 24),
-            
-            // ساعات العمل
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.binanceGold.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.access_time, color: AppTheme.binanceGold),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('ساعات العمل', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('السبت - الخميس: 9 صباحاً - 9 مساءً'),
-                        Text('الجمعة: مغلق'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 16),
+            const Text('فلكس يمن', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            ..._contactMethods.map((method) => _buildContactCard(method)),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(),
             ),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text('وسائل التواصل الاجتماعي', style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              alignment: WrapAlignment.center,
+              children: _socialMedia.map((social) => _buildSocialButton(social)).toList(),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContactCard(Map<String, dynamic> method) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      color: isDark ? AppTheme.binanceCard : Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Color(method['color'] as int).withOpacity(0.2),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(method['icon'], color: Color(method['color'] as int)),
+        ),
+        title: Text(method['title'], style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(method['value'], style: const TextStyle(color: Color(0xFF9CA3AF))),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF5E6673)),
+        onTap: () => _launchAction(method),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton(Map<String, dynamic> social) {
+    return GestureDetector(
+      onTap: () async {
+        if (await canLaunchUrl(Uri.parse(social['url']))) {
+          await launchUrl(Uri.parse(social['url']));
+        }
+      },
+      child: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+          color: Color(social['color'] as int).withOpacity(0.2),
+          shape: BoxShape.circle,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(social['icon'], color: Color(social['color'] as int), size: 28),
+            const SizedBox(height: 4),
+            Text(social['name'], style: const TextStyle(fontSize: 10)),
           ],
         ),
       ),
     );
   }
 }
-
