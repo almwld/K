@@ -10,6 +10,7 @@ import '../categories/all_categories_screen.dart';
 import '../stores/stores_screen.dart';
 import '../auctions/auctions_screen.dart';
 import '../offers_screen.dart';
+import '../following_screen.dart';
 import '../cart/cart_screen.dart';
 import '../wallet/wallet_screen.dart';
 import '../stats/sales_stats_screen.dart';
