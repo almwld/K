@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- تدرج ذهبي فاخر -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4E4A6"/>
+      <stop offset="25%" stop-color="#E8C84A"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="75%" stop-color="#B8962E"/>
+      <stop offset="100%" stop-color="#8B7322"/>
+    </linearGradient>
+
+    <!-- تدرج ذهبي أفقي -->
+    <linearGradient id="goldGradientHorizontal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B7322"/>
+      <stop offset="30%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#F4E4A6"/>
+      <stop offset="70%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#8B7322"/>
+    </linearGradient>
+
+    <!-- تدرج ذهبي للدائرة -->
+    <radialGradient id="goldRadial" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#F4E4A6"/>
+      <stop offset="40%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#8B7322"/>
+    </radialGradient>
+
+    <!-- توهج ذهبي قوي -->
+    <filter id="strongGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5" result="blur1"/>
+      <feGaussianBlur stdDeviation="10" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- خلفية شفافة -->
+
+  <g filter="url(#strongGlow)">
+    <!-- الشكل الرئيسي بتدرج قطري -->
+    <path d="M60 70 L60 130 L80 130 L80 100 L100 100 L100 130 L140 130 L140 70 L120 70 L120 100 L100 100 L100 70 Z" fill="url(#goldGradient)"/>
+    
+    <!-- الدائرة العلوية بتدرج شعاعي -->
+    <circle cx="100" cy="55" r="15" fill="url(#goldRadial)"/>
+    
+    <!-- لمسة إضافية: خط فاصل ذهبي في المنتصف -->
+    <line x1="80" y1="100" x2="120" y2="100" stroke="#F4E4A6" stroke-width="1.5" opacity="0.5"/>
+  </g>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- تدرج ذهبي فاخر -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="30%" stop-color="#F4E4A6"/>
+      <stop offset="60%" stop-color="#E8C84A"/>
+      <stop offset="100%" stop-color="#AA8C2C"/>
+    </linearGradient>
+
+    <!-- تدرج ذهبي للدائرة (من الأعلى للأسفل) -->
+    <linearGradient id="goldGradientVertical" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F4E4A6"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#B8962E"/>
+    </linearGradient>
+
+    <!-- توهج ذهبي خفيف -->
+    <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- توهج خارجي كحلي -->
+    <filter id="navyGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComponentTransfer in="blur" result="glow">
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- خلفية شفافة (لا يوجد مستطيل) -->
+
+  <!-- الشكل الداخلي بتدرج ذهبي -->
+  <g filter="url(#navyGlow)">
+    <path d="M60 70 L60 130 L80 130 L80 100 L100 100 L100 130 L140 130 L140 70 L120 70 L120 100 L100 100 L100 70 Z" fill="url(#goldGradient)"/>
+    <circle cx="100" cy="55" r="15" fill="url(#goldGradientVertical)"/>
+  </g>
+</svg>

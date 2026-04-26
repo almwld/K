@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحريك الأيقونة الذهبية (مثل باينانس)</title>
+    <style>
+        body {
+            height: 250vh; /* طول إضافي لتجربة التمرير */
+            margin: 0;
+            background-color: #0d1117; /* خلفية داكنة لإبراز الذهبي */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        /* حاوية الأيقونة الثابتة في الأعلى */
+        .icon-nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 120px; /* ارتفاع أولي */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .icon-container {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* تعريف الأجزاء المتحركة */
+        .top-parts, .bottom-parts, .circle-part {
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1); /* حركة فيزيائية ناعمة */
+            transform-origin: center;
+        }
+
+        /* --- تأثير الحركة عند التمرير (Scrolled State) --- */
+
+        .scrolled .icon-nav-bar {
+            height: 60px; /* ارتفاع أصغر في الأعلى */
+            background: rgba(13, 17, 23, 0.95); /* خلفية نصف شفافة */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .scrolled .icon-container {
+            transform: scale(0.6); /* تصغير الأيقونة ككل */
+        }
+
+        /* تأثير الدائرة: النزول لأسفل لتصبح مركزية */
+        .scrolled .circle-part {
+            transform: translateY(30px) scale(0.7); /* تنزل وتصغر */
+        }
+
+        /* تأثير السقف/المثلث: الهبوط والتقلب للداخل (النقطة الجوهرية) */
+        .scrolled .top-parts {
+            transform: translateY(20px) rotate(-180dp); /* تقلب بزاوية حادة */
+            opacity: 0.8;
+        }
+
+        /* تأثير القاعدة: الصعود للأعلى لتلتقي بالدائرة والسقف */
+        .scrolled .bottom-parts {
+            transform: translateY(-10px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="icon-nav-bar" id="navBar">
+        <div class="icon-container">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#D4AF37"/>
+                        <stop offset="30%" stop-color="#F4E4A6"/>
+                        <stop offset="60%" stop-color="#E8C84A"/>
+                        <stop offset="100%" stop-color="#AA8C2C"/>
+                    </linearGradient>
+                    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feMerge>
+                            <feMergeNode in="blur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                
+                <g filter="url(#softGlow)">
+                    <g class="bottom-parts">
+                        <path d="M40 70 L40 130 L160 130 L160 70 L120 70 L120 100 L80 100 L80 70 Z" fill="url(#goldGrad)"/>
+                    </g>
+                    <g class="bottom-parts">
+                        <path d="M40 130 L160 130 L160 160 L40 160 Z" fill="url(#goldGrad)"/>
+                    </g>
+                    <g class="top-parts">
+                        <path d="M40 70 L100 20 L160 70 Z" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
+                    </g>
+                    <circle class="circle-part" cx="100" cy="45" r="20" fill="url(#goldGrad)"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div style="margin-top: 150vh; color: white; text-align: center; width: 100%;">
+        <h2>قم بالتمرير للأسفل ↑↓</h2>
+        <p>الأيقونة الذهبية ستتغير حالتها برفق وحركة تقنية بمجرد بدء الـ Scroll.</p>
+    </div>
+
+    <script>
+        window.onscroll = function() {
+            const navBar = document.getElementById('navBar');
+            // إذا تجاوز التمرير 50 بكسل يتم إضافة الكلاس
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                navBar.classList.add("scrolled");
+            } else {
+                navBar.classList.remove("scrolled");
+            }
+        };
+    </script>
+
+</body>
+</html>
