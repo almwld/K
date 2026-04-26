@@ -32,7 +32,7 @@ class ContactUsScreen extends StatelessWidget {
         url = 'mailto:${method['value']}';
         break;
       case 'map':
-        url = 'https://maps.google.com/?q=${method['value']}';
+        url = 'https://maps.google.com/?q=${Uri.encodeComponent(method['value'])}';
         break;
       default:
         return;
@@ -71,7 +71,7 @@ class ContactUsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Text('فلكس يمن', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
-            ..._contactMethods.map((method) => _buildContactCard(method)),
+            ..._contactMethods.map((method) => _buildContactCard(method, isDark)),
             const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -85,7 +85,7 @@ class ContactUsScreen extends StatelessWidget {
               spacing: 16,
               runSpacing: 16,
               alignment: WrapAlignment.center,
-              children: _socialMedia.map((social) => _buildSocialButton(social)).toList(),
+              children: _socialMedia.map((social) => _buildSocialButton(social, isDark)).toList(),
             ),
             const SizedBox(height: 30),
           ],
@@ -94,9 +94,7 @@ class ContactUsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContactCard(Map<String, dynamic> method) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
+  Widget _buildContactCard(Map<String, dynamic> method, bool isDark) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       color: isDark ? AppTheme.binanceCard : Colors.white,
@@ -118,7 +116,7 @@ class ContactUsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialButton(Map<String, dynamic> social) {
+  Widget _buildSocialButton(Map<String, dynamic> social, bool isDark) {
     return GestureDetector(
       onTap: () async {
         if (await canLaunchUrl(Uri.parse(social['url']))) {
