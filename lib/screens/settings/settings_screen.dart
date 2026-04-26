@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'items': [
         {'icon': Icons.person_outline, 'title': 'الملف الشخصي', 'subtitle': 'تعديل المعلومات الشخصية', 'route': '/profile'},
         {'icon': Icons.lock_outline, 'title': 'الأمان', 'subtitle': 'كلمة المرور، المصادقة', 'route': '/security'},
-        {'icon': Icons.location_on_outline, 'title': 'العناوين', 'subtitle': 'إدارة عناوين الشحن', 'route': '/addresses'},
+        {'icon': Icons.location_on_outlined, 'title': 'العناوين', 'subtitle': 'إدارة عناوين الشحن', 'route': '/addresses'},
       ],
     },
     {
