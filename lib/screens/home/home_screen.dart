@@ -126,11 +126,11 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFF1E2329), Color(0xFF16213E)]), borderRadius: BorderRadius.circular(16)),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        _buildStatItem('إجمالي المشتريات', '1,234,567', AppTheme.binanceGold),
+        GestureDetector(onTap: () => _navigateToStats('purchases'), child: _buildStatItem('إجمالي المشتريات', '1,234,567', AppTheme.binanceGold)),
         Container(width: 1, height: 30, color: AppTheme.binanceBorder),
-        _buildStatItem('نقاط الولاء', '1,250', AppTheme.binanceGreen),
+        GestureDetector(onTap: () => _navigateToStats('points'), child: _buildStatItem('نقاط الولاء', '1,250', AppTheme.binanceGreen)),
         Container(width: 1, height: 30, color: AppTheme.binanceBorder),
-        _buildStatItem('الطلبات', '24', AppTheme.serviceBlue),
+        GestureDetector(onTap: () => _navigateToStats('orders'), child: _buildStatItem('الطلبات', '24', AppTheme.serviceBlue)),
       ]),
     );
   }
@@ -365,4 +365,32 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(builder: (_) => const AddStoryScreen()),
     );
+  }
+
+  void _navigateToStats(String type) {
+    switch (type) {
+      case 'purchases':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SalesStatsScreen(
+              title: 'إجمالي المشتريات',
+              totalValue: '1,234,567 ريال',
+              details: const [
+                {'label': 'إلكترونيات', 'value': '450,000', 'date': 'آخر 30 يوم', 'icon': Icons.devices, 'color': Color(0xFF2196F3)},
+                {'label': 'أزياء', 'value': '234,000', 'date': 'آخر 30 يوم', 'icon': Icons.checkroom, 'color': Color(0xFFE91E63)},
+                {'label': 'أثاث', 'value': '150,000', 'date': 'آخر 30 يوم', 'icon': Icons.chair, 'color': Color(0xFFFF9800)},
+                {'label': 'مطاعم', 'value': '89,000', 'date': 'آخر 30 يوم', 'icon': Icons.restaurant, 'color': Color(0xFF9C27B0)},
+              ],
+            ),
+          ),
+        );
+        break;
+      case 'points':
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const LoyaltyPointsScreen()));
+        break;
+      case 'orders':
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const OrdersStatsScreen()));
+        break;
+    }
   }
