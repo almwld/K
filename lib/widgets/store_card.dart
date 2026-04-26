@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 
 class StoreCard extends StatelessWidget {
@@ -37,7 +38,7 @@ class StoreCard extends StatelessWidget {
                 errorWidget: (_, __, ___) => Container(
                   width: 70, height: 70,
                   color: AppTheme.binanceGold.withOpacity(0.1),
-                  child: Icon(Icons.store, color: AppTheme.binanceGold, size: 30),
+                  child: SvgPicture.asset('assets/icons/svg/store.svg', width: 30, height: 30, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
                 ),
               ),
             ),
@@ -64,7 +65,7 @@ class StoreCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 14),
+                      SvgPicture.asset('assets/icons/svg/star_gold.svg', width: 14, height: 14),
                       const SizedBox(width: 4),
                       Text('${store['rating']}', style: const TextStyle(color: Colors.white, fontSize: 13)),
                       const SizedBox(width: 8),
@@ -74,7 +75,7 @@ class StoreCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios, color: Color(0xFF5E6673), size: 16),
+            SvgPicture.asset('assets/icons/svg/arrow.svg', width: 16, height: 16, colorFilter: const ColorFilter.mode(Color(0xFF5E6673), BlendMode.srcIn)),
           ],
         ),
       ),

@@ -25,8 +25,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   bool _isMenuOpen = false;
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
-  
-  final TextEditingController _searchController = TextEditingController();
 
   final List<Widget> _screens = const [
     HomeScreen(),
@@ -70,7 +68,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void dispose() {
     _rotationController.dispose();
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -101,80 +98,22 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 
-  void _showVoiceSearch() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('البحث الصوتي قريباً...'), backgroundColor: AppTheme.binanceGold),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: null, // إزالة اسم المنصة من الشريط
-        centerTitle: false,
+        title: const Text(
+          'FLEX YEMEN',
+          style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: AppTheme.binanceGold),
+        ),
+        centerTitle: true,
         elevation: 0,
         backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
-        // الجهة اليسرى: زر القائمة (ثلاث شرطات) + زر المحفظة
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.menu, color: AppTheme.binanceGold),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              tooltip: 'القائمة',
-            ),
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/svg/wallet.svg',
-                width: 22,
-                height: 22,
-                colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn),
-              ),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const WalletScreen()),
-              ),
-              tooltip: 'المحفظة',
-            ),
-          ],
-        ),
-        // الجهة اليمنى: شريط البحث + زر البحث الصوتي
         actions: [
-          Container(
-            width: 200,
-            height: 40,
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            decoration: BoxDecoration(
-              color: isDark ? AppTheme.binanceCard : Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: AppTheme.binanceGold.withOpacity(0.3)),
-            ),
-            child: TextField(
-              controller: _searchController,
-              style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 13),
-              decoration: InputDecoration(
-                hintText: 'ابحث...',
-                hintStyle: TextStyle(color: isDark ? Colors.grey.shade500 : Colors.grey.shade600, fontSize: 12),
-                prefixIcon: Icon(Icons.search, color: AppTheme.binanceGold, size: 18),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-              ),
-              onSubmitted: (value) {
-                // تنفيذ البحث
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('البحث عن: $value'), backgroundColor: AppTheme.binanceGold),
-                );
-              },
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.mic, color: AppTheme.binanceGold),
-            onPressed: _showVoiceSearch,
-            tooltip: 'بحث صوتي',
-          ),
+          IconButton(icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold), onPressed: () {}),
         ],
       ),
       body: _screens[_currentIndex],
