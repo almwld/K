@@ -13,7 +13,7 @@ import '../wallet/wallet_screen.dart';
 import '../stats/sales_stats_screen.dart';
 import '../stats/loyalty_points_screen.dart';
 import '../stats/orders_stats_screen.dart';
-import '../all_stores_screen.dart';
+// import removed
 import '../markets_screen.dart';
 
 class HomeScreen extends StatefulWidget {
