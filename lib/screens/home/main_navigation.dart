@@ -26,24 +26,25 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   late AnimationController _rotationController;
   late Animation<double> _rotationAnimation;
 
+  // ترتيب الشاشات حسب الطلب الجديد
   final List<Widget> _screens = const [
-    HomeScreen(),
-    AllAdsScreen(),
-    InteractiveMapScreen(),
-    SizedBox(),
-    AuctionsScreen(),
-    ChatScreen(),
-    ProfileScreen(),
+    ProfileScreen(),        // 0: حسابي
+    ChatScreen(),           // 1: مساعد
+    AuctionsScreen(),       // 2: مزاد
+    SizedBox(),             // 3: الزر الذهبي
+    InteractiveMapScreen(), // 4: مول بجوارك
+    AllAdsScreen(),         // 5: متاجر
+    HomeScreen(),           // 6: الرئيسية
   ];
 
   final List<Map<String, dynamic>> _navItems = [
-    {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية', 'index': 0},
-    {'icon': 'assets/icons/svg/merchant.svg', 'label': 'متاجر', 'index': 1},
-    {'icon': 'assets/icons/svg/location.svg', 'label': 'بجانبك', 'index': 2},
+    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي', 'index': 0},
+    {'icon': 'assets/icons/svg/chat.svg', 'label': 'مساعد', 'index': 1},
+    {'icon': 'assets/icons/svg/auction.svg', 'label': 'مزاد', 'index': 2},
     {'icon': null, 'label': '', 'index': 3, 'isFAB': true},
-    {'icon': 'assets/icons/svg/auction.svg', 'label': 'مزاد', 'index': 4},
-    {'icon': 'assets/icons/svg/chat.svg', 'label': 'مساعد', 'index': 5},
-    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي', 'index': 6},
+    {'icon': 'assets/icons/svg/location.svg', 'label': 'مول بجوارك', 'index': 4},
+    {'icon': 'assets/icons/svg/merchant.svg', 'label': 'متاجر', 'index': 5},
+    {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية', 'index': 6},
   ];
 
   final List<Map<String, dynamic>> _quickActions = [
