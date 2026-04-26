@@ -20,6 +20,8 @@ import 'screens/help_support_screen.dart';
 import 'screens/markets_screen.dart';
 import 'screens/discover_screen.dart';
 import 'screens/news_screen.dart';
+import 'screens/discover_screen.dart';
+import 'screens/news_screen.dart';
 import 'screens/nearby_screen.dart';
 import 'screens/following_screen.dart';
 import 'screens/order_detail_screen.dart';
@@ -156,6 +158,8 @@ class FlexYemenApp extends StatelessWidget {
         '/addresses': (context) => const AddressesScreen(),
         '/help': (context) => const HelpSupportScreen(),
         '/markets': (context) => const MarketsScreen(),
+    '/discover': (context) => const DiscoverScreen(),
+    '/news': (context) => const NewsScreen(),
     '/discover': (context) => const DiscoverScreen(),
     '/news': (context) => const NewsScreen(),
         '/nearby': (context) => const NearbyScreen(),
