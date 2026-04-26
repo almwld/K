@@ -4,17 +4,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/stories_widget.dart';
-import '../categories/all_categories_screen.dart';
-import '../stores/stores_screen.dart';
-import '../auctions/auctions_screen.dart';
-import '../offers_screen.dart';
-import '../cart/cart_screen.dart';
-import '../wallet/wallet_screen.dart';
+import '../following_screen.dart';
+import '../markets_screen.dart';
 import '../stats/sales_stats_screen.dart';
 import '../stats/loyalty_points_screen.dart';
 import '../stats/orders_stats_screen.dart';
-import '../following_screen.dart';
-import '../markets_screen.dart';
+import '../stories/add_story_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {'title': 'عروض العيد', 'subtitle': 'خصومات تصل إلى 60%', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600', 'buttonText': 'استفد الآن', 'badge': 'عرض خاص', 'discount': '60%'},
   ];
 
-  // بيانات الحالات (Stories)
+  // بيانات الحالات (Stories) - استخدام StoryModel من stories_widget
   final List<StoryModel> _stories = [
     StoryModel(id: 'user', name: 'إضافة حالة', imageUrl: '', time: '', isUser: true),
     StoryModel(id: '1', name: 'أحمد محمد', imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg', time: 'منذ 5 دقائق', isViewed: false),
@@ -78,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addStory() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('إضافة حالة - قريباً'), backgroundColor: AppTheme.binanceGold));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const AddStoryScreen()));
   }
 
   @override
@@ -242,12 +237,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-class StoryModel {
-  final String id, name, imageUrl, time;
-  final bool isViewed;
-  final bool isUser;
-
-  StoryModel({required this.id, required this.name, required this.imageUrl, required this.time, this.isViewed = false, this.isUser = false});
-}
-
