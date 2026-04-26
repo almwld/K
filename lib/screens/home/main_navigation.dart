@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../theme/app_theme.dart';
-import '../cart/cart_screen.dart';
 import '../stores/stores_screen.dart';
-import '../profile/profile_screen.dart';
 import '../auctions/auctions_screen.dart';
-import '../wallet/wallet_screen.dart';
-import '../settings/settings_screen.dart';
+import '../cart/cart_screen.dart';
+import '../profile/profile_screen.dart';
+import '../nearby_screen.dart';
+import '../../widgets/golden_floating_button.dart';
 import 'home_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -21,10 +22,9 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _screens = const [
     HomeScreen(),
     StoresScreen(),
+    NearbyScreen(),
     AuctionsScreen(),
-    WalletScreen(),
     CartScreen(),
-    SettingsScreen(),
     ProfileScreen(),
   ];
 
@@ -32,6 +32,8 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_currentIndex],
+      floatingActionButton: const GoldenFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppTheme.binanceDark,
@@ -44,14 +46,31 @@ class _MainNavigationState extends State<MainNavigation> {
           backgroundColor: AppTheme.binanceDark,
           selectedItemColor: AppTheme.binanceGold,
           unselectedItemColor: const Color(0xFF5E6673),
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'الرئيسية'),
-            BottomNavigationBarItem(icon: Icon(Icons.store_outlined), label: 'المتاجر'),
-            BottomNavigationBarItem(icon: Icon(Icons.gavel_outlined), label: 'المزادات'),
-            BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet_outlined), label: 'المحفظة'),
-            BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined), label: 'السلة'),
-            BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: 'الإعدادات'),
-            BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'حسابي'),
+          items: [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/svg/home.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+              label: 'الرئيسية',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/svg/store.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+              label: 'متاجر',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/svg/location.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+              label: 'بالجوار',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/svg/auction.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+              label: 'مزادات',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/svg/cart.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+              label: 'سلة',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/icons/svg/profile.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppTheme.binanceGold, BlendMode.srcIn)),
+              label: 'حسابي',
+            ),
           ],
         ),
       ),
