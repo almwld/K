@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/stories_widget.dart';
 import '../../widgets/stories_widget.dart' show StoryModel;
+import '../../widgets/stories_widget.dart' show StoryModel;
 import '../categories/all_categories_screen.dart';
 import '../stores/stores_screen.dart';
 import '../auctions/auctions_screen.dart';
