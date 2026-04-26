@@ -81,3 +81,11 @@ class AppTheme {
     return Theme.of(context).brightness == Brightness.dark ? binanceCard : lightCard;
   }
 }
+
+  // ألوان إضافية
+  static const Color binanceGoldLight = Color(0xFFF4E4A6);
+  static const LinearGradient binanceGoldGradient = LinearGradient(
+    colors: [Color(0xFFF4E4A6), Color(0xFFD4AF37), Color(0xFFAA8C2C)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
