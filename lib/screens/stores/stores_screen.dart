@@ -143,6 +143,9 @@ class _StoresScreenState extends State<StoresScreen> {
           ),
           _buildMallsSection(),
           _buildProductsGrid(),
+          _buildAdsSection(),
+          _buildDailyProductsSection(),
+          _buildCommoditiesSection(),
         ],
       ),
     );
@@ -607,3 +610,228 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 }
+
+  // ==================== قسم الإعلانات ====================
+  Widget _buildAdsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _ads = [
+      {'title': 'عرض خاص على الإلكترونيات', 'discount': '50%', 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=400', 'color': 0xFF2196F3},
+      {'title': 'تخفيضات العيد', 'discount': '30%', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 'color': 0xFFF6465D},
+      {'title': 'عروض VIP', 'discount': '25%', 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400', 'color': 0xFFD4AF37},
+      {'title': 'توصيل مجاني', 'discount': '100%', 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400', 'color': 0xFF4CAF50},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('عروض وإعلانات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _ads.length,
+            itemBuilder: (context, index) {
+              final ad = _ads[index];
+              return Container(
+                width: 300,
+                margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(ad['color'] as int), Color(ad['color'] as int).withOpacity(0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: 16,
+                      top: 16,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            ad['title'],
+                            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'خصم ${ad['discount']}',
+                            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 16,
+                      bottom: 16,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          'استفد الآن',
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم الاستهلاكيات والمنتجات اليومية ====================
+  Widget _buildDailyProductsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _dailyProducts = [
+      {'name': 'خبز عربي', 'price': '1,000', 'image': 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200', 'category': 'مخبوزات'},
+      {'name': 'حليب طازج', 'price': '1,500', 'image': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200', 'category': 'ألبان'},
+      {'name': 'بيض', 'price': '800', 'image': 'https://images.unsplash.com/photo-1582727657635-c771002bd5a6?w=200', 'category': 'بيض'},
+      {'name': 'زبادي', 'price': '500', 'image': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200', 'category': 'ألبان'},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('الاستهلاكيات اليومية', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 110,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _dailyProducts.length,
+            itemBuilder: (context, index) {
+              final product = _dailyProducts[index];
+              return Container(
+                width: 130,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        product['image'],
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      product['name'],
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                      maxLines: 1,
+                    ),
+                    Text(
+                      product['price'],
+                      style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 11),
+                    ),
+                    Text(
+                      product['category'],
+                      style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 9),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم السلع والمواد التموينية ====================
+  Widget _buildCommoditiesSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _commodities = [
+      {'name': 'أرز بسمتي', 'price': '8,000', 'kg': '5 كجم', 'image': 'https://images.unsplash.com/photo-1586201375761-83865001e8ac?w=200'},
+      {'name': 'زيت دوار الشمس', 'price': '3,500', 'kg': '1.8 لتر', 'image': 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200'},
+      {'name': 'سكر أبيض', 'price': '2,500', 'kg': '2 كجم', 'image': 'https://images.unsplash.com/photo-1586201375761-83865001e8ac?w=200'},
+      {'name': 'طحين', 'price': '1,800', 'kg': '2 كجم', 'image': 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200'},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('السلع والمواد التموينية', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 140,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _commodities.length,
+            itemBuilder: (context, index) {
+              final commodity = _commodities[index];
+              return Container(
+                width: 140,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        commodity['image'],
+                        height: 60,
+                        width: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      commodity['name'],
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                      maxLines: 1,
+                    ),
+                    Text(
+                      commodity['price'],
+                      style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 11),
+                    ),
+                    Text(
+                      commodity['kg'],
+                      style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 9),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
