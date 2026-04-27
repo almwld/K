@@ -3,50 +3,136 @@ import '../theme/app_theme.dart';
 
 class RequestServiceScreen extends StatefulWidget {
   const RequestServiceScreen({super.key});
+
   @override
   State<RequestServiceScreen> createState() => _RequestServiceScreenState();
 }
 
 class _RequestServiceScreenState extends State<RequestServiceScreen> {
-  final _titleController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _descController = TextEditingController();
-  String _serviceType = 'صيانة';
-  String _urgency = 'عادي';
-  final _services = ['صيانة', 'تنظيف', 'سباكة', 'كهرباء', 'دهان', 'نجارة', 'تكييف', 'نقل'];
-  final _urgencies = ['عاجل', 'عادي', 'خلال أسبوع'];
+  String _selectedService = 'صيانة منزلية';
+  bool _isUrgent = false;
+  bool _isLoading = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF0B0E11),
-      appBar: AppBar(
-        title: const Text('طلب خدمة', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF0B0E11),
-        elevation: 0,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم إرسال طلب الخدمة!'), backgroundColor: Color(0xFF0ECB81)));
-            },
-            child: const Text('إرسال', style: TextStyle(color: Color(0xFFFF9800), fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
-      body: ListView(padding: const EdgeInsets.all(16), children: [
-        TextField(controller: _titleController, style: const TextStyle(color: Colors.white), decoration: InputDecoration(labelText: 'عنوان الطلب', labelStyle: const TextStyle(color: Color(0xFF9CA3AF)), filled: true, fillColor: const Color(0xFF1E2329), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
-        const SizedBox(height: 16),
-        Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: DropdownButtonFormField<String>(value: _serviceType, dropdownColor: const Color(0xFF1E2329), style: const TextStyle(color: Colors.white), decoration: const InputDecoration(labelText: 'نوع الخدمة', labelStyle: TextStyle(color: Color(0xFF9CA3AF)), border: InputBorder.none), items: _services.map((s) => DropdownMenuItem(value: s, child: Text(s, style: const TextStyle(color: Colors.white)))).toList(), onChanged: (v) => setState(() => _serviceType = v!))),
-        const SizedBox(height: 16),
-        Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4), decoration: BoxDecoration(color: const Color(0xFF1E2329), borderRadius: BorderRadius.circular(12)), child: DropdownButtonFormField<String>(value: _urgency, dropdownColor: const Color(0xFF1E2329), style: const TextStyle(color: Colors.white), decoration: const InputDecoration(labelText: 'درجة الاستعجال', labelStyle: TextStyle(color: Color(0xFF9CA3AF)), border: InputBorder.none), items: _urgencies.map((u) => DropdownMenuItem(value: u, child: Text(u, style: TextStyle(color: u == 'عاجل' ? const Color(0xFFF6465D) : Colors.white)))).toList(), onChanged: (v) => setState(() => _urgency = v!))),
-        const SizedBox(height: 16),
-        TextField(controller: _descController, maxLines: 4, style: const TextStyle(color: Colors.white), decoration: InputDecoration(labelText: 'وصف الخدمة المطلوبة', labelStyle: const TextStyle(color: Color(0xFF9CA3AF)), filled: true, fillColor: const Color(0xFF1E2329), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none))),
-        const SizedBox(height: 20),
-        ElevatedButton(onPressed: () { Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم إرسال الطلب!'), backgroundColor: Color(0xFF0ECB81))); }, style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF9800), padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: const Text('إرسال الطلب', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))),
-      ]),
+  final List<String> _services = [
+    'صيانة منزلية',
+    'تنظيف',
+    'سباكة',
+    'كهرباء',
+    'دهان',
+    'نقل عفش',
+    'تصليح أجهزة',
+  ];
+
+  Future<void> _submitRequest() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isLoading = true);
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() => _isLoading = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تم إرسال طلب الخدمة بنجاح!'), backgroundColor: AppTheme.binanceGreen),
     );
+    Navigator.pop(context);
   }
 
   @override
-  void dispose() { _titleController.dispose(); _descController.dispose(); super.dispose(); }
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+      appBar: AppBar(
+        title: const Text('طلب خدمة', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.binanceGold))
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        labelText: 'الاسم الكامل',
+                        prefixIcon: Icon(Icons.person, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (v) => v!.isEmpty ? 'يرجى إدخال الاسم' : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        labelText: 'رقم الهاتف',
+                        prefixIcon: Icon(Icons.phone, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (v) => v!.isEmpty ? 'يرجى إدخال رقم الهاتف' : null,
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: _selectedService,
+                      items: _services.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+                      onChanged: (v) => setState(() => _selectedService = v!),
+                      decoration: const InputDecoration(
+                        labelText: 'نوع الخدمة',
+                        prefixIcon: Icon(Icons.handyman, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _descController,
+                      maxLines: 4,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        labelText: 'تفاصيل الطلب',
+                        prefixIcon: Icon(Icons.description, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SwitchListTile(
+                      title: const Text('طلب مستعجل'),
+                      value: _isUrgent,
+                      onChanged: (v) => setState(() => _isUrgent = v),
+                      activeColor: AppTheme.binanceGold,
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _submitRequest,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.binanceGold,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('إرسال الطلب', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
 }

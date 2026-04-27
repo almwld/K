@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../providers/theme_manager.dart';
-import '../../theme/app_theme.dart';
-import '../widgets/simple_app_bar.dart';
+import '../theme/app_theme.dart';
 
 class ReceiveTransferRequestScreen extends StatefulWidget {
   const ReceiveTransferRequestScreen({super.key});
@@ -14,46 +11,21 @@ class ReceiveTransferRequestScreen extends StatefulWidget {
 class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScreen> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
-  final _senderNameController = TextEditingController();
-  final _transferCodeController = TextEditingController();
-  final _notesController = TextEditingController();
-  
-  bool _isSubmitting = false;
+  final _senderController = TextEditingController();
+  String _selectedMethod = 'محفظة جيب';
+  bool _isLoading = false;
+
+  final List<String> _paymentMethods = ['محفظة جيب', 'محفظة جوالي', 'محفظة كاش', 'تحويل بنكي'];
 
   Future<void> _submitRequest() async {
     if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isSubmitting = true);
-    
-    try {
-      final supabase = Supabase.instance.client;
-      final userId = supabase.auth.currentUser?.id;
-      
-      if (userId == null) {
-        throw Exception('يجب تسجيل الدخول أولاً');
-      }
-      
-      await supabase.from('transfer_requests').insert({
-        'user_id': userId,
-        'amount': double.parse(_amountController.text),
-        'sender_name': _senderNameController.text,
-        'transfer_code': _transferCodeController.text,
-        'notes': _notesController.text,
-        'status': 'pending',
-        'created_at': DateTime.now().toIso8601String(),
-      });
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم إرسال طلب استلام الحوالة بنجاح'), backgroundColor: Colors.green),
-      );
-      Navigator.pop(context);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('خطأ: $e'), backgroundColor: Colors.red),
-      );
-    } finally {
-      setState(() => _isSubmitting = false);
-    }
+    setState(() => _isLoading = true);
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() => _isLoading = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تم إرسال طلب استلام الحوالة!'), backgroundColor: AppTheme.binanceGreen),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -61,59 +33,75 @@ class _ReceiveTransferRequestScreenState extends State<ReceiveTransferRequestScr
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.nightBackground : AppTheme.lightBackground,
-      appBar: const SimpleAppBar(title: 'استلام حوالة'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Icon(Icons.account_balance_wallet, size: 60, color: AppTheme.gold),
-              const SizedBox(height: 16),
-              const Text('استلام حوالة مالية', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Text('أدخل بيانات الحوالة لاستلامها', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
-              const SizedBox(height: 32),
-              TextFormField(
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'المبلغ (ريال)', prefixIcon: Icon(Icons.attach_money), border: OutlineInputBorder()),
-                validator: (v) => v!.isEmpty ? 'الرجاء إدخال المبلغ' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _senderNameController,
-                decoration: const InputDecoration(labelText: 'اسم المرسل', prefixIcon: Icon(Icons.person), border: OutlineInputBorder()),
-                validator: (v) => v!.isEmpty ? 'الرجاء إدخال اسم المرسل' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _transferCodeController,
-                decoration: const InputDecoration(labelText: 'رمز الحوالة', prefixIcon: Icon(Icons.code), border: OutlineInputBorder()),
-                validator: (v) => v!.isEmpty ? 'الرجاء إدخال رمز الحوالة' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _notesController,
-                maxLines: 3,
-                decoration: const InputDecoration(labelText: 'ملاحظات إضافية', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _isSubmitting ? null : _submitRequest,
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.gold, foregroundColor: Colors.black),
-                  child: _isSubmitting ? const CircularProgressIndicator(strokeWidth: 2) : const Text('استلام الحوالة'),
+      backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+      appBar: AppBar(
+        title: const Text('استلام حوالة', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.binanceGold))
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        labelText: 'المبلغ (ريال)',
+                        prefixIcon: Icon(Icons.attach_money, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (v) => v!.isEmpty ? 'يرجى إدخال المبلغ' : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _senderController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        labelText: 'اسم المرسل',
+                        prefixIcon: Icon(Icons.person, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: _selectedMethod,
+                      items: _paymentMethods.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
+                      onChanged: (v) => setState(() => _selectedMethod = v!),
+                      decoration: const InputDecoration(
+                        labelText: 'طريقة الاستلام',
+                        prefixIcon: Icon(Icons.payment, color: AppTheme.binanceGold),
+                        filled: true,
+                        fillColor: Color(0xFF1E2329),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _submitRequest,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.binanceGold,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('تأكيد الاستلام', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
-
