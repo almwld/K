@@ -150,6 +150,10 @@ class _StoresScreenState extends State<StoresScreen> {
           _buildSeasonalOffersSection(),
           _buildCouponsSection(),
           _buildLoyaltySection(),
+          _buildStoreServicesSection(),
+          _buildSeasonalOffersSection(),
+          _buildCouponsSection(),
+          _buildLoyaltySection(),
           _buildProductsGrid(),
           _buildAdsSection(),
           _buildDailyProductsSection(),
@@ -1070,6 +1074,256 @@ class _StoresScreenState extends State<StoresScreen> {
         ),
         const SizedBox(height: 16),
       ],
+    );
+  }
+
+  // ==================== قسم خدمات المتاجر ====================
+  Widget _buildStoreServicesSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _services = [
+      {'name': 'صيانة أجهزة', 'icon': Icons.build, 'color': 0xFF2196F3, 'stores': 45},
+      {'name': 'توصيل طلبات', 'icon': Icons.delivery_dining, 'color': 0xFF4CAF50, 'stores': 89},
+      {'name': 'تصليح سيارات', 'icon': Icons.car_repair, 'color': 0xFFFF9800, 'stores': 34},
+      {'name': 'تنظيف منازل', 'icon': Icons.cleaning_services, 'color': 0xFF9C27B0, 'stores': 56},
+      {'name': 'دهان وديكور', 'icon': Icons.brush, 'color': 0xFFE91E63, 'stores': 23},
+      {'name': 'سباكة وكهرباء', 'icon': Icons.plumbing, 'color': 0xFF00BCD4, 'stores': 67},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('خدمات المتاجر', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _services.length,
+            itemBuilder: (context, index) {
+              final service = _services[index];
+              return Container(
+                width: 110,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(service['icon'], color: Color(service['color'] as int), size: 28),
+                    const SizedBox(height: 4),
+                    Text(service['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11), textAlign: TextAlign.center),
+                    Text('${service['stores']} متجر', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 9)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم العروض الموسمية ====================
+  Widget _buildSeasonalOffersSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _seasonalOffers = [
+      {'name': 'عروض الصيف', 'discount': '40%', 'endDate': 'باقي 5 أيام', 'color': 0xFFF6465D},
+      {'name': 'عروض العيد', 'discount': '50%', 'endDate': 'باقي 10 أيام', 'color': 0xFFFF9800},
+      {'name': 'تخفيضات الجمعة البيضاء', 'discount': '70%', 'endDate': 'باقي 2 أيام', 'color': 0xFF4CAF50},
+      {'name': 'عروض الشتاء', 'discount': '35%', 'endDate': 'باقي 15 يوم', 'color': 0xFF2196F3},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('عروض موسمية', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 110,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _seasonalOffers.length,
+            itemBuilder: (context, index) {
+              final offer = _seasonalOffers[index];
+              return Container(
+                width: 200,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(offer['color'] as int), Color(offer['color'] as int).withOpacity(0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(offer['name'], style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    Text('خصم ${offer['discount']}', style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    Text(offer['endDate'], style: const TextStyle(color: Colors.white70, fontSize: 10)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم الكوبونات ====================
+  Widget _buildCouponsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _coupons = [
+      {'code': 'FLEX10', 'discount': '10%', 'min': '100,000', 'expiry': '2024-05-30', 'color': 0xFFD4AF37},
+      {'code': 'WELCOME20', 'discount': '20%', 'min': '50,000', 'expiry': '2024-06-15', 'color': 0xFF4CAF50},
+      {'code': 'VIP25', 'discount': '25%', 'min': '200,000', 'expiry': '2024-05-20', 'color': 0xFFF6465D},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('كوبونات خصم', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _coupons.length,
+            itemBuilder: (context, index) {
+              final coupon = _coupons[index];
+              return Container(
+                width: 220,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Color(coupon['color'] as int).withOpacity(0.5)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Color(coupon['color'] as int).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(coupon['discount'], style: TextStyle(color: Color(coupon['color'] as int), fontSize: 14, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('كود: ${coupon['code']}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                          Text('خصم ${coupon['discount']}', style: TextStyle(color: Color(coupon['color'] as int), fontSize: 11)),
+                          Text('لطلبات أكثر من ${coupon['min']} ريال', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 9)),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('تم نسخ الكود: ${coupon['code']}'), backgroundColor: AppTheme.binanceGreen),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.binanceGold,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text('نسخ', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 11)),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم نقاط الولاء ====================
+  Widget _buildLoyaltySection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFD4AF37), Color(0xFFB8962E)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.stars, color: Colors.white, size: 32),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('برنامج نقاط الولاء', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text('اكسب نقاط مع كل عملية شراء واستبدلها بخصومات', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text('1000 نقطة = 10,000 ريال', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 10)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
