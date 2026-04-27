@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
+import '../../providers/theme_manager.dart';
+import '../../services/theme_service.dart';
 import 'home_screen.dart';
 import '../all_ads_screen.dart';
 import '../map/interactive_map_screen.dart';
-import '../auctions/auctions_screen.dart';
+import '../wallet/wallet_screen.dart';
 import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
-import '../wallet/wallet_screen.dart';
-import '../more_screen.dart';
-import '../discover_screen.dart';
-import '../news_screen.dart';
+import '../auctions/auctions_screen.dart';
+import '../cart/cart_screen.dart';
 import '../add_ad_screen.dart';
 import '../add_product_screen.dart';
 import '../request_service_screen.dart';
@@ -23,82 +25,232 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
-  bool _isMenuOpen = false;
-  late AnimationController _rotationController;
-  late Animation<double> _rotationAnimation;
+  Color _themeColor = AppTheme.binanceGold;
 
   final List<Widget> _screens = const [
-    HomeScreen(),
-    AllAdsScreen(),
-    InteractiveMapScreen(),
-    SizedBox(),
-    AuctionsScreen(),
-    ChatScreen(),
-    MoreScreen(),
+    HomeScreen(),           // 0: الرئيسية
+    AllAdsScreen(),         // 1: متاجر
+    InteractiveMapScreen(), // 2: بجوارك
+    SizedBox(),             // 3: الزر الذهبي
+    AuctionsScreen(),       // 4: مزاد
+    ChatScreen(),           // 5: دردشة
+    ProfileScreen(),        // 6: حسابي
   ];
 
   final List<Map<String, dynamic>> _navItems = [
     {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية', 'index': 0},
     {'icon': 'assets/icons/svg/merchant.svg', 'label': 'متاجر', 'index': 1},
-    {'icon': 'assets/icons/svg/location.svg', 'label': 'مول بجوارك', 'index': 2},
+    {'icon': 'assets/icons/svg/location.svg', 'label': 'بجوارك', 'index': 2},
     {'icon': null, 'label': '', 'index': 3, 'isFAB': true},
     {'icon': 'assets/icons/svg/auction.svg', 'label': 'مزاد', 'index': 4},
-    {'icon': 'assets/icons/svg/chat.svg', 'label': 'مساعد', 'index': 5},
-    {'icon': 'assets/icons/svg/more.svg', 'label': 'المزيد', 'index': 6},
+    {'icon': 'assets/icons/svg/chat.svg', 'label': 'دردشة', 'index': 5},
+    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي', 'index': 6},
   ];
 
   final List<Map<String, dynamic>> _quickActions = [
-    {'icon': Icons.add_circle_outline, 'title': 'إضافة إعلان', 'color': AppTheme.serviceBlue, 'screen': const AddAdScreen()},
-    {'icon': Icons.shopping_bag_outlined, 'title': 'إضافة منتج', 'color': AppTheme.serviceOrange, 'screen': const AddProductScreen()},
-    {'icon': Icons.handyman_outlined, 'title': 'طلب خدمة', 'color': AppTheme.binanceGreen, 'screen': const RequestServiceScreen()},
-    {'icon': Icons.account_balance_wallet_outlined, 'title': 'استلام حوالة', 'color': Colors.purple, 'screen': const ReceiveTransferRequestScreen()},
+    {'icon': Icons.add_circle_outline, 'title': 'إضافة إعلان', 'color': AppTheme.serviceBlue, 'screen': '/add_ad'},
+    {'icon': Icons.shopping_bag_outlined, 'title': 'إضافة منتج', 'color': AppTheme.serviceOrange, 'screen': '/add_product'},
+    {'icon': Icons.handyman_outlined, 'title': 'طلب خدمة', 'color': AppTheme.binanceGreen, 'screen': '/request_service'},
+    {'icon': Icons.account_balance_wallet_outlined, 'title': 'استلام حوالة', 'color': Colors.purple, 'screen': '/receive_transfer'},
   ];
 
   @override
   void initState() {
     super.initState();
-    _rotationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _rotationAnimation = Tween<double>(begin: 0, end: 0.5).animate(
-      CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut),
-    );
+    _loadThemeColor();
   }
 
-  @override
-  void dispose() {
-    _rotationController.dispose();
-    super.dispose();
+  Future<void> _loadThemeColor() async {
+    final color = await ThemeService.getThemeColor();
+    setState(() => _themeColor = color);
   }
 
   void _onItemTapped(int index) {
     if (index == 3) {
-      _toggleMenu();
+      _showQuickActionsSheet();
       return;
     }
-    if (_isMenuOpen) _toggleMenu();
     setState(() {
       _currentIndex = index;
     });
   }
 
-  void _toggleMenu() {
-    setState(() {
-      _isMenuOpen = !_isMenuOpen;
-      if (_isMenuOpen) {
-        _rotationController.forward();
-      } else {
-        _rotationController.reverse();
-      }
-    });
+  void _showQuickActionsSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.binanceCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppTheme.binanceBorder,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'إجراءات سريعة',
+                style: TextStyle(
+                  fontFamily: 'Changa',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 20),
+              ..._quickActions.map((action) => ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: (action['color'] as Color).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(action['icon'] as IconData, color: action['color'] as Color),
+                ),
+                title: Text(action['title'] as String, style: const TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, action['screen'] as String);
+                },
+              )),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
-  void _executeAction(Widget screen) {
-    _toggleMenu();
-    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+  void _showColorPicker() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.binanceCard,
+        title: const Text(
+          'اختر لون التطبيق',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontFamily: 'Changa', color: Colors.white),
+        ),
+        content: SizedBox(
+          width: 300,
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: ThemeService.availableColors.length,
+            itemBuilder: (context, index) {
+              final color = ThemeService.availableColors[index];
+              final isSelected = _themeColor.value == color.value;
+              return GestureDetector(
+                onTap: () async {
+                  await ThemeService.saveThemeColor(color);
+                  setState(() => _themeColor = color);
+                  Navigator.pop(context);
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                        border: isSelected ? Border.all(color: AppTheme.binanceGold, width: 3) : null,
+                      ),
+                      child: isSelected
+                          ? const Icon(Icons.check, color: Colors.white, size: 30)
+                          : null,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      ThemeService.colorNames[index],
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showQuickSettings() {
+    final themeManager = context.read<ThemeManager>();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.binanceCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppTheme.binanceBorder,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'الإعدادات السريعة',
+              style: TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: const Icon(Icons.brightness_6, color: AppTheme.binanceGold),
+              title: const Text('الوضع الليلي', style: TextStyle(color: Colors.white)),
+              trailing: Switch(
+                value: themeManager.isDarkMode,
+                onChanged: (v) => themeManager.toggleTheme(),
+                activeColor: AppTheme.binanceGold,
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.language, color: AppTheme.binanceGold),
+              title: const Text('اللغة', style: TextStyle(color: Colors.white)),
+              trailing: const Text('العربية', style: TextStyle(color: AppTheme.binanceGold)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.notifications, color: AppTheme.binanceGold),
+              title: const Text('الإشعارات', style: TextStyle(color: Colors.white)),
+              trailing: Switch(value: true, onChanged: (v) {}, activeColor: AppTheme.binanceGold),
+            ),
+            const Divider(color: AppTheme.binanceBorder),
+            ListTile(
+              leading: const Icon(Icons.settings, color: AppTheme.binanceGold),
+              title: const Text('جميع الإعدادات', style: TextStyle(color: Colors.white)),
+              trailing: const Icon(Icons.arrow_forward_ios, color: AppTheme.binanceGold, size: 16),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -109,14 +261,32 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       appBar: AppBar(
         title: const Text(
           'FLEX YEMEN',
-          style: TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold, color: AppTheme.binanceGold),
+          style: TextStyle(
+            fontFamily: 'Changa',
+            fontWeight: FontWeight.bold,
+            color: AppTheme.binanceGold,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.palette, color: AppTheme.binanceGold),
+            onPressed: _showColorPicker,
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings, color: AppTheme.binanceGold),
+            onPressed: _showQuickSettings,
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold),
+            onPressed: () => Navigator.pushNamed(context, '/cart'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold),
+            onPressed: () => Navigator.pushNamed(context, '/notifications'),
+          ),
         ],
       ),
       body: _screens[_currentIndex],
@@ -139,34 +309,25 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   return Expanded(
                     child: GestureDetector(
                       onTap: () => _onItemTapped(index),
-                      child: AnimatedBuilder(
-                        animation: _rotationAnimation,
-                        builder: (context, child) {
-                          return Transform.rotate(
-                            angle: _rotationAnimation.value * 3.14159 * 2,
-                            child: Container(
-                              width: 56,
-                              height: 56,
-                              decoration: BoxDecoration(
-                                gradient: AppTheme.goldGradient,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.binanceGold.withOpacity(0.4),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/icons/svg/add.svg',
-                                width: 28,
-                                height: 28,
-                                colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
-                              ),
+                      child: Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [_themeColor, _themeColor.withOpacity(0.7)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: _themeColor.withOpacity(0.4),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
                             ),
-                          );
-                        },
+                          ],
+                        ),
+                        child: const Icon(Icons.add, color: Colors.black, size: 32),
                       ),
                     ),
                   );
@@ -175,13 +336,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                 return Expanded(
                   child: GestureDetector(
                     onTap: () => _onItemTapped(index),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
+                    child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                      decoration: BoxDecoration(
-                        color: isSelected ? AppTheme.binanceGold.withOpacity(0.1) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
