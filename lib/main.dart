@@ -72,9 +72,7 @@ import 'screens/wallet/wallet_statement_screen.dart';
 
 // ==================== Imports شاشات الأدمن (6 شاشات) ====================
 
-import 'screens/admin/admin_main_screen.dart';
 
-import 'screens/admin/admin_settings_screen.dart';
 
 
 
@@ -211,12 +209,6 @@ class FlexYemenApp extends StatelessWidget {
         '/wallet/statement': (context) => const WalletStatementScreen(),
 
         // ==================== Routes شاشات الأدمن ====================
-        '/admin/dashboard': (context) => const AdminDashboard(),
-        '/admin/main': (context) => const AdminMainScreen(),
-        '/admin/secret': (context) => const AdminSecretScreen(),
-        '/admin/settings': (context) => const AdminSettingsScreen(),
-        '/admin/stores': (context) => const AdminStoresScreen(),
-        '/admin/users': (context) => const AdminUsersScreen(),
 
         // ==================== Routes شاشات القوانين ====================
         '/legal/privacy': (context) => const PrivacyPolicyScreen(),

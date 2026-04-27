@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ThemeModeOption { light, dark, system }
+enum ThemeModeOption { light, dark }
 
 class ThemeManager extends ChangeNotifier {
   ThemeModeOption _themeMode = ThemeModeOption.dark;
@@ -31,16 +31,5 @@ class ThemeManager extends ChangeNotifier {
   void setLightMode() {
     _themeMode = ThemeModeOption.light;
     notifyListeners();
-  }
-
-  ThemeData getThemeData() {
-    switch (_themeMode) {
-      case ThemeModeOption.light:
-        return ThemeData.light();
-      case ThemeModeOption.dark:
-        return ThemeData.dark();
-      case ThemeModeOption.system:
-        return ThemeData.system();
-    }
   }
 }
