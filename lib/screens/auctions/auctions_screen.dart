@@ -612,3 +612,30 @@ class _AuctionsScreenState extends State<AuctionsScreen> with SingleTickerProvid
     );
   }
 }
+
+  // ==================== سجل المزايدات ====================
+  List<Map<String, dynamic>> _bidHistory = [];
+
+  void _saveBidToHistory(String productName, int amount) {
+    _bidHistory.insert(0, {
+      'product': productName,
+      'amount': amount,
+      'date': DateTime.now(),
+    });
+    if (_bidHistory.length > 20) _bidHistory.removeLast();
+  }
+
+  Widget _buildBidHistory() {
+    if (_bidHistory.isEmpty) {
+      return const Center(child: Text('لا توجد مزايدات سابقة', style: TextStyle(color: Color(0xFF9CA3AF))));
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _bidHistory.length,
+      itemBuilder: (context, index) => ListTile(
+        title: Text(_bidHistory[index]['product'], style: const TextStyle(color: Colors.white)),
+        trailing: Text('${_bidHistory[index]['amount']} ريال', style: const TextStyle(color: AppTheme.binanceGold)),
+        subtitle: Text(_bidHistory[index]['date'].toString().substring(0, 16)),
+      ),
+    );
+  }
