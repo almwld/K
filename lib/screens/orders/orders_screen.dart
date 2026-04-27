@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme/app_theme.dart';
+import '../order_detail_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -32,12 +32,13 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppTheme.binanceDark,
+      backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
       appBar: AppBar(
-        backgroundColor: AppTheme.binanceDark,
-        elevation: 0,
         title: const Text('طلباتي', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
@@ -65,6 +66,8 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
   }
 
   Widget _buildOrdersList(List<Map<String, dynamic>> orders) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (orders.isEmpty) {
       return Center(
         child: Column(
@@ -81,11 +84,11 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: orders.length,
-      itemBuilder: (_, i) => _buildOrderCard(orders[i]),
+      itemBuilder: (context, index) => _buildOrderCard(orders[index], isDark),
     );
   }
 
-  Widget _buildOrderCard(Map<String, dynamic> order) {
+  Widget _buildOrderCard(Map<String, dynamic> order, bool isDark) {
     Color statusColor;
     IconData statusIcon;
     switch (order['status'] as String) {
@@ -102,81 +105,78 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
         statusIcon = Icons.hourglass_empty;
     }
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme.binanceCard,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.binanceBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  order['image'] as String,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(width: 50, height: 50, color: AppTheme.binanceCard),
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: order['id']))),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isDark ? AppTheme.binanceCard : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.binanceBorder),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(order['image'], width: 50, height: 50, fit: BoxFit.cover),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(order['id'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text(order['date'] as String, style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
-                  ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(order['id'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text(order['date'], style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11)),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(color: statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
-                child: Row(
-                  children: [
-                    Icon(statusIcon, color: statusColor, size: 12),
-                    const SizedBox(width: 4),
-                    Text(order['statusText'] as String, style: TextStyle(color: statusColor, fontSize: 11)),
-                  ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+                  child: Row(
+                    children: [
+                      Icon(statusIcon, color: statusColor, size: 12),
+                      const SizedBox(width: 4),
+                      Text(order['statusText'], style: TextStyle(color: statusColor, fontSize: 11)),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Divider(color: AppTheme.binanceBorder),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('${order['items']} منتجات', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
-              Text('${order['total']} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 16)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(side: BorderSide(color: AppTheme.binanceGold), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                  child: const Text('تتبع الطلب', style: TextStyle(color: AppTheme.binanceGold)),
+              ],
+            ),
+            const Divider(color: AppTheme.binanceBorder),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${order['items']} منتجات', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 12)),
+                Text('${order['total']} ريال', style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 16)),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(side: BorderSide(color: AppTheme.binanceGold), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                    child: const Text('تتبع الطلب', style: TextStyle(color: AppTheme.binanceGold)),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                  child: const Text('تقييم', style: TextStyle(color: Colors.black)),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.binanceGold, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                    child: const Text('تقييم', style: TextStyle(color: Colors.black)),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
