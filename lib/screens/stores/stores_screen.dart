@@ -142,6 +142,10 @@ class _StoresScreenState extends State<StoresScreen> {
                   ),
           ),
           _buildMallsSection(),
+          _buildBrandsSection(),
+          _buildSpecialSections(),
+          _buildDeliverySection(),
+          _buildRecommendedProductsSection(),
           _buildProductsGrid(),
           _buildAdsSection(),
           _buildDailyProductsSection(),
@@ -824,6 +828,235 @@ class _StoresScreenState extends State<StoresScreen> {
                     Text(
                       commodity['kg'],
                       style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 9),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم الماركات والعلامات التجارية ====================
+  Widget _buildBrandsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _brands = [
+      {'name': 'Apple', 'logo': '🍎', 'products': 234, 'color': 0xFF000000},
+      {'name': 'Samsung', 'logo': '📱', 'products': 156, 'color': 0xFF1428A0},
+      {'name': 'Nike', 'logo': '✓', 'products': 89, 'color': 0xFF000000},
+      {'name': 'Adidas', 'logo': '👟', 'products': 67, 'color': 0xFF000000},
+      {'name': 'Sony', 'logo': '🎮', 'products': 123, 'color': 0xFF000000},
+      {'name': 'LG', 'logo': '📺', 'products': 45, 'color': 0xFFC70039},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('ماركات عالمية', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 90,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _brands.length,
+            itemBuilder: (context, index) {
+              final brand = _brands[index];
+              return Container(
+                width: 100,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(brand['logo'], style: const TextStyle(fontSize: 30)),
+                    const SizedBox(height: 4),
+                    Text(brand['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                    Text('${brand['products']} منتج', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم الأقسام الخاصة ====================
+  Widget _buildSpecialSections() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _specialSections = [
+      {'name': 'العروض الحصرية', 'icon': '🏷️', 'color': 0xFFF6465D, 'count': 45},
+      {'name': 'المنتجات الأكثر مبيعاً', 'icon': '🔥', 'color': 0xFFFF9800, 'count': 89},
+      {'name': 'وصل حديثاً', 'icon': '🆕', 'color': 0xFF4CAF50, 'count': 234},
+      {'name': 'المنتجات المخفضة', 'icon': '💰', 'color': 0xFF2196F3, 'count': 67},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('أقسام خاصة', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _specialSections.length,
+            itemBuilder: (context, index) {
+              final section = _specialSections[index];
+              return Container(
+                width: 140,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(section['color'] as int), Color(section['color'] as int).withOpacity(0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(section['icon'], style: const TextStyle(fontSize: 28)),
+                    const SizedBox(height: 4),
+                    Text(section['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center),
+                    Text('${section['count']} منتج', style: const TextStyle(color: Colors.white70, fontSize: 10)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  // ==================== قسم التوصيل السريع ====================
+  Widget _buildDeliverySection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFD4AF37), Color(0xFFB8962E)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.local_shipping, color: Colors.white, size: 32),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('توصيل سريع', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text('اطلب الآن واحصل على طلبك خلال 24 ساعة', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text('توصيل مجاني للطلبات فوق 200,000 ريال', style: TextStyle(color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==================== قسم المنتجات الموصى بها ====================
+  Widget _buildRecommendedProductsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final List<Map<String, dynamic>> _recommendedProducts = [
+      {'name': 'ساعة رياضية', 'price': '25,000', 'oldPrice': '40,000', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=200', 'rating': 4.7},
+      {'name': 'سماعات لاسلكية', 'price': '15,000', 'oldPrice': '25,000', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=200', 'rating': 4.6},
+      {'name': 'حقيبة ظهر', 'price': '8,000', 'oldPrice': '15,000', 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200', 'rating': 4.5},
+    ];
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text('قد يعجبك أيضاً', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 130,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _recommendedProducts.length,
+            itemBuilder: (context, index) {
+              final product = _recommendedProducts[index];
+              return Container(
+                width: 150,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.binanceCard : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.binanceBorder),
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(product['image'], width: 50, height: 50, fit: BoxFit.cover),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(product['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11), maxLines: 2),
+                          Text(product['price'], style: TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 10)),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, size: 10, color: Colors.amber),
+                              const SizedBox(width: 2),
+                              Text('${product['rating']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 9)),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
