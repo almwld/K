@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeManager extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.dark;
-  static const String _themeKey = 'theme_mode';
+  bool _isDarkMode = true;
 
-  ThemeManager() {
-    _loadTheme();
-  }
+  bool get isDarkMode => _isDarkMode;
 
-  ThemeMode get themeMode => _themeMode;
-
-  Future<void> _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt(_themeKey) ?? 1; // 1 = dark
-    _themeMode = ThemeMode.values[themeIndex];
+  void toggleTheme() {
+    _isDarkMode = !_isDarkMode;
     notifyListeners();
   }
 
-  Future<void> setThemeMode(ThemeMode mode) async {
-    _themeMode = mode;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_themeKey, mode.index);
+  void setDarkMode(bool value) {
+    _isDarkMode = value;
     notifyListeners();
   }
 
-  // للحفاظ على التوافق مع الكود القديم
-  void setThemeModeIndex(int index) {
-    setThemeMode(ThemeMode.values[index]);
+  void setLightMode() {
+    _isDarkMode = false;
+    notifyListeners();
   }
 }

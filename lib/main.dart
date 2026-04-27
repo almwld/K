@@ -71,12 +71,12 @@ import 'screens/wallet/wallet_settings_screen.dart';
 import 'screens/wallet/wallet_statement_screen.dart';
 
 // ==================== Imports شاشات الأدمن (6 شاشات) ====================
-import 'screens/admin/admin_dashboard.dart';
+
 import 'screens/admin/admin_main_screen.dart';
-import 'screens/admin/admin_secret_screen.dart';
+
 import 'screens/admin/admin_settings_screen.dart';
-import 'screens/admin/admin_stores_screen.dart';
-import 'screens/admin/admin_users_screen.dart';
+
+
 
 // ==================== Imports شاشات القوانين ====================
 import 'screens/legal/privacy_policy_screen.dart';
@@ -97,7 +97,7 @@ import 'screens/invite_friends_screen.dart';
 import 'screens/share_app_screen.dart';
 import 'screens/theme_selection_screen.dart';
 import 'screens/language_screen.dart';
-import 'screens/biometric_screen.dart';
+
 import 'screens/security_settings_screen.dart';
 import 'screens/connected_devices_screen.dart';
 import 'screens/export_data_screen.dart';
@@ -106,7 +106,7 @@ import 'screens/notifications_settings_screen.dart';
 import 'screens/upload_documents_screen.dart';
 import 'screens/identity_info_screen.dart';
 import 'screens/seller/seller_dashboard.dart';
-import 'screens/seller/seller_reports_screen.dart';
+
 import 'screens/report_problem_screen.dart';
 import 'screens/changelog_screen.dart';
 import 'screens/walkthrough_screen.dart';
@@ -234,7 +234,6 @@ class FlexYemenApp extends StatelessWidget {
         '/share_app': (context) => const ShareAppScreen(),
         '/theme': (context) => const ThemeSelectionScreen(),
         '/language': (context) => const LanguageScreen(),
-        '/biometric': (context) => const BiometricScreen(),
         '/security': (context) => const SecuritySettingsScreen(),
         '/connected_devices': (context) => const ConnectedDevicesScreen(),
         '/export_data': (context) => const ExportDataScreen(),
@@ -243,7 +242,6 @@ class FlexYemenApp extends StatelessWidget {
         '/upload_documents': (context) => const UploadDocumentsScreen(),
         '/identity': (context) => const IdentityInfoScreen(),
         '/seller_dashboard': (context) => const SellerDashboard(),
-        '/seller_reports': (context) => const SellerReportsScreen(),
         '/report_problem': (context) => const ReportProblemScreen(),
         '/changelog': (context) => const ChangelogScreen(),
         '/walkthrough': (context) => const WalkthroughScreen(),
