@@ -13,7 +13,7 @@ class StoresScreen extends StatefulWidget {
 }
 
 class _StoresScreenState extends State<StoresScreen> {
-  String _selectedCategory = 'الكل';
+  Map<String, dynamic> _selectedCategory = FullMarketData.mainCategories[0];
   String _searchQuery = '';
   int _selectedFilter = 0;
   
@@ -100,7 +100,7 @@ class _StoresScreenState extends State<StoresScreen> {
         itemCount: _categories.length,
         itemBuilder: (context, index) {
           final cat = _categories[index];
-          final isSelected = _selectedCategory == cat;
+          final isSelected = _selectedCategory["name"] == cat;
           return GestureDetector(
             onTap: () => setState(() => _selectedCategory = cat),
             child: Container(
