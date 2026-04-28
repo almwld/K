@@ -112,7 +112,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                cat,
+                cat["name"] ?? "",
                 style: TextStyle(
                   color: isSelected ? Colors.black : (isDark ? Colors.white : Colors.black87),
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
