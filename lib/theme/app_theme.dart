@@ -192,10 +192,14 @@ class AppTheme {
         : lightCard;
 
   static Color getSurfaceColor(BuildContext context) {
+  }
+
+  static Color getSurfaceColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? nightSurface
         : lightSurface;
   }
-  }
-}
 
+  static Color get darkTextSecondaryColor => textSecondary;
+  static Color get lightTextSecondaryColor => const Color(0xFF6B7280);
+}
