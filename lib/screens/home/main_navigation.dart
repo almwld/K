@@ -11,12 +11,6 @@ import '../map/interactive_map_screen.dart';
 import '../wallet/wallet_screen.dart';
 import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
-import '../auctions/auctions_screen.dart';
-import '../cart/cart_screen.dart';
-import '../add_ad_screen.dart';
-import '../add_product_screen.dart';
-import '../request_service_screen.dart';
-import '../receive_transfer_request_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -27,33 +21,16 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
-  Color _themeColor = AppTheme.binanceGold;
+  Color _themeColor = AppTheme.goldColor;
 
   final List<Widget> _screens = const [
-    HomeScreen(),           // 0: الرئيسية
-    AllAdsScreen(),         // 1: متاجر
-    InteractiveMapScreen(), // 2: بجوارك
-    SizedBox(),             // 3: الزر الذهبي
-    AuctionsScreen(),       // 4: مزاد
-    ChatScreen(),           // 5: دردشة
-    ProfileScreen(),        // 6: حسابي
-  ];
-
-  final List<Map<String, dynamic>> _navItems = [
-    {'icon': 'assets/icons/svg/home.svg', 'label': 'الرئيسية', 'index': 0},
-    {'icon': 'assets/icons/svg/merchant.svg', 'label': 'متاجر', 'index': 1},
-    {'icon': 'assets/icons/svg/location.svg', 'label': 'بجوارك', 'index': 2},
-    {'icon': null, 'label': '', 'index': 3, 'isFAB': true},
-    {'icon': 'assets/icons/svg/auction.svg', 'label': 'مزاد', 'index': 4},
-    {'icon': 'assets/icons/svg/chat.svg', 'label': 'دردشة', 'index': 5},
-    {'icon': 'assets/icons/svg/profile.svg', 'label': 'حسابي', 'index': 6},
-  ];
-
-  final List<Map<String, dynamic>> _quickActions = [
-    {'icon': Icons.add_circle_outline, 'title': 'إضافة إعلان', 'color': AppTheme.serviceBlue, 'screen': '/add_ad'},
-    {'icon': Icons.shopping_bag_outlined, 'title': 'إضافة منتج', 'color': AppTheme.serviceOrange, 'screen': '/add_product'},
-    {'icon': Icons.handyman_outlined, 'title': 'طلب خدمة', 'color': AppTheme.binanceGreen, 'screen': '/request_service'},
-    {'icon': Icons.account_balance_wallet_outlined, 'title': 'استلام حوالة', 'color': Colors.purple, 'screen': '/receive_transfer'},
+    HomeScreen(),           // Index 0 - الرئيسية
+    AllAdsScreen(),         // Index 1 - متاجر
+    InteractiveMapScreen(), // Index 2 - مول بجوارك
+    SizedBox(),             // Index 3 - Placeholder للزر الذهبي
+    WalletScreen(),         // Index 4 - مزاد
+    ChatScreen(),           // Index 5 - سلة
+    ProfileScreen(),        // Index 6 - حسابي
   ];
 
   @override
@@ -80,53 +57,72 @@ class _MainNavigationState extends State<MainNavigation> {
   void _showQuickActionsSheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppTheme.binanceCard,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppTheme.binanceBorder,
-                  borderRadius: BorderRadius.circular(2),
-                ),
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: AppTheme.getSurfaceColor(context),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 12),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppTheme.getDividerColor(context),
+                borderRadius: BorderRadius.circular(2),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'إجراءات سريعة',
-                style: TextStyle(
-                  fontFamily: 'Changa',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'إجراءات سريعة',
+              style: TextStyle(
+                fontFamily: 'Changa',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.getTextColor(context),
               ),
-              const SizedBox(height: 20),
-              ..._quickActions.map((action) => ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: (action['color'] as Color).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(action['icon'] as IconData, color: action['color'] as Color),
-                ),
-                title: Text(action['title'] as String, style: const TextStyle(color: Colors.white)),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, action['screen'] as String);
-                },
-              )),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+            const SizedBox(height: 24),
+            _buildQuickActionItem(
+              icon: Icons.add_circle_outline,
+              title: 'إضافة إعلان',
+              subtitle: 'أضف إعلاناً جديداً للبيع',
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/add_ad');
+              },
+            ),
+            _buildQuickActionItem(
+              icon: Icons.shopping_bag_outlined,
+              title: 'إضافة منتج',
+              subtitle: 'أضف منتجاً جديداً للمتجر',
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/seller_products');
+              },
+            ),
+            _buildQuickActionItem(
+              icon: Icons.handyman_outlined,
+              title: 'طلب خدمة',
+              subtitle: 'اطلب خدمة من مزودي الخدمات',
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            _buildQuickActionItem(
+              icon: Icons.account_balance_wallet_outlined,
+              title: 'استلام حوالة',
+              subtitle: 'استلم حوالة مالية',
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/receive_transfer');
+              },
+            ),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );
@@ -136,11 +132,10 @@ class _MainNavigationState extends State<MainNavigation> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.binanceCard,
         title: const Text(
           'اختر لون التطبيق',
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: 'Changa', color: Colors.white),
+          style: TextStyle(fontFamily: 'Changa'),
         ),
         content: SizedBox(
           width: 300,
@@ -169,7 +164,15 @@ class _MainNavigationState extends State<MainNavigation> {
                       decoration: BoxDecoration(
                         color: color,
                         shape: BoxShape.circle,
-                        border: isSelected ? Border.all(color: AppTheme.binanceGold, width: 3) : null,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 5,
+                          ),
+                        ],
+                        border: isSelected
+                            ? Border.all(color: Colors.black, width: 3)
+                            : null,
                       ),
                       child: isSelected
                           ? const Icon(Icons.check, color: Colors.white, size: 30)
@@ -178,7 +181,7 @@ class _MainNavigationState extends State<MainNavigation> {
                     const SizedBox(height: 8),
                     Text(
                       ThemeService.colorNames[index],
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -194,11 +197,10 @@ class _MainNavigationState extends State<MainNavigation> {
     final themeManager = context.read<ThemeManager>();
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppTheme.binanceCard,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => Padding(
+      builder: (context) => Container(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -207,41 +209,49 @@ class _MainNavigationState extends State<MainNavigation> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: AppTheme.binanceBorder,
+                color: AppTheme.getDividerColor(context),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 20),
             const Text(
               'الإعدادات السريعة',
-              style: TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontFamily: 'Changa',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 20),
             ListTile(
-              leading: const Icon(Icons.brightness_6, color: AppTheme.binanceGold),
-              title: const Text('الوضع الليلي', style: TextStyle(color: Colors.white)),
+              leading: const Icon(Icons.brightness_6),
+              title: const Text('الوضع الليلي'),
               trailing: Switch(
                 value: themeManager.isDarkMode,
                 onChanged: (v) => themeManager.toggleTheme(),
-                activeColor: AppTheme.binanceGold,
+                activeColor: _themeColor,
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.language, color: AppTheme.binanceGold),
-              title: const Text('اللغة', style: TextStyle(color: Colors.white)),
-              trailing: const Text('العربية', style: TextStyle(color: AppTheme.binanceGold)),
+              leading: const Icon(Icons.language),
+              title: const Text('اللغة'),
+              trailing: const Text('العربية'),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.notifications, color: AppTheme.binanceGold),
-              title: const Text('الإشعارات', style: TextStyle(color: Colors.white)),
-              trailing: Switch(value: true, onChanged: (v) {}, activeColor: AppTheme.binanceGold),
+              leading: const Icon(Icons.notifications),
+              title: const Text('الإشعارات'),
+              trailing: Switch(
+                value: true,
+                onChanged: (v) {},
+                activeColor: _themeColor,
+              ),
             ),
-            const Divider(color: AppTheme.binanceBorder),
+            const Divider(),
             ListTile(
-              leading: const Icon(Icons.settings, color: AppTheme.binanceGold),
-              title: const Text('جميع الإعدادات', style: TextStyle(color: Colors.white)),
-              trailing: const Icon(Icons.arrow_forward_ios, color: AppTheme.binanceGold, size: 16),
+              leading: const Icon(Icons.settings),
+              title: const Text('جميع الإعدادات'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/settings');
@@ -250,6 +260,35 @@ class _MainNavigationState extends State<MainNavigation> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildQuickActionItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: Colors.black),
+      ),
+      title: Text(title),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontSize: 12,
+          color: AppTheme.getSecondaryTextColor(context),
+        ),
+      ),
+      onTap: onTap,
     );
   }
 
@@ -264,107 +303,157 @@ class _MainNavigationState extends State<MainNavigation> {
           style: TextStyle(
             fontFamily: 'Changa',
             fontWeight: FontWeight.bold,
-            color: AppTheme.binanceGold,
+            color: AppTheme.goldColor,
           ),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
+        backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
         actions: [
           IconButton(
-            icon: const Icon(Icons.palette, color: AppTheme.binanceGold),
+            icon: const Icon(Icons.palette),
             onPressed: _showColorPicker,
+            tooltip: 'تغيير الثيم',
           ),
           IconButton(
-            icon: const Icon(Icons.settings, color: AppTheme.binanceGold),
+            icon: const Icon(Icons.settings),
             onPressed: _showQuickSettings,
+            tooltip: 'الإعدادات السريعة',
           ),
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined, color: AppTheme.binanceGold),
+            icon: const Icon(Icons.shopping_cart_outlined),
             onPressed: () => Navigator.pushNamed(context, '/cart'),
+            tooltip: 'السلة',
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: AppTheme.binanceGold),
+            icon: const Icon(Icons.notifications_outlined),
             onPressed: () => Navigator.pushNamed(context, '/notifications'),
+            tooltip: 'الإشعارات',
           ),
         ],
       ),
-      body: _screens[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: isDark ? AppTheme.binanceDark : AppTheme.lightBackground,
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -5))],
+          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _navItems.map((item) {
-                final index = item['index'] as int;
-                final isSelected = _currentIndex == index;
-                final color = isSelected ? AppTheme.binanceGold : const Color(0xFF5E6673);
+              children: [
+                // 0: الرئيسية
+                _buildNavItem('assets/icons/svg/home.svg', 'الرئيسية', 0),
+                // 1: متاجر
+                _buildNavItem('assets/icons/svg/merchant.svg', 'متاجر', 1),
+                // 2:  بجوارك
+                _buildNavItem('assets/icons/svg/location.svg', ' بجوارك', 2),
+                // 3: الزر الذهبي
+                _buildFAB(),
+                // 4: مزاد
+                _buildNavItem('assets/icons/svg/actions.svg', 'مزاد', 4),
+                // 5: سلة
+                _buildNavItem('assets/icons/svg/chat.svg', 'دردشه', 5),
+                // 6: حسابي
+                _buildNavItem('assets/icons/svg/profile.svg', 'حسابي', 6),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-                if (item['isFAB'] == true) {
-                  return Expanded(
-                    child: GestureDetector(
-                      onTap: () => _onItemTapped(index),
-                      child: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [_themeColor, _themeColor.withOpacity(0.7)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: _themeColor.withOpacity(0.4),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(Icons.add, color: Colors.black, size: 32),
-                      ),
-                    ),
-                  );
-                }
+  Widget _buildFAB() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: _showQuickActionsSheet,
+        customBorder: const CircleBorder(),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: _themeColor.withOpacity(0.4),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.add,
+            color: Colors.black,
+            size: 32,
+          ),
+        ),
+      ),
+    ).animate(
+      onPlay: (controller) => controller.repeat(reverse: true),
+    ).scale(
+      begin: const Offset(1, 1),
+      end: const Offset(1.05, 1.05),
+      duration: 1.seconds,
+      curve: Curves.easeInOut,
+    );
+  }
 
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => _onItemTapped(index),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            item['icon'] as String,
-                            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                            width: 24,
-                            height: 24,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item['label'] as String,
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: color,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
+  Widget _buildNavItem(String svgPath, String label, int index) {
+    final isSelected = _currentIndex == index;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final color = isSelected
+        ? _themeColor
+        : (isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary);
+
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _onItemTapped(index),
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  svgPath,
+                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                  width: 24,
+                  height: 24,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: color,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
-                );
-              }).toList(),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ),
