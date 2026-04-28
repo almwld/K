@@ -1,141 +1,197 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
+// ============================================
+// Flex Yemen - بيانات السوق الكاملة
+// 45 فئة | 200+ متجر | 29 منتج | 17 مول | 5 تصفية | 6 شريط
+// ============================================
+
 class FullMarketData {
   
-  // ==================== 1. الفئات الرئيسية (45 فئة) ====================
+  // ============================================
+  // 1️⃣ الفئات الرئيسية (45)
+  // ============================================
   static final List<Map<String, dynamic>> mainCategories = [
     {'id': '1', 'name': 'إلكترونيات', 'icon': Icons.devices, 'color': 0xFF2196F3, 'productCount': 1250, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200'},
     {'id': '2', 'name': 'أزياء وملابس', 'icon': Icons.checkroom, 'color': 0xFFE91E63, 'productCount': 2340, 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200'},
     {'id': '3', 'name': 'سيارات', 'icon': Icons.directions_car, 'color': 0xFFF6465D, 'productCount': 890, 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200'},
     {'id': '4', 'name': 'عقارات', 'icon': Icons.home, 'color': 0xFF4CAF50, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200'},
     {'id': '5', 'name': 'أثاث ومنزل', 'icon': Icons.chair, 'color': 0xFFFF9800, 'productCount': 789, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200'},
-    {'id': '6', 'name': 'مطاعم', 'icon': Icons.restaurant, 'color': 0xFF9C27B0, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'},
+    {'id': '6', 'name': 'مطاعم وكافيهات', 'icon': Icons.restaurant, 'color': 0xFF9C27B0, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'},
     {'id': '7', 'name': 'خدمات', 'icon': Icons.build, 'color': 0xFF00BCD4, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200'},
     {'id': '8', 'name': 'صحة وجمال', 'icon': Icons.favorite, 'color': 0xFFE91E63, 'productCount': 678, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200'},
-    {'id': '9', 'name': 'رياضة ولياقة', 'icon': Icons.sports_soccer, 'color': 0xFF4CAF50, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1461896836934-ffe807baa261?w=200'},
-    {'id': '10', 'name': 'كتب ومكتبات', 'icon': Icons.menu_book, 'color': 0xFF795548, 'productCount': 2340, 'image': 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200'},
-    {'id': '11', 'name': 'ألعاب', 'icon': Icons.sports_esports, 'color': 0xFF9C27B0, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200'},
-    {'id': '12', 'name': 'أطفال ومستلزمات', 'icon': Icons.child_care, 'color': 0xFF2196F3, 'productCount': 567, 'image': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=200'},
+    {'id': '9', 'name': 'رياضة ولياقة', 'icon': Icons.sports_soccer, 'color': 0xFF4CAF50, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1461896836934-bd45ba15cfc1?w=200'},
+    {'id': '10', 'name': 'كتب ومكتبات', 'icon': Icons.menu_book, 'color': 0xFF795548, 'productCount': 2340, 'image': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=200'},
+    {'id': '11', 'name': 'ألعاب إلكترونية', 'icon': Icons.sports_esports, 'color': 0xFF9C27B0, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=200'},
+    {'id': '12', 'name': 'أطفال ومستلزمات', 'icon': Icons.child_care, 'color': 0xFF2196F3, 'productCount': 567, 'image': 'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?w=200'},
     {'id': '13', 'name': 'حيوانات أليفة', 'icon': Icons.pets, 'color': 0xFF8D6E63, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=200'},
-    {'id': '14', 'name': 'مجوهرات', 'icon': Icons.diamond, 'color': 0xFFFFC107, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200'},
-    {'id': '15', 'name': 'ساعات', 'icon': Icons.watch, 'color': 0xFF607D8B, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=200'},
-    {'id': '16', 'name': 'عطور', 'icon': Icons.emoji_emotions, 'color': 0xFFE91E63, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200'},
-    {'id': '17', 'name': 'حقائب', 'icon': Icons.shopping_bag, 'color': 0xFF9C27B0, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200'},
+    {'id': '14', 'name': 'مجوهرات وذهب', 'icon': Icons.diamond, 'color': 0xFFFFC107, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200'},
+    {'id': '15', 'name': 'ساعات فاخرة', 'icon': Icons.watch, 'color': 0xFF607D8B, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=200'},
+    {'id': '16', 'name': 'عطور وبخور', 'icon': Icons.emoji_emotions, 'color': 0xFFE91E63, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200'},
+    {'id': '17', 'name': 'حقائب وأكسسوارات', 'icon': Icons.shopping_bag, 'color': 0xFF9C27B0, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200'},
     {'id': '18', 'name': 'أحذية', 'icon': Icons.shopping_bag, 'color': 0xFF795548, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200'},
     {'id': '19', 'name': 'جوالات', 'icon': Icons.phone_android, 'color': 0xFF00BCD4, 'productCount': 567, 'image': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200'},
-    {'id': '20', 'name': 'كمبيوترات', 'icon': Icons.computer, 'color': 0xFF3F51B5, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200'},
+    {'id': '20', 'name': 'كمبيوترات ولابتوب', 'icon': Icons.computer, 'color': 0xFF3F51B5, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200'},
     {'id': '21', 'name': 'شاشات وتلفزيونات', 'icon': Icons.tv, 'color': 0xFF009688, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=200'},
-    {'id': '22', 'name': 'أجهزة منزلية', 'icon': Icons.kitchen, 'color': 0xFF4CAF50, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1586008214976-3d9d6c5f2e5d?w=200'},
-    {'id': '23', 'name': 'أدوات مطبخ', 'icon': Icons.coffee_maker, 'color': 0xFFFF9800, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1556909114-44e3ef1e0d71?w=200'},
-    {'id': '24', 'name': 'مواد غذائية', 'icon': Icons.local_grocery_store, 'color': 0xFF8BC34A, 'productCount': 1234, 'image': 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200'},
-    {'id': '25', 'name': 'خضروات وفواكه', 'icon': Icons.eco, 'color': 0xFF4CAF50, 'productCount': 567, 'image': 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=200'},
-    {'id': '26', 'name': 'لحوم ودواجن', 'icon': Icons.agriculture, 'color': 0xFFF44336, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=200'},
-    {'id': '27', 'name': 'أسماك ومأكولات بحرية', 'icon': Icons.set_meal, 'color': 0xFF00BCD4, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200'},
-    {'id': '28', 'name': 'منتجات ألبان', 'icon': Icons.breakfast_dining, 'color': 0xFFFFFFFF, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200'},
-    {'id': '29', 'name': 'مخبوزات', 'icon': Icons.bakery_dining, 'color': 0xFF795548, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200'},
-    {'id': '30', 'name': 'حلويات', 'icon': Icons.cake, 'color': 0xFFE91E63, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200'},
-    {'id': '31', 'name': 'مشروبات', 'icon': Icons.local_drink, 'color': 0xFF2196F3, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1527960471264-932f39eb5846?w=200'},
-    {'id': '32', 'name': 'قهوة وشاي', 'icon': Icons.coffee, 'color': 0xFF795548, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=200'},
-    {'id': '33', 'name': 'تمور وعسل', 'icon': Icons.date_range, 'color': 0xFF8D6E63, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1604671801908-29f0cb3b6162?w=200'},
-    {'id': '34', 'name': 'بهارات وتوابل', 'icon': Icons.grass, 'color': 0xFF795548, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1596040033229-a9821ebd058a?w=200'},
-    {'id': '35', 'name': 'منظفات', 'icon': Icons.cleaning_services, 'color': 0xFF03A9F4, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=200'},
-    {'id': '36', 'name': 'أدوات منزلية', 'icon': Icons.kitchen, 'color': 0xFF9E9E9E, 'productCount': 567, 'image': 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=200'},
-    {'id': '37', 'name': 'إلكترونيات استهلاكية', 'icon': Icons.devices, 'color': 0xFF2196F3, 'productCount': 789, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200'},
-    {'id': '38', 'name': 'مستلزمات مدرسية', 'icon': Icons.edit, 'color': 0xFF4CAF50, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=200'},
-    {'id': '39', 'name': 'هدايا', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=200'},
-    {'id': '40', 'name': 'تحف وأنتيكات', 'icon': Icons.history, 'color': 0xFF795548, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1561124738-67dab8f6146a?w=200'},
-    {'id': '41', 'name': 'كاميرات', 'icon': Icons.camera_alt, 'color': 0xFF607D8B, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=200'},
-    {'id': '42', 'name': 'طائرات درون', 'icon': Icons.flight, 'color': 0xFF00BCD4, 'productCount': 123, 'image': 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=200'},
-    {'id': '43', 'name': 'معدات صناعية', 'icon': Icons.factory, 'color': 0xFF9E9E9E, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=200'},
-    {'id': '44', 'name': 'مواد بناء', 'icon': Icons.construction, 'color': 0xFF795548, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=200'},
-    {'id': '45', 'name': 'خدمات منزلية', 'icon': Icons.handyman, 'color': 0xFFFF9800, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200'},
+    {'id': '22', 'name': 'أجهزة منزلية', 'icon': Icons.kitchen, 'color': 0xFF4CAF50, 'productCount': 456, 'image': 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200'},
+    {'id': '23', 'name': 'أدوات مطبخ', 'icon': Icons.coffee_maker, 'color': 0xFFFF9800, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200'},
+    {'id': '24', 'name': 'معدات صناعية', 'icon': Icons.precision_manufacturing, 'color': 0xFF607D8B, 'productCount': 123, 'image': 'https://images.unsplash.com/photo-1579547621113-e4bb2a19bdd6?w=200'},
+    {'id': '25', 'name': 'مواد بناء', 'icon': Icons.construction, 'color': 0xFFFF9800, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=200'},
+    {'id': '26', 'name': 'أدوية ومستلزمات طبية', 'icon': Icons.medical_services, 'color': 0xFF4CAF50, 'productCount': 567, 'image': 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=200'},
+    {'id': '27', 'name': 'بقالة وتموينات', 'icon': Icons.shopping_cart, 'color': 0xFF8BC34A, 'productCount': 890, 'image': 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=200'},
+    {'id': '28', 'name': 'حلويات ومعجنات', 'icon': Icons.cake, 'color': 0xFFE91E63, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?w=200'},
+    {'id': '29', 'name': 'مشروبات وعصائر', 'icon': Icons.local_drink, 'color': 0xFF00BCD4, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200'},
+    {'id': '30', 'name': 'لحوم ودواجن', 'icon': Icons.egg, 'color': 0xFFF44336, 'productCount': 123, 'image': 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=200'},
+    {'id': '31', 'name': 'خضروات وفواكه', 'icon': Icons.eco, 'color': 0xFF4CAF50, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=200'},
+    {'id': '32', 'name': 'أسماك ومأكولات بحرية', 'icon': Icons.set_meal, 'color': 0xFF2196F3, 'productCount': 89, 'image': 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200'},
+    {'id': '33', 'name': 'مكسرات وتمور', 'icon': Icons.cookie, 'color': 0xFF795548, 'productCount': 167, 'image': 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=200'},
+    {'id': '34', 'name': 'عسل ومنتجات طبيعية', 'icon': Icons.emoji_nature, 'color': 0xFFFFC107, 'productCount': 98, 'image': 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=200'},
+    {'id': '35', 'name': 'بهارات وتوابل', 'icon': Icons.grain, 'color': 0xFFFF5722, 'productCount': 145, 'image': 'https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=200'},
+    {'id': '36', 'name': 'ألبان وأجبان', 'icon': Icons.food_bank, 'color': 0xFF81D4FA, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200'},
+    {'id': '37', 'name': 'مخبوزات', 'icon': Icons.bakery_dining, 'color': 0xFFFF9800, 'productCount': 156, 'image': 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200'},
+    {'id': '38', 'name': 'أغذية مجمدة', 'icon': Icons.ac_unit, 'color': 0xFF2196F3, 'productCount': 189, 'image': 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=200'},
+    {'id': '39', 'name': 'تنظيف وغسيل', 'icon': Icons.cleaning_services, 'color': 0xFF00BCD4, 'productCount': 267, 'image': 'https://images.unsplash.com/photo-1567113463300-102a7e8e9b7b?w=200'},
+    {'id': '40', 'name': 'عناية شخصية', 'icon': Icons.face, 'color': 0xFFE91E63, 'productCount': 345, 'image': 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=200'},
+    {'id': '41', 'name': 'قرطاسية وأدوات مكتبية', 'icon': Icons.edit, 'color': 0xFF607D8B, 'productCount': 178, 'image': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=200'},
+    {'id': '42', 'name': 'هدايا وتحف', 'icon': Icons.card_giftcard, 'color': 0xFFE91E63, 'productCount': 234, 'image': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=200'},
+    {'id': '43', 'name': 'سفر وسياحة', 'icon': Icons.flight, 'color': 0xFF2196F3, 'productCount': 67, 'image': 'https://images.unsplash.com/photo-1436491865332-7a61a109bb05?w=200'},
+    {'id': '44', 'name': 'تأمين', 'icon': Icons.security, 'color': 0xFF4CAF50, 'productCount': 45, 'image': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200'},
+    {'id': '45', 'name': 'أخرى', 'icon': Icons.more_horiz, 'color': 0xFF9E9E9E, 'productCount': 500, 'image': 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=200'},
   ];
 
-  // ==================== 2. الأقسام الفرعية (120+ قسم) ====================
-  static final Map<String, List<Map<String, String>>> subcategories = {
-    'إلكترونيات': [
-      {'name': 'هواتف ذكية', 'icon': '📱'}, {'name': 'لابتوبات', 'icon': '💻'}, {'name': 'سماعات', 'icon': '🎧'},
-      {'name': 'كاميرات', 'icon': '📷'}, {'name': 'شواحن', 'icon': '🔌'}, {'name': 'اكسسوارات', 'icon': '📱'},
-    ],
-    'أزياء وملابس': [
-      {'name': 'رجالي', 'icon': '👨'}, {'name': 'نسائي', 'icon': '👩'}, {'name': 'أطفال', 'icon': '👶'},
-      {'name': 'أحذية', 'icon': '👟'}, {'name': 'شنط', 'icon': '👜'}, {'name': 'ساعات', 'icon': '⌚'},
-    ],
-    'مواد غذائية': [
-      {'name': 'أرز', 'icon': '🍚'}, {'name': 'زيت', 'icon': '🫒'}, {'name': 'سكر', 'icon': '🍬'},
-      {'name': 'طحين', 'icon': '🌾'}, {'name': 'معكرونة', 'icon': '🍝'}, {'name': 'بقوليات', 'icon': '🫘'},
-    ],
-    'الصحة والجمال': [
-      {'name': 'عناية بالبشرة', 'icon': '🧴'}, {'name': 'عناية بالشعر', 'icon': '💇'}, {'name': 'مكياج', 'icon': '💄'},
-      {'name': 'عطور', 'icon': '🌸'}, {'name': 'مستلزمات حلاقة', 'icon': '✂️'},
-    ],
-  };
-
-  // ==================== 3. المتاجر (200+ متجر) ====================
-  static final List<Map<String, dynamic>> stores = [
-    // إلكترونيات (25 متجر)
-    {'id': '1', 'name': 'متجر التقنية', 'category': 'إلكترونيات', 'rating': 4.8, 'sales': '1.2K', 'products': 156, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200', 'isFollowing': false},
-    {'id': '2', 'name': 'عالم الجوالات', 'category': 'إلكترونيات', 'rating': 4.7, 'sales': '2.3K', 'products': 234, 'image': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200', 'isFollowing': true},
-    {'id': '3', 'name': 'كمبيوتر مول', 'category': 'إلكترونيات', 'rating': 4.9, 'sales': '892', 'products': 89, 'image': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200', 'isFollowing': false},
-    {'id': '4', 'name': 'سماعات العالم', 'category': 'إلكترونيات', 'rating': 4.6, 'sales': '1.5K', 'products': 67, 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=200', 'isFollowing': false},
-    {'id': '5', 'name': 'كاميرات ديجيتال', 'category': 'إلكترونيات', 'rating': 4.8, 'sales': '456', 'products': 45, 'image': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=200', 'isFollowing': false},
-    {'id': '6', 'name': 'شواحن اكسبرس', 'category': 'إلكترونيات', 'rating': 4.5, 'sales': '2.1K', 'products': 123, 'image': 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=200', 'isFollowing': false},
-    {'id': '7', 'name': 'اكسسوارات موبايل', 'category': 'إلكترونيات', 'rating': 4.7, 'sales': '3.4K', 'products': 234, 'image': 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=200', 'isFollowing': false},
-    // أزياء (30 متجر)
-    {'id': '8', 'name': 'الأزياء العصرية', 'category': 'أزياء وملابس', 'rating': 4.6, 'sales': '3.4K', 'products': 456, 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200', 'isFollowing': false},
-    {'id': '9', 'name': 'موضة اليمن', 'category': 'أزياء وملابس', 'rating': 4.8, 'sales': '1.8K', 'products': 234, 'image': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=200', 'isFollowing': true},
-    {'id': '10', 'name': 'أحذية كلاسيك', 'category': 'أزياء وملابس', 'rating': 4.5, 'sales': '2.1K', 'products': 123, 'image': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200', 'isFollowing': false},
-    {'id': '11', 'name': 'شنط ماركات', 'category': 'أزياء وملابس', 'rating': 4.7, 'sales': '1.2K', 'products': 89, 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200', 'isFollowing': false},
-    // سيارات (15 متجر)
-    {'id': '12', 'name': 'معرض السيارات الحديثة', 'category': 'سيارات', 'rating': 4.8, 'sales': '456', 'products': 45, 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=200', 'isFollowing': false},
-    {'id': '13', 'name': 'قطع غيار السيارات', 'category': 'سيارات', 'rating': 4.6, 'sales': '1.2K', 'products': 234, 'image': 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=200', 'isFollowing': false},
-    // عقارات (12 متجر)
-    {'id': '14', 'name': 'عقارات فلكس', 'category': 'عقارات', 'rating': 4.7, 'sales': '234', 'products': 45, 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200', 'isFollowing': false},
-    // أثاث (18 متجر)
-    {'id': '15', 'name': 'أثاث المنزل', 'category': 'أثاث ومنزل', 'rating': 4.5, 'sales': '1.1K', 'products': 156, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200', 'isFollowing': false},
-    // مطاعم (25 متجر)
-    {'id': '16', 'name': 'مطعم مندي الملكي', 'category': 'مطاعم', 'rating': 4.9, 'sales': '2.1K', 'products': 34, 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200', 'isFollowing': true},
-    // صحة وجمال (15 متجر)
-    {'id': '17', 'name': 'صيدلية الحياة', 'category': 'صحة وجمال', 'rating': 4.6, 'sales': '987', 'products': 345, 'image': 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200', 'isFollowing': false},
-    // عطور (10 متاجر)
-    {'id': '18', 'name': 'عطور الشرق', 'category': 'عطور', 'rating': 4.8, 'sales': '1.5K', 'products': 89, 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200', 'isFollowing': true},
+  // ============================================
+  // 2️⃣ أزرار التصفية (5)
+  // ============================================
+  static final List<Map<String, dynamic>> filterButtons = [
+    {'id': 'favorites', 'name': 'المفضلات', 'icon': Icons.favorite},
+    {'id': 'trending', 'name': 'رائج', 'icon': Icons.trending_up},
+    {'id': 'alpha', 'name': 'Alpha', 'icon': Icons.sort_by_alpha},
+    {'id': 'new', 'name': 'جديدة', 'icon': Icons.new_releases},
+    {'id': 'top_rated', 'name': 'الأعلى ربحاً !!!', 'icon': Icons.star},
   ];
 
-  // ==================== 4. المنتجات (29 منتج - جدول شبكي) ====================
-  static final List<Map<String, dynamic>> products = [
-    {'id': '1', 'name': 'iPhone 15 Pro', 'price': '350,000', 'oldPrice': '450,000', 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=200', 'rating': 4.8, 'sales': 1250},
-    {'id': '2', 'name': 'ساعة أبل الترا', 'price': '45,000', 'oldPrice': '60,000', 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=200', 'rating': 4.8, 'sales': 890},
-    {'id': '3', 'name': 'ماك بوك برو', 'price': '1,800,000', 'oldPrice': '2,100,000', 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200', 'rating': 4.9, 'sales': 567},
-    {'id': '4', 'name': 'سامسونج S24', 'price': '380,000', 'oldPrice': '450,000', 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=200', 'rating': 4.7, 'sales': 890},
-    {'id': '5', 'name': 'ثوب يمني فاخر', 'price': '35,000', 'oldPrice': null, 'category': 'أزياء وملابس', 'image': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=200', 'rating': 4.6, 'sales': 456},
-    {'id': '6', 'name': 'عباية فاخرة', 'price': '30,000', 'oldPrice': null, 'category': 'أزياء وملابس', 'image': 'https://images.unsplash.com/photo-1583394293214-ff7b3f5ad7cc?w=200', 'rating': 4.7, 'sales': 234},
-    {'id': '7', 'name': 'تويوتا كامري 2024', 'price': '8,500,000', 'oldPrice': null, 'category': 'سيارات', 'image': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=200', 'rating': 4.8, 'sales': 23},
-    {'id': '8', 'name': 'فيلا فاخرة صنعاء', 'price': '45,000,000', 'oldPrice': null, 'category': 'عقارات', 'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200', 'rating': 4.9, 'sales': 5},
-    {'id': '9', 'name': 'كنبة زاوية', 'price': '150,000', 'oldPrice': '200,000', 'category': 'أثاث ومنزل', 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200', 'rating': 4.5, 'sales': 156},
-    {'id': '10', 'name': 'مندي يمني', 'price': '3,500', 'oldPrice': null, 'category': 'مطاعم', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200', 'rating': 4.8, 'sales': 2340},
-    {'id': '11', 'name': 'سماعات ايربودز', 'price': '35,000', 'oldPrice': '50,000', 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=200', 'rating': 4.7, 'sales': 2340},
-    {'id': '12', 'name': 'سجادة صلاة', 'price': '5,000', 'oldPrice': '8,000', 'category': 'منتجات', 'image': 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=200', 'rating': 4.5, 'sales': 345},
-    {'id': '13', 'name': 'عطر توم فورد', 'price': '45,000', 'oldPrice': '60,000', 'category': 'عطور', 'image': 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200', 'rating': 4.8, 'sales': 567},
-    {'id': '14', 'name': 'آيباد برو', 'price': '280,000', 'oldPrice': null, 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200', 'rating': 4.9, 'sales': 1234},
-    {'id': '15', 'name': 'بلاي ستيشن 5', 'price': '250,000', 'oldPrice': '350,000', 'category': 'ألعاب', 'image': 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=200', 'rating': 4.8, 'sales': 567},
-    {'id': '16', 'name': 'كاميرا كانون', 'price': '120,000', 'oldPrice': '150,000', 'category': 'كاميرات', 'image': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=200', 'rating': 4.6, 'sales': 234},
-    {'id': '17', 'name': 'لابتوب ديل', 'price': '350,000', 'oldPrice': '450,000', 'category': 'إلكترونيات', 'image': 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=200', 'rating': 4.7, 'sales': 345},
-    {'id': '18', 'name': 'ساعة رولكس', 'price': '850,000', 'oldPrice': '1,000,000', 'category': 'ساعات', 'image': 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=200', 'rating': 4.9, 'sales': 89},
-    {'id': '19', 'name': 'شنطة ظهر', 'price': '15,000', 'oldPrice': '25,000', 'category': 'حقائب', 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=200', 'rating': 4.5, 'sales': 789},
-    {'id': '20', 'name': 'حذاء رياضي', 'price': '25,000', 'oldPrice': '40,000', 'category': 'أحذية', 'image': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200', 'rating': 4.7, 'sales': 1234},
-    {'id': '21', 'name': 'قلم فاخر', 'price': '500', 'oldPrice': '1,000', 'category': 'مكتبية', 'image': 'https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=200', 'rating': 4.6, 'sales': 2345},
-    {'id': '22', 'name': 'دفتر ملاحظات', 'price': '200', 'oldPrice': '500', 'category': 'مكتبية', 'image': 'https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=200', 'rating': 4.5, 'sales': 3456},
-    {'id': '23', 'name': 'طقم رياضي', 'price': '35,000', 'oldPrice': '50,000', 'category': 'رياضة', 'image': 'https://images.unsplash.com/photo-1461896836934-ffe807baa261?w=200', 'rating': 4.7, 'sales': 456},
-    {'id': '24', 'name': 'دراجة هوائية', 'price': '45,000', 'oldPrice': '60,000', 'category': 'رياضة', 'image': 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200', 'rating': 4.8, 'sales': 234},
-    {'id': '25', 'name': 'كتاب تعليمي', 'price': '3,000', 'oldPrice': null, 'category': 'كتب', 'image': 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200', 'rating': 4.6, 'sales': 567},
-    {'id': '26', 'name': 'رواية عربية', 'price': '2,000', 'oldPrice': null, 'category': 'كتب', 'image': 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200', 'rating': 4.5, 'sales': 890},
-    {'id': '27', 'name': 'سلة غذاء متكاملة', 'price': '25,000', 'oldPrice': '35,000', 'category': 'مواد غذائية', 'image': 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200', 'rating': 4.6, 'sales': 234},
-    {'id': '28', 'name': 'حليب أطفال', 'price': '2,500', 'oldPrice': null, 'category': 'أطفال', 'image': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200', 'rating': 4.7, 'sales': 1234},
-    {'id': '29', 'name': 'عسل طبيعي', 'price': '3,000', 'oldPrice': '5,000', 'category': 'تمور وعسل', 'image': 'https://images.unsplash.com/photo-1587049352847-4a222e784d33?w=200', 'rating': 4.8, 'sales': 567},
+  // ============================================
+  // 3️⃣ أزرار الشريط العلوي (6)
+  // ============================================
+  static final List<Map<String, String>> topBarButtons = [
+    {'id': 'discover', 'name': 'اكتشف'},
+    {'id': 'following', 'name': 'المتابعات'},
+    {'id': 'trending', 'name': 'رائج'},
+    {'id': 'ads', 'name': 'الإعلانات'},
+    {'id': 'news', 'name': 'الأخبار'},
+    {'id': 'academy', 'name': 'الأكاديمية'},
   ];
 
-  // ==================== 5. المولات والمعارض (15+ مول) ====================
+  // ============================================
+  // 4️⃣ المتاجر (200+)
+  // ============================================
+  static List<Map<String, dynamic>> generateStores() {
+    List<Map<String, dynamic>> stores = [];
+    
+    // إلكترونيات (25)
+    List<String> electronics = [
+      'جرير للإلكترونيات', 'متجر التقنية', 'إكسترا', 'سامسونج', 'آبل ستور',
+      'هواوي', 'شاومي', 'لينوفو', 'ديل', 'HP', 'سوني', 'إل جي',
+      'آيسر', 'آسوس', 'كانون', 'نيكون', 'جيم ستوب', 'بلايستيشن',
+      'أنكر', 'بيلكن', 'جابيل', 'سامسونج اليمن', 'هايبر التقنية', 'الخليج للكمبيوتر', 'عالم الإلكترونيات'
+    ];
+    
+    // أزياء (25)
+    List<String> fashion = [
+      'نون للأزياء', 'الأزياء العصرية', 'الخياط الذهبي', 'ثياب وأكثر', 'عبايات المملكة',
+      'فساتين السهرة', 'جلابيات يمنية', 'أحذية الموضة', 'شنط وماركات', 'ساعات فاخرة',
+      'نظارات الشمس', 'زارا', 'اتش اند ام', 'مانجو', 'بالنسياغا',
+      'شانيل', 'رولكس', 'كارتييه', 'الثوب اليمني', 'متجر العباية',
+      'الأحذية الرياضية', 'الشنط الجلدية', 'الإكسسوارات', 'الملابس الداخلية', 'متجر الحرير'
+    ];
+    
+    // سيارات (20)
+    List<String> cars = [
+      'تويوتا', 'هونداي', 'نيسان', 'هوندا', 'كيا', 'فورد', 'شيفروليه',
+      'مرسيدس', 'بي إم دبليو', 'لكزس', 'رنج روفر', 'جيب', 'دودج',
+      'فولكس واجن', 'سوزوكي', 'ميتسوبيشي', 'معرض السيارات', 'تشليح',
+      'قطع غيار', 'زينة سيارات'
+    ];
+    
+    // عقارات (15)
+    List<String> realestate = [
+      'مكتب عقاري', 'فلل للأيجار', 'شقق تمليك', 'أراضي سكنية',
+      'عقارات تجارية', 'مكاتب للإيجار', 'محلات تجارية', 'معارض',
+      'مخازن', 'استراحات', 'مزارع', 'عمارات', 'مجمعات سكنية',
+      'برج سكني', 'فنادق'
+    ];
+    
+    // مطاعم (25)
+    List<String> restaurants = [
+      'مطعم البيت اليمني', 'مندي الملكي', 'حضرموت للمندي', 'تعز للمطبخ اليمني',
+      'عدن للمأكولات', 'إب للوجبات', 'ذمار للمطاعم', 'قهوة البن',
+      'عصائر طازجة', 'حلويات شرقية', 'بيتزا هت', 'ماكدونالدز',
+      'كنتاكي', 'برجر كنج', 'صب واي', 'البيك',
+      'مطعم هندي', 'مطعم صيني', 'مطعم تركي', 'مطعم لبناني',
+      'شاورما', 'فلافل', 'فول وتميس', 'معصوب', 'كبدة'
+    ];
+    
+    // صحة وجمال (25)
+    List<String> health = [
+      'صيدلية الحياة', 'صيدلية الشفاء', 'النهدي', 'الدواء', 'مستشفى',
+      'مختبرات طبية', 'ماك', 'لوريال', 'نيفيا', 'كلينيك',
+      'استي لودر', 'عطور الماجد', 'دهن عود', 'بخور', 'زيت الحشيش',
+      'شامبو', 'صابون', 'ماسكات', 'فيتامينات', 'مكملات غذائية',
+      'فرش أسنان', 'معجون أسنان', 'مزيل عرق', 'كريمات', 'عناية بالبشرة'
+    ];
+    
+    // خدمات (25)
+    List<String> services = [
+      'صيانة منزلية', 'نظافة', 'كهربائي', 'سباك', 'مكيفات',
+      'دهانات', 'جبس', 'سيراميك', 'حدادة', 'نجارة',
+      'ألمنيوم', 'مظلات', 'عزل أسطح', 'مكافحة حشرات', 'نقل عفش',
+      'توصيل طلبات', 'تصليح سيارات', 'غسيل سيارات', 'خياطة', 'تصوير',
+      'تصميم جرافيك', 'برمجة', 'تسويق إلكتروني', 'ترجمة', 'تدريس خصوصي'
+    ];
+    
+    // متاجر متنوعة (40)
+    List<String> other = [
+      'مكتبة', 'قرطاسية', 'ألعاب أطفال', 'هدايا', 'زهور',
+      'حيوانات أليفة', 'طيور', 'أسماك زينة', 'معدات رياضية', 'دراجات',
+      'خيام', 'شنط سفر', 'مفاتيح', 'سوبرماركت', 'هايبر',
+      'مخبز', 'حلويات', 'مكسرات', 'تمور', 'عسل',
+      'حليب', 'أجبان', 'بيض', 'خضروات', 'فواكه',
+      'لحوم', 'دواجن', 'أسماك', 'بهارات', 'معلبات',
+      'مشروبات', 'عصائر', 'شاي', 'قهوة', 'مياه',
+      'منظفات', 'صابون', 'شامبو', 'مناديل', 'أكياس'
+    ];
+    
+    stores.addAll(_mapStores(electronics, 'إلكترونيات', 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200'));
+    stores.addAll(_mapStores(fashion, 'أزياء', 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200'));
+    stores.addAll(_mapStores(cars, 'سيارات', 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200'));
+    stores.addAll(_mapStores(realestate, 'عقارات', 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200'));
+    stores.addAll(_mapStores(restaurants, 'مطاعم', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'));
+    stores.addAll(_mapStores(health, 'صحة وجمال', 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200'));
+    stores.addAll(_mapStores(services, 'خدمات', 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200'));
+    stores.addAll(_mapStores(other, 'متنوعات', 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=200'));
+    
+    return stores;
+  }
+  
+  static List<Map<String, dynamic>> _mapStores(List<String> names, String category, String image) {
+    return names.asMap().entries.map((e) {
+      int i = e.key;
+      return {
+        'id': '${category}_$i',
+        'name': e.value,
+        'image': image,
+        'category': category,
+        'productsCount': 50 + (i * 7) % 100,
+        'rating': 4.0 + (i % 10) * 0.1,
+        'isVerified': i % 3 == 0,
+        'followers': 100 + i * 25,
+      };
+    }).toList();
+  }
+
+  // ============================================
+  // 5️⃣ المولات (17)
+  // ============================================
   static final List<Map<String, dynamic>> malls = [
     {'id': '1', 'name': 'اليمن مول', 'city': 'صنعاء', 'stores': 250, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200'},
     {'id': '2', 'name': 'سيتي مول', 'city': 'صنعاء', 'stores': 180, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=200'},
@@ -154,5 +210,66 @@ class FullMarketData {
     {'id': '15', 'name': 'مول العاصمة', 'city': 'صنعاء', 'stores': 200, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200'},
     {'id': '16', 'name': 'مول الفردوس', 'city': 'عدن', 'stores': 85, 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200'},
     {'id': '17', 'name': 'رد سي مول', 'city': 'صنعاء', 'stores': 90, 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200'},
+  ];
+
+  // ============================================
+  // 6️⃣ المنتجات (29)
+  // ============================================
+  static final List<Map<String, dynamic>> products = [
+    {'id': 'p1', 'name': 'الخضروات والفواكه', 'price': 500, 'image': 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=400'},
+    {'id': 'p2', 'name': 'الدجاج واللحوم الطازجة', 'price': 2000, 'image': 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=400'},
+    {'id': 'p3', 'name': 'Coffers', 'price': 1500, 'image': 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400'},
+    {'id': 'p4', 'name': 'الطبخ والخير', 'price': 800, 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400'},
+    {'id': 'p5', 'name': 'الألبان والأجبان والبيض', 'price': 1200, 'image': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400'},
+    {'id': 'p6', 'name': 'ركن الأطفال', 'price': 3500, 'image': 'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?w=400'},
+    {'id': 'p7', 'name': 'Aptamil', 'price': 4500, 'image': 'https://images.unsplash.com/photo-1584429377417-a62e2f1378e4?w=400'},
+    {'id': 'p8', 'name': 'المشروبات والعصائر', 'price': 300, 'image': 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400'},
+    {'id': 'p9', 'name': 'الرز والسكر والحبوب', 'price': 900, 'image': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400'},
+    {'id': 'p10', 'name': 'الأغذية المعلبة', 'price': 400, 'image': 'https://images.unsplash.com/photo-1590004953392-5aba2e72269a?w=400'},
+    {'id': 'p11', 'name': 'TRANS', 'price': 2500, 'image': 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400'},
+    {'id': 'p12', 'name': 'DOWN', 'price': 1800, 'image': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400'},
+    {'id': 'p13', 'name': 'القهوة والشاي', 'price': 600, 'image': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400'},
+    {'id': 'p14', 'name': 'الأغذية المجمدة', 'price': 700, 'image': 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=400'},
+    {'id': 'p15', 'name': 'حبات خفيفة وشبس', 'price': 200, 'image': 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400'},
+    {'id': 'p16', 'name': 'قسم الثلاجة', 'price': 1100, 'image': 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=400'},
+    {'id': 'p17', 'name': 'التوابل والبهارات', 'price': 350, 'image': 'https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=400'},
+    {'id': 'p18', 'name': 'قسم الدايت', 'price': 1300, 'image': 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400'},
+    {'id': 'p19', 'name': 'المستهلكات والمناديل', 'price': 150, 'image': 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400'},
+    {'id': 'p20', 'name': 'أطعمة الأقطار', 'price': 2200, 'image': 'https://images.unsplash.com/photo-1590004953392-5aba2e72269a?w=400'},
+    {'id': 'p21', 'name': 'التنظيف والغسيل', 'price': 500, 'image': 'https://images.unsplash.com/photo-1567113463300-102a7e8e9b7b?w=400'},
+    {'id': 'p22', 'name': 'مستلزمات إلكترونية', 'price': 3000, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=400'},
+    {'id': 'p23', 'name': 'Crystal', 'price': 5000, 'image': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400'},
+    {'id': 'p24', 'name': 'مستلزمات الحيوانات الأليفة', 'price': 1600, 'image': 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=400'},
+    {'id': 'p25', 'name': 'القرطاسية', 'price': 400, 'image': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400'},
+    {'id': 'p26', 'name': 'king', 'price': 7500, 'image': 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400'},
+    {'id': 'p27', 'name': 'الشوكولاتة والبسكويت', 'price': 500, 'image': 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400'},
+    {'id': 'p28', 'name': 'وجبات خفيفة وشبس', 'price': 100, 'image': 'https://images.unsplash.com/photo-1621447504864-8686df5b8e37?w=400'},
+    {'id': 'p29', 'name': 'العناية الشخصية', 'price': 750, 'image': 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400'},
+  ];
+
+  // ============================================
+  // 7️⃣ ماركات عالمية
+  // ============================================
+  static final List<Map<String, dynamic>> brands = [
+    {'name': 'Apple', 'logo': '🍎', 'color': 0xFF000000},
+    {'name': 'Samsung', 'logo': '📱', 'color': 0xFF1428A0},
+    {'name': 'Nike', 'logo': '👟', 'color': 0xFF000000},
+    {'name': 'Adidas', 'logo': '👕', 'color': 0xFF000000},
+    {'name': 'Zara', 'logo': '👗', 'color': 0xFF000000},
+    {'name': 'Toyota', 'logo': '🚗', 'color': 0xFFEB0A1E},
+    {'name': 'Sony', 'logo': '🎮', 'color': 0xFF000000},
+    {'name': 'LG', 'logo': '📺', 'color': 0xFFA5004D},
+    {'name': 'Nescafe', 'logo': '☕', 'color': 0xFFC8102E},
+    {'name': 'Pepsi', 'logo': '🥤', 'color': 0xFF00539F},
+  ];
+
+  // ============================================
+  // 8️⃣ عروض وإعلانات
+  // ============================================
+  static final List<Map<String, dynamic>> ads = [
+    {'title': 'عروض الصيف', 'desc': 'خصم 40%', 'color': 0xFFF6465D, 'image': 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400'},
+    {'title': 'تخفيضات الجمعة', 'desc': 'خصم 70%', 'color': 0xFF2196F3, 'image': 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400'},
+    {'title': 'عروض العيد', 'desc': 'خصم 50%', 'color': 0xFFFF9800, 'image': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400'},
+    {'title': 'شحن مجاني', 'desc': 'لكل الطلبات', 'color': 0xFF4CAF50, 'image': 'https://images.unsplash.com/photo-1583258292688-d0213dc145a4?w=400'},
   ];
 }

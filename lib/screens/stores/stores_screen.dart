@@ -17,7 +17,7 @@ class _StoresScreenState extends State<StoresScreen> {
   String _searchQuery = '';
   int _selectedFilter = 0;
   
-  final List<String> _categories = ['الكل', 'إلكترونيات', 'أزياء', 'سيارات', 'عقارات', 'أثاث', 'مطاعم', 'صحة وجمال'];
+  final List<String> _categories = FullMarketData.mainCategories; // ['الكل', 'إلكترونيات', 'أزياء', 'سيارات', 'عقارات', 'أثاث', 'مطاعم', 'صحة وجمال'];
   final List<String> _filterButtons = ['الكل', 'الأكثر مبيعاً', 'الأعلى تقييماً', 'الأحدث', 'VIP'];
   
   List<Map<String, dynamic>> get _filteredStores {
