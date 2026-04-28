@@ -15,6 +15,7 @@ class AppTheme {
   // ألوان Flex Yemen
   static const Color nightBackground = Color(0xFF0F172A);
   static const Color nightSurface = Color(0xFF16213E);
+  static const Color darkSurface = Color(0xFF16213E);
   static const Color nightCard = Color(0xFF1A2A44);
   static const Color lightBackground = Color(0xFFF5F5F5);
   static const Color lightCard = Color(0xFFFFFFFF);
@@ -22,6 +23,7 @@ class AppTheme {
 
   // ألوان ذهبية
   static const Color gold = Color(0xFFD4AF37);
+  static const Color goldColor = Color(0xFFD4AF37);
   static const Color goldDark = Color(0xFFB8962E);
   static const Color goldLight = Color(0xFFF4E4A6);
   static const Color binanceGoldLight = Color(0xFFF4E4A6);
@@ -35,6 +37,8 @@ class AppTheme {
   // ألوان النصوص
   static const Color textPrimary = Color(0xFFFFFFFF);
   static const Color textSecondary = Color(0xFF9CA3AF);
+  static const Color darkTextSecondary = Color(0xFF9CA3AF);
+  static const Color lightTextSecondary = Color(0xFF6B7280);
   static const Color textMuted = Color(0xFF5E6673);
 
   // التدرجات
@@ -187,3 +191,9 @@ class AppTheme {
         : lightCard;
   }
 }
+
+  static Color getSurfaceColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkSurface
+        : lightSurface;
+  }
