@@ -24,14 +24,14 @@ import 'screens/more_screen.dart';
 import 'screens/discover_screen.dart';
 import 'screens/news_screen.dart';
 import 'screens/more_screen.dart';
-import 'screens/nearby_screen.dart';
+import 'screens/nearby_stores_screen.dart';
 import 'screens/following_screen.dart';
 import 'screens/order_detail_screen.dart';
 import 'screens/order_tracking_screen.dart';
 import 'screens/about_screen.dart';
 import 'screens/categories/all_categories_screen.dart';
 import 'screens/product/product_detail_screen.dart';
-import 'screens/checkout/checkout_screen.dart';
+import 'screens/payment/checkout_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/forgot_password_screen.dart';
@@ -164,7 +164,7 @@ class FlexYemenApp extends StatelessWidget {
     '/discover': (context) => const DiscoverScreen(),
     '/news': (context) => const NewsScreen(),
     '/more': (context) => const MoreScreen(),
-        '/nearby': (context) => const NearbyScreen(),
+        '/nearby': (context) => const NearbyStoresScreen(),
         '/following': (context) => const FollowingScreen(),
         '/tracking': (context) => const OrderTrackingScreen(),
         '/about': (context) => const AboutScreen(),

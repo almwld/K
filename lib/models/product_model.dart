@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/product_detail_screen.dart';
+import '../screens/product/product_detail_screen.dart';
 class ProductModel {
   final String id;
   final String title;
