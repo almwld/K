@@ -17,11 +17,11 @@ class _StoresScreenState extends State<StoresScreen> {
   String _searchQuery = '';
   int _selectedFilter = 0;
   
-  final List<String> _categories = FullMarketData.mainCategories; // ['الكل', 'إلكترونيات', 'أزياء', 'سيارات', 'عقارات', 'أثاث', 'مطاعم', 'صحة وجمال'];
+  final List<Map<String, dynamic>> _categories = FullMarketData.mainCategories; // ['الكل', 'إلكترونيات', 'أزياء', 'سيارات', 'عقارات', 'أثاث', 'مطاعم', 'صحة وجمال'];
   final List<String> _filterButtons = ['الكل', 'الأكثر مبيعاً', 'الأعلى تقييماً', 'الأحدث', 'VIP'];
   
   List<Map<String, dynamic>> get _filteredStores {
-    var stores = List<Map<String, dynamic>>.from(FullMarketData.stores);
+    var stores = List<Map<String, dynamic>>.from(FullMarketData.generateStores());
     
     if (_selectedCategory != 'الكل') {
       stores = stores.where((s) => s['category'] == _selectedCategory).toList();
