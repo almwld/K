@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
+  geolocator: ^10.1.0
   flutter:
     sdk: flutter
   
@@ -41,6 +42,7 @@ dependencies:
   lottie: ^3.1.0
 
 dev_dependencies:
+  geolocator: ^10.1.0
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0

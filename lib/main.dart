@@ -169,7 +169,7 @@ class FlexYemenApp extends StatelessWidget {
         '/tracking': (context) => const OrderTrackingScreen(),
         '/about': (context) => const AboutScreen(),
         '/categories': (context) => const AllCategoriesScreen(),
-        '/checkout': (context) => const CheckoutScreen(),
+        '/checkout': (context) => const CheckoutScreen(cartItems: []),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/forgot_password': (context) => const ForgotPasswordScreen(),

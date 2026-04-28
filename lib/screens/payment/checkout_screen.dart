@@ -10,7 +10,7 @@ import 'order_success_screen.dart';
 class CheckoutScreen extends StatefulWidget {
   final List<CartItem> cartItems;
   
-  const CheckoutScreen({super.key, required this.cartItems});
+  const CheckoutScreen({super.key, this.cartItems = const []});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
