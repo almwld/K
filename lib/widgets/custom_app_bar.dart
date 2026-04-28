@@ -122,3 +122,53 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
+
+// ===== SliverAppBar مع بحث =====
+class SliverSearchAppBar extends StatelessWidget {
+  final VoidCallback? onNotificationTap;
+  final VoidCallback? onCartTap;
+
+  const SliverSearchAppBar({
+    super.key,
+    this.onNotificationTap,
+    this.onCartTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SliverAppBar(
+      floating: true,
+      pinned: true,
+      expandedHeight: 120,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      title: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'ابحث عن المنتجات، المتاجر، المولات...',
+            hintStyle: const TextStyle(fontFamily: 'Changa', fontSize: 14),
+            prefixIcon: const Icon(Icons.search, color: Color(0xFFD4AF37)),
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          ),
+          style: const TextStyle(fontFamily: 'Changa'),
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: onNotificationTap,
+          icon: const Icon(Icons.notifications_outlined),
+        ),
+        IconButton(
+          onPressed: onCartTap,
+          icon: const Icon(Icons.shopping_cart_outlined),
+        ),
+      ],
+    );
+  }
+}

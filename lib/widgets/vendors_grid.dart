@@ -1,7 +1,19 @@
-=================
-  Widget _buildVendorsGrid(ThemeData theme) {
-    final vendors = _selectedMainCategory?.vendors ?? [];
-    
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../theme/app_theme.dart';
+
+class VendorsGrid extends StatelessWidget {
+  final List<dynamic> vendors;
+  final bool isDark;
+
+  const VendorsGrid({
+    super.key,
+    required this.vendors,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.all(12),
       sliver: SliverGrid(
@@ -14,8 +26,6 @@
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final vendor = vendors[index];
-            final isDark = theme.brightness == Brightness.dark;
-            
             return Container(
               decoration: BoxDecoration(
                 color: isDark ? AppTheme.nightCard : AppTheme.lightCard,
@@ -60,22 +70,19 @@
                   const SizedBox(height: 8),
                   Text(
                     vendor.name,
-                    style: const TextStyle(fontFamily: 'Changa', fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   Text(
                     '${vendor.productsCount} منتج',
-                    style: TextStyle(fontFamily: 'Changa', fontSize: 12, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.star, color: Colors.amber, size: 14),
-                      Text(
-                        ' ${vendor.rating}',
-                        style: const TextStyle(fontFamily: 'Changa', fontSize: 12),
-                      ),
+                      Text(' ${vendor.rating}', style: const TextStyle(fontSize: 12)),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -86,7 +93,7 @@
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     ),
-                    child: const Text('متابعة', style: TextStyle(fontFamily: 'Changa', fontSize: 12)),
+                    child: const Text('متابعة', style: TextStyle(fontSize: 12)),
                   ),
                 ],
               ),
@@ -97,5 +104,4 @@
       ),
     );
   }
-
-  // =================
+}

@@ -1,4 +1,8 @@
-=======
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class BannerService {
+  final SupabaseClient client = Supabase.instance.client;
+
   Future<List<Map<String, dynamic>>> getActiveBanners() async {
     return await client
         .from('banners')
@@ -7,4 +11,3 @@
         .order('order', ascending: true);
   }
 }
-

@@ -1,47 +1,46 @@
-=================
-  Widget _buildSubCategoryBar(ThemeData theme, bool isDark) {
-    if (_selectedMainCategory == null) return const SizedBox.shrink();
-    
-    final subCategories = _selectedMainCategory!.subCategories;
-    
+import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
+
+class SubCategoryBar extends StatelessWidget {
+  final List<dynamic> subCategories;
+  final dynamic selectedSubCategory;
+  final Function(dynamic) onSubCategorySelected;
+  final bool isDark;
+
+  const SubCategoryBar({
+    super.key,
+    required this.subCategories,
+    required this.selectedSubCategory,
+    required this.onSubCategorySelected,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (subCategories.isEmpty) return const SizedBox.shrink();
+
     return Container(
       height: 50,
-      color: theme.scaffoldBackgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: subCategories.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
-            // زر "الكل"
-            final isSelected = _selectedSubCategory == null;
-            return _buildSubCategoryChip(
-              'الكل',
-              isSelected,
-              theme,
-              () {
-                setState(() => _selectedSubCategory = null);
-              },
-            );
+            final isSelected = selectedSubCategory == null;
+            return _buildChip('الكل', isSelected, () => onSubCategorySelected(null));
           }
-          
+
           final sub = subCategories[index - 1];
-          final isSelected = _selectedSubCategory?.id == sub.id;
-          
-          return _buildSubCategoryChip(
-            sub.name,
-            isSelected,
-            theme,
-            () {
-              setState(() => _selectedSubCategory = sub);
-            },
-          );
+          final isSelected = selectedSubCategory?.id == sub.id;
+          return _buildChip(sub.name, isSelected, () => onSubCategorySelected(sub));
         },
       ),
     );
   }
 
-  Widget _buildSubCategoryChip(String label, bool isSelected, ThemeData theme, VoidCallback onTap) {
+  Widget _buildChip(String label, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -58,9 +57,8 @@
           child: Text(
             label,
             style: TextStyle(
-              fontFamily: 'Changa',
               fontSize: 12,
-              color: isSelected ? AppTheme.gold : theme.textTheme.bodySmall?.color,
+              color: isSelected ? AppTheme.gold : Colors.grey,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
@@ -68,5 +66,4 @@
       ),
     );
   }
-
-  // =================
+}

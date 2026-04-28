@@ -1,20 +1,20 @@
-=================
-  Widget _buildProductsGrid(ThemeData theme) {
-    List<Product> products = [];
-    if (_selectedMainCategory != null) {
-      products = _selectedMainCategory!.products;
-      
-      // تطبيق الفلاتر
-      if (_selectedSubCategory != null) {
-        // تصفية حسب الفرع
-      }
-      if (_selectedMall != null) {
-        // تصفية حسب المول
-      }
-      products = products.where((p) => p.price >= _priceRange.start && p.price <= _priceRange.end).toList();
-      products = products.where((p) => p.rating >= _minRating).toList();
-    }
-    
+import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
+import 'product_card.dart';
+import '../screens/product/product_detail_screen.dart';
+
+class ProductsGrid extends StatelessWidget {
+  final List<dynamic> products;
+  final bool isDark;
+
+  const ProductsGrid({
+    super.key,
+    required this.products,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     if (products.isEmpty) {
       return SliverFillRemaining(
         child: Center(
@@ -25,14 +25,14 @@
               const SizedBox(height: 16),
               Text(
                 'لا توجد منتجات',
-                style: theme.textTheme.titleLarge?.copyWith(color: Colors.grey[600]),
+                style: TextStyle(fontSize: 18, color: Colors.grey[600]),
               ),
             ],
           ),
         ),
       );
     }
-    
+
     return SliverPadding(
       padding: const EdgeInsets.all(12),
       sliver: SliverGrid(
@@ -56,16 +56,7 @@
                   context,
                   MaterialPageRoute(
                     builder: (_) => ProductDetailScreen(
-                      id: product.id,
-                      title: product.name,
-                      image: product.imageUrl,
-                      price: product.price,
-                      description: 'وصف المنتج ${product.name}',
-                      sellerName: product.vendorName,
-                      rating: product.rating,
-                      reviewCount: product.reviewsCount,
-                      images: [product.imageUrl],
-                      inStock: product.inStock,
+                      productId: product.id,
                     ),
                   ),
                 );
@@ -77,5 +68,4 @@
       ),
     );
   }
-
-  // =================
+}

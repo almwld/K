@@ -1,9 +1,10 @@
-=================
-class _CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
+import 'package:flutter/material.dart';
+
+class CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
   final double height;
 
-  _CategoryHeaderDelegate({required this.child, required this.height});
+  CategoryHeaderDelegate({required this.child, required this.height});
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -20,8 +21,7 @@ class _CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => height;
 
   @override
-  bool shouldRebuild(covariant _CategoryHeaderDelegate oldDelegate) {
+  bool shouldRebuild(covariant CategoryHeaderDelegate oldDelegate) {
     return oldDelegate.child != child || oldDelegate.height != height;
   }
 }
-

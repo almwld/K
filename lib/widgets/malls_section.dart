@@ -1,15 +1,31 @@
-=================
-  Widget _buildMallsSection(ThemeData theme, bool isDark) {
-    final malls = _selectedMainCategory!.malls;
-    
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../theme/app_theme.dart';
+
+class MallsSection extends StatelessWidget {
+  final List<dynamic> malls;
+  final dynamic selectedMall;
+  final Function(dynamic) onMallSelected;
+  final bool isDark;
+
+  const MallsSection({
+    super.key,
+    required this.malls,
+    required this.selectedMall,
+    required this.onMallSelected,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
+        const Padding(
+          padding: EdgeInsets.all(16),
           child: Text(
             'المعارض والمولات',
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         SizedBox(
@@ -20,14 +36,10 @@
             itemCount: malls.length,
             itemBuilder: (context, index) {
               final mall = malls[index];
-              final isSelected = _selectedMall?.id == mall.id;
-              
+              final isSelected = selectedMall?.id == mall.id;
+
               return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedMall = isSelected ? null : mall;
-                  });
-                },
+                onTap: () => onMallSelected(isSelected ? null : mall),
                 child: Container(
                   width: 120,
                   margin: const EdgeInsets.only(right: 12),
@@ -48,12 +60,12 @@
                       const SizedBox(height: 8),
                       Text(
                         mall.name,
-                        style: const TextStyle(fontFamily: 'Changa', fontSize: 12, fontWeight: FontWeight.w600),
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                       Text(
                         '${mall.storesCount} متجر',
-                        style: TextStyle(fontFamily: 'Changa', fontSize: 10, color: Colors.grey[600]),
+                        style: TextStyle(fontSize: 10, color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -66,5 +78,4 @@
       ],
     );
   }
-
-  // =================
+}
