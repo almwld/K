@@ -308,7 +308,7 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightCard,
         actions: [
           IconButton(
             icon: const Icon(Icons.palette),
@@ -338,7 +338,7 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+          color: isDark ? AppTheme.nightSurface : AppTheme.lightCard,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),

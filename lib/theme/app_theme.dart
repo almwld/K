@@ -16,6 +16,7 @@ class AppTheme {
   static const Color nightBackground = Color(0xFF0F172A);
   static const Color nightSurface = Color(0xFF16213E);
   static const Color darkSurface = Color(0xFF16213E);
+  static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color nightCard = Color(0xFF1A2A44);
   static const Color lightBackground = Color(0xFFF5F5F5);
   static const Color lightCard = Color(0xFFFFFFFF);
@@ -189,11 +190,12 @@ class AppTheme {
     return Theme.of(context).brightness == Brightness.dark
         ? binanceCard
         : lightCard;
-  }
-}
 
   static Color getSurfaceColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? darkSurface
+        ? nightSurface
         : lightSurface;
   }
+  }
+}
+
