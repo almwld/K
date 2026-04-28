@@ -23,8 +23,8 @@ class _StoresScreenState extends State<StoresScreen> {
   List<Map<String, dynamic>> get _filteredStores {
     var stores = List<Map<String, dynamic>>.from(FullMarketData.generateStores());
     
-    if (_selectedCategory != 'الكل') {
-      stores = stores.where((s) => s['category'] == _selectedCategory).toList();
+    if (_selectedCategory['name'] != 'الكل' && _selectedCategory['id'] != 'all') {
+      stores = stores.where((s) => s['category'] == _selectedCategory['name']).toList();
     }
     
     if (_searchQuery.isNotEmpty) {
@@ -100,7 +100,7 @@ class _StoresScreenState extends State<StoresScreen> {
         itemCount: _categories.length,
         itemBuilder: (context, index) {
           final cat = _categories[index];
-          final isSelected = _selectedCategory["name"] == cat;
+          final isSelected = _selectedCategory["id"] == cat["id"];
           return GestureDetector(
             onTap: () => setState(() => _selectedCategory = cat),
             child: Container(
