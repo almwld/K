@@ -11,6 +11,9 @@ import '../map/interactive_map_screen.dart';
 import '../wallet/wallet_screen.dart';
 import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
+import '../orders/orders_screen.dart';
+import '../stores/stores_screen.dart';
+import '../ai_assistant_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -24,13 +27,13 @@ class _MainNavigationState extends State<MainNavigation> {
   Color _themeColor = AppTheme.goldColor;
 
   final List<Widget> _screens = const [
-    HomeScreen(),           // Index 0 - الرئيسية
-    AllAdsScreen(),         // Index 1 - متاجر
-    InteractiveMapScreen(), // Index 2 - مول بجوارك
-    SizedBox(),             // Index 3 - Placeholder للزر الذهبي
-    WalletScreen(),         // Index 4 - مزاد
-    ChatScreen(),           // Index 5 - سلة
-    ProfileScreen(),        // Index 6 - حسابي
+    ProfileScreen(),        // 0 - حسابي
+    OrdersScreen(),         // 1 - طلباتي
+    ChatScreen(),           // 2 - دردشه
+    SizedBox(),             // 3 - زر ذهبي (إجراءات سريعة)
+    WalletScreen(),         // 4 - مزاد
+    StoresScreen(),         // 5 - متاجر
+    HomeScreen(),           // 6 - الرئيسية
   ];
 
   @override
@@ -49,9 +52,7 @@ class _MainNavigationState extends State<MainNavigation> {
       _showQuickActionsSheet();
       return;
     }
-    setState(() {
-      _currentIndex = index;
-    });
+    setState(() => _currentIndex = index);
   }
 
   void _showQuickActionsSheet() {
@@ -128,141 +129,6 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
-  void _showColorPicker() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'اختر لون التطبيق',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: 'Changa'),
-        ),
-        content: SizedBox(
-          width: 300,
-          child: GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-            ),
-            itemCount: ThemeService.availableColors.length,
-            itemBuilder: (context, index) {
-              final color = ThemeService.availableColors[index];
-              final isSelected = _themeColor.value == color.value;
-              return GestureDetector(
-                onTap: () async {
-                  await ThemeService.saveThemeColor(color);
-                  setState(() => _themeColor = color);
-                  Navigator.pop(context);
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                          ),
-                        ],
-                        border: isSelected
-                            ? Border.all(color: Colors.black, width: 3)
-                            : null,
-                      ),
-                      child: isSelected
-                          ? const Icon(Icons.check, color: Colors.white, size: 30)
-                          : null,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      ThemeService.colorNames[index],
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showQuickSettings() {
-    final themeManager = context.read<ThemeManager>();
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppTheme.getDividerColor(context),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'الإعدادات السريعة',
-              style: TextStyle(
-                fontFamily: 'Changa',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.brightness_6),
-              title: const Text('الوضع الليلي'),
-              trailing: Switch(
-                value: themeManager.isDarkMode,
-                onChanged: (v) => themeManager.toggleTheme(),
-                activeColor: _themeColor,
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.language),
-              title: const Text('اللغة'),
-              trailing: const Text('العربية'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text('الإشعارات'),
-              trailing: Switch(
-                value: true,
-                onChanged: (v) {},
-                activeColor: _themeColor,
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('جميع الإعدادات'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/settings');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildQuickActionItem({
     required IconData icon,
     required String title,
@@ -298,37 +164,102 @@ class _MainNavigationState extends State<MainNavigation> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        elevation: 0,
         title: const Text(
-          'FLEX YEMEN',
+          'Flex Yemen',
           style: TextStyle(
             fontFamily: 'Changa',
             fontWeight: FontWeight.bold,
+            fontSize: 22,
             color: AppTheme.goldColor,
           ),
         ),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: isDark ? AppTheme.nightSurface : AppTheme.lightCard,
         actions: [
+          // زر الدعم
           IconButton(
-            icon: const Icon(Icons.palette),
-            onPressed: _showColorPicker,
-            tooltip: 'تغيير الثيم',
+            icon: SvgPicture.asset(
+              'assets/icons/svg/support.svg',
+              width: 22,
+              height: 22,
+              colorFilter: ColorFilter.mode(
+                isDark ? Colors.white : Colors.black87,
+                BlendMode.srcIn,
+              ),
+            ),
+            onPressed: () => Navigator.pushNamed(context, '/help'),
+            tooltip: 'الدعم',
           ),
+          // زر السلة
           IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: _showQuickSettings,
-            tooltip: 'الإعدادات السريعة',
-          ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
+            icon: SvgPicture.asset(
+              'assets/icons/svg/cart.svg',
+              width: 22,
+              height: 22,
+              colorFilter: ColorFilter.mode(
+                isDark ? Colors.white : Colors.black87,
+                BlendMode.srcIn,
+              ),
+            ),
             onPressed: () => Navigator.pushNamed(context, '/cart'),
             tooltip: 'السلة',
           ),
+          // زر المساعد الذكي AI
           IconButton(
-            icon: const Icon(Icons.notifications_outlined),
+            icon: SvgPicture.asset(
+              'assets/icons/svg/ai_assistant.svg',
+              width: 22,
+              height: 22,
+              colorFilter: const ColorFilter.mode(
+                AppTheme.goldColor,
+                BlendMode.srcIn,
+              ),
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AIAssistantScreen()),
+            ),
+            tooltip: 'المساعد الذكي',
+          ),
+          // زر الإشعارات
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/svg/notification_bell.svg',
+              width: 22,
+              height: 22,
+              colorFilter: ColorFilter.mode(
+                isDark ? Colors.white : Colors.black87,
+                BlendMode.srcIn,
+              ),
+            ),
             onPressed: () => Navigator.pushNamed(context, '/notifications'),
             tooltip: 'الإشعارات',
+          ),
+          // ثلاث نقاط فوق بعض
+          PopupMenuButton<String>(
+            icon: Icon(
+              Icons.more_vert,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+            onSelected: (value) {
+              switch (value) {
+                case 'settings':
+                  Navigator.pushNamed(context, '/settings');
+                  break;
+                case 'theme':
+                  _showColorPicker();
+                  break;
+                case 'quick_settings':
+                  _showQuickSettings();
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(value: 'settings', child: Text('الإعدادات')),
+              const PopupMenuItem(value: 'theme', child: Text('تغيير الثيم')),
+              const PopupMenuItem(value: 'quick_settings', child: Text('إعدادات سريعة')),
+            ],
           ),
         ],
       ),
@@ -338,7 +269,7 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: isDark ? AppTheme.nightSurface : AppTheme.lightCard,
+          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -353,23 +284,101 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // 0: الرئيسية
-                _buildNavItem('assets/icons/svg/home.svg', 'الرئيسية', 0),
-                // 1: متاجر
-                _buildNavItem('assets/icons/svg/merchant.svg', 'متاجر', 1),
-                // 2:  بجوارك
-                _buildNavItem('assets/icons/svg/location.svg', ' بجوارك', 2),
-                // 3: الزر الذهبي
+                _buildNavItem('assets/icons/svg/profile.svg', 'حسابي', 0),
+                _buildNavItem('assets/icons/svg/orders.svg', 'طلباتي', 1),
+                _buildNavItem('assets/icons/svg/chat.svg', 'دردشه', 2),
                 _buildFAB(),
-                // 4: مزاد
-                _buildNavItem('assets/icons/svg/actions.svg', 'مزاد', 4),
-                // 5: سلة
-                _buildNavItem('assets/icons/svg/chat.svg', 'دردشه', 5),
-                // 6: حسابي
-                _buildNavItem('assets/icons/svg/profile.svg', 'حسابي', 6),
+                _buildNavItem('assets/icons/svg/auction.svg', 'مزاد', 4),
+                _buildNavItem('assets/icons/svg/market.svg', 'متاجر', 5),
+                _buildNavItem('assets/icons/svg/home.svg', 'الرئيسية', 6),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  void _showColorPicker() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('اختر لون التطبيق', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Changa')),
+        content: SizedBox(
+          width: 300,
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, crossAxisSpacing: 16, mainAxisSpacing: 16,
+            ),
+            itemCount: ThemeService.availableColors.length,
+            itemBuilder: (context, index) {
+              final color = ThemeService.availableColors[index];
+              final isSelected = _themeColor.value == color.value;
+              return GestureDetector(
+                onTap: () async {
+                  await ThemeService.saveThemeColor(color);
+                  setState(() => _themeColor = color);
+                  Navigator.pop(context);
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      width: 60, height: 60,
+                      decoration: BoxDecoration(
+                        color: color, shape: BoxShape.circle,
+                        border: isSelected ? Border.all(color: Colors.black, width: 3) : null,
+                      ),
+                      child: isSelected ? const Icon(Icons.check, color: Colors.white, size: 30) : null,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(ThemeService.colorNames[index], style: const TextStyle(fontSize: 12)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showQuickSettings() {
+    final themeManager = context.read<ThemeManager>();
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(width: 40, height: 4, decoration: BoxDecoration(color: AppTheme.getDividerColor(context), borderRadius: BorderRadius.circular(2))),
+            const SizedBox(height: 20),
+            const Text('الإعدادات السريعة', style: TextStyle(fontFamily: 'Changa', fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: const Icon(Icons.brightness_6),
+              title: const Text('الوضع الليلي'),
+              trailing: Switch(value: themeManager.isDarkMode, onChanged: (v) => themeManager.toggleTheme(), activeColor: _themeColor),
+            ),
+            ListTile(leading: const Icon(Icons.language), title: const Text('اللغة'), trailing: const Text('العربية')),
+            ListTile(
+              leading: const Icon(Icons.notifications),
+              title: const Text('الإشعارات'),
+              trailing: Switch(value: true, onChanged: (v) {}, activeColor: _themeColor),
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('جميع الإعدادات'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -382,47 +391,26 @@ class _MainNavigationState extends State<MainNavigation> {
         onTap: _showQuickActionsSheet,
         customBorder: const CircleBorder(),
         child: Container(
-          width: 56,
-          height: 56,
+          width: 56, height: 56,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [_themeColor, Color.lerp(_themeColor, Colors.white, 0.3) ?? _themeColor],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: _themeColor.withOpacity(0.4),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+            boxShadow: [BoxShadow(color: _themeColor.withOpacity(0.4), blurRadius: 10, offset: const Offset(0, 4))],
           ),
-          child: const Icon(
-            Icons.add,
-            color: Colors.black,
-            size: 32,
-          ),
+          child: const Icon(Icons.add, color: Colors.black, size: 32),
         ),
       ),
-    ).animate(
-      onPlay: (controller) => controller.repeat(reverse: true),
-    ).scale(
-      begin: const Offset(1, 1),
-      end: const Offset(1.05, 1.05),
-      duration: 1.seconds,
-      curve: Curves.easeInOut,
+    ).animate(onPlay: (controller) => controller.repeat(reverse: true)).scale(
+      begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 1.seconds, curve: Curves.easeInOut,
     );
   }
 
   Widget _buildNavItem(String svgPath, String label, int index) {
     final isSelected = _currentIndex == index;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    final color = isSelected
-        ? _themeColor
-        : (isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary);
+    final color = isSelected ? _themeColor : (isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary);
 
     return Expanded(
       child: Material(
@@ -435,24 +423,9 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset(
-                  svgPath,
-                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                  width: 24,
-                  height: 24,
-                ),
+                SvgPicture.asset(svgPath, colorFilter: ColorFilter.mode(color, BlendMode.srcIn), width: 24, height: 24),
                 const SizedBox(height: 4),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: color,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                Text(label, style: TextStyle(fontSize: 10, color: color, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
               ],
             ),
           ),
