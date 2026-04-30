@@ -348,8 +348,7 @@ jobs:
         run: |
           echo "=== أحجام APK النهائية ==="
           ls -lh build/app/outputs/flutter-apk/*.apk
-
-      - name: Upload APK
+      - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
           name: FlexYemen_${{ github.sha }}
