@@ -32,54 +32,12 @@ class _StoresScreenState extends State<StoresScreen> {
     }
     
     if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
+      stores.sort((a, b) => (b['sales'] as String).replaceAll('K', '').compareTo((a['sales'] as String).replaceAll('K', '')));
     } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
+      stores.sort((a, b) => (b['rating'] as double).compareTo(a['rating'] as double));
     }
-    if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
-    } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
-    }
-    if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
-    } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
-    }
-    if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
-    } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
-    }
-    if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
-    } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
-    }
-    if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
-    } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
-    }
-    if (_selectedFilter == 1) {
-      stores.sort((a, b) => (b["productsCount"] as int).compareTo(a["productsCount"] as int));
-    } else if (_selectedFilter == 2) {
-      stores.sort((a, b) => (b["rating"] as double).compareTo(a["rating"] as double));
-    } else if (_selectedFilter == 3) {
-      stores = stores.reversed.toList();
-    }
+    
+    return stores;
   }
 
   @override
