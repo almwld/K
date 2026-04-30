@@ -23,7 +23,7 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  int _currentIndex = 0;
+  int _currentIndex = 6;
   Color _themeColor = AppTheme.goldColor;
 
   final List<Widget> _screens = const [
