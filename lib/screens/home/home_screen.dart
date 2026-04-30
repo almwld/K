@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, dynamic>> _ads = FullMarketData.ads;
 
   // السلايدرات
-  final List<Map<String, dynamic>> _carouselItems = [
+  final List<Map<String, dynamic>> _carouselItems = FullMarketData.ads; //
     {'title': 'مزادات حية', 'subtitle': 'شارك في المزادات', 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600', 'buttonText': 'اشترك الآن', 'badge': 'مزاد حي', 'discount': '75%'},
     {'title': 'عروض الإلكترونيات', 'subtitle': 'خصم يصل إلى 50%', 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600', 'buttonText': 'تسوق الآن', 'badge': 'عرض محدود', 'discount': '50%'},
     {'title': 'عروض VIP', 'subtitle': 'خصم 25% للأعضاء', 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600', 'buttonText': 'انضم الآن', 'badge': 'VIP فقط', 'discount': '25%'},
