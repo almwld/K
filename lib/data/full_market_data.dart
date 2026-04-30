@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
-// ============================================
-// Flex Yemen - بيانات السوق الكاملة
-// 45 فئة | 200+ متجر | 29 منتج | 17 مول | 5 تصفية | 6 شريط
-// ============================================
-
 class FullMarketData {
-  
-  // ============================================
-  // 1️⃣ الفئات الرئيسية (45)
-  // ============================================
   static final List<Map<String, dynamic>> mainCategories = [
     {'id': '1', 'name': 'إلكترونيات', 'icon': Icons.devices, 'color': 0xFF2196F3, 'productCount': 1250, 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200'},
     {'id': '2', 'name': 'أزياء وملابس', 'icon': Icons.checkroom, 'color': 0xFFE91E63, 'productCount': 2340, 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200'},
@@ -59,20 +50,14 @@ class FullMarketData {
     {'id': '45', 'name': 'أخرى', 'icon': Icons.more_horiz, 'color': 0xFF9E9E9E, 'productCount': 500, 'image': 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=200'},
   ];
 
-  // ============================================
-  // 2️⃣ أزرار التصفية (5)
-  // ============================================
   static final List<Map<String, dynamic>> filterButtons = [
     {'id': 'favorites', 'name': 'المفضلات', 'icon': Icons.favorite},
     {'id': 'trending', 'name': 'رائج', 'icon': Icons.trending_up},
     {'id': 'alpha', 'name': 'Alpha', 'icon': Icons.sort_by_alpha},
     {'id': 'new', 'name': 'جديدة', 'icon': Icons.new_releases},
-    {'id': 'top_rated', 'name': 'الأعلى ربحاً !!!', 'icon': Icons.star},
+    {'id': 'top_rated', 'name': 'الأعلى ربحاً', 'icon': Icons.star},
   ];
 
-  // ============================================
-  // 3️⃣ أزرار الشريط العلوي (6)
-  // ============================================
   static final List<Map<String, String>> topBarButtons = [
     {'id': 'discover', 'name': 'اكتشف'},
     {'id': 'following', 'name': 'المتابعات'},
@@ -82,116 +67,15 @@ class FullMarketData {
     {'id': 'academy', 'name': 'الأكاديمية'},
   ];
 
-  // ============================================
-  // 4️⃣ المتاجر (200+)
-  // ============================================
   static List<Map<String, dynamic>> generateStores() {
     List<Map<String, dynamic>> stores = [];
-    
-    // إلكترونيات (25)
-    List<String> electronics = [
-      'جرير للإلكترونيات', 'متجر التقنية', 'إكسترا', 'سامسونج', 'آبل ستور',
-      'هواوي', 'شاومي', 'لينوفو', 'ديل', 'HP', 'سوني', 'إل جي',
-      'آيسر', 'آسوس', 'كانون', 'نيكون', 'جيم ستوب', 'بلايستيشن',
-      'أنكر', 'بيلكن', 'جابيل', 'سامسونج اليمن', 'هايبر التقنية', 'الخليج للكمبيوتر', 'عالم الإلكترونيات'
-    ];
-    
-    // أزياء (25)
-    List<String> fashion = [
-      'نون للأزياء', 'الأزياء العصرية', 'الخياط الذهبي', 'ثياب وأكثر', 'عبايات المملكة',
-      'فساتين السهرة', 'جلابيات يمنية', 'أحذية الموضة', 'شنط وماركات', 'ساعات فاخرة',
-      'نظارات الشمس', 'زارا', 'اتش اند ام', 'مانجو', 'بالنسياغا',
-      'شانيل', 'رولكس', 'كارتييه', 'الثوب اليمني', 'متجر العباية',
-      'الأحذية الرياضية', 'الشنط الجلدية', 'الإكسسوارات', 'الملابس الداخلية', 'متجر الحرير'
-    ];
-    
-    // سيارات (20)
-    List<String> cars = [
-      'تويوتا', 'هونداي', 'نيسان', 'هوندا', 'كيا', 'فورد', 'شيفروليه',
-      'مرسيدس', 'بي إم دبليو', 'لكزس', 'رنج روفر', 'جيب', 'دودج',
-      'فولكس واجن', 'سوزوكي', 'ميتسوبيشي', 'معرض السيارات', 'تشليح',
-      'قطع غيار', 'زينة سيارات'
-    ];
-    
-    // عقارات (15)
-    List<String> realestate = [
-      'مكتب عقاري', 'فلل للأيجار', 'شقق تمليك', 'أراضي سكنية',
-      'عقارات تجارية', 'مكاتب للإيجار', 'محلات تجارية', 'معارض',
-      'مخازن', 'استراحات', 'مزارع', 'عمارات', 'مجمعات سكنية',
-      'برج سكني', 'فنادق'
-    ];
-    
-    // مطاعم (25)
-    List<String> restaurants = [
-      'مطعم البيت اليمني', 'مندي الملكي', 'حضرموت للمندي', 'تعز للمطبخ اليمني',
-      'عدن للمأكولات', 'إب للوجبات', 'ذمار للمطاعم', 'قهوة البن',
-      'عصائر طازجة', 'حلويات شرقية', 'بيتزا هت', 'ماكدونالدز',
-      'كنتاكي', 'برجر كنج', 'صب واي', 'البيك',
-      'مطعم هندي', 'مطعم صيني', 'مطعم تركي', 'مطعم لبناني',
-      'شاورما', 'فلافل', 'فول وتميس', 'معصوب', 'كبدة'
-    ];
-    
-    // صحة وجمال (25)
-    List<String> health = [
-      'صيدلية الحياة', 'صيدلية الشفاء', 'النهدي', 'الدواء', 'مستشفى',
-      'مختبرات طبية', 'ماك', 'لوريال', 'نيفيا', 'كلينيك',
-      'استي لودر', 'عطور الماجد', 'دهن عود', 'بخور', 'زيت الحشيش',
-      'شامبو', 'صابون', 'ماسكات', 'فيتامينات', 'مكملات غذائية',
-      'فرش أسنان', 'معجون أسنان', 'مزيل عرق', 'كريمات', 'عناية بالبشرة'
-    ];
-    
-    // خدمات (25)
-    List<String> services = [
-      'صيانة منزلية', 'نظافة', 'كهربائي', 'سباك', 'مكيفات',
-      'دهانات', 'جبس', 'سيراميك', 'حدادة', 'نجارة',
-      'ألمنيوم', 'مظلات', 'عزل أسطح', 'مكافحة حشرات', 'نقل عفش',
-      'توصيل طلبات', 'تصليح سيارات', 'غسيل سيارات', 'خياطة', 'تصوير',
-      'تصميم جرافيك', 'برمجة', 'تسويق إلكتروني', 'ترجمة', 'تدريس خصوصي'
-    ];
-    
-    // متاجر متنوعة (40)
-    List<String> other = [
-      'مكتبة', 'قرطاسية', 'ألعاب أطفال', 'هدايا', 'زهور',
-      'حيوانات أليفة', 'طيور', 'أسماك زينة', 'معدات رياضية', 'دراجات',
-      'خيام', 'شنط سفر', 'مفاتيح', 'سوبرماركت', 'هايبر',
-      'مخبز', 'حلويات', 'مكسرات', 'تمور', 'عسل',
-      'حليب', 'أجبان', 'بيض', 'خضروات', 'فواكه',
-      'لحوم', 'دواجن', 'أسماك', 'بهارات', 'معلبات',
-      'مشروبات', 'عصائر', 'شاي', 'قهوة', 'مياه',
-      'منظفات', 'صابون', 'شامبو', 'مناديل', 'أكياس'
-    ];
-    
-    stores.addAll(_mapStores(electronics, 'إلكترونيات', 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200'));
-    stores.addAll(_mapStores(fashion, 'أزياء', 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=200'));
-    stores.addAll(_mapStores(cars, 'سيارات', 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200'));
-    stores.addAll(_mapStores(realestate, 'عقارات', 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200'));
-    stores.addAll(_mapStores(restaurants, 'مطاعم', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200'));
-    stores.addAll(_mapStores(health, 'صحة وجمال', 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200'));
-    stores.addAll(_mapStores(services, 'خدمات', 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200'));
-    stores.addAll(_mapStores(other, 'متنوعات', 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=200'));
-    
+    List<String> names = ['جرير للإلكترونيات', 'متجر التقنية', 'إكسترا', 'سامسونج', 'آبل ستور', 'هواوي', 'نون للأزياء', 'الأزياء العصرية', 'تويوتا', 'هونداي', 'نيسان', 'مكتب عقاري', 'فلل للأيجار', 'مطعم البيت اليمني', 'مندي الملكي', 'قهوة البن', 'صيدلية الحياة', 'النهدي', 'صيانة منزلية', 'نظافة', 'مكتبة', 'قرطاسية', 'ألعاب أطفال', 'هدايا', 'زهور', 'سوبرماركت السعادة', 'مخبز الريف', 'حلويات شرقية', 'مكسرات', 'تمور'];
+    for (int i = 0; i < names.length; i++) {
+      stores.add({'id': 's$i', 'name': names[i], 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=200', 'category': 'إلكترونيات', 'productsCount': 50 + i * 7, 'rating': 4.0 + (i % 10) * 0.1, 'isVerified': i % 3 == 0, 'followers': 100 + i * 25});
+    }
     return stores;
   }
-  
-  static List<Map<String, dynamic>> _mapStores(List<String> names, String category, String image) {
-    return names.asMap().entries.map((e) {
-      int i = e.key;
-      return {
-        'id': '${category}_$i',
-        'name': e.value,
-        'image': image,
-        'category': category,
-        'productsCount': 50 + (i * 7) % 100,
-        'rating': 4.0 + (i % 10) * 0.1,
-        'isVerified': i % 3 == 0,
-        'followers': 100 + i * 25,
-      };
-    }).toList();
-  }
 
-  // ============================================
-  // 5️⃣ المولات (17)
-  // ============================================
   static final List<Map<String, dynamic>> malls = [
     {'id': '1', 'name': 'اليمن مول', 'city': 'صنعاء', 'stores': 250, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200'},
     {'id': '2', 'name': 'سيتي مول', 'city': 'صنعاء', 'stores': 180, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=200'},
@@ -212,9 +96,6 @@ class FullMarketData {
     {'id': '17', 'name': 'رد سي مول', 'city': 'صنعاء', 'stores': 90, 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200'},
   ];
 
-  // ============================================
-  // 6️⃣ المنتجات (29)
-  // ============================================
   static final List<Map<String, dynamic>> products = [
     {'id': 'p1', 'name': 'الخضروات والفواكه', 'price': 500, 'image': 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=400'},
     {'id': 'p2', 'name': 'الدجاج واللحوم الطازجة', 'price': 2000, 'image': 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=400'},
@@ -247,9 +128,13 @@ class FullMarketData {
     {'id': 'p29', 'name': 'العناية الشخصية', 'price': 750, 'image': 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400'},
   ];
 
-  // ============================================
-  // 7️⃣ ماركات عالمية
-  // ============================================
+  static final List<Map<String, dynamic>> ads = [
+    {'title': 'عروض الصيف', 'desc': 'خصم 40%', 'color': 0xFFF6465D, 'image': 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400'},
+    {'title': 'تخفيضات الجمعة', 'desc': 'خصم 70%', 'color': 0xFF2196F3, 'image': 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400'},
+    {'title': 'عروض العيد', 'desc': 'خصم 50%', 'color': 0xFFFF9800, 'image': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400'},
+    {'title': 'شحن مجاني', 'desc': 'لكل الطلبات', 'color': 0xFF4CAF50, 'image': 'https://images.unsplash.com/photo-1583258292688-d0213dc145a4?w=400'},
+  ];
+
   static final List<Map<String, dynamic>> brands = [
     {'name': 'Apple', 'logo': '🍎', 'color': 0xFF000000},
     {'name': 'Samsung', 'logo': '📱', 'color': 0xFF1428A0},
@@ -261,15 +146,5 @@ class FullMarketData {
     {'name': 'LG', 'logo': '📺', 'color': 0xFFA5004D},
     {'name': 'Nescafe', 'logo': '☕', 'color': 0xFFC8102E},
     {'name': 'Pepsi', 'logo': '🥤', 'color': 0xFF00539F},
-  ];
-
-  // ============================================
-  // 8️⃣ عروض وإعلانات
-  // ============================================
-  static final List<Map<String, dynamic>> ads = [
-    {'title': 'عروض الصيف', 'desc': 'خصم 40%', 'color': 0xFFF6465D, 'image': 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400'},
-    {'title': 'تخفيضات الجمعة', 'desc': 'خصم 70%', 'color': 0xFF2196F3, 'image': 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400'},
-    {'title': 'عروض العيد', 'desc': 'خصم 50%', 'color': 0xFFFF9800, 'image': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400'},
-    {'title': 'شحن مجاني', 'desc': 'لكل الطلبات', 'color': 0xFF4CAF50, 'image': 'https://images.unsplash.com/photo-1583258292688-d0213dc145a4?w=400'},
   ];
 }
