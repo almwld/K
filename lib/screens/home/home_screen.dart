@@ -23,7 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int _carouselIndex = 0;
 
   // السلايدرات
-  final List<Map<String, dynamic>> _carouselItems = [
+  final List<Map<String, dynamic>> _categories = FullMarketData.mainCategories;
+  final List<Map<String, dynamic>> _products = FullMarketData.products;
+  final List<Map<String, dynamic>> _malls = FullMarketData.malls;
+  final List<Map<String, dynamic>> _brands = FullMarketData.brands;
+  final List<Map<String, dynamic>> _ads = FullMarketData.ads;
+
+  final List<Map<String, dynamic>> _carouselItems = FullMarketData.ads; // [
     {'title': 'مزادات حية', 'subtitle': 'شارك في المزادات', 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600', 'buttonText': 'اشترك الآن', 'badge': 'مزاد حي', 'discount': '75%'},
     {'title': 'عروض الإلكترونيات', 'subtitle': 'خصم يصل إلى 50%', 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600', 'buttonText': 'تسوق الآن', 'badge': 'عرض محدود', 'discount': '50%'},
     {'title': 'عروض VIP', 'subtitle': 'خصم 25% للأعضاء', 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600', 'buttonText': 'انضم الآن', 'badge': 'VIP فقط', 'discount': '25%'},
@@ -238,3 +244,186 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+  // ============ الفئات الرئيسية ============
+  Widget _buildCategoriesGrid() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Text('🗂️ الفئات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 180,
+          child: GridView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6, childAspectRatio: 1.1),
+            itemCount: _categories.length,
+            itemBuilder: (context, index) {
+              final cat = _categories[index];
+              return GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/stores'),
+                child: Container(
+                  width: 90,
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(color: isDark ? AppTheme.binanceCard : Colors.white, borderRadius: BorderRadius.circular(12)),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(cat['icon'] as IconData, color: Color(cat['color'] as int), size: 24),
+                    const SizedBox(height: 4),
+                    Text(cat['name'] ?? '', style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center, maxLines: 2),
+                    Text('${cat['productCount']}', style: TextStyle(color: isDark ? Colors.grey : Colors.black54, fontSize: 9)),
+                  ]),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ============ المولات ============
+  Widget _buildMallsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            const Text('🏬 المولات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            TextButton(onPressed: () => Navigator.pushNamed(context, '/markets'), child: const Text('عرض الكل', style: TextStyle(color: AppTheme.binanceGold))),
+          ]),
+        ),
+        SizedBox(
+          height: 140,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            itemCount: _malls.length,
+            itemBuilder: (context, index) {
+              final m = _malls[index];
+              return Container(
+                width: 170,
+                margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(color: isDark ? AppTheme.binanceCard : Colors.white, borderRadius: BorderRadius.circular(16)),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(16)), child: CachedNetworkImage(imageUrl: m['image'] ?? '', height: 85, width: 170, fit: BoxFit.cover)),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(m['name'] ?? '', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text('${m['stores']} متجر • ${m['city']}', style: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10)),
+                    ]),
+                  ),
+                ]),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ============ المنتجات ============
+  Widget _buildProductsGrid() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            const Text('🛒 أفضل المنتجات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            TextButton(onPressed: () => Navigator.pushNamed(context, '/stores'), child: const Text('عرض الكل', style: TextStyle(color: AppTheme.binanceGold))),
+          ]),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 8, crossAxisSpacing: 8, childAspectRatio: 0.75),
+            itemCount: _products.length > 15 ? 15 : _products.length,
+            itemBuilder: (context, index) {
+              final p = _products[index];
+              return Container(
+                decoration: BoxDecoration(color: isDark ? AppTheme.binanceCard : Colors.white, borderRadius: BorderRadius.circular(12)),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(12)), child: CachedNetworkImage(imageUrl: p['image'] ?? '', height: 70, width: double.infinity, fit: BoxFit.cover)),
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(p['name'] ?? '', style: const TextStyle(color: Colors.white, fontSize: 10), maxLines: 2, overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 4),
+                      Text('${p['price']} ر.ي', style: const TextStyle(color: AppTheme.binanceGold, fontWeight: FontWeight.bold, fontSize: 11)),
+                    ]),
+                  ),
+                ]),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ============ الماركات ============
+  Widget _buildBrandsSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Text('🏷️ ماركات عالمية', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 70,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            itemCount: _brands.length,
+            itemBuilder: (context, index) {
+              final b = _brands[index];
+              return Container(
+                width: 100,
+                margin: const EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(color: isDark ? AppTheme.binanceCard : Colors.white, borderRadius: BorderRadius.circular(12)),
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(b['logo'] ?? '', style: const TextStyle(fontSize: 28)),
+                  Text(b['name'] ?? '', style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                ]),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 80),
+      ],
+    );
+  }
+
+  // ============ شريط إحصائيات ============
+  Widget _buildStatsBanner() {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(gradient: AppTheme.goldGradient, borderRadius: BorderRadius.circular(16)),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        _stat('1,250+', 'منتج'),
+        _stat('200+', 'متجر'),
+        _stat('45', 'فئة'),
+        _stat('17', 'مول'),
+      ]),
+    );
+  }
+
+  Widget _stat(String value, String label) {
+    return Column(children: [
+      Text(value, style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+      Text(label, style: const TextStyle(color: Colors.black54, fontSize: 10)),
+    ]);
+  }
