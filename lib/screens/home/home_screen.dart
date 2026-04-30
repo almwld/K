@@ -29,12 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // السلايدرات
   final List<Map<String, dynamic>> _carouselItems = FullMarketData.ads; //
-    {'title': 'مزادات حية', 'subtitle': 'شارك في المزادات', 'image': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600', 'buttonText': 'اشترك الآن', 'badge': 'مزاد حي', 'discount': '75%'},
-    {'title': 'عروض الإلكترونيات', 'subtitle': 'خصم يصل إلى 50%', 'image': 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600', 'buttonText': 'تسوق الآن', 'badge': 'عرض محدود', 'discount': '50%'},
-    {'title': 'عروض VIP', 'subtitle': 'خصم 25% للأعضاء', 'image': 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600', 'buttonText': 'انضم الآن', 'badge': 'VIP فقط', 'discount': '25%'},
-    {'title': 'توصيل مجاني', 'subtitle': 'لطلبات +200,000', 'image': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600', 'buttonText': 'اطلب الآن', 'badge': 'شحن مجاني', 'discount': '100%'},
-    {'title': 'عروض العيد', 'subtitle': 'خصومات تصل إلى 60%', 'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600', 'buttonText': 'استفد الآن', 'badge': 'عرض خاص', 'discount': '60%'},
-  ];
+  final List<Map<String, dynamic>> _carouselItems = FullMarketData.ads;
 
   // بيانات الحالات (Stories) - استخدام StoryModel من stories_widget
   final List<StoryModel> _stories = [
