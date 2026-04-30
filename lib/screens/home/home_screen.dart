@@ -243,16 +243,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCategoriesGrid() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4), child: Text('الفئات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))),
-      SizedBox(height: 180, child: GridView.builder(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 12), gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6, childAspectRatio: 1.1), itemCount: _categories.length, itemBuilder: (context, index) {
-        final cat = _categories[index];
-        return GestureDetector(onTap: () => Navigator.pushNamed(context, '/stores'), child: Container(width: 90, padding: const EdgeInsets.all(6), decoration: BoxDecoration(color: isDark ? AppTheme.binanceCard : Colors.white, borderRadius: BorderRadius.circular(12)), child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(cat['icon'] as IconData, color: Color(cat['color'] as int), size: 24), const SizedBox(height: 4), Text(cat['name'] ?? '', style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center, maxLines: 2), Text('${cat['productCount']}', style: TextStyle(color: isDark ? Colors.grey : Colors.black54, fontSize: 9))]))));
-      })),
-    ]);
-  }
 
   // ============ الفئات ============
   Widget _buildCategoriesGrid() {
